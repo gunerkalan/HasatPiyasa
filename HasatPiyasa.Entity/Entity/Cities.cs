@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace HasatPiyasa.Entity.Entity
 {
-    public partial class Cities
+    public partial class Cities : BaseEntity
     {
         public Cities()
         {
