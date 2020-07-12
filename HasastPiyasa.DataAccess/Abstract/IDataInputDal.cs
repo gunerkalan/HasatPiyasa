@@ -6,7 +6,7 @@ using System.Text;
 
 namespace HasastPiyasa.DataAccess.Abstract
 {
-    interface IDataInputDal : IEntityRepository<DataInputs>
+   public  interface IDataInputDal : IEntityRepository<DataInputs>
     {
     }
 }

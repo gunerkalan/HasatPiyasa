@@ -1,29 +1,19 @@
-@using HasatPiyasa_Web_UI.Models
+﻿@model HasaInputViewModel
+@{ 
 
-<h2>Home</h2>
+    
 
-@(Html.DevExtreme().DataGrid<SampleOrder>()
-    .ShowBorders(true)
-    .DataSource(d => d.Mvc().Controller("SampleData").LoadAction("Get").Key("OrderID"))
-    .Columns(columns => {
-        columns.AddFor(m => m.OrderID);
-        columns.AddFor(m => m.OrderDate);
-        columns.AddFor(m => m.CustomerName);
-        columns.AddFor(m => m.ShipCountry);
-        columns.AddFor(m => m.ShipCity);
-    })
-    .Paging(p => p.PageSize(10))
-    .FilterRow(f => f.Visible(true))
-    .HeaderFilter(f => f.Visible(true))
-    .GroupPanel(p => p.Visible(true))
-    .Grouping(g => g.AutoExpandAll(false))
-    .RemoteOperations(true)
-    .Summary(s => s
-        .TotalItems(totalItems => {
-            totalItems.AddFor(m => m.ShipCity).SummaryType(SummaryType.Count);
-        })
-        .GroupItems(groupItems => {
-            groupItems.Add().SummaryType(SummaryType.Count);
-        })
-    )
-)
+}
+
+<table>
+    <thead>
+        <tr>
+            <td style="border-top: 1px solid #bfbfbf; border-bottom: 1px solid #bfbfbf; border-left: 1px solid #bfbfbf; border-right: 1px solid #bfbfbf" rowspan="4" height="166" align="left" valign="middle" bgcolor="#F0F0F0" sdnum="1033;1055;Standard"><b><font face="Calibri" size="4" color="#C00000">Grup Adı</font></b></td>
+            <td style="border-top: 1px solid #bfbfbf; border-bottom: 1px solid #bfbfbf; border-left: 1px solid #bfbfbf; border-right: 1px solid #bfbfbf" rowspan="4" align="left" valign="middle" bgcolor="#F0F0F0" sdnum="1033;1055;Standard"><b><font face="Calibri" size="4" color="#C00000">Çeşit Adı</font></b></td>
+            <td style="border-top: 1px solid #bfbfbf; border-bottom: 1px solid #bfbfbf; border-left: 1px solid #bfbfbf; border-right: 1px solid #bfbfbf" colspan="22" align="center" valign="middle" bgcolor="#F0F0F0" sdnum="1033;1055;Standard"><b><font face="Verdana" size="3" color="#C00000">@Model.Emteas.EmteaName</font></b></td>           
+            <td align="left" valign="middle" bgcolor="#FFFFFF" sdnum="1033;1055;Standard"><b><font face="Calibri" color="#C00000"><br></font></b></td>
+            <td align="left" bgcolor="#FFFFFF" sdnum="1033;1055;Standard"><font face="Calibri" color="#000000"><br></font></td>
+            <td align="left" bgcolor="#FFFFFF" sdnum="1033;1055;Standard"><font face="Calibri" color="#000000"><br></font></td>
+        </tr>
+    </thead>
+</table>

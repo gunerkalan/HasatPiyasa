@@ -1,14 +1,12 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using HasatPiyasa.Entity.DataAccess.EntityFrameworkCore;
+using HasastPiyasa.DataAccess.Abstract;
+using HasastPiyasa.DataAccess.Concrete;
 using HasatPiyasa.Entity.Entity;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+ 
 
 namespace HasatPiyasa_Web_UI
 {
@@ -27,6 +25,11 @@ namespace HasatPiyasa_Web_UI
             // Add framework services.
 
             services.AddDbContext<HasatPiyasaContext>();
+            services.AddScoped<IBolgeDal, EfBolgeDal>();
+            services.AddScoped<IClaimDal, EfClaimDal>();
+            services.AddScoped<IDataInputDal, EfDataInputDal>();
+            services.AddScoped<IEmteaDal, EfEmteaDal>();
+            
             services
                 .AddControllersWithViews()
                 .AddJsonOptions(options => options.JsonSerializerOptions.PropertyNamingPolicy = null);
