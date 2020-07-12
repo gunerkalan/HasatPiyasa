@@ -1,7 +1,7 @@
 ﻿@model HasaInputViewModel
 @{
 
-    Layout = null;
+    //Layout = null;
 
     var count = 0;
 
@@ -9,9 +9,7 @@
 
 <style>
     .tdstyle {
-        border-top: 1px solid #bfbfbf;
-        border-bottom: 1px solid #bfbfbf;
-        border-left: 1px solid #bfbfbf;
+        
         background-color: whitesmoke;        
         padding:5px
           
@@ -22,18 +20,28 @@
         border: 1px solid #bfbfbf;
         font-family: "Verdana";
         color: rgb(192, 0, 0);
+        
        
     }
 
     td {
-        max-width: 100%!important
+        max-width: 100%!important;
+        vertical-align:central!important
     }
 
         td input {
             max-width: 50px !important ;
             font-size: 10px !important;
-            text-align:right!important
+            text-align:right!important;
+            margin-top:30%
         }
+
+
+        td input :focus {
+            border:1px solid blue!important;
+            border-color:deepskyblue!important
+        }
+
 
     td {
         width: 80px !important;
@@ -55,9 +63,15 @@
         -moz-appearance: textfield;
         border: none !important
     }
+
+    input[type=number] :focus {
+        -moz-appearance: textfield;
+        border: 1px solid red !important
+    }
+
 </style>
 
-<div class="container">
+ 
 
 
     <table cellspacing="0" border="0" class="table">
@@ -156,4 +170,4 @@
         </tbody>
     </table>
 
-</div>
+ 
