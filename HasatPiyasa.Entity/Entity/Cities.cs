@@ -14,6 +14,7 @@ namespace HasatPiyasa.Entity.Entity
         public int Id { get; set; }
         public string Name { get; set; }
         public int? SubeId { get; set; }
+        public int Plaka { get; set; }
 
         public virtual Subes Sube { get; set; }
         public virtual ICollection<Tuiks> Tuiks { get; set; }
