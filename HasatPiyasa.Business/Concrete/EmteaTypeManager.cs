@@ -3,6 +3,7 @@ using HasatPiyasa.Business.Abstract;
 using HasatPiyasa.Business.Constants;
 using HasatPiyasa.Core.Utilities.Results;
 using HasatPiyasa.Entity.Entity;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -51,6 +52,28 @@ namespace HasatPiyasa.Business.Concrete
                 {
                     BasariliMi = true,
                     Veri = _emteaTypeDal.Get(u => u.Id == id)
+                };
+            }
+            catch (Exception hata)
+            {
+                return new NIslemSonuc<EmteaTypes>
+                {
+                    BasariliMi = false,
+                    Mesaj = hata.InnerException.Message
+                };
+            }
+        }
+
+        public async Task<NIslemSonuc<EmteaTypes>> GetEmteaTypeTable(int value)
+        {
+            try
+            {
+                var res = await _emteaTypeDal.GetTable();
+
+                return new NIslemSonuc<EmteaTypes>
+                {
+                    BasariliMi = true,
+                    Veri = res.AsQueryable().Include(x => x.EmteaTypeGroups).Where(x => x.Id == value).ToList().FirstOrDefault()
                 };
             }
             catch (Exception hata)

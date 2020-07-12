@@ -1,19 +1,157 @@
 ﻿@model HasaInputViewModel
-@{ 
+@{
 
-    
+    Layout = null;
+
+    var count = 0;
 
 }
 
-<table>
-    <thead>
-        <tr>
-            <td style="border-top: 1px solid #bfbfbf; border-bottom: 1px solid #bfbfbf; border-left: 1px solid #bfbfbf; border-right: 1px solid #bfbfbf" rowspan="4" height="166" align="left" valign="middle" bgcolor="#F0F0F0" sdnum="1033;1055;Standard"><b><font face="Calibri" size="4" color="#C00000">Grup Adı</font></b></td>
-            <td style="border-top: 1px solid #bfbfbf; border-bottom: 1px solid #bfbfbf; border-left: 1px solid #bfbfbf; border-right: 1px solid #bfbfbf" rowspan="4" align="left" valign="middle" bgcolor="#F0F0F0" sdnum="1033;1055;Standard"><b><font face="Calibri" size="4" color="#C00000">Çeşit Adı</font></b></td>
-            <td style="border-top: 1px solid #bfbfbf; border-bottom: 1px solid #bfbfbf; border-left: 1px solid #bfbfbf; border-right: 1px solid #bfbfbf" colspan="22" align="center" valign="middle" bgcolor="#F0F0F0" sdnum="1033;1055;Standard"><b><font face="Verdana" size="3" color="#C00000">@Model.Emteas.EmteaName</font></b></td>           
-            <td align="left" valign="middle" bgcolor="#FFFFFF" sdnum="1033;1055;Standard"><b><font face="Calibri" color="#C00000"><br></font></b></td>
-            <td align="left" bgcolor="#FFFFFF" sdnum="1033;1055;Standard"><font face="Calibri" color="#000000"><br></font></td>
-            <td align="left" bgcolor="#FFFFFF" sdnum="1033;1055;Standard"><font face="Calibri" color="#000000"><br></font></td>
-        </tr>
-    </thead>
-</table>
+<style>
+    .tdstyle {
+        border-top: 1px solid #bfbfbf;
+        border-bottom: 1px solid #bfbfbf;
+        border-left: 1px solid #bfbfbf;
+        background-color: whitesmoke;        
+        padding:5px
+          
+    }
+
+    td, td, table, tbody, thead {
+        font-size: 10px !important;
+        border: 1px solid #bfbfbf;
+        font-family: "Verdana";
+        color: rgb(192, 0, 0);
+       
+    }
+
+    td {
+        max-width: 100%!important
+    }
+
+    td input {
+        max-width: 50px !important
+    }
+
+    td {
+        width: 80px !important;
+        height: 26px !important;
+    }
+
+    .tdwidth {
+        max-width: 250px !important
+    }
+
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    /* Firefox */
+    input[type=number] {
+        -moz-appearance: textfield;
+        border: none !important
+    }
+</style>
+
+<div class="container">
+
+
+    <table cellspacing="0" border="0" class="table">
+        <tbody>
+            <tr height="30">
+                <td class="tdstyle" border-right: 1px solid #bfbfbf" rowspan="4" height="166" align="center" valign="middle" bgcolor="#F0F0F0" sdnum="1033;1055;Standard"><b> Grup Adı</b></td>
+                <td class="tdstyle tdwidth" rowspan="4" align="left" valign="middle" bgcolor="#F0F0F0" sdnum="1033;1055;Standard"><b>Çeşit Adı</b></td>
+                <td class="tdstyle" colspan="16" align="center" valign="middle" bgcolor="#F0F0F0" sdnum="1033;1055;Standard"><b>@Model.Emteas.EmteaName</b></td>
+                <td class="tdstyle" colspan="6" align="center" valign="middle" bgcolor="#F0F0F0" sdnum="1033;1055;Standard"><b>PİRİNÇ</b></td>
+
+            </tr>
+            <tr class="td1">
+                <td width="50" class="tdstyle" rowspan="3" align="center" valign="middle" bgcolor="#F0F0F0" sdnum="1033;1055;Standard"><b><font face="Verdana" color="#C00000">2019<br>TÜİK<br>Üretim<br>( Ton )</font></b></td>
+                <td class="tdstyle" rowspan="3" align="center" valign="middle" bgcolor="#F0F0F0" sdnum="1033;1055;Standard"><b><font face="Verdana" color="#C00000">2020<br>TMO Tahmini<br>Üretim<br>( Ton )</font></b></td>
+                <td class="tdstyle" rowspan="3" align="center" valign="middle" bgcolor="#F0F0F0" sdnum="1033;1055;Standard"><b><font face="Verdana" color="#C00000">Hasat<br>Oranı<br>( % )</font></b></td>
+                <td class="tdstyle" rowspan="3" align="center" valign="middle" bgcolor="#F0F0F0" sdnum="1033;1055;Standard"><b><font face="Verdana" color="#C00000">Hasat<br>Edilen<br>Miktar<br>( Ton )</font></b></td>
+                <td class="tdstyle" rowspan="3" align="center" valign="middle" bgcolor="#F0F0F0" sdnum="1033;1055;Standard"><b><font face="Verdana" color="#C00000">Üreticide<br>Bekleyen<br>( Ton )</font></b></td>
+                <td class="tdstyle" colspan="5" rowspan="2" align="center" valign="middle" bgcolor="#F0F0F0" sdnum="1033;1055;Standard"><b><font face="Verdana" color="#C00000">Randıman Aralığına Göre<br>Piyasada Alınıp Satılan Miktar ( Ton )</font></b></td>
+                <td class="tdstyle" rowspan="3" align="center" valign="middle" bgcolor="#F0F0F0" sdnum="1033;1055;Standard"><b><font face="Verdana" color="#C00000">Piyasada<br>İşl.Gören<br>( Ton )</font></b></td>
+                <td class="tdstyle" colspan="5" rowspan="2" align="center" valign="middle" bgcolor="#F0F0F0" sdnum="1033;1055;Standard"><b><font face="Verdana" color="#C00000">Brüt Piyasa Fiyatı<br>( TL/Ton )</font></b></td>
+                <td class="tdstyle" colspan="3" rowspan="2" align="center" valign="middle" bgcolor="#F0F0F0" sdnum="1033;1055;Standard"><b><font face="Verdana" color="#C00000">Piyasa Toptan Fiyatı (TL/Ton)</font></b></td>
+                <td class="tdstyle" colspan="3" rowspan="2" align="center" valign="middle" bgcolor="#F0F0F0" sdnum="1033;1055;Standard"><b><font face="Verdana" color="#C00000">Perakende Fiyatı (TL/kg)</font></b></td>
+
+            </tr>
+            <tr>
+            </tr>
+            <tr class="td2">
+                <td class="td2" align="center" valign="middle" bgcolor="#F0F0F0" sdnum="1033;1055;Standard"><b><font face="Verdana" color="#C00000">49 ve<br>Altı</font></b></td>
+                <td class="tdstyle" align="center" valign="middle" bgcolor="#F0F0F0" sdnum="1033;1055;Standard"><b><font face="Verdana" color="#C00000">50-54</font></b></td>
+                <td class="tdstyle" align="center" valign="middle" bgcolor="#F0F0F0" sdnum="1033;1055;Standard"><b><font face="Verdana" color="#C00000">55-59</font></b></td>
+                <td class="tdstyle" align="center" valign="middle" bgcolor="#F0F0F0" sdnum="1033;0;"><b><font face="Verdana" color="#C00000">60</font></b></td>
+                <td class="tdstyle" align="center" valign="middle" bgcolor="#F0F0F0" sdnum="1033;1055;Standard"><b><font face="Verdana" color="#C00000">61<br>Üzeri</font></b></td>
+                <td class="tdstyle" align="center" valign="middle" bgcolor="#F0F0F0" sdnum="1033;1055;Standard"><b><font face="Verdana" color="#C00000">49 ve Altı</font></b></td>
+                <td class="tdstyle" align="center" valign="middle" bgcolor="#F0F0F0" sdnum="1033;1055;Standard"><b><font face="Verdana" color="#C00000">50-54</font></b></td>
+                <td class="tdstyle" align="center" valign="middle" bgcolor="#F0F0F0" sdnum="1033;1055;Standard"><b><font face="Verdana" color="#C00000">55-59</font></b></td>
+                <td class="tdstyle" align="center" valign="middle" bgcolor="#F0F0F0" sdval="60" sdnum="1033;1055;Standard"><b><font face="Verdana" color="#C00000">60</font></b></td>
+                <td class="tdstyle" align="center" valign="middle" bgcolor="#F0F0F0" sdnum="1033;1055;Standard"><b><font face="Verdana" color="#C00000">61 ve<br>Üzeri</font></b></td>
+                <td class="tdstyle" align="center" valign="middle" bgcolor="#F0F0F0" sdnum="1033;1055;Standard"><b><font face="Verdana" color="#C00000">Düşük Fiyat Ortalaması</font></b></td>
+                <td class="tdstyle" align="center" valign="middle" bgcolor="#F0F0F0" sdnum="1033;1055;Standard"><b><font face="Verdana" color="#C00000">Yüksek Fiyat Ortalaması</font></b></td>
+                <td class="tdstyle" align="center" valign="middle" bgcolor="#F0F0F0" sdnum="1033;1055;Standard"><b><font face="Verdana" color="#C00000">Ağırlıklı Ort. Fiyat</font></b></td>
+                <td class="tdstyle" align="center" valign="middle" bgcolor="#F0F0F0" sdnum="1033;1055;Standard"><b><font face="Verdana" color="#C00000">Düşük Fiyat Ortalaması</font></b></td>
+                <td class="tdstyle" align="center" valign="middle" bgcolor="#F0F0F0" sdnum="1033;1055;Standard"><b><font face="Verdana" color="#C00000">Yüksek Fiyat Ortalaması</font></b></td>
+                <td class="tdstyle" align="center" valign="middle" bgcolor="#F0F0F0" sdnum="1033;1055;Standard"><b><font face="Verdana" color="#C00000">Ağırlıklı Ort. Fiyat</font></b></td>
+
+            </tr>
+
+            @foreach (var grup in Model.Emteas.EmteaGroups)
+            {
+                count = 0;
+
+                @foreach (var emteaType in Model.Emteas.EmteaTypes)
+                {
+                    count++;
+                    <tr>
+
+                        @if (count < 2)
+                        {
+                            <td class="tdstyle" rowspan="@Model.Emteas.EmteaTypes.Count" height="395" align="left" valign="middle" bgcolor="#F0F0F0" sdnum="1033;1055;Standard"><b><font face="Verdana" color="#C00000">@grup.GroupName</font></b></td>
+                        }
+
+                        <td class="tdstyle">
+                            <b>
+                                <font face="Verdana" color="#C00000">
+                                    @emteaType.EmteaTypeName <br>
+                                    (@string.Join(',', emteaType.EmteaTypeGroups.Select(s => s.EmteaTypeGroupName)))
+                                </font>
+                            </b>
+                        </td>
+                        <td><input type="number" /></td>
+                        <td><input type="number" /></td>
+                        <td><input type="number" /></td>
+                        <td><input type="number" /></td>
+
+                        @for (int i = 0; i < Model.Emteas.EmteaTypes.Count; i++)
+                        {
+                            <td><input type="number" /></td>
+                        }
+
+
+
+                        @for (int i = 0; i < Model.Emteas.EmteaTypes.Count; i++)
+                        {
+                            <td><input type="number" /></td>
+                        }
+
+
+                        @for (int i = 0; i < 6; i++)
+                        {
+                            <td><input type="number" /></td>
+                        }
+
+                    </tr>
+                }
+
+            }
+        </tbody>
+    </table>
+
+</div>
