@@ -1,2 +1,56 @@
-body {
+.tdstyle {
+    background-color: whitesmoke;
+    padding: 5px
 }
+
+td, td, table, tbody, thead {
+    font-size: 10px !important;
+    border: 1px solid #bfbfbf;
+    font-family: "Verdana";
+    color: rgb(192, 0, 0);
+}
+
+td {
+    max-width: 100% !important;
+    vertical-align: central !important
+}
+
+    td input {
+        max-width: 50px !important;
+        font-size: 10px !important;
+        text-align: right !important;
+        margin-top: 30%
+    }
+
+
+        td input :focus {
+            border: 1px solid blue !important;
+            border-color: deepskyblue !important
+        }
+
+
+td {
+    width: 80px !important;
+    height: 26px !important;
+}
+
+.tdwidth {
+    max-width: 250px !important
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+    -moz-appearance: textfield;
+    border: none !important
+}
+
+    input[type=number] :focus {
+        -moz-appearance: textfield;
+        border: 1px solid red !important
+    }

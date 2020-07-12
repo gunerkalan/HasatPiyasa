@@ -1,70 +1,16 @@
 ﻿@model HasaInputViewModel
 @{
 
-    Layout ="/Views/Shared/_Layout.cshtml";
+    Layout = "/Views/Shared/_Layout.cshtml";
 
     var count = 0;
 
 }
+@section styles {
+    
+    <link rel="stylesheet" href="~/css/Site.css" />
+}
 
-<style>
-    .tdstyle {
-        background-color: whitesmoke;
-        padding: 5px
-    }
-
-    td, td, table, tbody, thead {
-        font-size: 10px !important;
-        border: 1px solid #bfbfbf;
-        font-family: "Verdana";
-        color: rgb(192, 0, 0);
-    }
-
-    td {
-        max-width: 100% !important;
-        vertical-align: central !important
-    }
-
-        td input {
-            max-width: 50px !important;
-            font-size: 10px !important;
-            text-align: right !important;
-            margin-top: 30%
-        }
-
-
-            td input :focus {
-                border: 1px solid blue !important;
-                border-color: deepskyblue !important
-            }
-
-
-    td {
-        width: 80px !important;
-        height: 26px !important;
-    }
-
-    .tdwidth {
-        max-width: 250px !important
-    }
-
-    input::-webkit-outer-spin-button,
-    input::-webkit-inner-spin-button {
-        -webkit-appearance: none;
-        margin: 0;
-    }
-
-    /* Firefox */
-    input[type=number] {
-        -moz-appearance: textfield;
-        border: none !important
-    }
-
-        input[type=number] :focus {
-            -moz-appearance: textfield;
-            border: 1px solid red !important
-        }
-</style>
 
 
 
@@ -127,12 +73,15 @@
                     }
 
                     <td class="tdstyle">
-                        <b>
-                            <font face="Verdana" color="#C00000">
-                                @emteaType.EmteaTypeName <br>
-                                (@string.Join(',', emteaType.EmteaTypeGroups.Select(s => s.EmteaTypeGroupName)))
-                            </font>
-                        </b>
+                       
+                        <font face="Verdana" color="#C00000">
+                            <b>
+                                @emteaType.EmteaTypeName
+                            </b>
+                            <br>
+                                <span style="text-transform:capitalize;font-style:italic">(@string.Join(',', emteaType.EmteaTypeGroups.Select(s => s.EmteaTypeGroupName)))</span>
+                        </font>
+                        
                     </td>
                     <td><input type="number" /></td>
                     <td><input type="number" /></td>
