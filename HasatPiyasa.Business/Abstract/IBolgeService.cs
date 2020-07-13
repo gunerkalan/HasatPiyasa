@@ -13,5 +13,6 @@ namespace HasatPiyasa.Business.Abstract
         NIslemSonuc<List<Bolges>> ListAllBolges();
         NIslemSonuc<Bolges> GetBolge(int id);
         Task<NIslemSonuc<Bolges>> UpdateBolges(Bolges bolges);
+        Task<NIslemSonuc<Bolges>> GetBolgeTable(int value);
     }
 }

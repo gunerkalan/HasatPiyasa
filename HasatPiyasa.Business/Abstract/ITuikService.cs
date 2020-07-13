@@ -13,5 +13,6 @@ namespace HasatPiyasa.Business.Abstract
         NIslemSonuc<List<Tuiks>> ListAllTuikData();
         NIslemSonuc<Tuiks> GetTuikData(int id);
         Task<NIslemSonuc<Tuiks>> UpdateTuikData(Tuiks tuik);
+        Task<NIslemSonuc<Tuiks>> GetTuikTable(int value);
     }
 }

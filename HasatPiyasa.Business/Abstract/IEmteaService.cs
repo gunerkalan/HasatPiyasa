@@ -14,6 +14,6 @@ namespace HasatPiyasa.Business.Abstract
         NIslemSonuc<Emteas> GetEmtea(int id);
         Task<NIslemSonuc<Emteas>> UpdateEmtea(Emteas emtea);
         Task<NIslemSonuc<Emteas>> GetEmteaTable(int value);
-
+       
     }
 }

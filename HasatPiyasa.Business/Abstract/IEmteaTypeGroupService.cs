@@ -13,5 +13,6 @@ namespace HasatPiyasa.Business.Abstract
         NIslemSonuc<List<EmteaTypeGroups>> ListAllEmteTypeGroups();
         NIslemSonuc<EmteaTypeGroups> GetEmteaTypeGroup(int id);
         Task<NIslemSonuc<EmteaTypeGroups>> UpdateEmteaTypeGroup(EmteaTypeGroups emteatypegroup);
+        Task<NIslemSonuc<EmteaTypeGroups>> GetEmteaTypeGroupTable(int value);
     }
 }

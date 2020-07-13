@@ -64,6 +64,11 @@ namespace HasatPiyasa.Business.Concrete
             }
         }
 
+        public Task<NIslemSonuc<EmteaGroups>> GetEmteaGroupTable(int value)
+        {
+            throw new NotImplementedException();
+        }
+
         public NIslemSonuc<List<EmteaGroups>> ListAllEmteaGroups()
         {
             try

@@ -12,31 +12,30 @@ using System.Threading.Tasks;
 
 namespace HasatPiyasa.Business.Concrete
 {
-    public class SubeManager : ISubeService
+    public class CaptionManager : ICaptionService
     {
-        private ISubeDal _subeDal;
+        private ICaptionDal _captionDal;
 
-        public SubeManager(ISubeDal subeDal)
+        public CaptionManager(ICaptionDal captionDal)
         {
-            _subeDal = subeDal;
+            _captionDal = captionDal;
         }
-
-        public async Task<NIslemSonuc<Subes>> CreateSube(Subes sube)
+        public async Task<NIslemSonuc<Captions>> CreateCaption(Captions caption)
         {
             try
             {
-                var addedsube = await _subeDal.AddAsync(sube);
+                var addedcaption = await _captionDal.AddAsync(caption);
 
-                return new NIslemSonuc<Subes>
+                return new NIslemSonuc<Captions>
                 {
                     BasariliMi = true,
-                    Veri = addedsube,
+                    Veri = addedcaption,
 
                 };
             }
             catch (Exception hata)
             {
-                return new NIslemSonuc<Subes>
+                return new NIslemSonuc<Captions>
                 {
                     BasariliMi = false,
                     Mesaj = Messages.ErrorAddSaleOrder,
@@ -45,19 +44,19 @@ namespace HasatPiyasa.Business.Concrete
             }
         }
 
-        public NIslemSonuc<Subes> GetSube(int id)
+        public NIslemSonuc<Captions> GetCaption(int id)
         {
             try
             {
-                return new NIslemSonuc<Subes>
+                return new NIslemSonuc<Captions>
                 {
                     BasariliMi = true,
-                    Veri = _subeDal.Get(u => u.Id == id)
+                    Veri = _captionDal.Get(u => u.Id == id)
                 };
             }
             catch (Exception hata)
             {
-                return new NIslemSonuc<Subes>
+                return new NIslemSonuc<Captions>
                 {
                     BasariliMi = false,
                     Mesaj = hata.InnerException.Message
@@ -65,21 +64,21 @@ namespace HasatPiyasa.Business.Concrete
             }
         }
 
-        public async Task<NIslemSonuc<Subes>> GetSubeTable(int value)
+        public async Task<NIslemSonuc<Captions>> GetCaptionTable(int value)
         {
             try
             {
-                var res = await _subeDal.GetTable();
+                var res = await _captionDal.GetTable();
 
-                return new NIslemSonuc<Subes>
+                return new NIslemSonuc<Captions>
                 {
                     BasariliMi = true,
-                    Veri = res.AsQueryable().Include(x=>x.Tuiks).Include(x=>x.Bolge).Include(x=>x.Cities).Where(x => x.Id == value).ToList().FirstOrDefault()
+                    Veri = res.AsQueryable().Include(x => x.EmteaTypes).Where(x => x.Id == value).ToList().FirstOrDefault()
                 };
             }
             catch (Exception hata)
             {
-                return new NIslemSonuc<Subes>
+                return new NIslemSonuc<Captions>
                 {
                     BasariliMi = false,
                     Mesaj = hata.InnerException.Message
@@ -87,21 +86,21 @@ namespace HasatPiyasa.Business.Concrete
             }
         }
 
-        public NIslemSonuc<List<Subes>> ListAllSubes()
+        public NIslemSonuc<List<Captions>> ListAllCaptions()
         {
             try
             {
-                return new NIslemSonuc<List<Subes>>
+                return new NIslemSonuc<List<Captions>>
                 {
                     BasariliMi = true,
-                    Veri = _subeDal.GetList().ToList()
+                    Veri = _captionDal.GetList().ToList()
                 };
 
             }
             catch (Exception hata)
             {
 
-                return new NIslemSonuc<List<Subes>>
+                return new NIslemSonuc<List<Captions>>
                 {
                     BasariliMi = true,
                     Mesaj = hata.InnerException.Message
@@ -109,22 +108,22 @@ namespace HasatPiyasa.Business.Concrete
             }
         }
 
-        public async Task<NIslemSonuc<Subes>> UpdateSube(Subes sube)
+        public async Task<NIslemSonuc<Captions>> UpdateCaption(Captions emtea)
         {
             try
             {
-                var updatedsube = await _subeDal.UpdateAsync(sube);
+                var updatedcaption = await _captionDal.UpdateAsync(emtea);
 
-                return new NIslemSonuc<Subes>
+                return new NIslemSonuc<Captions>
                 {
                     BasariliMi = true,
-                    Veri = updatedsube,
+                    Veri = updatedcaption,
 
                 };
             }
             catch (Exception hata)
             {
-                return new NIslemSonuc<Subes>
+                return new NIslemSonuc<Captions>
                 {
                     BasariliMi = false,
                     Mesaj = Messages.ErrorAddSaleOrder,

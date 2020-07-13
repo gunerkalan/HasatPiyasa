@@ -29,6 +29,7 @@ namespace HasatPiyasa.Entity.Entity
         public virtual DbSet<Tuiks> Tuiks { get; set; }
         public virtual DbSet<UserClaims> UserClaims { get; set; }
         public virtual DbSet<Users> Users { get; set; }
+        public virtual DbSet<Captions> GetCaptions { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

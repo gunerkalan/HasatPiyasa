@@ -12,31 +12,31 @@ using System.Threading.Tasks;
 
 namespace HasatPiyasa.Business.Concrete
 {
-    public class SubeManager : ISubeService
+    public class UserClaimManager : IUserClaimService
     {
-        private ISubeDal _subeDal;
+        private IUserClaimDal _userClaimDal;
 
-        public SubeManager(ISubeDal subeDal)
+        public UserClaimManager(IUserClaimDal userClaimDal)
         {
-            _subeDal = subeDal;
+            _userClaimDal = userClaimDal;
         }
 
-        public async Task<NIslemSonuc<Subes>> CreateSube(Subes sube)
+        public async Task<NIslemSonuc<UserClaims>> CreateUserClaim(UserClaims userClaim)
         {
             try
             {
-                var addedsube = await _subeDal.AddAsync(sube);
+                var addeduserclaim = await _userClaimDal.AddAsync(userClaim);
 
-                return new NIslemSonuc<Subes>
+                return new NIslemSonuc<UserClaims>
                 {
                     BasariliMi = true,
-                    Veri = addedsube,
+                    Veri = addeduserclaim,
 
                 };
             }
             catch (Exception hata)
             {
-                return new NIslemSonuc<Subes>
+                return new NIslemSonuc<UserClaims>
                 {
                     BasariliMi = false,
                     Mesaj = Messages.ErrorAddSaleOrder,
@@ -45,19 +45,19 @@ namespace HasatPiyasa.Business.Concrete
             }
         }
 
-        public NIslemSonuc<Subes> GetSube(int id)
+        public NIslemSonuc<UserClaims> GetUserClaim(int id)
         {
             try
             {
-                return new NIslemSonuc<Subes>
+                return new NIslemSonuc<UserClaims>
                 {
                     BasariliMi = true,
-                    Veri = _subeDal.Get(u => u.Id == id)
+                    Veri = _userClaimDal.Get(u => u.Id == id)
                 };
             }
             catch (Exception hata)
             {
-                return new NIslemSonuc<Subes>
+                return new NIslemSonuc<UserClaims>
                 {
                     BasariliMi = false,
                     Mesaj = hata.InnerException.Message
@@ -65,21 +65,21 @@ namespace HasatPiyasa.Business.Concrete
             }
         }
 
-        public async Task<NIslemSonuc<Subes>> GetSubeTable(int value)
+        public async Task<NIslemSonuc<UserClaims>> GetUserClaimTable(int value)
         {
             try
             {
-                var res = await _subeDal.GetTable();
+                var res = await _userClaimDal.GetTable();
 
-                return new NIslemSonuc<Subes>
+                return new NIslemSonuc<UserClaims>
                 {
                     BasariliMi = true,
-                    Veri = res.AsQueryable().Include(x=>x.Tuiks).Include(x=>x.Bolge).Include(x=>x.Cities).Where(x => x.Id == value).ToList().FirstOrDefault()
+                    Veri = res.AsQueryable().Include(x => x.User).Include(x => x.Claim).Where(x => x.Id == value).ToList().FirstOrDefault()
                 };
             }
             catch (Exception hata)
             {
-                return new NIslemSonuc<Subes>
+                return new NIslemSonuc<UserClaims>
                 {
                     BasariliMi = false,
                     Mesaj = hata.InnerException.Message
@@ -87,21 +87,21 @@ namespace HasatPiyasa.Business.Concrete
             }
         }
 
-        public NIslemSonuc<List<Subes>> ListAllSubes()
+        public NIslemSonuc<List<UserClaims>> ListUserClaims()
         {
             try
             {
-                return new NIslemSonuc<List<Subes>>
+                return new NIslemSonuc<List<UserClaims>>
                 {
                     BasariliMi = true,
-                    Veri = _subeDal.GetList().ToList()
+                    Veri = _userClaimDal.GetList().ToList()
                 };
 
             }
             catch (Exception hata)
             {
 
-                return new NIslemSonuc<List<Subes>>
+                return new NIslemSonuc<List<UserClaims>>
                 {
                     BasariliMi = true,
                     Mesaj = hata.InnerException.Message
@@ -109,22 +109,22 @@ namespace HasatPiyasa.Business.Concrete
             }
         }
 
-        public async Task<NIslemSonuc<Subes>> UpdateSube(Subes sube)
+        public async Task<NIslemSonuc<UserClaims>> UpdateUserClaim(UserClaims userClaim)
         {
             try
             {
-                var updatedsube = await _subeDal.UpdateAsync(sube);
+                var updateduserclaim = await _userClaimDal.UpdateAsync(userClaim);
 
-                return new NIslemSonuc<Subes>
+                return new NIslemSonuc<UserClaims>
                 {
                     BasariliMi = true,
-                    Veri = updatedsube,
+                    Veri = updateduserclaim,
 
                 };
             }
             catch (Exception hata)
             {
-                return new NIslemSonuc<Subes>
+                return new NIslemSonuc<UserClaims>
                 {
                     BasariliMi = false,
                     Mesaj = Messages.ErrorAddSaleOrder,

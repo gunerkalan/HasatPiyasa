@@ -3,6 +3,7 @@ using HasatPiyasa.Business.Abstract;
 using HasatPiyasa.Business.Constants;
 using HasatPiyasa.Core.Utilities.Results;
 using HasatPiyasa.Entity.Entity;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -51,6 +52,28 @@ namespace HasatPiyasa.Business.Concrete
                 {
                     BasariliMi = true,
                     Veri = _cityDal.Get(u => u.Id == id)
+                };
+            }
+            catch (Exception hata)
+            {
+                return new NIslemSonuc<Cities>
+                {
+                    BasariliMi = false,
+                    Mesaj = hata.InnerException.Message
+                };
+            }
+        }
+
+        public async Task<NIslemSonuc<Cities>> GetCityTable(int value)
+        {
+            try
+            {
+                var res = await _cityDal.GetTable();
+
+                return new NIslemSonuc<Cities>
+                {
+                    BasariliMi = true,
+                    Veri = res.AsQueryable().Include(x => x.DataInputs).Include(x=>x.Tuiks).Where(x => x.Id == value).ToList().FirstOrDefault()
                 };
             }
             catch (Exception hata)

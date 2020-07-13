@@ -5,6 +5,7 @@ using HasatPiyasa.Business.Constants;
 using HasatPiyasa.Core.Utilities.Results;
 using HasatPiyasa.Entity.Dtos;
 using HasatPiyasa.Entity.Entity;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -54,6 +55,28 @@ namespace HasatPiyasa.Business.Concrete
         {
             var user = await _userDal.GetTable();
             return user.FirstOrDefault(x => x.DomainUserName == domainname);
+        }
+
+        public async Task<NIslemSonuc<Users>> GetUserTable(int value)
+        {
+            try
+            {
+                var res = await _userDal.GetTable();
+
+                return new NIslemSonuc<Users>
+                {
+                    BasariliMi = true,
+                    Veri = res.AsQueryable().Include(x => x.UserClaims).Where(x => x.UserId == value).ToList().FirstOrDefault()
+                };
+            }
+            catch (Exception hata)
+            {
+                return new NIslemSonuc<Users>
+                {
+                    BasariliMi = false,
+                    Mesaj = hata.InnerException.Message
+                };
+            }
         }
 
         public NIslemSonuc<bool> UserExitsDomain(UserForLoginDto userForLoginDto)
