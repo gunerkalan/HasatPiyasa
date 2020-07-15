@@ -14,6 +14,10 @@
             top: -20px;
             width: 200px;
         }
+
+        .total td input {
+            font-weight:bolder!important
+        }
     </style>
 }
 
@@ -38,8 +42,8 @@
 
             </tr>
             <tr class="td1">
-                <td width="50" class="tdstyle" rowspan="3" align="center" valign="middle" bgcolor="#F0F0F0" sdnum="1033;1055;Standard"><b><font face="Verdana" color="#C00000">2019<br>TÜİK<br>Üretim<br>( Ton )</font></b></td>
-                <td class="tdstyle" rowspan="3" align="center" valign="middle" bgcolor="#F0F0F0" sdnum="1033;1055;Standard"><b><font face="Verdana" color="#C00000">2020<br>TMO Tahmini<br>Üretim<br>( Ton )</font></b></td>
+                <td width="50" class="tdstyle" rowspan="3" align="center" valign="middle" bgcolor="#F0F0F0" sdnum="1033;1055;Standard"><b><font face="Verdana" color="#C00000">@(DateTime.Now.Year-1)<br>TÜİK<br>Üretim<br>( Ton )</font></b></td>
+                <td class="tdstyle" rowspan="3" align="center" valign="middle" bgcolor="#F0F0F0" sdnum="1033;1055;Standard"><b><font face="Verdana" color="#C00000">@DateTime.Now.Year<br>TMO Tahmini<br>Üretim<br>( Ton )</font></b></td>
                 <td class="tdstyle" rowspan="3" align="center" valign="middle" bgcolor="#F0F0F0" sdnum="1033;1055;Standard"><b><font face="Verdana" color="#C00000">Hasat<br>Oranı<br>( % )</font></b></td>
                 <td class="tdstyle" rowspan="3" align="center" valign="middle" bgcolor="#F0F0F0" sdnum="1033;1055;Standard"><b><font face="Verdana" color="#C00000">Hasat<br>Edilen<br>Miktar<br>( Ton )</font></b></td>
                 <td class="tdstyle" rowspan="3" align="center" valign="middle" bgcolor="#F0F0F0" sdnum="1033;1055;Standard"><b><font face="Verdana" color="#C00000">Üreticide<br>Bekleyen<br>( Ton )</font></b></td>
@@ -79,59 +83,61 @@
                 @foreach (var emteaType in Model.Emteas.EmteaTypes)
                 {
                     count++;
-                    <tr>
+        <tr>
 
-                        @if (count < 2)
-                        {
-                            <td class="tdstyle" rowspan="@Model.Emteas.EmteaTypes.Count" height="395" align="left" valign="middle" bgcolor="#F0F0F0" sdnum="1033;1055;Standard"><b><font face="Verdana" color="#C00000">@grup.GroupName</font></b></td>
-                        }
+            @if (count < 2)
+            {
+                <td class="tdstyle" rowspan="@Model.Emteas.EmteaTypes.Count" height="395" align="left" valign="middle" bgcolor="#F0F0F0" sdnum="1033;1055;Standard"><b><font face="Verdana" color="#C00000">@grup.GroupName</font></b></td>
+            }
 
-                        <td class="tdstyle">
+            <td class="tdstyle">
 
-                            <font face="Verdana" color="#C00000">
-                                <b>
-                                    @emteaType.EmteaTypeName
-                                </b>
-                                <br>
-                                <span style="text-transform:capitalize;font-style:italic">(@string.Join(',', emteaType.EmteaTypeGroups.Select(s => s.EmteaTypeGroupName)))</span>
-                            </font>
+                <font face="Verdana" color="#C00000">
+                    <b>
+                        @emteaType.EmteaTypeName
+                    </b>
+                    <br>
+                    <span style="text-transform:capitalize;font-style:italic">(@string.Join(',', emteaType.EmteaTypeGroups.Select(s => s.EmteaTypeGroupName)))</span>
+                </font>
 
-                        </td>
-                        <td><input type="number" readonly value="@(emteaType.Tuiks.Count >0  ? emteaType.Tuiks.Where(x=>x.EmteaGroupId==grup.Id).FirstOrDefault()!=null ? emteaType.Tuiks.Where(x => x.TuikYear == DateTime.Now.Year).FirstOrDefault().TuikValue : 0:0 )" /></td>
-                        <td><input type="number" /></td>
-                        <td><input type="number" /></td>
-                        <td><input type="number" /></td>
+            </td>
+            <td><input name="tuik" type="number" readonly value="@(emteaType.Tuiks.Count >0  ? emteaType.Tuiks.Where(x=>x.EmteaGroupId==grup.Id).FirstOrDefault()!=null ? emteaType.Tuiks.Where(x => x.TuikYear == DateTime.Now.Year).FirstOrDefault().TuikValue : 0:0 )" onkeyup="YuzdeHesapla(this);" /></td>
+            <td><input type="number" id="@("Tmo_"+count.ToString())" name="tmo" onkeyup="YuzdeHesapla(this);" /></td>
+            <td><input type="number" id="@("HasatYuzde_"+count.ToString())" onkeyup="YuzdeHesapla(this);" name="percent" value="0" /></td>
+            <td><input type="number" id="@("HasatEdilen_"+count.ToString())" name="hasatedilen" /></td>
+            <td><input type="number" name="bekleyenton" /></td>
 
-                        @for (int i = 0; i < Model.Emteas.EmteaTypes.Count; i++)
-                        {
-                            <td><input type="number" /></td>
-                        }
+            @for (int i = 0; i < 5; i++)
+            {                
+                <td><input type="number" name="@("naturel"+count.ToString())"  id="@("naturel_"+count.ToString())"  onkeyup="CalculateNaturel(this);"/></td>
+            }
 
-
-
-                        @for (int i = 0; i < Model.Emteas.EmteaTypes.Count; i++)
-                        {
-                            <td><input type="number" /></td>
-                        }
+            <td><input type="number" id="@("piyasaton"+count.ToString())" /></td>
 
 
-                        @for (int i = 0; i < 6; i++)
-                        {
-                            <td><input type="number" /></td>
-                        }
+            @for (int i = 0; i < Model.Emteas.EmteaTypes.Count; i++)
+            {
+                <td><input type="number" /></td>
+            }
 
-                    </tr>
+
+            @for (int i = 0; i < 6; i++)
+            {
+                <td><input type="number" /></td>
+            }
+
+        </tr>
                 }
 
             }
 
-        <tr>
+        <tr class="total">
             <td style="border-top: 1px solid #bfbfbf; border-bottom: 1px solid #bfbfbf; border-left: 1px solid #bfbfbf; border-right: 1px solid #bfbfbf" colspan="2" height="43" align="left" valign="middle" bgcolor="#F0F0F0" sdnum="1033;1055;Standard"><b><font face="Verdana" color="#C00000">TOPLAM ÇELTİK</font></b></td>
 
-            <td><input type="number"  readonly/></td>
-            <td><input type="number" readonly /></td>
-            <td><input type="number" readonly /></td>
-            <td><input type="number" readonly/></td>
+            <td><input type="number"  readonly id="tuikTotal"/></td>
+            <td><input type="number" readonly id="tmoTotal" /></td>
+            <td><input type="number" readonly id="percentTotal" /></td>
+            <td><input type="number" readonly/ id="hasatedilenTotal"></td>
             <td><input type="number" readonly/></td>
 
             @for (int i = 0; i < Model.Emteas.EmteaTypes.Count; i++)
@@ -161,6 +167,7 @@
 </div>
 
 @section scripts {
+    <script src="~/js/ExcelSheet/ExcelSheet.js"></script>
     <script>
 
 
@@ -169,6 +176,8 @@
                 $(this).closest('td').nextAll().eq(0).find('input').focus();
             }
         });
+
+
     </script>
 }
 
