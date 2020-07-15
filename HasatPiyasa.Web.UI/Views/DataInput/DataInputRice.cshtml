@@ -97,7 +97,7 @@
                             </font>
 
                         </td>
-                        <td><input type="number" />@(emteaType.Tuiks != null ? emteaType.Tuiks.Where(x => x.TuikYear == DateTime.Now.Year).FirstOrDefault().TuikYear : 0;)</td>
+                        <td><input type="number" readonly value="@(emteaType.Tuiks.Count >0  ? emteaType.Tuiks.Where(x=>x.EmteaGroupId==grup.Id).FirstOrDefault()!=null ? emteaType.Tuiks.Where(x => x.TuikYear == DateTime.Now.Year).FirstOrDefault().TuikValue : 0:0 )" /></td>
                         <td><input type="number" /></td>
                         <td><input type="number" /></td>
                         <td><input type="number" /></td>
@@ -124,6 +124,37 @@
                 }
 
             }
+
+        <tr>
+            <td style="border-top: 1px solid #bfbfbf; border-bottom: 1px solid #bfbfbf; border-left: 1px solid #bfbfbf; border-right: 1px solid #bfbfbf" colspan="2" height="43" align="left" valign="middle" bgcolor="#F0F0F0" sdnum="1033;1055;Standard"><b><font face="Verdana" color="#C00000">TOPLAM ÇELTİK</font></b></td>
+
+            <td><input type="number"  readonly/></td>
+            <td><input type="number" readonly /></td>
+            <td><input type="number" readonly /></td>
+            <td><input type="number" readonly/></td>
+            <td><input type="number" readonly/></td>
+
+            @for (int i = 0; i < Model.Emteas.EmteaTypes.Count; i++)
+            {
+                <td><input type="number"  readonly/></td>
+            }
+
+
+
+            @for (int i = 0; i < Model.Emteas.EmteaTypes.Count; i++)
+            {
+                <td><input type="number" readonly/></td>
+            }
+
+            @for (int i = 0; i < 5; i++)
+            {
+                <td><input type="number" readonly/></td>
+            }
+                    
+
+        </tr>
+
+
         </tbody>
     </table>
 
