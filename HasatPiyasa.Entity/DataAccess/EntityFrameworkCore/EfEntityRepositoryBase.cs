@@ -15,23 +15,33 @@ namespace HasatPiyasa.Entity.DataAccess.EntityFrameworkCore
         where TEntity : BaseEntity, new()
 
     {
-        private DbContext _context;
+        private static DbContext _context;        
 
-        public EfEntityRepositoryBase()
+        public static DbContext Context
         {
+            get {
+                
+                if(_context==null)
+                {
+                    _context = new HasatPiyasaContext();
+                    
+                }
 
+                return _context; 
+            }
+
+            set { _context = value; }
         }
-        public EfEntityRepositoryBase(DbContext context)
-        {
-            _context = context;
-        }
+
+
+        
 
         public TEntity Add(TEntity entity)
         {
            
-                var addedEntity = _context.Entry(entity);
+                var addedEntity = Context.Entry(entity);
                 addedEntity.State = EntityState.Added;
-                _context.SaveChanges();
+                Context.SaveChanges();
                 return entity;
              
         }
@@ -39,17 +49,17 @@ namespace HasatPiyasa.Entity.DataAccess.EntityFrameworkCore
         public async Task<TEntity> AddAsync(TEntity entity)
         {
             
-                var addedEntity = _context.Entry(entity);
+                var addedEntity = Context.Entry(entity);
                 addedEntity.State = EntityState.Added;
-                await _context.SaveChangesAsync();
+                await Context.SaveChangesAsync();
                 return entity;
             
         }
 
         public async Task AddRange(IEnumerable<TEntity> entities)
         { 
-                _context.Set<TEntity>().AddRange(entities);
-                await _context.SaveChangesAsync();
+                Context.Set<TEntity>().AddRange(entities);
+                await Context.SaveChangesAsync();
              
         }
 
@@ -57,40 +67,40 @@ namespace HasatPiyasa.Entity.DataAccess.EntityFrameworkCore
         {
              
                 return filter == null
-              ? await _context.Set<TEntity>().CountAsync()
-              : await _context.Set<TEntity>().Where(filter).CountAsync();
+              ? await Context.Set<TEntity>().CountAsync()
+              : await Context.Set<TEntity>().Where(filter).CountAsync();
              
         }
 
         public void Delete(TEntity entity)
         {
             
-                var deletedEntity = _context.Entry(entity);
+                var deletedEntity = Context.Entry(entity);
                 deletedEntity.State = EntityState.Deleted;
-                _context.SaveChanges();
+                Context.SaveChanges();
             
         }
 
         public async Task DeleteAsync(TEntity entity)
         {
              
-                var deletedEntity = _context.Entry(entity);
+                var deletedEntity = Context.Entry(entity);
                 deletedEntity.State = EntityState.Deleted;
-                await _context.SaveChangesAsync();
+                await Context.SaveChangesAsync();
              
         }
 
         public async Task DeleteRange(IEnumerable<TEntity> entities)
         {
             
-                _context.Set<TEntity>().RemoveRange(entities);
-                await _context.SaveChangesAsync();
+                Context.Set<TEntity>().RemoveRange(entities);
+                await Context.SaveChangesAsync();
             
         }
 
         public TEntity Get(Expression<Func<TEntity, bool>> filter = null)
         { 
-                return _context.Set<TEntity>().SingleOrDefault(filter);
+                return Context.Set<TEntity>().SingleOrDefault(filter);
             
         }
 
@@ -98,24 +108,24 @@ namespace HasatPiyasa.Entity.DataAccess.EntityFrameworkCore
         {
              
                 return filter == null
-                    ? _context.Set<TEntity>().ToList()
-                    : _context.Set<TEntity>().Where(filter).ToList();
+                    ? Context.Set<TEntity>().ToList()
+                    : Context.Set<TEntity>().Where(filter).ToList();
              
         }
 
         public async Task<IQueryable<TEntity>> GetTable()
         {
              
-                return _context.Set<TEntity>().AsQueryable();
+                return Context.Set<TEntity>().AsQueryable();
             
         }
 
         public TEntity Update(TEntity entity)
         {
             
-                var updatedEntity = _context.Entry(entity);
+                var updatedEntity = Context.Entry(entity);
                 updatedEntity.State = EntityState.Modified;
-                _context.SaveChanges();
+                Context.SaveChanges();
                 return entity;
              
         }
@@ -123,9 +133,9 @@ namespace HasatPiyasa.Entity.DataAccess.EntityFrameworkCore
         public async Task<TEntity> UpdateAsync(TEntity entity)
         {
              
-                var updatedEntity = _context.Entry(entity);
+                var updatedEntity = Context.Entry(entity);
                 updatedEntity.State = EntityState.Modified;
-                await _context.SaveChangesAsync();
+                await Context.SaveChangesAsync();
                 return entity;
              
         }

@@ -1,8 +1,11 @@
 using HasastPiyasa.DataAccess.Abstract;
 using HasastPiyasa.DataAccess.Concrete;
+using HasatPiyasa.Business.Abstract;
+using HasatPiyasa.Business.Concrete;
 using HasatPiyasa.Entity.Entity;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -23,15 +26,27 @@ namespace HasatPiyasa_Web_UI
         public void ConfigureServices(IServiceCollection services)
         {
             // Add framework services.
-
-            services.AddDbContext<HasatPiyasaContext>();
+            services.AddSession();
+            services.AddDistributedMemoryCache();
+            services.AddDbContext<HasatPiyasaContext>();           
             services.AddScoped<IBolgeDal, EfBolgeDal>();
             services.AddScoped<IClaimDal, EfClaimDal>();
             services.AddScoped<IDataInputDal, EfDataInputDal>();
             services.AddScoped<IEmteaDal, EfEmteaDal>();
-            
+            services.AddScoped<IEmteaGroupDal, EfEmteaGroupDal>();
+            services.AddScoped<IEmteaTypeDal, EfEmteaTypeDal>();
+            services.AddScoped<IEmteaTypeGroupDal, EfEmteaTypeGroupDal>();
+            services.AddScoped<ISubeDal, EfSubeDal>();
+            services.AddScoped<ITuikDal, EfTuikDal>();
+            services.AddScoped<IUserClaimDal, EfUserClaimDal>();
+            services.AddScoped<IUserDal, EfUserDal>();
+            services.AddScoped<IAuthService, AuthManager>();
+            services.AddScoped<IUserService, UserManager>();
+            services.AddScoped<IEmteaService,EmteaManager>();
+
+
             services
-                .AddControllersWithViews()
+                .AddControllersWithViews().AddRazorRuntimeCompilation()
                 .AddJsonOptions(options => options.JsonSerializerOptions.PropertyNamingPolicy = null);
         }
 
@@ -46,6 +61,9 @@ namespace HasatPiyasa_Web_UI
             {
                 app.UseExceptionHandler("/Home/Error");
             }
+
+            app.UseSession();
+
             app.UseStaticFiles();
 
             app.UseRouting();
