@@ -1,9 +1,10 @@
-﻿using System;
+﻿using HasatPiyasa.Entity.DataAccess.Entities;
+using System;
 using System.Collections.Generic;
 
 namespace HasatPiyasa.Entity.Entity
 {
-    public partial class Cities : BaseEntity
+    public partial class Cities:BaseEntity
     {
         public Cities()
         {

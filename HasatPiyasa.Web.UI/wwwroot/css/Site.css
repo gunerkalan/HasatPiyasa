@@ -55,4 +55,14 @@ input[type=number] {
         border: 1px solid red !important
     }
 
- 
+.table th, .table td {
+    padding: 0.2rem!important;
+    vertical-align: top;
+    border-top: 1px solid #dee2e6;
+}
+
+.flex-column-fluid {
+    -webkit-box-flex: 1;
+    -ms-flex: 0.5 0 auto!important;
+    flex: 0.5 0 auto!important;
+}

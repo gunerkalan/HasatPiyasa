@@ -4,12 +4,13 @@ using System.Linq;
 using System.Threading.Tasks;
 using HasastPiyasa.DataAccess.Abstract;
 using HasatPiyasa.Business.Abstract;
+using HasatPiyasa.Web.UI.Controllers;
 using HasatPiyasa_Web_UI.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HasatPiyasa_Web_UI.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : BaseController
     {
         private readonly IEmteaService _emteaService;
 

@@ -1,8 +1,9 @@
-﻿using System;
+﻿using HasatPiyasa.Entity.DataAccess.Entities;
+using System;
 
 namespace HasatPiyasa.Entity.Entity
 {
-    public class BaseEntity
+    public class BaseEntity:IEntity
     {
         public DateTime AddedTime { get; set; }
         public Nullable<DateTime> UpdatedTime { get; set; }

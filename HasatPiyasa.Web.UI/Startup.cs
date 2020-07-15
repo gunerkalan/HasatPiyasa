@@ -5,11 +5,11 @@ using HasatPiyasa.Business.Concrete;
 using HasatPiyasa.Entity.Entity;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
- 
+using System;
 
 namespace HasatPiyasa_Web_UI
 {
@@ -26,13 +26,22 @@ namespace HasatPiyasa_Web_UI
         public void ConfigureServices(IServiceCollection services)
         {
             // Add framework services.
-            services.AddSession();
+            services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromHours(1);
+                options.IOTimeout = TimeSpan.FromSeconds(20);
+                options.Cookie.SecurePolicy = CookieSecurePolicy.SameAsRequest;
+                options.Cookie.IsEssential = true;
+
+            });
             services.AddDistributedMemoryCache();
-            services.AddDbContext<HasatPiyasaContext>();           
+            services.AddDbContext<HasatPiyasaContext>();
             services.AddScoped<IBolgeDal, EfBolgeDal>();
             services.AddScoped<IClaimDal, EfClaimDal>();
             services.AddScoped<IDataInputDal, EfDataInputDal>();
+            services.AddScoped<IDataInputService, DataInputManager>();
             services.AddScoped<IEmteaDal, EfEmteaDal>();
+            services.AddScoped<ICityDal, EfCityManager>();
             services.AddScoped<IEmteaGroupDal, EfEmteaGroupDal>();
             services.AddScoped<IEmteaTypeDal, EfEmteaTypeDal>();
             services.AddScoped<IEmteaTypeGroupDal, EfEmteaTypeGroupDal>();
@@ -42,8 +51,10 @@ namespace HasatPiyasa_Web_UI
             services.AddScoped<IUserDal, EfUserDal>();
             services.AddScoped<IAuthService, AuthManager>();
             services.AddScoped<IUserService, UserManager>();
-            services.AddScoped<IEmteaService,EmteaManager>();
-
+            services.AddScoped<ICityService, CityManager>();
+            services.AddScoped<IEmteaService, EmteaManager>();
+            services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddHttpContextAccessor();
 
             services
                 .AddControllersWithViews().AddRazorRuntimeCompilation()
@@ -72,7 +83,8 @@ namespace HasatPiyasa_Web_UI
 
             app.UseAuthorization();
 
-            app.UseEndpoints(endpoints => {
+            app.UseEndpoints(endpoints =>
+            {
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");

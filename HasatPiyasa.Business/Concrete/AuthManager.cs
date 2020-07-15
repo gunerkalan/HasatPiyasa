@@ -19,7 +19,7 @@ namespace HasatPiyasa.Business.Concrete
         }
         public async Task<NIslemSonuc<Users>> Login(UserForLoginDto userForLoginDto)
         {
-            var userToCheckServer = await _userService.GetUserName(userForLoginDto.Name);
+            var userToCheckServer = await _userService.GetUserName(userForLoginDto.UserName);
             if (userToCheckServer == null)
             {
                 return new NIslemSonuc<Users>
@@ -29,15 +29,15 @@ namespace HasatPiyasa.Business.Concrete
                 };
             }
 
-            var usertoChechDomain = _userService.UserExitsDomain(userForLoginDto);
-            if (!usertoChechDomain.BasariliMi)
-            {
-                return new NIslemSonuc<Users>
-                {
-                    BasariliMi = false,
-                    Mesaj = usertoChechDomain.Mesaj
-                };
-            }
+            //var usertoChechDomain = _userService.UserExitsDomain(userForLoginDto);
+            //if (!usertoChechDomain.BasariliMi)
+            //{
+            //    return new NIslemSonuc<Users>
+            //    {
+            //        BasariliMi = false,
+            //        Mesaj = usertoChechDomain.Mesaj
+            //    };
+            //}
 
             return new NIslemSonuc<Users>
             {

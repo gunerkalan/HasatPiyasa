@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace HasatPiyasa.Entity.DataAccess
 {
-    public interface IEntityRepository<T> where T : BaseEntity, new()
+    public interface IEntityRepository<T> where T : IEntity, new()
     {
         T Add(T entity);
         Task<T> AddAsync(T entity);

@@ -9,6 +9,7 @@ namespace HasatPiyasa.Entity.Entity
         public int TuikYear { get; set; }
         public int? CityId { get; set; }
         public int? SubeId { get; set; }
+        public double? TuikValue { get; set; }
         public int EmteaTypeId { get; set; }
         public int AddUserId { get; set; }
         public int? UpdateUserId { get; set; }
