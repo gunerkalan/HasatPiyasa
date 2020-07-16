@@ -21,10 +21,8 @@ namespace HasatPiyasa_Web_UI.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var model = new HasaInputViewModel();
-            var emtea =await _emteaService.GetEmteaTable(1);
-            model.Emteas = emtea.Veri;
-            return View(model);
+          
+            return View();
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
