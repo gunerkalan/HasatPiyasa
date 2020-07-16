@@ -36,14 +36,7 @@ function YuzdeHesapla(e) {
 
 }
 function CalculateColumn(name, totalid, calculateType) {
-
-    if (name == "naturel") {
-        totalid = "piyasaton" + totalid.attributes["id"].value.split("_")[1]
-    }
-
-
-
-
+ 
     if (calculateType == "topla") {
         var tuiks = $(`input[name=${name}]`)
         var total = 0;
