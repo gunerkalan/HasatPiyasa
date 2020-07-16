@@ -1,5 +1,5 @@
 ﻿$(document).ready(() => {
-    CalculateColumn("tuik", "tuikTotal","topla");
+    CalculateColumn("tuik", "tuikTotal", "topla");
 })
 function YuzdeHesapla(e) {
     var value = Number(e.value);
@@ -13,13 +13,13 @@ function YuzdeHesapla(e) {
         if (value < 0)
             e.value = 0
     }
-    
+
 
     var rowId = e.attributes["id"].value.split("_")[1]
     var _amount = Number($("#Tmo_" + rowId).val())
     var _percentValue = Number($("#HasatYuzde_" + rowId).val())
 
-    if (_amount > 0 && value >0) {
+    if (_amount > 0 && value > 0) {
 
         if (rowname == "Tmo") {
             percent = (_amount * _percentValue) / 100;
@@ -27,13 +27,13 @@ function YuzdeHesapla(e) {
         else {
             percent = (_amount * value) / 100;
         }
-        
+
         $("#HasatEdilen_" + rowId).val(percent)
-        CalculateColumn("tmo", "tmoTotal","topla");
-        CalculateColumn("percent", "percentTotal","ortalama");
-        CalculateColumn("hasatedilen", "hasatedilenTotal","topla");
+        CalculateColumn("tmo", "tmoTotal", "topla");
+        CalculateColumn("percent", "percentTotal", "ortalama");
+        CalculateColumn("hasatedilen", "hasatedilenTotal", "topla");
     }
-    
+
 }
 function CalculateColumn(name, totalid, calculateType) {
 
@@ -41,7 +41,7 @@ function CalculateColumn(name, totalid, calculateType) {
         totalid = "piyasaton" + totalid.attributes["id"].value.split("_")[1]
     }
 
-        
+
 
 
     if (calculateType == "topla") {
@@ -52,39 +52,48 @@ function CalculateColumn(name, totalid, calculateType) {
                 total += Number(v.value)
             }
         })
-        
+
         $("#" + totalid).val(total)
     }
 
     if (calculateType == "ortalama") {
         var tuiks = $(`input[name=${name}]`)
         var total = 0;
-        var _count=0
+        var _count = 0
         $.each(tuiks, (i, v) => {
             if (v.value != "0") {
-                total += Number(v.value)               
+                total += Number(v.value)
                 _count++
             }
         })
         $("#" + totalid).val(total / _count)
-      
+
     }
 
 
 }
-function CalculateNaturel(totalid) {        
+function CalculateNaturel(totalid) {
     var rowId = totalid.attributes["id"].value.split("_")[1]
+    var index = totalid.dataset.bind;    
     totalid = "piyasaton" + rowId
-      
-        var tuiks = $(`input[name=naturel${rowId}]`)
-        var total = 0;
-        $.each(tuiks, (i, v) => {
-            if (v.value != "0") {
-                total += Number(v.value)
-            }
-        })
+    var tuiks = $(`input[name=naturel${rowId}]`)
+    var total = 0;
+    $.each(tuiks, (i, v) => {
+        if (v.value != "0") {
+            total += Number(v.value)
+        }
+    })
 
-        $("#" + totalid).val(total)
-     
-     
+    var columInputs = $(`input[data-bind=${index}]`)
+    var columntotal = 0
+    $.each(columInputs, (i, v) => {
+        if (v.value != "0") {
+            columntotal += Number(v.value)
+        }
+    })
+
+    $("#" + totalid).val(total)
+    $("#toplanaturel_" + index).val(columntotal)
+
+
 }

@@ -109,7 +109,7 @@
 
             @for (int i = 0; i < 5; i++)
             {                
-                <td><input type="number" name="@("naturel"+count.ToString())"  id="@("naturel_"+count.ToString())"  onkeyup="CalculateNaturel(this);"/></td>
+                <td><input type="number"   data-bind="@i"  name="@("naturel"+count.ToString())"  id="@("naturel_"+count.ToString())"  onkeyup="CalculateNaturel(this);"/></td>
             }
 
             <td><input type="number" id="@("piyasaton"+count.ToString())" /></td>
@@ -134,29 +134,29 @@
         <tr class="total">
             <td style="border-top: 1px solid #bfbfbf; border-bottom: 1px solid #bfbfbf; border-left: 1px solid #bfbfbf; border-right: 1px solid #bfbfbf" colspan="2" height="43" align="left" valign="middle" bgcolor="#F0F0F0" sdnum="1033;1055;Standard"><b><font face="Verdana" color="#C00000">TOPLAM ÇELTİK</font></b></td>
 
-            <td><input type="number"  readonly id="tuikTotal"/></td>
+            <td><input type="number" readonly id="tuikTotal" /></td>
             <td><input type="number" readonly id="tmoTotal" /></td>
             <td><input type="number" readonly id="percentTotal" /></td>
-            <td><input type="number" readonly/ id="hasatedilenTotal"></td>
-            <td><input type="number" readonly/></td>
+            <td><input type="number" readonly / id="hasatedilenTotal"></td>
+            <td><input type="number" readonly /></td>
 
-            @for (int i = 0; i < Model.Emteas.EmteaTypes.Count; i++)
+            @for (int i = 0; i < 5; i++)
             {
-                <td><input type="number"  readonly/></td>
+                <td><input type="number" id="@("toplanaturel_"+i.ToString())" readonly /></td>
             }
 
 
 
             @for (int i = 0; i < Model.Emteas.EmteaTypes.Count; i++)
             {
-                <td><input type="number" readonly/></td>
+                <td><input type="number" readonly /></td>
             }
 
             @for (int i = 0; i < 5; i++)
             {
-                <td><input type="number" readonly/></td>
+                <td><input type="number" readonly /></td>
             }
-                    
+
 
         </tr>
 
