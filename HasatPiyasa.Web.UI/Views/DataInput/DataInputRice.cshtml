@@ -108,14 +108,14 @@
             <td><input type="number" name="bekleyenton" onkeyup="CalculateColumn('bekleyenton','bekleyentonTotal','topla')" /></td>
 
             @for (int i = 0; i < 5; i++)
-            {                
-                <td><input type="number"   data-bind="@i"  name="@("naturel"+count.ToString())"  id="@("naturel_"+count.ToString())"  onkeyup="CalculateNaturel(this);"/></td>
+            {
+                <td><input type="number" data-bind="@i" name="@("naturel"+count.ToString())" id="@("naturel_"+count.ToString())" onkeyup="CalculateNaturel(this);" /></td>
             }
 
             <td><input type="number" id="@("piyasaton"+count.ToString())" /></td>
 
 
-            @for (int i = 0; i < Model.Emteas.EmteaTypes.Count; i++)
+            @for (int i = 0; i < 5; i++)
             {
                 <td><input type="number" /></td>
             }
@@ -152,7 +152,7 @@
                 <td><input type="number" readonly /></td>
             }
 
-            @for (int i = 0; i < 5; i++)
+            @for (int i = 0; i < 6; i++)
             {
                 <td><input type="number" readonly /></td>
             }
