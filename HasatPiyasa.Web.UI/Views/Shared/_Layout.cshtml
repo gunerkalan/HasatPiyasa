@@ -3,20 +3,20 @@
 @inject IHttpContextAccessor  HttpContextAccessor
 @{
     var CurrentUser = new Users();
-    if (Context.Session.Get("User") != null)
+    if (Context.Session.Get("User") != null)   
     {
 
         CurrentUser = Context.Session.Get<Users>("User");
     }
-}
-<!DOCTYPE html>
+}                                                                                                                                                                                                                                                                                                                          
+<!DOCTYPE html>    
 
 <html lang="tr">
 
 <head>
     <base href="">
     <meta charset="utf-8" />
-    <title>TMO | Hasat Piyasa  </title>
+    <title>TMO | Hasat Piyasa  </title>                                                                                         
     <meta name="description" content="Updates and statistics" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 
