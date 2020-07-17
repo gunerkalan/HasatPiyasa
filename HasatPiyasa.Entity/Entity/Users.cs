@@ -22,6 +22,7 @@ namespace HasatPiyasa.Entity.Entity
         public bool IsDomain { get; set; }
         public string Password { get; set; }
         public int SubeId { get; set; }
+        public string Title { get; set; }
 
         public virtual Subes Sube { get; set; }
         public virtual ICollection<DataInputs> DataInputsAddUser { get; set; }

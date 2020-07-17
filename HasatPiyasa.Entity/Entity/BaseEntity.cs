@@ -7,6 +7,6 @@ namespace HasatPiyasa.Entity.Entity
     {
         public DateTime AddedTime { get; set; }
         public Nullable<DateTime> UpdatedTime { get; set; }
-        public int IsActive { get; set; }
+        public bool IsActive { get; set; }
     }
 }
