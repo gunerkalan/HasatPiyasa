@@ -7,6 +7,7 @@ using HasatPiyasa.Business.Abstract;
 using HasatPiyasa.Entity.Entity;
 using HasatPiyasa.Web.UI.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
 
 namespace HasatPiyasa.Web.UI.Controllers
@@ -20,7 +21,7 @@ namespace HasatPiyasa.Web.UI.Controllers
             _emteaService = emteaService;
         }
 
-      # region Emtea işlemleri
+        #region Emtea işlemleri
 
         [HttpGet]
         public ActionResult EmteaList()
@@ -42,8 +43,36 @@ namespace HasatPiyasa.Web.UI.Controllers
         }
 
 
-     #endregion
+        #endregion
 
-        
+        #region Emtea Grup işlemleri
+
+        [HttpGet]
+        public ActionResult EmteaGroupList()
+        {
+            EmteaGoupAddModel model = new EmteaGoupAddModel
+            {
+                EmteaGroup = new EmteaGroups(),
+                Emteas = LoadEmteas()
+            };
+
+            return View(model);
+        }
+
+        private List<SelectListItem> LoadEmteas()
+        {
+            List<SelectListItem> emteas = (from emtea in _emteaService.ListAllEmteas().Veri
+                                           select new SelectListItem
+                                           {
+                                               Value = emtea.Id.ToString(),
+                                               Text = emtea.EmteaName
+                                           }
+                        ).ToList();
+            return emteas;
+        }
+
+        #endregion
+
+
     }
 }
