@@ -90,3 +90,29 @@ function CalculateNaturel(totalid) {
 
 
 }
+function Avarage(e) {
+
+    var rowId = e.attributes["id"].value.split("_")[2]
+    var AvgItemsId = e.attributes["id"].value.split("_")[1]
+
+    if (AvgItemsId == "1") {
+        var number1 = Number( $("#d_1_" + rowId).val())
+        var number2 = Number($("#y_1_" + rowId).val())
+        var numberAvarage = (number1 + number2) / 2
+        $("#o_1_" + rowId).val(numberAvarage)
+        CalculateColumn("dfiyat", "dfiyatTotal", "topla")
+        CalculateColumn("yfiyat", "yfiyatTotal", "topla")
+        CalculateColumn("ofiyat", "ofiyatTotal", "topla")
+    }
+    else {
+        var number1 =Number( $("#d_2_" + rowId).val())
+        var number2 = Number($("#y_2_" + rowId).val())
+        var numberAvarage = (number1 + number2) / 2
+        $("#o_2_" + rowId).val(numberAvarage)
+        CalculateColumn("dfiyat2", "dfiyat2Total", "topla")
+        CalculateColumn("yfiyat2", "yfiyat2Total", "topla")
+        CalculateColumn("ofiyat2", "ofiyat2Total", "topla")
+    }
+
+   
+}
