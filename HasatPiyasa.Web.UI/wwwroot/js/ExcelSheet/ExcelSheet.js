@@ -1,5 +1,6 @@
 ﻿$(document).ready(() => {
     CalculateColumn("tuik", "tuikTotal", "topla");
+    CalculateColumn("tmo", "tmoTotal", "topla");
     console.clear()
     $("input[type=number]").on("focus", function () {
         $(this).on("keydown", function (event) {
@@ -8,6 +9,9 @@
             }
         });
     });
+
+   
+    
 })
 function YuzdeHesapla(e) {
     var value = Number(e.value);
@@ -42,6 +46,7 @@ function YuzdeHesapla(e) {
         CalculateColumn("hasatedilen", "hasatedilenTotal", "topla");
     }
 
+   
 }
 function CalculateColumn(name, totalid, calculateType) {
  
@@ -71,7 +76,7 @@ function CalculateColumn(name, totalid, calculateType) {
 
     }
 
-
+    
 }
 function CalculateNaturel(totalid) {
     var rowId = totalid.attributes["id"].value.split("_")[1]
@@ -96,7 +101,7 @@ function CalculateNaturel(totalid) {
     $("#" + totalid).val(total)
     $("#toplanaturel_" + index).val(columntotal)
 
-
+    
 }
 function Avarage(e) {
 
@@ -122,9 +127,71 @@ function Avarage(e) {
         CalculateColumn("ofiyat2", "ofiyat2Total", "topla")
     }
 
-   
+     
 }
 function CityChange() {
     var value = $("#cityId :selected").val()
     window.location.href = `/DataInput/DataInputRice?cityId=${value}`;
+    getLoadPanelInstance().show();
+   
 }
+ 
+function getLoadPanelInstance() {
+    return $("#loadPanel").dxLoadPanel("instance");
+}
+
+function Save() {
+    var dataInput = [];
+    var item = {         
+        
+         CityId :"",
+         //EmteaTypeId:"" ,        
+         AlimYear :"",
+         HasatOran :"",
+        HasatMiktar: "",
+        TuikValue="",
+         GuessValue="",
+         UreticiKalanMiktar:"" ,
+         Natural1 :"",
+         Natural2 :"",
+         Natural3 :"",
+         Natural4 :"",
+         Natural5 :"",
+         NaturalToplam:"",
+         ToptanPiyasa1:"",
+         ToptanPiyasa2:"",
+         ToptanPiyasa3:"",
+         ToptanPiyasa4:"",
+         ToptanPiyasa5:"",         
+         Perakende1:"", 
+         Perakende2:"", 
+         Perakende3:"", 
+         Perakende4:"", 
+         Perakende5:"", 
+         Perakende6:"", 
+         PerakendeToplam:""
+    }
+    var inputs = $("input").length/22
+
+    for (var i = 0; i < inputs; i++) {
+        var inputs = $(`.datainput${i} input`)
+      
+        $.each(inputs, (n, v) => {
+            if (i == 2) {
+                if (v.value != 0) {
+
+                }
+            }
+            console.log(v.value)
+
+        })
+    }
+    
+}
+
+function numberWithCommas(x) {
+    x = x.toString().replace('.', ',')
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+}
+
+ 

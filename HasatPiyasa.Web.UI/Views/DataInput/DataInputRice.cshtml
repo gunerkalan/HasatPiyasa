@@ -1,9 +1,11 @@
 ﻿@model HasaInputViewModel
+@using DevExtreme.AspNet.Mvc
 @{
     ViewData["Title"] = "DataInputRice";
     Layout = "~/Views/Shared/_Layout.cshtml";
     var count = 0;
     var groupCount = 0;
+    var dataInputCount = 0;
 }
 
 @section styles {
@@ -23,12 +25,20 @@
 }
 
 
-<div style="position:relative;left:-240px;width:100%;padding-top:15px;">
+<div style="position:relative;left:-240px;width:100%;padding-top:15px;" class="body">
 
     <select class="form-control citie" onchange="CityChange();" id="cityId">
         @foreach (var cty in Model.Cities)
         {
-            <option value="@cty.Id">@cty.Name</option>
+            if (Model.SelectedCityId == cty.Id)
+            {
+                <option value="@cty.Id" selected>@cty.Name</option>
+            }
+            else
+            {
+                <option value="@cty.Id">@cty.Name</option>
+            }
+
         }
 
     </select>
@@ -85,102 +95,131 @@
                 @foreach (var emteaType in grup.EmteaTypes)
                 {
                     count++;
-        <tr>
+                    dataInputCount++;
 
-            @if (count < 2)
-            {
-                <td class="tdstyle" rowspan="@grup.EmteaTypes.Count" height="395" align="left" valign="middle" bgcolor="#F0F0F0" sdnum="1033;1055;Standard"><b><font face="Verdana" color="#C00000">@grup.GroupName</font></b></td>
-            }
+                    <tr class="@("datainput"+dataInputCount)">
 
-            <td class="tdstyle">
+                        @if (count < 2)
+                        {
+                            <td class="tdstyle" rowspan="@grup.EmteaTypes.Count" height="395" align="left" valign="middle" bgcolor="#F0F0F0" sdnum="1033;1055;Standard"><b><font face="Verdana" color="#C00000">@grup.GroupName</font></b></td>
+                        }
 
-                <font face="Verdana" color="#C00000">
-                    <b>
-                        @emteaType.EmteaTypeName
-                    </b>
-                    <br>
-                    <span style="text-transform:capitalize;font-style:italic">(@string.Join(',', emteaType.EmteaTypeGroups.Select(s => s.EmteaTypeGroupName)))</span>
-                </font>
+                        <td class="tdstyle">
 
-            </td>
-            @{ if (groupCount > count)
+                            <font face="Verdana" color="#C00000">
+                                <b>
+                                    @emteaType.EmteaTypeName
+                                </b>
+                                <br>
+                                <span style="text-transform:capitalize;font-style:italic">(@string.Join(',', emteaType.EmteaTypeGroups.Select(s => s.EmteaTypeGroupName)))</span>
+                            </font>
 
-                    count = ++groupCount;
+                        </td>
+                        @{ if (groupCount > count)
 
-               }
-            <td><input name="tuik" type="number" readonly value="@(emteaType.Tuiks.Count >0  ? emteaType.Tuiks.Where(x=>x.EmteaGroupId==grup.Id).FirstOrDefault()!=null ? emteaType.Tuiks.Where(x => x.TuikYear == DateTime.Now.Year-1 && x.CityId==Model.SelectedCityId).FirstOrDefault().TuikValue : 0:0 )" onkeyup="YuzdeHesapla(this);" /></td>
-            <td><input readonly type="number" id="@("Tmo_"+count.ToString())" name="tmo"  value="@(emteaType.Tuiks.Count >0  ? emteaType.Tuiks.Where(x=>x.EmteaGroupId==grup.Id).FirstOrDefault()!=null ? emteaType.Tuiks.Where(x => x.GuessYear == DateTime.Now.Year && x.CityId==Model.SelectedCityId).FirstOrDefault().GuessValue : 0:0 )" /></td>
-            <td><input type="number" id="@("HasatYuzde_"+count.ToString())" onkeyup="YuzdeHesapla(this);" name="percent"  /></td>
-            <td><input type="number" id="@("HasatEdilen_"+count.ToString())" name="hasatedilen" readonly value="0"/></td>
-            <td><input type="number" name="bekleyenton" onkeyup="CalculateColumn('bekleyenton','bekleyentonTotal','topla')" /></td>
+                                count = ++groupCount;
 
-            @for (int i = 0; i < 5; i++)
-            {
-                <td><input type="number" data-bind="@i" name="@("naturel"+count.ToString())" id="@("naturel_"+count.ToString())" onkeyup="CalculateNaturel(this);" /></td>
-            }
+                        }
+                        <td>
+                            <input  name="tuik" type="number" readonly value="@(
+                    emteaType.Tuiks.Where(x=>x.CityId==Model.SelectedCityId).Count() >0  ?
+                    emteaType.Tuiks.FirstOrDefault(x=>x.EmteaGroupId==grup.Id && x.CityId==Model.SelectedCityId)!=null ?
+                    emteaType.Tuiks.FirstOrDefault(x =>x.CityId==Model.SelectedCityId && x.EmteaGroupId==grup.Id && x.TuikYear == DateTime.Now.Year-1).TuikValue : 0:0 )" />
+                        </td>
 
-            <td><input type="number" readonly id="@("piyasaton"+count.ToString())"  value="0" /></td>
+                        <td>
+                            <input readonly type="number" id="@("Tmo_"+count.ToString())" name="tmo" value="@(
+                    emteaType.Tuiks.Where(x=>x.CityId==Model.SelectedCityId).Count() >0  ?
+                    emteaType.Tuiks.FirstOrDefault(x=>x.EmteaGroupId==grup.Id && x.CityId==Model.SelectedCityId)!=null ?
+                    emteaType.Tuiks.FirstOrDefault(x =>x.CityId==Model.SelectedCityId &&x.EmteaGroupId==grup.Id && x.GuessYear == DateTime.Now.Year).GuessValue : 0:0 )" />
+                        </td>
+
+                        <td><input type="number" id="@("HasatYuzde_"+count.ToString())" onkeyup="YuzdeHesapla(this);" name="percent" /></td>
+                        <td><input type="number" id="@("HasatEdilen_"+count.ToString())" name="hasatedilen" readonly value="0" /></td>
+                        <td><input type="number" name="bekleyenton" onkeyup="CalculateColumn('bekleyenton','bekleyentonTotal','topla')" /></td>
+
+                        @for (int i = 0; i < 5; i++)
+                        {
+                            <td><input type="number" data-bind="@i" name="@("naturel"+count.ToString())" id="@("naturel_"+count.ToString())" onkeyup="CalculateNaturel(this);" /></td>
+                        }
+
+                        <td><input type="number" readonly id="@("piyasaton"+count.ToString())" value="0" /></td>
 
 
-            @for (int i = 0; i < 5; i++)
-            {
-                <td><input type="number" /></td>
-            }
+                        @for (int i = 0; i < 5; i++)
+                        {
+                            <td><input type="number" /></td>
+                        }
 
-            <td><input type="number" name="dfiyat" id="@("d_1_"+count.ToString())" onkeyup="Avarage(this);"/></td>
-            <td><input type="number" name="yfiyat" id="@("y_1_"+count.ToString())" onkeyup="Avarage(this);"/></td>
-            <td><input type="number" name="ofiyat" id="@("o_1_"+count.ToString())" readonly value="0"/></td>
+                        <td><input type="number" name="dfiyat" id="@("d_1_"+count.ToString())" onkeyup="Avarage(this);" /></td>
+                        <td><input type="number" name="yfiyat" id="@("y_1_"+count.ToString())" onkeyup="Avarage(this);" /></td>
+                        <td><input type="number" name="ofiyat" id="@("o_1_"+count.ToString())" readonly value="0" /></td>
 
-            <td><input type="number" name="dfiyat2" id="@("d_2_"+count.ToString())" onkeyup="Avarage(this);"/></td>
-            <td><input type="number" name="yfiyat2" id="@("y_2_"+count.ToString())" onkeyup="Avarage(this);" /></td>
-            <td><input type="number" name="ofiyat2" id="@("o_2_"+count.ToString())" readonly value="0"/></td>             
+                        <td><input type="number" name="dfiyat2" id="@("d_2_"+count.ToString())" onkeyup="Avarage(this);" /></td>
+                        <td><input type="number" name="yfiyat2" id="@("y_2_"+count.ToString())" onkeyup="Avarage(this);" /></td>
+                        <td><input type="number" name="ofiyat2" id="@("o_2_"+count.ToString())" readonly value="0" /></td>
 
-        </tr>
+                    </tr>
                 }
 
             }
 
-        <tr class="total">
-            <td style="border-top: 1px solid #bfbfbf; border-bottom: 1px solid #bfbfbf; border-left: 1px solid #bfbfbf; border-right: 1px solid #bfbfbf" colspan="2" height="43" align="left" valign="middle" bgcolor="#F0F0F0" sdnum="1033;1055;Standard"><b><font face="Verdana" color="#C00000">TOPLAM ÇELTİK</font></b></td>
+            <tr class="total">
+                <td style="border-top: 1px solid #bfbfbf; border-bottom: 1px solid #bfbfbf; border-left: 1px solid #bfbfbf; border-right: 1px solid #bfbfbf" colspan="2" height="43" align="left" valign="middle" bgcolor="#F0F0F0" sdnum="1033;1055;Standard"><b><font face="Verdana" color="#C00000">TOPLAM ÇELTİK</font></b></td>
 
-            <td><input type="number" readonly id="tuikTotal" value="0"/></td>
-            <td><input type="number" readonly id="tmoTotal" value="0"/></td>
-            <td><input type="number" readonly id="percentTotal"  value="0"/></td>
-            <td><input type="number" readonly id="hasatedilenTotal"  value="0"/></td>
-            <td><input type="number" readonly id="bekleyentonTotal"  value="0"/></td>
+                <td><input type="number" readonly id="tuikTotal" value="0" /></td>
+                <td><input type="number" readonly id="tmoTotal" value="0" /></td>
+                <td><input type="number" readonly id="percentTotal" value="0" /></td>
+                <td><input type="number" readonly id="hasatedilenTotal" value="0" /></td>
+                <td><input type="number" readonly id="bekleyentonTotal" value="0" /></td>
 
-            @for (int i = 0; i < 5; i++)
-            {
-                <td><input type="number" id="@("toplanaturel_"+i.ToString())" readonly  value="0"/></td>
-            }
-              
-            @for (int i = 0; i < 6; i++)
-            {
-                <td><input type="number" readonly value="0" /></td>
-            }
+                @for (int i = 0; i < 5; i++)
+                {
+                    <td><input type="number" id="@("toplanaturel_"+i.ToString())" readonly value="0" /></td>
+                }
 
-
-            <td><input type="number" readonly id="dfiyatTotal" value="0" /></td>
-            <td><input type="number" readonly id="yfiyatTotal"  value="0"/></td>
-            <td><input type="number" readonly id="ofiyatTotal" value="0" /></td>
-
-            <td><input type="number" readonly id="dfiyat2Total"  value="0"/></td>
-            <td><input type="number" readonly id="yfiyat2Total"  value="0"/></td>
-            <td><input type="number" readonly id="ofiyat2Total"  value="0"/></td>
+                @for (int i = 0; i < 6; i++)
+                {
+                    <td><input type="number" readonly value="0" /></td>
+                }
 
 
+                <td><input type="number" readonly id="dfiyatTotal" value="0" /></td>
+                <td><input type="number" readonly id="yfiyatTotal" value="0" /></td>
+                <td><input type="number" readonly id="ofiyatTotal" value="0" /></td>
+
+                <td><input type="number" readonly id="dfiyat2Total" value="0" /></td>
+                <td><input type="number" readonly id="yfiyat2Total" value="0" /></td>
+                <td><input type="number" readonly id="ofiyat2Total" value="0" /></td>
 
 
 
-        </tr>
+
+
+            </tr>
 
 
         </tbody>
     </table>
 
+    @(Html.DevExtreme().LoadPanel()
+        .ID("loadPanel")
+        .ShadingColor("rgba(0,0,0,0.4)")
+        .Position(p => p.Of(".body"))
+        .Visible(false)
+        .ShowIndicator(true)
+        .ShowPane(true)
+        .Shading(true)
+        .CloseOnOutsideClick(false)
+        .Message("Lütfen bekleyiniz..")
+
+    )
+
 </div>
+ 
 
 @section scripts {
+ 
     <script src="~/js/ExcelSheet/ExcelSheet.js"></script>
     <script>
 
@@ -194,4 +233,5 @@
 
     </script>
 }
+
 
