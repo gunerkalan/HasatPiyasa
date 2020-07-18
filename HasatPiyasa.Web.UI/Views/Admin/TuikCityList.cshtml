@@ -1,8 +1,142 @@
-﻿
+﻿@model HasatPiyasa.Web.UI.Models.EmteTypeAddModel
+@using DevExtreme.AspNet.Mvc
+
 @{
     ViewData["Title"] = "TuikCityList";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>TuikCityList</h1>
+
+@Html.AntiForgeryToken()
+
+<div class="row">
+
+    <div class="col-sm-12">
+        <div class="d-flex flex-column-fluid">
+            <!--begin::Container-->
+            <div class="container">
+                <!--begin::Notice-->
+                <!--end::Notice-->
+                <!--begin::Card-->
+                <div class="card card-custom gutter-b">
+                    <div class="card-header flex-wrap py-3">
+                        <div class="card-title">
+                            <h3 class="card-label">
+                                Tüik Şehir Listei
+                                <span class="d-block text-muted pt-2 font-size-sm">Tüik &amp; Şehir Listesi</span>
+                            </h3>
+                        </div>
+                        <div class="card-toolbar">
+                            <!--begin::Dropdown-->
+                            <!--end::Dropdown-->
+                            <!--begin::Button-->
+                            <a href="#" class="btn btn-primary font-weight-bolder" data-toggle="modal" data-target="#emtea-adding-modal">
+                                <span class="svg-icon svg-icon-md">
+                                    <!--begin::Svg Icon | path:assets/media/svg/icons/Design/Flatten.svg-->
+                                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                        <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                            <rect x="0" y="0" width="24" height="24" />
+                                            <circle fill="#000000" cx="9" cy="15" r="6" />
+                                            <path d="M8.8012943,7.00241953 C9.83837775,5.20768121 11.7781543,4 14,4 C17.3137085,4 20,6.6862915 20,10 C20,12.2218457 18.7923188,14.1616223 16.9975805,15.1987057 C16.9991904,15.1326658 17,15.0664274 17,15 C17,10.581722 13.418278,7 9,7 C8.93357256,7 8.86733422,7.00080962 8.8012943,7.00241953 Z" fill="#000000" opacity="0.3" />
+                                        </g>
+                                    </svg>
+                                    <!--end::Svg Icon-->
+                                </span>Yemi Tüik Şehir Verisi Ekle
+                            </a>
+                            <!--end::Button-->
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <!--begin: Datatable-->
+                        @(Html.DevExtreme().DataGrid<HasatPiyasa.Core.Entities.TuikCityDto>().ID("GridContainer")
+        .SearchPanel(src => src.Visible(true).Width(250).Placeholder("Ara.."))
+        .ShowBorders(true)
+        .DataSource(d => d.Mvc().Controller("Admin").LoadAction("EmteaTypeListData").Key("EmteaTypeId"))
+        .Selection(s => s.Mode(SelectionMode.Single))
+        .HoverStateEnabled(true)
+        .Columns(columns => {
+            columns.AddFor(m => m.CityName).Caption("Şehir Adı").Width(100);
+            columns.AddFor(m => m.TuikYear).Caption("Tüik Yılı");
+            columns.AddFor(m => m.EmteaCode).Caption("Emtea Kodu");
+            columns.AddFor(m => m.EmteaName).Caption("Emtea Adı");
+            columns.AddFor(m => m.EmteaGroupName).Caption("Emtea Grp Adı");
+            columns.AddFor(m => m.EmteaTypeName).Caption("Emtea Tipi");
+            columns.AddFor(m => m.AddedTime).Caption("Eklenme Tarihi");
+            columns.Add().Caption("Düzenle").Width(60)
+                   .Type(GridCommandColumnType.Buttons)
+                   .Buttons(btns =>
+                   {
+                       btns.Add().Name(GridColumnButtonName.Edit).Text("Düzenle");
+                   }).CellTemplate(@<text>
+                <button title="Düzenle" onclick="Edit('<%= data.Id %>','<%= data.IsSale %>');"><i class="fa fa-pen-square" aria-hidden="true" style="color:#1b70cc"></i></button>
+
+            </text>);
+
+
+    columns.Add().Caption("Sil").Width(50)
+             .Type(GridCommandColumnType.Buttons)
+             .Buttons(btns =>
+             {
+                 btns.Add().Name(GridColumnButtonName.Delete).Text("Sil");
+             }).CellTemplate(@<text>
+                <button title="Silme" onclick="Delete('<%= data.Id %>','<%= data.OrderNumber %>');"><i class="fa fa-trash" aria-hidden="true" style="color:red"></i></button>
+
+            </text>);
+
+
+    })
+        .RemoteOperations(false)
+        .AllowColumnReordering(true)
+        .RowAlternationEnabled(true)
+        .Paging(p => p.PageSize(10))
+        .Pager(p => p
+            .ShowPageSizeSelector(true)
+            .AllowedPageSizes(new[] { 10, 25, 50, 100 })
+        )
+        .SearchPanel(s => s
+            .Visible(true)
+            .HighlightCaseSensitive(true)
+        )
+        .GroupPanel(g => g.Visible(true))
+        .Grouping(g => g.AutoExpandAll(false))
+        .FilterRow(f => f.Visible(true).ApplyFilter(GridApplyFilterMode.Auto))
+        .HeaderFilter(f => f.Visible(true))
+       .Summary(s => s.TotalItems(items => {
+           items.AddFor(m => m.EmteaCode)
+           .SummaryType(SummaryType.Count)
+
+         .SummaryType(SummaryType.Count).ValueFormat(Format.FixedPoint)
+         ;
+       }))
+
+
+    )
+                        @(Html.DevExtreme().LoadPanel()
+        .ID("loadPanel")
+        .ShadingColor("rgba(0,0,0,0.4)")
+        .Position(p => p.Of("body"))
+        .Visible(false)
+        .ShowIndicator(true)
+        .ShowPane(true)
+        .Shading(true)
+        .CloseOnOutsideClick(false)
+        .Message("Lütfen bekleyiniz..")
+
+    )
+                        <!--end: Datatable-->
+                    </div>
+                </div>
+                <!--end::Card-->
+                <!--begin::Card-->
+                <!--end::Card-->
+            </div>
+            <!--end::Container-->
+        </div>
+
+
+    </div>
+
+
+</div>
+
 
