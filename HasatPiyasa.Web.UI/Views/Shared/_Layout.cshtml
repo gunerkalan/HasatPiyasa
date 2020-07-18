@@ -3,21 +3,21 @@
 @inject IHttpContextAccessor  HttpContextAccessor
 @{
     var CurrentUser = new Users();
-    if (Context.Session.Get("User") != null)   
+    if (Context.Session.Get("User") != null)
     {
 
         CurrentUser = Context.Session.Get<Users>("User");
-       
+
     }
-}                                                                                                                                                                                                                                                                                                                          
-<!DOCTYPE html>    
+}
+<!DOCTYPE html>
 
 <html lang="tr">
 
 <head>
     <base href="">
     <meta charset="utf-8" />
-    <title>TMO | Hasat Piyasa  </title>                                                                                         
+    <title>TMO | Hasat Piyasa  </title>
     <meta name="description" content="Updates and statistics" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 
@@ -400,7 +400,7 @@
                                                             <span class="menu-text">Emtea Tip Grup Listesi</span>
                                                         </a>
                                                     </li>
-                                                   
+
                                                 </ul>
                                             </div>
                                         </li>
@@ -423,7 +423,7 @@
                                                             <span class="menu-text">Tüik Şube</span>
                                                         </a>
                                                     </li>
-                                                    
+
                                                     <li class="menu-item" aria-haspopup="true">
                                                         <a href="/Admin/TuikCityList" class="menu-link">
                                                             <i class="menu-bullet menu-bullet-dot">
@@ -431,12 +431,12 @@
                                                             </i>
                                                             <span class="menu-text">Tüik İl</span>
                                                         </a>
-                                                    </li>                                                  
-                                                                                                     
+                                                    </li>
+
                                                 </ul>
                                             </div>
                                         </li>
-                                       
+
                                         <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
                                             <a href="javascript:;" class="menu-link menu-toggle">
                                                 <i class="menu-bullet menu-bullet-dot">
@@ -456,7 +456,7 @@
                                                             <span class="menu-text">Şubeler</span>
                                                         </a>
                                                     </li>
-                                                 
+
                                                 </ul>
                                             </div>
                                         </li>
@@ -479,7 +479,7 @@
                                                             <span class="menu-text">Kullanıcılar</span>
                                                         </a>
                                                     </li>
-                                                   
+
                                                 </ul>
                                             </div>
                                         </li>
@@ -984,7 +984,7 @@
                                         <!--end::Svg Icon-->
                                     </span>
                                 </span>
-                               
+
                                 <span class="navi-text text-muted text-hover-primary">@CurrentUser.Sube.SubeName</span>
                             </span>
                         </a>
@@ -1027,13 +1027,10 @@
                 </a>
                 <!--end:Item-->
                 <!--begin::Item-->
-               
                 <!--end:Item-->
                 <!--begin::Item-->
-              
                 <!--end:Item-->
                 <!--begin::Item-->
-             
                 <!--end:Item-->
             </div>
             <!--end::Nav-->
@@ -2462,3 +2459,5 @@
 </body>
 <!--end::Body-->
 </html>
+
+ 
