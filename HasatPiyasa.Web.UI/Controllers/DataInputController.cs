@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using HasatPiyasa.Business;
 using HasatPiyasa.Business.Abstract;
 using HasatPiyasa.Entity.Entity;
 using HasatPiyasa_Web_UI.Models;
@@ -22,10 +23,14 @@ namespace HasatPiyasa.Web.UI.Controllers
         }
       
         [HttpGet]
-        public async Task<ActionResult> DataInputRice()
+        public async Task<ActionResult> DataInputRice(int cityId=0)
         {
+            var userCity = ControllerContext.HttpContext.Session.Get<Users>("User");
+           
+
+
             var model = new HasaInputViewModel();
-            var emtea = await _emteaService.GetEmteaTable(1);
+            var emtea = await _emteaService.GetEmteaTable(1,cityId);
             var user = GetCurrentUser();
             if(user!=null)
             {
@@ -33,6 +38,18 @@ namespace HasatPiyasa.Web.UI.Controllers
                 model.Cities = cities.Where(x=>x.SubeId==user.SubeId).ToList();
             }            
             model.Emteas = emtea.Veri;
+
+            if (cityId == 0)
+            {
+                cityId = userCity.Sube.Cities.FirstOrDefault().Id;
+                model.SelectedCityId = cityId;
+            }
+            else
+            {
+                model.SelectedCityId = cityId;
+            }
+             
+
             return View(model);
         }
 

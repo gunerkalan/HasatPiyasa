@@ -65,7 +65,7 @@ namespace HasatPiyasa.Business.Concrete
             }
         }
 
-        public async Task<NIslemSonuc<Emteas>> GetEmteaTable(int value)
+        public async Task<NIslemSonuc<Emteas>> GetEmteaTable(int value,int cityId)
         {
             try
             {
