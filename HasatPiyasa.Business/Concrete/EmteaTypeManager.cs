@@ -61,7 +61,8 @@ namespace HasatPiyasa.Business.Concrete
                     EmteaName = x.EmteaGroup.Emtea.EmteaName,
                     EmteaTypeId = x.Id,
                     EmteaTypeName = x.EmteaTypeName,
-                    GroupName = x.EmteaGroup.GroupName
+                    GroupName = x.EmteaGroup.GroupName,
+                    AddedTime = x.AddedTime
 
                 }).ToList();
                 

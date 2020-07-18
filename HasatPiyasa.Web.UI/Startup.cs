@@ -53,7 +53,9 @@ namespace HasatPiyasa_Web_UI
             services.AddScoped<IUserService, UserManager>();
             services.AddScoped<ICityService, CityManager>();
             services.AddScoped<IEmteaService, EmteaManager>();
-            services.AddScoped<IEmteaGroupService, EmteaGrupManager>() ;
+            services.AddScoped<IEmteaTypeService, EmteaTypeManager>();
+            services.AddScoped<IEmteaGroupService, EmteaGrupManager>();
+            services.AddScoped<IEmteaTypeGroupService, EmteaTypeGroupManager>();
             services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();
             services.AddHttpContextAccessor();
 
