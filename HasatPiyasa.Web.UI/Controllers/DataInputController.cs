@@ -62,6 +62,7 @@ namespace HasatPiyasa.Web.UI.Controllers
             {
                 x.SubeId = user.SubeId;
                 x.AddUserId = user.UserId;
+                x.AlimYear = DateTime.Now.Year;
             });
 
             var response = await _dataInputService.CreateDataInputRange(dataInputs);

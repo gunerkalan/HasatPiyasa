@@ -59,6 +59,7 @@ namespace HasatPiyasa.Business.Concrete
                    SubeCode = x.SubeKod,
                    SubeName = x.SubeName,
                    Id = x.Id,
+                   Cities = string.Join(',',x.Cities.Select(x=>x.Name).ToArray())
                     
                 }).ToList();
 
