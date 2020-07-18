@@ -25,7 +25,7 @@
 
 <div style="position:relative;left:-240px;width:100%;padding-top:15px;">
 
-    <select class="form-control citie">
+    <select class="form-control citie" onchange="CityChange();" id="cityId">
         @foreach (var cty in Model.Cities)
         {
             <option value="@cty.Id">@cty.Name</option>
@@ -108,11 +108,11 @@
                     count = ++groupCount;
 
                }
-            <td><input name="tuik" type="number" readonly value="@(emteaType.Tuiks.Count >0  ? emteaType.Tuiks.Where(x=>x.EmteaGroupId==grup.Id).FirstOrDefault()!=null ? emteaType.Tuiks.Where(x => x.TuikYear == DateTime.Now.Year-1).FirstOrDefault().TuikValue : 0:0 )" onkeyup="YuzdeHesapla(this);" /></td>
-            <td><input readonly type="number" id="@("Tmo_"+count.ToString())" name="tmo"  value="@(emteaType.Tuiks.Count >0  ? emteaType.Tuiks.Where(x=>x.EmteaGroupId==grup.Id).FirstOrDefault()!=null ? emteaType.Tuiks.Where(x => x.GuessYear == DateTime.Now.Year).FirstOrDefault().GuessValue : 0:0 )" /></td>
-            <td><input type="number" id="@("HasatYuzde_"+count.ToString())" onkeyup="YuzdeHesapla(this);" name="percent" value="0" /></td>
-            <td><input type="number" id="@("HasatEdilen_"+count.ToString())" name="hasatedilen" readonly/></td>
-            <td><input type="number" name="bekleyenton" onkeyup="CalculateColumn('bekleyenton','bekleyentonTotal','topla')" value="0" /></td>
+            <td><input name="tuik" type="number" readonly value="@(emteaType.Tuiks.Count >0  ? emteaType.Tuiks.Where(x=>x.EmteaGroupId==grup.Id).FirstOrDefault()!=null ? emteaType.Tuiks.Where(x => x.TuikYear == DateTime.Now.Year-1 && x.CityId==Model.SelectedCityId).FirstOrDefault().TuikValue : 0:0 )" onkeyup="YuzdeHesapla(this);" /></td>
+            <td><input readonly type="number" id="@("Tmo_"+count.ToString())" name="tmo"  value="@(emteaType.Tuiks.Count >0  ? emteaType.Tuiks.Where(x=>x.EmteaGroupId==grup.Id).FirstOrDefault()!=null ? emteaType.Tuiks.Where(x => x.GuessYear == DateTime.Now.Year && x.CityId==Model.SelectedCityId).FirstOrDefault().GuessValue : 0:0 )" /></td>
+            <td><input type="number" id="@("HasatYuzde_"+count.ToString())" onkeyup="YuzdeHesapla(this);" name="percent"  /></td>
+            <td><input type="number" id="@("HasatEdilen_"+count.ToString())" name="hasatedilen" readonly value="0"/></td>
+            <td><input type="number" name="bekleyenton" onkeyup="CalculateColumn('bekleyenton','bekleyentonTotal','topla')" /></td>
 
             @for (int i = 0; i < 5; i++)
             {

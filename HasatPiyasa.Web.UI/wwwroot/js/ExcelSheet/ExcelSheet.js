@@ -124,3 +124,7 @@ function Avarage(e) {
 
    
 }
+function CityChange() {
+    var value = $("#cityId :selected").val()
+    window.location.href = `/DataInput/DataInputRice?cityId=${value}`;
+}
