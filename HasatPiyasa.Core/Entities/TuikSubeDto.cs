@@ -16,5 +16,7 @@ namespace HasatPiyasa.Core.Entities
         public string EmteaName { get; set; }
         public double TuikValue { get; set; }
         public string EmteaCode { get; set; }
+        public int GuessYear { get; set; }
+        public double GuessValue { get; set; }
     }
 }

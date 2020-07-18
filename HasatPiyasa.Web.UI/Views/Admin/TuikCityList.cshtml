@@ -1,4 +1,4 @@
-﻿@model HasatPiyasa.Web.UI.Models.EmteTypeAddModel
+﻿@model HasatPiyasa.Web.UI.Models.TuikAddModel
 @using DevExtreme.AspNet.Mvc
 
 @{
@@ -51,7 +51,7 @@
                         @(Html.DevExtreme().DataGrid<HasatPiyasa.Core.Entities.TuikCityDto>().ID("GridContainer")
         .SearchPanel(src => src.Visible(true).Width(250).Placeholder("Ara.."))
         .ShowBorders(true)
-        .DataSource(d => d.Mvc().Controller("Admin").LoadAction("EmteaTypeListData").Key("EmteaTypeId"))
+        .DataSource(d => d.Mvc().Controller("Admin").LoadAction("TuikCityListData").Key("Id"))
         .Selection(s => s.Mode(SelectionMode.Single))
         .HoverStateEnabled(true)
         .Columns(columns => {
@@ -61,7 +61,12 @@
             columns.AddFor(m => m.EmteaName).Caption("Emtea Adı");
             columns.AddFor(m => m.EmteaGroupName).Caption("Emtea Grp Adı");
             columns.AddFor(m => m.EmteaTypeName).Caption("Emtea Tipi");
+            columns.AddFor(m => m.TuikYear).Caption("Tüik Yılı");
+            columns.AddFor(m => m.TuikValue).Caption("Tüik Verisi");
+            columns.AddFor(m => m.GuessYear).Caption("Tahmin Yılı");
+            columns.AddFor(m => m.GuessYear).Caption("Tahmini Veri");
             columns.AddFor(m => m.AddedTime).Caption("Eklenme Tarihi");
+            columns.AddFor(m => m.AddedUser).Caption("Ek. Kullanıcı");
             columns.Add().Caption("Düzenle").Width(60)
                    .Type(GridCommandColumnType.Buttons)
                    .Buttons(btns =>
@@ -84,7 +89,7 @@
             </text>);
 
 
-    })
+        })
         .RemoteOperations(false)
         .AllowColumnReordering(true)
         .RowAlternationEnabled(true)
@@ -101,17 +106,20 @@
         .Grouping(g => g.AutoExpandAll(false))
         .FilterRow(f => f.Visible(true).ApplyFilter(GridApplyFilterMode.Auto))
         .HeaderFilter(f => f.Visible(true))
-       .Summary(s => s.TotalItems(items => {
+       .Summary(s => s.TotalItems(items =>
+       {
            items.AddFor(m => m.EmteaCode)
-           .SummaryType(SummaryType.Count)
-
-         .SummaryType(SummaryType.Count).ValueFormat(Format.FixedPoint)
-         ;
+           .SummaryType(SummaryType.Count);
+           items.AddFor(m => m.TuikValue)
+           .SummaryType(SummaryType.Sum);
+           items.AddFor(m => m.GuessValue)
+          .SummaryType(SummaryType.Sum);
+         
        }))
 
 
     )
-                        @(Html.DevExtreme().LoadPanel()
+        @(Html.DevExtreme().LoadPanel()
         .ID("loadPanel")
         .ShadingColor("rgba(0,0,0,0.4)")
         .Position(p => p.Of("body"))
