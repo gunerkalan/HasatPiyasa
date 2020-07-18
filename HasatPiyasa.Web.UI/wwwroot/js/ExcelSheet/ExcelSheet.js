@@ -1,5 +1,6 @@
 ﻿$(document).ready(() => {
     CalculateColumn("tuik", "tuikTotal", "topla");
+    console.clear()
 })
 function YuzdeHesapla(e) {
     var value = Number(e.value);
