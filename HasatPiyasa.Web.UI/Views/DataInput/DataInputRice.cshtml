@@ -80,14 +80,14 @@
             {
                 count = 0;
 
-                @foreach (var emteaType in Model.Emteas.EmteaTypes)
+                @foreach (var emteaType in grup.EmteaTypes)
                 {
                     count++;
         <tr>
 
             @if (count < 2)
             {
-                <td class="tdstyle" rowspan="@Model.Emteas.EmteaTypes.Count" height="395" align="left" valign="middle" bgcolor="#F0F0F0" sdnum="1033;1055;Standard"><b><font face="Verdana" color="#C00000">@grup.GroupName</font></b></td>
+                <td class="tdstyle" rowspan="@grup.EmteaTypes.Count" height="395" align="left" valign="middle" bgcolor="#F0F0F0" sdnum="1033;1055;Standard"><b><font face="Verdana" color="#C00000">@grup.GroupName</font></b></td>
             }
 
             <td class="tdstyle">
@@ -147,7 +147,7 @@
 
 
 
-            @for (int i = 0; i < Model.Emteas.EmteaTypes.Count; i++)
+            @for (int i = 0; i < 6; i++)
             {
                 <td><input type="number" readonly /></td>
             }
