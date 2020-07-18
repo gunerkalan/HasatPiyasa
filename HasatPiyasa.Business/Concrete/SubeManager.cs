@@ -1,6 +1,7 @@
 ﻿using HasastPiyasa.DataAccess.Abstract;
 using HasatPiyasa.Business.Abstract;
 using HasatPiyasa.Business.Constants;
+using HasatPiyasa.Core.Entities;
 using HasatPiyasa.Core.Utilities.Results;
 using HasatPiyasa.Entity.Entity;
 using Microsoft.EntityFrameworkCore;
@@ -41,6 +42,39 @@ namespace HasatPiyasa.Business.Concrete
                     BasariliMi = false,
                     Mesaj = Messages.ErrorAddSaleOrder,
                     ErrorMessage = hata.Message
+                };
+            }
+        }
+
+        public async Task<NIslemSonuc<List<SubeDto>>> GetSubeGTable()
+        {
+            try
+            {
+                var res = await _subeDal.GetTable();
+                var model = res.Include(x => x.Bolge).Include(x=>x.Cities).Where(x => x.IsActive).ToList();
+
+                var response = model.Select(x => new SubeDto
+                {
+                   BolgeName = x.Bolge.Name,
+                   SubeCode = x.SubeKod,
+                   SubeName = x.SubeName,
+                   Id = x.Id,
+                    
+                }).ToList();
+
+                return new NIslemSonuc<List<SubeDto>>
+                {
+                    BasariliMi = false,
+                    Veri = response
+                };
+
+            }
+            catch (Exception hata)
+            {
+                return new NIslemSonuc<List<SubeDto>>
+                {
+                    BasariliMi = false,
+                    Mesaj = hata.InnerException.Message
                 };
             }
         }

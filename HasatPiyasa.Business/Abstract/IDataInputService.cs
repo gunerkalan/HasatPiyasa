@@ -10,6 +10,7 @@ namespace HasatPiyasa.Business.Abstract
     public interface IDataInputService
     {
         Task<NIslemSonuc<DataInputs>> CreateDataInput(DataInputs dataInput);
+        Task<NIslemSonuc<DataInputs>> CreateDataInputRange(List<DataInputs> dataInputs);
         NIslemSonuc<List<DataInputs>> ListAllDataInputs();
         NIslemSonuc<DataInputs> GetDataInput(int id);
         Task<NIslemSonuc<DataInputs>> UpdateDataInput(DataInputs dataInput);

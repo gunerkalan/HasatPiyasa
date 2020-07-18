@@ -1,4 +1,5 @@
-﻿using HasastPiyasa.DataAccess.Abstract;
+﻿using DevExpress.Data.ExpressionEditor;
+using HasastPiyasa.DataAccess.Abstract;
 using HasatPiyasa.Business.Abstract;
 using HasatPiyasa.Business.Constants;
 using HasatPiyasa.Core.Utilities.Results;
@@ -15,17 +16,19 @@ namespace HasatPiyasa.Business.Concrete
     public class DataInputManager : IDataInputService
     {
         private IDataInputDal _dataInputDal;
+        private IFormDataInputDal _formDataInputDal;
 
-        public DataInputManager(IDataInputDal dataInputDal)
+        public DataInputManager(IDataInputDal dataInputDal, IFormDataInputDal formDataInputDal)
         {
             _dataInputDal = dataInputDal;
+            _formDataInputDal = formDataInputDal;
         }
 
         public async Task<NIslemSonuc<DataInputs>> CreateDataInput(DataInputs dataInput)
         {
             try
             {
-                var addeddatainput = await _dataInputDal.AddAsync(dataInput);
+               var addeddatainput = await _dataInputDal.AddAsync(dataInput);
 
                 return new NIslemSonuc<DataInputs>
                 {
@@ -42,6 +45,40 @@ namespace HasatPiyasa.Business.Concrete
                     Mesaj = Messages.ErrorAddSaleOrder,
                     ErrorMessage = hata.Message
                 };
+            }
+        }
+
+        public async Task<NIslemSonuc<DataInputs>> CreateDataInputRange(List<DataInputs> dataInputs)
+        {
+            try
+            {
+                FormDataInput formDataInput = new FormDataInput {
+                    AddedTime = DateTime.Today,
+                    IsActive = true,
+                    IsLock = false
+                };
+
+                var addedformdt = await _formDataInputDal.AddAsync(formDataInput);
+
+                dataInputs.ForEach(x => x.FormDataInputId = formDataInput.Id);
+
+               
+                await _dataInputDal.AddRange(dataInputs);
+
+                return new NIslemSonuc<DataInputs>
+                {
+                    BasariliMi = true,
+
+                };
+            }
+            catch (Exception hata)
+            {
+                return new NIslemSonuc<DataInputs>
+                {
+                    BasariliMi = false,
+                    Mesaj = hata.InnerException.Message
+                };
+    
             }
         }
 

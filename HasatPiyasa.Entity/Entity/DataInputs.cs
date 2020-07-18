@@ -14,6 +14,8 @@ namespace HasatPiyasa.Entity.Entity
         public int AddUserId { get; set; }
         public int? UpdateUserId { get; set; }
         public int AlimYear { get; set; }
+        public double TuikValue { get; set; }
+        public double GuessValue { get; set; }
         public double HasatOran { get; set; }
         public double HasatMiktar { get; set; }
         public double UreticiKalanMiktar { get; set; }
@@ -34,6 +36,7 @@ namespace HasatPiyasa.Entity.Entity
         public double? Perakende3 { get; set; }
         public double? Perakende4 { get; set; }
         public double? Perakende5 { get; set; }
+        public double? Perakende6 { get; set; }
         public double? PerakendeToplam { get; set; }
 
         public virtual Users AddUser { get; set; }

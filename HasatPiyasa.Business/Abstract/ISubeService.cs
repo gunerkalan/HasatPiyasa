@@ -1,4 +1,5 @@
-﻿using HasatPiyasa.Core.Utilities.Results;
+﻿using HasatPiyasa.Core.Entities;
+using HasatPiyasa.Core.Utilities.Results;
 using HasatPiyasa.Entity.Entity;
 using System;
 using System.Collections.Generic;
@@ -14,5 +15,6 @@ namespace HasatPiyasa.Business.Abstract
         NIslemSonuc<Subes> GetSube(int id);
         Task<NIslemSonuc<Subes>> UpdateSube(Subes sube);
         Task<NIslemSonuc<Subes>> GetSubeTable(int value);
+        Task<NIslemSonuc<List<SubeDto>>> GetSubeGTable();
     }
 }

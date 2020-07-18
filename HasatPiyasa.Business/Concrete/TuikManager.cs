@@ -52,7 +52,7 @@ namespace HasatPiyasa.Business.Concrete
             try
             {
                 var res = await _tuikDal.GetTable();
-                var model = res.Include(x => x.Sube).Include(x => x.AddUser).Include(x => x.EmteaType).ThenInclude(x => x.EmteaGroup).ThenInclude(x => x.Emtea).Where(x=>x.IsActive && x.IsCity).ToList();
+                var model = res.Include(x => x.City).Include(x=>x.Sube).Include(x => x.AddUser).Include(x => x.EmteaType).ThenInclude(x => x.EmteaGroup).ThenInclude(x => x.Emtea).Where(x=>x.IsActive && x.IsCity).ToList();
 
                 var response = model.Select(x => new TuikCityDto
                 {
@@ -65,7 +65,9 @@ namespace HasatPiyasa.Business.Concrete
                     CityName = x.City.Name,
                     EmteaCode = x.EmteaType.EmteaGroup.Emtea.EmteaCode,
                     TuikValue = x.TuikValue,
-                    TuikYear = x.TuikYear
+                    TuikYear = x.TuikYear,
+                    GuessValue = x.GuessValue,
+                    GuessYear = x.GuessYear
                 }).ToList();
 
                 return new NIslemSonuc<List<TuikCityDto>>
@@ -122,7 +124,9 @@ namespace HasatPiyasa.Business.Concrete
                     SubeName = x.Sube.SubeName,
                     EmteaCode = x.EmteaType.EmteaGroup.Emtea.EmteaCode,
                     TuikValue = x.TuikValue,
-                    TuikYear = x.TuikYear
+                    TuikYear = x.TuikYear,
+                    GuessValue = x.GuessValue,
+                    GuessYear = x.GuessYear
                 }).ToList();
 
                 return new NIslemSonuc<List<TuikSubeDto>>
@@ -209,9 +213,6 @@ namespace HasatPiyasa.Business.Concrete
             }
         }
 
-        Task<NIslemSonuc<List<TuikCityDto>>> ITuikService.GetTuikCityGTable()
-        {
-            throw new NotImplementedException();
-        }
+   
     }
 }
