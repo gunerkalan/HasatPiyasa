@@ -105,7 +105,7 @@
             </td>
             @{ if (groupCount > count)
 
-                    count = groupCount++;
+                    count = ++groupCount;
 
                }
             <td><input name="tuik" type="number" readonly value="@(emteaType.Tuiks.Count >0  ? emteaType.Tuiks.Where(x=>x.EmteaGroupId==grup.Id).FirstOrDefault()!=null ? emteaType.Tuiks.Where(x => x.TuikYear == DateTime.Now.Year).FirstOrDefault().TuikValue : 0:0 )" onkeyup="YuzdeHesapla(this);" /></td>
@@ -153,9 +153,7 @@
             {
                 <td><input type="number" id="@("toplanaturel_"+i.ToString())" readonly  value="0"/></td>
             }
-
-
-
+              
             @for (int i = 0; i < 6; i++)
             {
                 <td><input type="number" readonly value="0" /></td>
