@@ -10,8 +10,8 @@
         });
     });
 
-   
-    
+
+
 })
 function YuzdeHesapla(e) {
     var value = Number(e.value);
@@ -46,10 +46,10 @@ function YuzdeHesapla(e) {
         CalculateColumn("hasatedilen", "hasatedilenTotal", "topla");
     }
 
-   
+
 }
 function CalculateColumn(name, totalid, calculateType) {
- 
+
     if (calculateType == "topla") {
         var tuiks = $(`input[name=${name}]`)
         var total = 0;
@@ -76,11 +76,11 @@ function CalculateColumn(name, totalid, calculateType) {
 
     }
 
-    
+
 }
 function CalculateNaturel(totalid) {
     var rowId = totalid.attributes["id"].value.split("_")[1]
-    var index = totalid.dataset.bind;    
+    var index = totalid.dataset.bind;
     totalid = "piyasaton" + rowId
     var tuiks = $(`input[name=naturel${rowId}]`)
     var total = 0;
@@ -101,7 +101,7 @@ function CalculateNaturel(totalid) {
     $("#" + totalid).val(total)
     $("#toplanaturel_" + index).val(columntotal)
 
-    
+
 }
 function Avarage(e) {
 
@@ -109,7 +109,7 @@ function Avarage(e) {
     var AvgItemsId = e.attributes["id"].value.split("_")[1]
 
     if (AvgItemsId == "1") {
-        var number1 = Number( $("#d_1_" + rowId).val())
+        var number1 = Number($("#d_1_" + rowId).val())
         var number2 = Number($("#y_1_" + rowId).val())
         var numberAvarage = (number1 + number2) / 2
         $("#o_1_" + rowId).val(numberAvarage)
@@ -118,7 +118,7 @@ function Avarage(e) {
         CalculateColumn("ofiyat", "ofiyatTotal", "topla")
     }
     else {
-        var number1 =Number( $("#d_2_" + rowId).val())
+        var number1 = Number($("#d_2_" + rowId).val())
         var number2 = Number($("#y_2_" + rowId).val())
         var numberAvarage = (number1 + number2) / 2
         $("#o_2_" + rowId).val(numberAvarage)
@@ -127,55 +127,54 @@ function Avarage(e) {
         CalculateColumn("ofiyat2", "ofiyat2Total", "topla")
     }
 
-     
+
 }
 function CityChange() {
     var value = $("#cityId :selected").val()
     window.location.href = `/DataInput/DataInputRice?cityId=${value}`;
     getLoadPanelInstance().show();
-   
+
 }
- 
+
 function getLoadPanelInstance() {
     return $("#loadPanel").dxLoadPanel("instance");
 }
 
 function Save() {
     var dataInput = [];
-    var item = {         
-        
-         CityId :"",
-         //EmteaTypeId:"" ,        
-         AlimYear :"",
-         HasatOran :"",
+    var item = {
+
+        CityId: "",
+        AlimYear: "",
+        HasatOran: "",
         HasatMiktar: "",
         TuikValue="",
-         GuessValue="",
-         UreticiKalanMiktar:"" ,
-         Natural1 :"",
-         Natural2 :"",
-         Natural3 :"",
-         Natural4 :"",
-         Natural5 :"",
-         NaturalToplam:"",
-         ToptanPiyasa1:"",
-         ToptanPiyasa2:"",
-         ToptanPiyasa3:"",
-         ToptanPiyasa4:"",
-         ToptanPiyasa5:"",         
-         Perakende1:"", 
-         Perakende2:"", 
-         Perakende3:"", 
-         Perakende4:"", 
-         Perakende5:"", 
-         Perakende6:"", 
-         PerakendeToplam:""
+        GuessValue="",
+        UreticiKalanMiktar: "",
+        Natural1: "",
+        Natural2: "",
+        Natural3: "",
+        Natural4: "",
+        Natural5: "",
+        NaturalToplam: "",
+        ToptanPiyasa1: "",
+        ToptanPiyasa2: "",
+        ToptanPiyasa3: "",
+        ToptanPiyasa4: "",
+        ToptanPiyasa5: "",
+        Perakende1: "",
+        Perakende2: "",
+        Perakende3: "",
+        Perakende4: "",
+        Perakende5: "",
+        Perakende6: "",
+        PerakendeToplam: ""
     }
-    var inputs = $("input").length/22
+    var inputs = $("input").length / 22
 
     for (var i = 0; i < inputs; i++) {
         var inputs = $(`.datainput${i} input`)
-      
+
         $.each(inputs, (n, v) => {
             if (i == 2) {
                 if (v.value != 0) {
@@ -186,7 +185,7 @@ function Save() {
 
         })
     }
-    
+
 }
 
 function numberWithCommas(x) {
@@ -194,4 +193,3 @@ function numberWithCommas(x) {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
 }
 
- 
