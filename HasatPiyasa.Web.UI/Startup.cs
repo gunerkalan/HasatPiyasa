@@ -49,6 +49,7 @@ namespace HasatPiyasa_Web_UI
             services.AddScoped<ITuikDal, EfTuikDal>();
             services.AddScoped<IUserClaimDal, EfUserClaimDal>();
             services.AddScoped<IUserDal, EfUserDal>();
+            services.AddScoped<IFormDataInputDal, EfFormDataInputDal>();
             services.AddScoped<IAuthService, AuthManager>();
             services.AddScoped<IUserService, UserManager>();
             services.AddScoped<ICityService, CityManager>();
@@ -57,6 +58,8 @@ namespace HasatPiyasa_Web_UI
             services.AddScoped<IEmteaGroupService, EmteaGrupManager>();
             services.AddScoped<IEmteaTypeGroupService, EmteaTypeGroupManager>();
             services.AddScoped<ITuikService, TuikManager>();
+            services.AddScoped<IDataInputService, DataInputManager>();
+            services.AddScoped<IFormDataInputService, FormDataInputManager>();
             services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();
             services.AddHttpContextAccessor();
 
