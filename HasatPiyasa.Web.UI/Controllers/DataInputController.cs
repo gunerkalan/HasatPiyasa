@@ -54,9 +54,25 @@ namespace HasatPiyasa.Web.UI.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> DataInputRice(DataInputs dataInputs)
+        public async Task<ActionResult> DataInputRice(List<DataInputs> dataInputs)
         {
-            return View();
+            var user = GetCurrentUser();
+
+            dataInputs.ForEach(x =>
+            {
+                x.SubeId = user.SubeId;
+                x.AddUserId = user.UserId;
+            });
+
+            var response = await _dataInputService.CreateDataInputRange(dataInputs);
+            if(response.BasariliMi)
+            {
+                return Json(new { success = true });
+            }
+            else
+            {
+                return Json(new { success = false, messages = response.ErrorMessage });
+            }
         }
 
     }
