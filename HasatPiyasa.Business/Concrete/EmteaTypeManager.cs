@@ -1,4 +1,5 @@
-﻿using HasastPiyasa.DataAccess.Abstract;
+﻿using DevExpress.Utils.OAuth;
+using HasastPiyasa.DataAccess.Abstract;
 using HasatPiyasa.Business.Abstract;
 using HasatPiyasa.Business.Constants;
 using HasatPiyasa.Core.Entities;
@@ -8,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -41,6 +43,42 @@ namespace HasatPiyasa.Business.Concrete
                     BasariliMi = false,
                     Mesaj = Messages.ErrorAddSaleOrder,
                     ErrorMessage = hata.Message
+                };
+            }
+        }
+
+        public async Task<NIslemSonuc<List<EmteaTypeDto>>> GetEmteaTypeGTable()
+        {
+            try
+            {
+                var res = await _emteaTypeDal.GetTable();
+                var model = res.Include(x => x.Emtea).ThenInclude(x => x.EmteaGroups).Where(x=>x.IsActive).ToList();
+                
+               
+                var response = model.Select(x => new EmteaTypeDto
+                {
+                    EmteaCode = x.Emtea.EmteaCode,
+                    EmteaName = x.Emtea.EmteaName,
+                    EmteaTypeId = x.Id,
+                    EmteaTypeName = x.EmteaTypeName,
+                    GroupName = x.Emtea.EmteaGroups.FirstOrDefault(a => a.EmteaId == x.Emtea.Id)==null ? null : x.Emtea.EmteaGroups.FirstOrDefault(a => a.EmteaId == x.Emtea.Id).GroupName,
+                    IsHasGroup = x.Emtea.EmteaGroups.FirstOrDefault(a => a.EmteaId == x.Emtea.Id) == null ? false : true 
+
+                }).ToList();
+                
+                return new NIslemSonuc<List<EmteaTypeDto>>
+                {
+                    BasariliMi = false,
+                    Veri = response
+                };
+
+            }
+            catch (Exception hata)
+            {
+                return new NIslemSonuc<List<EmteaTypeDto>>
+                {
+                    BasariliMi = false,
+                    Mesaj = hata.InnerException.Message
                 };
             }
         }

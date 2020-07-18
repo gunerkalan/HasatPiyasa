@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
 using DevExpress.DirectX.Common.Direct2D;
 using HasatPiyasa.Business.Abstract;
@@ -98,7 +99,12 @@ namespace HasatPiyasa.Web.UI.Controllers
             return View(model);
         }
 
-        //ListDatasıGelecek
+        [HttpGet]
+        public async Task<object> EmteaTypeListData()
+        {
+            var res = await _emteaTypeService.GetEmteaTypeGTable();
+            return JsonConvert.SerializeObject(res);
+        }
 
         #endregion
 
