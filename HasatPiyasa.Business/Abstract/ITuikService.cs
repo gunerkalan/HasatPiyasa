@@ -1,4 +1,5 @@
-﻿using HasatPiyasa.Core.Utilities.Results;
+﻿using HasatPiyasa.Core.Entities;
+using HasatPiyasa.Core.Utilities.Results;
 using HasatPiyasa.Entity.Entity;
 using System;
 using System.Collections.Generic;
@@ -14,5 +15,7 @@ namespace HasatPiyasa.Business.Abstract
         NIslemSonuc<Tuiks> GetTuikData(int id);
         Task<NIslemSonuc<Tuiks>> UpdateTuikData(Tuiks tuik);
         Task<NIslemSonuc<Tuiks>> GetTuikTable(int value);
+        Task<NIslemSonuc<List<TuikSubeDto>>> GetTuikSubeGTable();
+        Task<NIslemSonuc<List<TuikCityDto>>> GetTuikCityGTable();
     }
 }

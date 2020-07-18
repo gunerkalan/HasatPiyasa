@@ -1,12 +1,14 @@
 ﻿using HasastPiyasa.DataAccess.Abstract;
 using HasatPiyasa.Business.Abstract;
 using HasatPiyasa.Business.Constants;
+using HasatPiyasa.Core.Entities;
 using HasatPiyasa.Core.Utilities.Results;
 using HasatPiyasa.Entity.Entity;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -45,6 +47,43 @@ namespace HasatPiyasa.Business.Concrete
             }
         }
 
+        public async Task<NIslemSonuc<List<TuikCityDto>>> GetTuikCityGTable()
+        {
+            try
+            {
+                var res = await _tuikDal.GetTable();
+                var model = res.Include(x => x.Sube).Include(x => x.AddUser).Include(x => x.EmteaType).ThenInclude(x => x.EmteaGroup).ThenInclude(x => x.Emtea).Where(x=>x.IsActive && x.IsCity).ToList();
+
+                var response = model.Select(x => new TuikCityDto
+                {
+                    Id = x.Id,
+                    AddedTime = x.AddedTime,
+                    AddedUser = x.AddUser.Name + " " + x.AddUser.Surname,
+                    EmteaGroupName = x.EmteaType.EmteaGroup.GroupName,
+                    EmteaName = x.EmteaType.EmteaGroup.Emtea.EmteaName,
+                    EmteaTypeName = x.EmteaType.EmteaTypeName,
+                    CityName = x.City.Name,
+                    EmteaCode = x.EmteaType.EmteaGroup.Emtea.EmteaCode,
+                    TuikValue = x.TuikValue,
+                    TuikYear = x.TuikYear
+                }).ToList();
+
+                return new NIslemSonuc<List<TuikCityDto>>
+                {
+                    BasariliMi = true,
+                    Veri = response
+                };
+            }
+            catch (Exception hata)
+            {
+                return new NIslemSonuc<List<TuikCityDto>>
+                {
+                    BasariliMi=false,
+                    Mesaj = hata.InnerException.Message
+                };
+            }
+        }
+
         public NIslemSonuc<Tuiks> GetTuikData(int id)
         {
             try
@@ -58,6 +97,43 @@ namespace HasatPiyasa.Business.Concrete
             catch (Exception hata)
             {
                 return new NIslemSonuc<Tuiks>
+                {
+                    BasariliMi = false,
+                    Mesaj = hata.InnerException.Message
+                };
+            }
+        }
+
+        public async Task<NIslemSonuc<List<TuikSubeDto>>> GetTuikSubeGTable()
+        {
+            try
+            {
+                var res = await _tuikDal.GetTable();
+                var model = res.Include(x => x.Sube).Include(x => x.City).Include(x => x.AddUser).Include(x => x.EmteaType).ThenInclude(x => x.EmteaGroup).ThenInclude(x => x.Emtea).Where(x => x.IsActive && x.IsCity == false).ToList();
+
+                var response = model.Select(x => new TuikSubeDto
+                {
+                    Id = x.Id,
+                    AddedTime = x.AddedTime,
+                    AddedUser = x.AddUser.Name + " " + x.AddUser.Surname,
+                    EmteaGroupName = x.EmteaType.EmteaGroup.GroupName,
+                    EmteaName = x.EmteaType.EmteaGroup.Emtea.EmteaName,
+                    EmteaTypeName = x.EmteaType.EmteaTypeName,
+                    SubeName = x.Sube.SubeName,
+                    EmteaCode = x.EmteaType.EmteaGroup.Emtea.EmteaCode,
+                    TuikValue = x.TuikValue,
+                    TuikYear = x.TuikYear
+                }).ToList();
+
+                return new NIslemSonuc<List<TuikSubeDto>>
+                {
+                    BasariliMi = true,
+                    Veri = response
+                };
+            }
+            catch (Exception hata)
+            {
+                return new NIslemSonuc<List<TuikSubeDto>>
                 {
                     BasariliMi = false,
                     Mesaj = hata.InnerException.Message
@@ -131,6 +207,11 @@ namespace HasatPiyasa.Business.Concrete
                     ErrorMessage = hata.Message
                 };
             }
+        }
+
+        Task<NIslemSonuc<List<TuikCityDto>>> ITuikService.GetTuikCityGTable()
+        {
+            throw new NotImplementedException();
         }
     }
 }

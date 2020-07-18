@@ -8,6 +8,7 @@ namespace HasatPiyasa.Entity.Entity
         public int Id { get; set; }
         
         public int SubeId { get; set; }
+        public int FormDataInputId { get; set; }
         public int CityId { get; set; }
         public int EmteaTypeId { get; set; }
         public int AddUserId { get; set; }
@@ -40,5 +41,6 @@ namespace HasatPiyasa.Entity.Entity
         public virtual EmteaTypes EmteaType { get; set; }
         public virtual Subes Sube { get; set; }
         public virtual Users UpdateUser { get; set; }
+        public virtual FormDataInput FormDataInput { get; set; }
     }
 }
