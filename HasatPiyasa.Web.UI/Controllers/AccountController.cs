@@ -15,6 +15,7 @@ namespace HasatPiyasa.Web.UI.Controllers
     {
         private IAuthService _authService;
         IHttpContextAccessor _httpContext;
+        
         public AccountController(IAuthService authService, IHttpContextAccessor httpContext)
         {
             _authService = authService;
@@ -30,6 +31,7 @@ namespace HasatPiyasa.Web.UI.Controllers
         public async Task<bool> Login(UserForLoginDto userForLoginDto)
         { 
                 var result = await _authService.Login(userForLoginDto);
+     
 
                 if (result.BasariliMi)
                 {

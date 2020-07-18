@@ -58,7 +58,7 @@ namespace HasatPiyasa.Business.Concrete
             return user.FirstOrDefault(x => x.DomainUserName == domainname);
         }
 
-        public async Task<NIslemSonuc<Users>> GetUserTable(int value)
+        public async Task<NIslemSonuc<Users>> GetUserTable(string username)
         {
             try
             {
@@ -67,7 +67,7 @@ namespace HasatPiyasa.Business.Concrete
                 return new NIslemSonuc<Users>
                 {
                     BasariliMi = true,
-                    Veri = res.AsQueryable().Include(x => x.UserClaims).Where(x => x.UserId == value).ToList().FirstOrDefault()
+                    Veri = res.AsQueryable().Include(x => x.UserClaims).Include(x=>x.Sube).Where(x => x.IsActive && x.DomainUserName==username).ToList().FirstOrDefault()
                 };
             }
             catch (Exception hata)

@@ -14,6 +14,6 @@ namespace HasatPiyasa.Business.Abstract
         Task<Users> GetUserName(int id);
         Task<Users> GetUserName(string domainname);
         NIslemSonuc<bool> UserExitsDomain(UserForLoginDto userForLoginDto);
-        Task<NIslemSonuc<Users>> GetUserTable(int value);
+        Task<NIslemSonuc<Users>> GetUserTable(string username);
     }
 }

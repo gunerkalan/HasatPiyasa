@@ -19,7 +19,29 @@ namespace HasatPiyasa.Business.Concrete
         }
         public async Task<NIslemSonuc<Users>> Login(UserForLoginDto userForLoginDto)
         {
-            var userToCheckServer = await _userService.GetUserName(userForLoginDto.UserName);
+            var res = await _userService.GetUserTable(userForLoginDto.UserName);
+
+            if(res.Veri ==null)
+            {
+                return new NIslemSonuc<Users>
+                {
+                    BasariliMi = false,
+                    Mesaj = Messages.ErrorDatabaseLogin
+
+                };
+            }
+            else
+            {
+                return new NIslemSonuc<Users>
+                {
+                    BasariliMi = true,
+                    Veri = res.Veri,
+                    Mesaj = Messages.SusccesfulyLogin
+                };
+            }
+            
+            
+            /*var userToCheckServer = await _userService.GetUserName(userForLoginDto.UserName);
             if (userToCheckServer == null)
             {
                 return new NIslemSonuc<Users>
@@ -27,7 +49,7 @@ namespace HasatPiyasa.Business.Concrete
                     BasariliMi = false,
                     Mesaj = Messages.ErrorDatabaseLogin
                 };
-            }
+            }*/
 
             //var usertoChechDomain = _userService.UserExitsDomain(userForLoginDto);
             //if (!usertoChechDomain.BasariliMi)
@@ -39,12 +61,12 @@ namespace HasatPiyasa.Business.Concrete
             //    };
             //}
 
-            return new NIslemSonuc<Users>
+            /*return new NIslemSonuc<Users>
             {
                 BasariliMi = true,
                 Veri = userToCheckServer,
                 Mesaj = Messages.SusccesfulyLogin
-            };
+            };*/
         }
 
         public async Task<NIslemSonuc<Users>> Profil(int id)

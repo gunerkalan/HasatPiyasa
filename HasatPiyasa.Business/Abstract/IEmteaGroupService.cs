@@ -1,4 +1,5 @@
-﻿using HasatPiyasa.Core.Utilities.Results;
+﻿using HasatPiyasa.Core.Entities;
+using HasatPiyasa.Core.Utilities.Results;
 using HasatPiyasa.Entity.Entity;
 using System;
 using System.Collections.Generic;
@@ -13,6 +14,6 @@ namespace HasatPiyasa.Business.Abstract
         NIslemSonuc<List<EmteaGroups>> ListAllEmteaGroups();
         NIslemSonuc<EmteaGroups> GetEmteaGroup(int id);
         Task<NIslemSonuc<EmteaGroups>> UpdateEmteaGroup(EmteaGroups emteaGroup);
-        Task<NIslemSonuc<EmteaGroups>> GetEmteaGroupTable(int value);
+        Task<NIslemSonuc<List<EmteaGrupDto>>> GetEmteaGroupTable();
     }
 }

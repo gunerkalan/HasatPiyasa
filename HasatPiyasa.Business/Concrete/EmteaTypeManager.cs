@@ -87,38 +87,7 @@ namespace HasatPiyasa.Business.Concrete
             }
         }
 
-        public async Task<NIslemSonuc<List<OrderTypeDto>>> GetListEmteaGroup()
-        {
-            try
-            {
-                var res = await _emteaTypeDal.GetTable();
-                var model = res.Include(x => x.Emtea).Where(u => u.IsActive).ToList();
-
-                var response = model.Select(x => new OrderTypeDto
-                {
-                    AddedTime = x.AddedTime,
-                    EmteaTypeName = x.EmteaTypeName,
-                    Id = x.Id,
-                    EmteaName = x.Emtea.EmteaName
-
-                }).ToList();
-
-                return new NIslemSonuc<List<OrderTypeDto>>
-                {
-                    BasariliMi = true,
-                    Veri = response
-                };
-            }
-            catch (Exception hata)
-            {
-                return new NIslemSonuc<List<OrderTypeDto>>
-                {
-                    BasariliMi = false,
-                    Mesaj = hata.InnerException.Message
-                };
-            }
-        }
-
+  
         public NIslemSonuc<List<EmteaTypes>> ListAllEmteType()
         {
             try

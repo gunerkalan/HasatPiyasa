@@ -15,10 +15,15 @@ namespace HasatPiyasa.Web.UI.Controllers
     public class AdminController : BaseController
     {
         private IEmteaService _emteaService;
+        private IEmteaGroupService _emteaGroupService;
+        private IEmteaTypeService _emteaTypeService;
 
-        public AdminController(IEmteaService emteaService)
+        public AdminController(IEmteaService emteaService, IEmteaGroupService emteaGroupService, IEmteaTypeService emteaTypeService)
         {
             _emteaService = emteaService;
+            _emteaGroupService = emteaGroupService;
+            _emteaTypeService = emteaTypeService;
+            
         }
 
         #region Emtea işlemleri
@@ -59,6 +64,13 @@ namespace HasatPiyasa.Web.UI.Controllers
             return View(model);
         }
 
+        [HttpGet]
+        public async Task<object> EmteaGroupListData()
+        {
+            var res = await _emteaGroupService.GetEmteaGroupTable();
+            return JsonConvert.SerializeObject(res.Veri);
+        }
+
         private List<SelectListItem> LoadEmteas()
         {
             List<SelectListItem> emteas = (from emtea in _emteaService.ListAllEmteas().Veri
@@ -70,6 +82,23 @@ namespace HasatPiyasa.Web.UI.Controllers
                         ).ToList();
             return emteas;
         }
+
+        #endregion
+
+        #region EmteaTip işlemleri
+
+        [HttpGet]
+        public ActionResult EmteaTypeList()
+        {
+            var model = new EmteTypeAddModel
+            {
+                EmteaTypes = new EmteaTypes()
+            };
+
+            return View(model);
+        }
+
+        //ListDatasıGelecek
 
         #endregion
 
