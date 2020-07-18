@@ -18,13 +18,16 @@ namespace HasatPiyasa.Web.UI.Controllers
         private IEmteaService _emteaService;
         private IEmteaGroupService _emteaGroupService;
         private IEmteaTypeService _emteaTypeService;
+        private IEmteaTypeGroupService _emteaTypeGroupService;
+        private ITuikService _tuikService;
 
-        public AdminController(IEmteaService emteaService, IEmteaGroupService emteaGroupService, IEmteaTypeService emteaTypeService)
+        public AdminController(IEmteaService emteaService, IEmteaGroupService emteaGroupService, IEmteaTypeService emteaTypeService, IEmteaTypeGroupService emteaTypeGroupService, ITuikService tuikService)
         {
             _emteaService = emteaService;
             _emteaGroupService = emteaGroupService;
             _emteaTypeService = emteaTypeService;
-            
+            _emteaTypeGroupService = emteaTypeGroupService;
+            _tuikService = tuikService;
         }
 
         #region Emtea işlemleri
@@ -103,8 +106,72 @@ namespace HasatPiyasa.Web.UI.Controllers
         public async Task<object> EmteaTypeListData()
         {
             var res = await _emteaTypeService.GetEmteaTypeGTable();
-            return JsonConvert.SerializeObject(res);
+            return JsonConvert.SerializeObject(res.Veri);
         }
+
+        #endregion
+
+        #region EmteaTypeGroup işlemleri
+
+        [HttpGet]
+        public ActionResult EmteaTypeGroupList()
+        {
+            var model = new EmteaTypeGroupAddModel
+            {
+                EmteaTypeGroups = new EmteaTypeGroups()
+            };
+
+            return View(model);
+        }
+
+        [HttpGet]
+        public async Task<object> EmteaTypeGroupListData()
+        {
+            var res = await _emteaTypeGroupService.GetEmteatypeGroupGTable();
+            return JsonConvert.SerializeObject(res.Veri);
+        }
+
+        #endregion
+
+        #region Tuik İşlemleri
+
+        [HttpGet]
+        public ActionResult TuikSubeList()
+        {
+            TuikAddModel model = new TuikAddModel
+            {
+                Tuik = new Tuiks()
+            };
+
+            return View(model);
+        }
+
+        [HttpGet]
+        public async Task<object> TuikSubeListData()
+        {
+            var res = await _tuikService.GetTuikSubeGTable();
+            return JsonConvert.SerializeObject(res.Veri);
+        }
+
+        [HttpGet]
+        public async Task<object> TuikCityListData()
+        {
+            var res = await _tuikService.GetTuikCityGTable();
+            return JsonConvert.SerializeObject(res.Veri);
+        }
+
+
+        [HttpGet]
+        public ActionResult TuikCityList()
+        {
+            TuikAddModel model = new TuikAddModel
+            {
+                Tuik = new Tuiks()
+            };
+
+            return View(model);
+        }
+
 
         #endregion
 

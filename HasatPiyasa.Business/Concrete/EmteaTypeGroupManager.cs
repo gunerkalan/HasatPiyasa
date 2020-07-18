@@ -1,6 +1,7 @@
 ﻿using HasastPiyasa.DataAccess.Abstract;
 using HasatPiyasa.Business.Abstract;
 using HasatPiyasa.Business.Constants;
+using HasatPiyasa.Core.Entities;
 using HasatPiyasa.Core.Utilities.Results;
 using HasatPiyasa.Entity.Entity;
 using Microsoft.EntityFrameworkCore;
@@ -59,6 +60,40 @@ namespace HasatPiyasa.Business.Concrete
                 return new NIslemSonuc<EmteaTypeGroups>
                 {
                     BasariliMi = false,
+                    Mesaj = hata.InnerException.Message
+                };
+            }
+        }
+
+        public async Task<NIslemSonuc<List<EmteaTypeGroupDto>>> GetEmteatypeGroupGTable()
+        {
+            try
+            {
+                var res = await _emteaTypeGroupDal.GetTable();
+                var model = res.Include(x => x.EmteaType).ThenInclude(x => x.EmteaGroup).ThenInclude(x => x.Emtea).Where(x=>x.IsActive).ToList();
+
+                var response = model.Select(x => new EmteaTypeGroupDto
+                {
+                    Id = x.Id,
+                    AddedTime = x.AddedTime,
+                    EmteaCode = x.EmteaType.EmteaGroup.Emtea.EmteaCode,
+                    EmteaName = x.EmteaType.EmteaGroup.Emtea.EmteaName,
+                    EmteaTypeName = x.EmteaType.EmteaTypeName,
+                    EmteaTypeGroupName = x.EmteaTypeGroupName,
+                    EmteaGroupName = x.EmteaType.EmteaGroup.GroupName
+                }).ToList();
+
+                return new NIslemSonuc<List<EmteaTypeGroupDto>>
+                {
+                    BasariliMi=true,
+                    Veri = response
+                };
+            }
+            catch (Exception hata)
+            {
+                return new NIslemSonuc<List<EmteaTypeGroupDto>>
+                {
+                    BasariliMi=false,
                     Mesaj = hata.InnerException.Message
                 };
             }

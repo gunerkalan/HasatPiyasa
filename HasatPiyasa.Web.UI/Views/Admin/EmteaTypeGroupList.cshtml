@@ -1,8 +1,7 @@
-﻿@model HasatPiyasa.Web.UI.Models.EmteaGoupAddModel
+﻿@model HasatPiyasa.Web.UI.Models.EmteaTypeGroupAddModel
 @using DevExtreme.AspNet.Mvc
-
 @{
-    ViewData["Title"] = "EmteaGroupList";
+    ViewData["Title"] = "EmteaTypeGroupList";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -21,8 +20,8 @@
                     <div class="card-header flex-wrap py-3">
                         <div class="card-title">
                             <h3 class="card-label">
-                                Emtea Grup Listesi
-                                <span class="d-block text-muted pt-2 font-size-sm">Emtea &amp; Grup Listesi</span>
+                                Emtea Tip Grup Listesi
+                                <span class="d-block text-muted pt-2 font-size-sm">Emtea &amp; Tip Grup Listesi</span>
                             </h3>
                         </div>
                         <div class="card-toolbar">
@@ -40,23 +39,25 @@
                                         </g>
                                     </svg>
                                     <!--end::Svg Icon-->
-                                </span>Yemi Emtea Grup Ekle
+                                </span>Yemi Emtea Tip Grup Ekle
                             </a>
                             <!--end::Button-->
                         </div>
                     </div>
                     <div class="card-body">
                         <!--begin: Datatable-->
-                        @(Html.DevExtreme().DataGrid<HasatPiyasa.Core.Entities.EmteaGrupDto>().ID("GridContainer")
+                        @(Html.DevExtreme().DataGrid<HasatPiyasa.Core.Entities.EmteaTypeGroupDto>().ID("GridContainer")
         .SearchPanel(src => src.Visible(true).Width(250).Placeholder("Ara.."))
         .ShowBorders(true)
-        .DataSource(d => d.Mvc().Controller("Admin").LoadAction("EmteaGroupListData").Key("Id"))
+        .DataSource(d => d.Mvc().Controller("Admin").LoadAction("EmteaTypeGroupListData").Key("Id"))
         .Selection(s => s.Mode(SelectionMode.Single))
         .HoverStateEnabled(true)
         .Columns(columns => {
-            columns.AddFor(m => m.EmteaKod).Caption("Emtea Kodu").Width(100);
+            columns.AddFor(m => m.EmteaCode).Caption("Emtea Kodu").Width(100);
             columns.AddFor(m => m.EmteaName).Caption("Emtea Adı");
-            columns.AddFor(m => m.EmteaGrupAd).Caption("Emtea Grup Adı");
+            columns.AddFor(m => m.EmteaGroupName).Caption("Emtea Grup Adı");
+            columns.AddFor(m => m.EmteaTypeName).Caption("Emtea Tip Adı");
+            columns.AddFor(m => m.EmteaTypeGroupName).Caption("Emtea Tip Grup Adı");
             columns.AddFor(m => m.AddedTime).Caption("Eklenme Tarihi");
             columns.Add().Caption("Düzenle").Width(60)
                    .Type(GridCommandColumnType.Buttons)
@@ -98,7 +99,7 @@
         .FilterRow(f => f.Visible(true).ApplyFilter(GridApplyFilterMode.Auto))
         .HeaderFilter(f => f.Visible(true))
        .Summary(s => s.TotalItems(items => {
-           items.AddFor(m => m.EmteaKod)
+           items.AddFor(m => m.EmteaCode)
            .SummaryType(SummaryType.Count)
 
          .SummaryType(SummaryType.Count).ValueFormat(Format.FixedPoint)
