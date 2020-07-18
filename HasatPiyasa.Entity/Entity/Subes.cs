@@ -14,6 +14,7 @@ namespace HasatPiyasa.Entity.Entity
         }
 
         public int Id { get; set; }
+       
         public int BolgeId { get; set; }
         public string SubeKod { get; set; }
         public string SubeName { get; set; }

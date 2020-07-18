@@ -52,17 +52,16 @@ namespace HasatPiyasa.Business.Concrete
             try
             {
                 var res = await _emteaTypeDal.GetTable();
-                var model = res.Include(x => x.Emtea).ThenInclude(x => x.EmteaGroups).Where(x=>x.IsActive).ToList();
+                var model = res.Include(x => x.EmteaGroup).ThenInclude(x => x.Emtea).Where(x=>x.IsActive).ToList();
                 
                
                 var response = model.Select(x => new EmteaTypeDto
                 {
-                    EmteaCode = x.Emtea.EmteaCode,
-                    EmteaName = x.Emtea.EmteaName,
+                    EmteaCode = x.EmteaGroup.Emtea.EmteaCode,
+                    EmteaName = x.EmteaGroup.Emtea.EmteaName,
                     EmteaTypeId = x.Id,
                     EmteaTypeName = x.EmteaTypeName,
-                    GroupName = x.Emtea.EmteaGroups.FirstOrDefault(a => a.EmteaId == x.Emtea.Id)==null ? null : x.Emtea.EmteaGroups.FirstOrDefault(a => a.EmteaId == x.Emtea.Id).GroupName,
-                    IsHasGroup = x.Emtea.EmteaGroups.FirstOrDefault(a => a.EmteaId == x.Emtea.Id) == null ? false : true 
+                    GroupName = x.EmteaGroup.GroupName
 
                 }).ToList();
                 

@@ -11,6 +11,7 @@ namespace HasatPiyasa.Entity.Entity
         }
 
         public int Id { get; set; }
+       
         public string ClaimName { get; set; }
         public string Description { get; set; }
 

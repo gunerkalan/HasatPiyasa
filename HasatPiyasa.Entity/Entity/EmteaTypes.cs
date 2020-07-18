@@ -10,17 +10,16 @@ namespace HasatPiyasa.Entity.Entity
             DataInputs = new HashSet<DataInputs>();
             EmteaTypeGroups = new HashSet<EmteaTypeGroups>();
             Tuiks = new HashSet<Tuiks>();
-            Captions = new HashSet<Captions>();  
         }
 
         public int Id { get; set; }
+       
         public string EmteaTypeName { get; set; }
-        public int EmteaId { get; set; }
+        public int EmteaGroupId { get; set; }
 
-        public virtual Emteas Emtea { get; set; }
+        public virtual EmteaGroups EmteaGroup { get; set; }
         public virtual ICollection<DataInputs> DataInputs { get; set; }
         public virtual ICollection<EmteaTypeGroups> EmteaTypeGroups { get; set; }
         public virtual ICollection<Tuiks> Tuiks { get; set; }
-        public virtual ICollection<Captions> Captions { get; set; }
     }
 }
