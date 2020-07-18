@@ -1,6 +1,13 @@
 ﻿$(document).ready(() => {
     CalculateColumn("tuik", "tuikTotal", "topla");
     console.clear()
+    $("input[type=number]").on("focus", function () {
+        $(this).on("keydown", function (event) {
+            if (event.keyCode === 38 || event.keyCode === 40) {
+                event.preventDefault();
+            }
+        });
+    });
 })
 function YuzdeHesapla(e) {
     var value = Number(e.value);
