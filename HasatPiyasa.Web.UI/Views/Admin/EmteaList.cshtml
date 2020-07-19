@@ -131,8 +131,8 @@
 
 
     </div>
-  
-     
+
+
 </div>
 
 
@@ -151,12 +151,12 @@
                                 <label for="field-ekod" class="control-label">Emtea Kodu</label>
                                 <input asp-for="@Model.Emtea.EmteaCode" type="text" class="form-control" id="field-ekod" name="ekod" placeholder="Emtea Kodu">
                             </div>
-                           
+
                             <div class="form-group">
                                 <label for="field-ead" class="control-label">Emtea Adı</label>
                                 <input asp-for="@Model.Emtea.EmteaName" type="text" class="form-control" id="field-ead" name="ead" placeholder="Emtea Adı">
                             </div>
-                           
+
                         </div>
                     </div>
                 </div>
@@ -170,3 +170,9 @@
 </div>
 
 
+@section scripts{
+    <script src="~/Scripts/TMO/TMO_CreateOrEditSale.js"></script>
+    <script src="~/Scripts/TMO/TMO_Confirm.js"></script>
+  
+
+}
