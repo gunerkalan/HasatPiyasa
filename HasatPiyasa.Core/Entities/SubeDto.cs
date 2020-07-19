@@ -11,6 +11,7 @@ namespace HasatPiyasa.Core.Entities
         public int Id { get; set; }
         public string BolgeName { get; set; }
         public string Cities { get; set; }
+        public DateTime AddedDate { get; set; }
     }
 
    

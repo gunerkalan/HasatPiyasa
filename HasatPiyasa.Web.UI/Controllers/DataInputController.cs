@@ -68,7 +68,7 @@ namespace HasatPiyasa.Web.UI.Controllers
             var response = await _dataInputService.CreateDataInputRange(dataInputs);
             if(response.BasariliMi)
             {
-                return Json(new { success = true });
+                return Json(new { success = true , messages = response.Mesaj });
             }
             else
             {

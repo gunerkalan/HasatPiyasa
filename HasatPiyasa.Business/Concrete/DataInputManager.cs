@@ -68,7 +68,7 @@ namespace HasatPiyasa.Business.Concrete
                 return new NIslemSonuc<DataInputs>
                 {
                     BasariliMi = true,
-
+                    Mesaj = Messages.SuccessfulyAddSaleOrder
                 };
             }
             catch (Exception hata)
