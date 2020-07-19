@@ -1,6 +1,7 @@
 ﻿using HasastPiyasa.DataAccess.Abstract;
 using HasatPiyasa.Business.Abstract;
 using HasatPiyasa.Business.Constants;
+using HasatPiyasa.Core.Utilities.Business;
 using HasatPiyasa.Core.Utilities.Results;
 using HasatPiyasa.Entity.Entity;
 using Microsoft.EntityFrameworkCore;
@@ -25,6 +26,12 @@ namespace HasatPiyasa.Business.Concrete
         {
             try
             {
+                NIslemSonuc sonuc = BusinessRules.Run(CheckEmteaCodeExists(emtea.EmteaCode));
+                if(sonuc.BasariliMi != false)
+                {
+                    return (NIslemSonuc<Emteas>)sonuc;
+                }
+
                 var addedemtea = await _emteaDal.AddAsync(emtea);
 
                 return new NIslemSonuc<Emteas>
@@ -43,6 +50,22 @@ namespace HasatPiyasa.Business.Concrete
                     ErrorMessage = hata.Message
                 };
             }
+        }
+
+        private NIslemSonuc CheckEmteaCodeExists(string emteacode)
+        {
+            if(_emteaDal.Get(p=>p.EmteaCode==emteacode) != null)
+            {
+                return new NIslemSonuc
+                {
+                    BasariliMi = false,
+                    Mesaj = Messages.ErrorAddSaleOrder
+                };
+            }
+            return new NIslemSonuc
+            {
+                BasariliMi=true
+            };
         }
 
         public NIslemSonuc<Emteas> GetEmtea(int id)

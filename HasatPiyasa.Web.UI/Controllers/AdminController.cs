@@ -55,6 +55,20 @@ namespace HasatPiyasa.Web.UI.Controllers
             return JsonConvert.SerializeObject(res);
         }
 
+        [HttpPost]
+        public async Task<ActionResult> CreateEmtea(Emteas emtea)
+        {
+            var sonuc = await _emteaService.CreateEmtea(emtea);
+            if(sonuc.BasariliMi)
+            {
+                return Json(new { success = true });
+            }
+            else
+            {
+                return Json(new { success = false, messages = sonuc.ErrorMessage });
+            }
+        }
+
 
         #endregion
 

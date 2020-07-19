@@ -1,8 +1,16 @@
-﻿function SaveEmtea() {
+﻿/*$(function () {
+    $("#GridContainer").dxDataGrid({
+       export: {
+            enabled: true
+        }
+    });
+
+})*/
+function SaveEmtea() {
 
     swal({
-        title: "Sipariş Oluştur",
-        text: "Sipariş oluşturulsun mu ?",
+        title: "Emtea Kaydet",
+        text: "Emtea Kaydedilsin Mi ?",
         type: "info",
         showCancelButton: true,
         closeOnConfirm: false,
@@ -11,43 +19,18 @@
         cancelButtonText: "İptal",
     }, function () {
 
-
-        var kdvpriceFormat = kdvTutar.toString
-        var order = {
-            StoreName: $("#Order_StoreName").val(),
-            TotalPrice: toplamTutar.toString().replace('.', ','),
-            StartDate: $("#Order_StartDate").val(),
-            StartClock: $("#Order_StartClock").val(),
-            EndDate: $("#Order_EndDate").val(),
-            EndClock: $("#Order_EndClock").val(),
-            OrderBaseType: "1",
-            CustomerId: $("#firmaid :selected").val(),
-            ComponentId: $("#compomnetid :selected").val(),
-            DemandAmount: $("#Order_DemandAmount").val(),
-            GivenAmount: "0",
-            TotalAmount: "0",
-            Explain: $("#Order_Explain").val(),
-            OrderStatus: "1",
-            TruckCount: "0",
-            TruckAmount: "0",
-            IsSale: true,
-            KdvRateId: $("#kdv :selected").val(),
-            BorsaRateId: $("#borsa :selected").val(),
-            KdvPrice: kdvTutar.toString().replace('.', ','),
-            BorsaPrice: borsaTutar.toString().replace('.', ','),
-            OrderTypeId: $("#ordertypeid :selected").val(),
-            ConfirmNumber: $("#Order_ConfirmNumber").val(),
-
+        var emtea = {
+            EmteaCode: $("#emteacode").val(),
+            EmteaName: $("#emteaname").val(),
+           
         }
 
-
-        if (CheckValidateForm()) {
-            $.post("/order/CreateSaleOrder", { order: order }, function (res) {
+            if (CheckValidateForm()) {
+                $.post("/Admin/CreateEmtea", { emtea: emtea }, function (res) {
                 var model = JSON.parse(JSON.stringify(res));
 
                 if (model.success) {
-                    swal("Siparişiz Başarıyla Oluşturuldu ! Sipariş Numaranız" + " " + model.ordernumber);
-                    var href = "<a href='/order/WaitingConfirmOrderList'>Tamam</a>";
+                    swal("Emtea Kaydedildi !");
                     $(".confirm").html("")
                     $(".confirm").append(href)
                     $(".confirm a").css("color", "white")
@@ -71,3 +54,33 @@
 
 
 }
+function CheckValidateForm() {
+
+    var EmteaCode = $("#emteacode").val()
+    var EmteaName = $("#emteaname").val()
+
+    if (EmteaCode != "" && EmteaName != "") {
+        return true
+    }
+    else {
+        ChangeColor(EmteaCode, "emteacode")
+        ChangeColor(EmteaName, "emteaname")
+        return false
+
+    }
+}
+function ChangeColor(value, v) {
+
+    if (value == "0" || value == "") {
+        $("#" + v).css("border", "1px solid red")
+    }
+    else {
+        $("#" + v).css("border", "0px")
+    }
+
+}
+
+$("body").on("hide.bs.modal", "#confirmModal", () => {
+    $("#GridContainer").dxDataGrid("instance").refresh();
+})
+

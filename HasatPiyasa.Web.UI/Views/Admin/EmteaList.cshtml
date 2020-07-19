@@ -138,41 +138,41 @@
 
 <div id="emtea-adding-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
     <div class="modal-dialog">
-        <form asp-controller="Admin" asp-action="AddEmtea" method="post" enctype="multipart/form-data">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                    <h4 class="modal-title"><i class="fa fa-plus-circle"></i> Emtea Ekle</h4>
-                </div>
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label for="field-ekod" class="control-label">Emtea Kodu</label>
-                                <input asp-for="@Model.Emtea.EmteaCode" type="text" class="form-control" id="field-ekod" name="ekod" placeholder="Emtea Kodu">
-                            </div>
 
-                            <div class="form-group">
-                                <label for="field-ead" class="control-label">Emtea Adı</label>
-                                <input asp-for="@Model.Emtea.EmteaName" type="text" class="form-control" id="field-ead" name="ead" placeholder="Emtea Adı">
-                            </div>
-
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title"><i class="fa fa-plus-circle"></i> Emtia Ekle</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="emteacode" class="control-label">Emtia Kodu</label>
+                            <input type="text" name="EmteaCode" id="emteacode" class="form-control" placeholder="Emtia Kodu" />
                         </div>
+
+                        <div class="form-group">
+                            <label for="emteaname" class="control-label">Emtia Adı</label>
+                            <input type="text" name="EmteaName" id="emteaname" class="form-control" placeholder="Emtia Adı" />
+                        </div>
+
                     </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Kapat</button>
-                    <button type="submit" class="btn btn-success">Kaydet</button>
-                </div>
             </div>
-        </form>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-bg-default" data-dismiss="modal">Kapat</button>
+                <button type="submit" class="btn btn-bg-success" onclick="SaveEmtea();" id="submit">Kaydet</button>
+            </div>
+        </div>
+
     </div>
 </div>
 
 
+
 @section scripts{
-    <script src="~/Scripts/TMO/TMO_CreateOrEditSale.js"></script>
-    <script src="~/Scripts/TMO/TMO_Confirm.js"></script>
-  
+
+    <script src="~/js/AdminProcess/Process.js"></script>
 
 }
