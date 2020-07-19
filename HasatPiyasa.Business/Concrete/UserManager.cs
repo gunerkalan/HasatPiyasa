@@ -2,6 +2,7 @@
 using HasastPiyasa.DataAccess.Abstract;
 using HasatPiyasa.Business.Abstract;
 using HasatPiyasa.Business.Constants;
+using HasatPiyasa.Core.Entities;
 using HasatPiyasa.Core.Utilities.Results;
 using HasatPiyasa.Entity.Dtos;
 using HasatPiyasa.Entity.Entity;
@@ -122,5 +123,43 @@ namespace HasatPiyasa.Business.Concrete
             }
         }
 
+        public async Task<NIslemSonuc<List<UserDto>>> GetUserGTable()
+        {
+            try
+            {
+                var res = await _userDal.GetTable();
+                var model = res.Include(x => x.Sube).Where(x => x.IsActive).ToList();
+
+
+                var response = model.Select(x => new UserDto
+                {
+                    AddedTime = x.AddedTime,
+                    DomainUserName = x.DomainUserName,
+                    Name = x.Name,
+                    SicilNumber = x.SicilNumber,
+                    SubeName = x.Sube.SubeName,
+                    Surname = x.Surname,
+                    Title = x.Title,
+                    UserId = x.UserId,
+                    
+
+                }).ToList();
+
+                return new NIslemSonuc<List<UserDto>>
+                {
+                    BasariliMi = false,
+                    Veri = response
+                };
+
+            }
+            catch (Exception hata)
+            {
+                return new NIslemSonuc<List<UserDto>>
+                {
+                    BasariliMi = false,
+                    Mesaj = hata.InnerException.Message
+                };
+            }
+        }
     }
 }

@@ -1,4 +1,5 @@
-﻿using HasatPiyasa.Core.Utilities.Results;
+﻿using HasatPiyasa.Core.Entities;
+using HasatPiyasa.Core.Utilities.Results;
 using HasatPiyasa.Entity.Dtos;
 using HasatPiyasa.Entity.Entity;
 using System;
@@ -15,5 +16,6 @@ namespace HasatPiyasa.Business.Abstract
         Task<Users> GetUserName(string domainname);
         NIslemSonuc<bool> UserExitsDomain(UserForLoginDto userForLoginDto);
         Task<NIslemSonuc<Users>> GetUserTable(string username);
+        Task<NIslemSonuc<List<UserDto>>> GetUserGTable();
     }
 }

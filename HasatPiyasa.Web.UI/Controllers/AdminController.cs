@@ -21,8 +21,9 @@ namespace HasatPiyasa.Web.UI.Controllers
         private IEmteaTypeGroupService _emteaTypeGroupService;
         private ITuikService _tuikService;
         private ISubeService _subeService;
+        private IUserService _userService;
 
-        public AdminController(IEmteaService emteaService, IEmteaGroupService emteaGroupService, IEmteaTypeService emteaTypeService, IEmteaTypeGroupService emteaTypeGroupService, ITuikService tuikService, ISubeService subeService)
+        public AdminController(IEmteaService emteaService, IEmteaGroupService emteaGroupService, IEmteaTypeService emteaTypeService, IEmteaTypeGroupService emteaTypeGroupService, ITuikService tuikService, ISubeService subeService, IUserService userService)
         {
             _emteaService = emteaService;
             _emteaGroupService = emteaGroupService;
@@ -30,6 +31,7 @@ namespace HasatPiyasa.Web.UI.Controllers
             _emteaTypeGroupService = emteaTypeGroupService;
             _tuikService = tuikService;
             _subeService = subeService;
+            _userService = userService;
         }
 
         #region Emtea işlemleri
@@ -194,6 +196,28 @@ namespace HasatPiyasa.Web.UI.Controllers
         public async Task<object> SubeListData()
         {
             var res = await _subeService.GetSubeGTable();
+            return JsonConvert.SerializeObject(res.Veri);
+        }
+
+        #endregion
+
+        #region Kullanıcı İşlemleri
+
+        [HttpGet]
+        public ActionResult UserList()
+        {
+            UserAddModel model = new UserAddModel
+            {
+                User = new Users()
+            };
+
+            return View(model);
+        }
+
+        [HttpGet]
+        public async Task<object> UserListData()
+        {
+            var res = await _userService.GetUserGTable();
             return JsonConvert.SerializeObject(res.Veri);
         }
 
