@@ -1,13 +1,12 @@
-﻿@model HasatPiyasa.Web.UI.Models.EmteaModel
+﻿@model HasatPiyasa.Web.UI.Models.UserAddModel
 @using DevExtreme.AspNet.Mvc
 
 @{
-    ViewData["Title"] = "EmteaList";
+    ViewData["Title"] = "UserList";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 @Html.AntiForgeryToken()
-
 
 <div class="row">
 
@@ -22,8 +21,8 @@
                     <div class="card-header flex-wrap py-3">
                         <div class="card-title">
                             <h3 class="card-label">
-                                Emtea Listesi
-                                <span class="d-block text-muted pt-2 font-size-sm">Emtea &amp; Listesi</span>
+                                Kullanıcı Listesi
+                                <span class="d-block text-muted pt-2 font-size-sm">Kullanıcı &amp; Listesi</span>
                             </h3>
                         </div>
                         <div class="card-toolbar">
@@ -41,23 +40,27 @@
                                         </g>
                                     </svg>
                                     <!--end::Svg Icon-->
-                                </span>Yemi Emtea Ekle
+                                </span>Yemi Kullanıcı Ekle
                             </a>
                             <!--end::Button-->
                         </div>
                     </div>
                     <div class="card-body">
                         <!--begin: Datatable-->
-                        @(Html.DevExtreme().DataGrid<HasatPiyasa.Entity.Entity.Emteas>().ID("GridContainer")
+                        @(Html.DevExtreme().DataGrid<HasatPiyasa.Core.Entities.UserDto>().ID("GridContainer")
     .SearchPanel(src => src.Visible(true).Width(250).Placeholder("Ara.."))
     .ShowBorders(true)
-    .DataSource(d => d.Mvc().Controller("Admin").LoadAction("EmteaListData").Key("Id"))
+    .DataSource(d => d.Mvc().Controller("Admin").LoadAction("UserListData").Key("UserId"))
     .Selection(s => s.Mode(SelectionMode.Single))
     .HoverStateEnabled(true)
     .Columns(columns => {
-    columns.AddFor(m => m.EmteaCode).Caption("Emtea Kodu").Width(100);
-    columns.AddFor(m => m.EmteaName).Caption("Emtea Adı");
-    columns.AddFor(m => m.AddedTime).Caption("Eklenme Tarihi");
+    columns.AddFor(m => m.SicilNumber).Caption("Sicil No").Width(100);
+    columns.AddFor(m => m.Name).Caption("Adı");
+    columns.AddFor(m => m.Surname).Caption("Soyadı");
+    columns.AddFor(m => m.SubeName).Caption("Şubesi");
+    columns.AddFor(m => m.DomainUserName).Caption("Domain");
+    columns.AddFor(m => m.Title).Caption("Ünvanı");
+    columns.AddFor(m => m.AddedTime).Caption("Ek. Tarihi");
     columns.Add().Caption("Düzenle").Width(60)
                .Type(GridCommandColumnType.Buttons)
                .Buttons(btns =>
@@ -98,7 +101,7 @@
         .FilterRow(f => f.Visible(true).ApplyFilter(GridApplyFilterMode.Auto))
         .HeaderFilter(f => f.Visible(true))
        .Summary(s => s.TotalItems(items => {
-           items.AddFor(m => m.EmteaCode)
+           items.AddFor(m => m.SicilNumber)
            .SummaryType(SummaryType.Count)
 
          .SummaryType(SummaryType.Count).ValueFormat(Format.FixedPoint)
@@ -135,44 +138,3 @@
 
 </div>
 
-
-<div id="emtea-adding-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
-    <div class="modal-dialog">
-
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                <h4 class="modal-title"><i class="fa fa-plus-circle"></i> Emtia Ekle</h4>
-            </div>
-            <div class="modal-body">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="form-group">
-                            <label for="emteacode" class="control-label">Emtia Kodu</label>
-                            <input type="text" name="EmteaCode" id="emteacode" class="form-control" placeholder="Emtia Kodu" />
-                        </div>
-
-                        <div class="form-group">
-                            <label for="emteaname" class="control-label">Emtia Adı</label>
-                            <input type="text" name="EmteaName" id="emteaname" class="form-control" placeholder="Emtia Adı" />
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-bg-default" data-dismiss="modal">Kapat</button>
-                <button type="submit" class="btn btn-bg-success" onclick="SaveEmtea();" id="submit">Kaydet</button>
-            </div>
-        </div>
-
-    </div>
-</div>
-
-
-
-@section scripts{
-
-    <script src="~/js/AdminProcess/Process.js"></script>
-
-}
