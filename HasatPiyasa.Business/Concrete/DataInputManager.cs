@@ -51,8 +51,7 @@ namespace HasatPiyasa.Business.Concrete
 
         public async Task<NIslemSonuc<DataInputs>> CreateDataInputRange(List<DataInputs> dataInputs)
         {
-            using (var transaction = new TransactionScope())
-            { 
+            
             try
             {
                 FormDataInput formDataInput = new FormDataInput {
@@ -73,11 +72,11 @@ namespace HasatPiyasa.Business.Concrete
                     BasariliMi = true,
                     Mesaj = Messages.SuccessfulyAddSaleOrder
                 };
-                    transaction.Complete();
+                     
             }
             catch (Exception hata)
             {
-                    transaction.Dispose();
+                     
                     return new NIslemSonuc<DataInputs>
                 {
                     BasariliMi = false,
@@ -86,7 +85,7 @@ namespace HasatPiyasa.Business.Concrete
                     
     
             }
-            }
+            
         }
 
         public NIslemSonuc<DataInputs> GetDataInput(int id)
