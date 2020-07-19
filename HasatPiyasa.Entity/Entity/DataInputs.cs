@@ -10,7 +10,9 @@ namespace HasatPiyasa.Entity.Entity
         public int SubeId { get; set; }
         public int FormDataInputId { get; set; }
         public int CityId { get; set; }
+        public int EmteaId { get; set; }
         public int EmteaTypeId { get; set; }
+        public int EmteaGroupId { get; set; }
         public int AddUserId { get; set; }
         public int? UpdateUserId { get; set; }
         public int AlimYear { get; set; }
