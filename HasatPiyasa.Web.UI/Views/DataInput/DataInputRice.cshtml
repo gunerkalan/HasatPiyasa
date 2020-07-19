@@ -97,7 +97,7 @@
                     count++;
                     dataInputCount++;
 
-                    <tr class="@("datainput"+dataInputCount)">
+                    <tr class="@("datainput"+dataInputCount)" data-bind="@(emteaType.Id.ToString()+"_"+grup.Id.ToString())">
 
                         @if (count < 2)
                         {

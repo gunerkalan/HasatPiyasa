@@ -9,9 +9,7 @@
             }
         });
     });
-
-
-
+     
 })
 function YuzdeHesapla(e) {
     var value = Number(e.value);
@@ -141,55 +139,80 @@ function getLoadPanelInstance() {
 }
 
 function Save() {
-    var dataInput = [];
-    var item = {
+    var AddInput = [];
+    var dataInput= [];
 
-        CityId: "",
-        AlimYear: "",
-        HasatOran: "",
-        HasatMiktar: "",
-        TuikValue="",
-        GuessValue="",
-        UreticiKalanMiktar: "",
-        Natural1: "",
-        Natural2: "",
-        Natural3: "",
-        Natural4: "",
-        Natural5: "",
-        NaturalToplam: "",
-        ToptanPiyasa1: "",
-        ToptanPiyasa2: "",
-        ToptanPiyasa3: "",
-        ToptanPiyasa4: "",
-        ToptanPiyasa5: "",
-        Perakende1: "",
-        Perakende2: "",
-        Perakende3: "",
-        Perakende4: "",
-        Perakende5: "",
-        Perakende6: "",
-        PerakendeToplam: ""
-    }
-    var inputs = $("input").length / 22
+    var inputs = Number($("input").length) / 22
 
-    for (var i = 0; i < inputs; i++) {
-        var inputs = $(`.datainput${i} input`)
+    for (var i = 1; i < inputs; i++) {
+        var item = {
 
-        $.each(inputs, (n, v) => {
-            if (i == 2) {
-                if (v.value != 0) {
+            CityId: "",
+            EmteaTypeId: "",
+            EmteaGroupId:"",
+            TuikValue: "",
+            GuessValue: "",
+            HasatOran: "",
+            HasatMiktar: "",
+            UreticiKalanMiktar: "",
+            Natural1: "",
+            Natural2: "",
+            Natural3: "",
+            Natural4: "",
+            Natural5: "",
+            NaturalToplam: "",
+            ToptanPiyasa1: "",
+            ToptanPiyasa2: "",
+            ToptanPiyasa3: "",
+            ToptanPiyasa4: "",
+            ToptanPiyasa5: "",
+            Perakende1: "",
+            Perakende2: "",
+            Perakende3: "",
+            Perakende4: "",
+            Perakende5: "",
+            Perakende6: ""
 
-                }
-            }
-            console.log(v.value)
+        }
+      
+
+        var keys = Object.keys(item);
+        var input = $(`.datainput${i} input`)
+        var emtea = input.dataset.bind.split('_')
+        item.CityId = $("#cityId :selected").val()
+        item.EmteaTypeId = emtea[0]
+        item.EmteaGroupId = emtea[1]
+        $.each(input, (n, v) => {
+
+            item[keys[n + 3]] = v.value
 
         })
+
+        if (i != inputs-1)
+        AddInput.push(item)
     }
 
+    $.each(AddInput, (i, v) => {
+
+        if (v.HasatMiktar != "" && v.HasatMiktar != "0") {
+            dataInput.push(v)
+        }
+
+    })
+
+    $.post("/DataInput/DataInputRice", { dataInputs: dataInput }, (res) => {
+
+        var model = JSON.parse(res)
+        if (model.Veri.success) {
+            alert("Kaydeildi")
+        }
+        else {
+            alert("Hata")
+        }
+
+    })
+    
+
 }
 
-function numberWithCommas(x) {
-    x = x.toString().replace('.', ',')
-    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-}
-
+ 
