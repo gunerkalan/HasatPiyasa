@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Transactions;
 
 namespace HasatPiyasa.Business.Concrete
 {
@@ -50,6 +51,8 @@ namespace HasatPiyasa.Business.Concrete
 
         public async Task<NIslemSonuc<DataInputs>> CreateDataInputRange(List<DataInputs> dataInputs)
         {
+            using (var transaction = new TransactionScope())
+            { 
             try
             {
                 FormDataInput formDataInput = new FormDataInput {
@@ -70,15 +73,19 @@ namespace HasatPiyasa.Business.Concrete
                     BasariliMi = true,
                     Mesaj = Messages.SuccessfulyAddSaleOrder
                 };
+                    transaction.Complete();
             }
             catch (Exception hata)
             {
-                return new NIslemSonuc<DataInputs>
+                    transaction.Dispose();
+                    return new NIslemSonuc<DataInputs>
                 {
                     BasariliMi = false,
                     Mesaj = hata.InnerException.Message
                 };
+                    
     
+            }
             }
         }
 
