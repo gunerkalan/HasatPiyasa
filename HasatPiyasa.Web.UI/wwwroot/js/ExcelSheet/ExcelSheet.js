@@ -177,11 +177,10 @@ function Save() {
       
 
         var keys = Object.keys(item);
-        var input = $(`.datainput${i} input`)
-        var emtea = input.dataset.bind.split('_')
+        var input = $(`.datainput${i} input`)       
         item.CityId = $("#cityId :selected").val()
-        item.EmteaTypeId = emtea[0]
-        item.EmteaGroupId = emtea[1]
+        item.EmteaTypeId = $(`.datainput${i}`).attr("emteatype")
+        item.EmteaGroupId = $(`.datainput${i}`).attr("emteagroup")
         $.each(input, (n, v) => {
 
             item[keys[n + 3]] = v.value

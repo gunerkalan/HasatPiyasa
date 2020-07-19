@@ -57,9 +57,17 @@ namespace HasatPiyasa.Entity.DataAccess.EntityFrameworkCore
         }
 
         public async Task AddRange(IEnumerable<TEntity> entities)
-        { 
+        {
+            try
+            {
                 Context.Set<TEntity>().AddRange(entities);
                 await Context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
              
         }
 
