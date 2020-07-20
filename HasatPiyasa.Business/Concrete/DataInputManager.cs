@@ -2,6 +2,7 @@
 using HasastPiyasa.DataAccess.Abstract;
 using HasatPiyasa.Business.Abstract;
 using HasatPiyasa.Business.Constants;
+using HasatPiyasa.Core.Utilities.Business;
 using HasatPiyasa.Core.Utilities.Results;
 using HasatPiyasa.Entity.Entity;
 using Microsoft.EntityFrameworkCore;
@@ -54,6 +55,10 @@ namespace HasatPiyasa.Business.Concrete
             
             try
             {
+                //NIslemSonuc sonuc = BusinessRules.Run(CheckDataInputForm(dataInputs.));
+
+
+
                 FormDataInput formDataInput = new FormDataInput {
                     AddedTime = DateTime.Today,
                     IsActive = true,
@@ -63,7 +68,6 @@ namespace HasatPiyasa.Business.Concrete
                 var addedformdt = await _formDataInputDal.AddAsync(formDataInput);
 
                 dataInputs.ForEach(x => x.FormDataInputId = formDataInput.Id);
-
                
                 await _dataInputDal.AddRange(dataInputs);
 
@@ -86,6 +90,22 @@ namespace HasatPiyasa.Business.Concrete
     
             }
             
+        }
+
+        private NIslemSonuc<bool> CheckDataInputForm(int cityId, int emteatypeid)
+        {
+            if (_dataInputDal.Get(p => p.CityId == cityId && p.AddedTime==DateTime.Today && p.EmteaTypeId==emteatypeid) != null)
+            {
+                return new NIslemSonuc<bool>
+                {
+                    BasariliMi = false,
+                    Mesaj = Messages.ErrorAddSaleOrder
+                };
+            }
+            return new NIslemSonuc<bool>
+            {
+                BasariliMi = true
+            };
         }
 
         public NIslemSonuc<DataInputs> GetDataInput(int id)
