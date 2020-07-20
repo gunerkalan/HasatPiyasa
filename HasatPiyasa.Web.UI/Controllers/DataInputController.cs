@@ -48,12 +48,14 @@ namespace HasatPiyasa.Web.UI.Controllers
                 model.SelectedCityId = cityId;
                 var Inputs = await _formDataInputService.GetFormDataInputTable(DateTime.Today, cityId);
                 model.DataInputs = Inputs.Veri!=null ? Inputs.Veri.DataInputs.ToList():null;
+                model.HaveTodayInputData = model.DataInputs != null ? true : false;
             }
             else
             {
                 model.SelectedCityId = cityId;
                var Inputs = await _formDataInputService.GetFormDataInputTable(DateTime.Today, cityId);
                 model.DataInputs = Inputs.Veri != null ? Inputs.Veri.DataInputs.ToList() : null;
+                model.HaveTodayInputData = model.DataInputs != null ? true : false;
             }
              
 
@@ -74,15 +76,25 @@ namespace HasatPiyasa.Web.UI.Controllers
                 x.AddedTime = DateTime.Today;
             });
 
-            var response = await _dataInputService.CreateDataInputRange(dataInputs);
-            if(response.BasariliMi)
+            if(dataInputs.Count>0)
             {
-                return Json(new { success = true , messages = response.Mesaj });
+                var cityId = dataInputs.FirstOrDefault().CityId;
+                var response = await _dataInputService.CreateDataInputRange(dataInputs, cityId, user.SubeId);
+                if (response.BasariliMi)
+                {
+                    return Json(new { success = true, messages = response.Mesaj });
+                }
+                else
+                {
+                    return Json(new { success = false, messages = response.ErrorMessage });
+                }
             }
             else
             {
-                return Json(new { success = false, messages = response.ErrorMessage });
+                return Json(new { success = false, messages = "Lütfen formu doldudurun !" });
             }
+           
+
         }
 
       
