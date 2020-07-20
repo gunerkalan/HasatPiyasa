@@ -49,6 +49,12 @@ var KTLogin = function () {
             }
         );
 
+        $("body").keyup((event) => {           
+            if (event.keyCode === 13) {
+                $('#kt_login_signin_submit').trigger("click")
+            }
+        })
+
         $('#kt_login_signin_submit').on('click', function (e) {
             e.preventDefault();
 

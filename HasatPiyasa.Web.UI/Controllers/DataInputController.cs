@@ -31,7 +31,7 @@ namespace HasatPiyasa.Web.UI.Controllers
             var model = new HasaInputViewModel();
             var emtea = await _emteaService.GetEmteaTable(1,cityId);
             var user = GetCurrentUser();
-            if(user!=null-------------------------------------------------------------------)
+            if(user!=null)
             {
                 //var cities=  _cityService.ListAllCities().Veri;
                 var cities = await _subeCityService.GetSubeCityGTable(user.SubeId);
@@ -41,7 +41,7 @@ namespace HasatPiyasa.Web.UI.Controllers
 
             if (cityId == 0)
             {
-                cityId =GetCurrentUser().
+                cityId = GetCurrentUser().Sube.SubeCities.FirstOrDefault().Id;
                 model.SelectedCityId = cityId;
             }
             else

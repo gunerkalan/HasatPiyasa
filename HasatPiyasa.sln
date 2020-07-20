@@ -11,12 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HasatPiyasa.Business", "Has
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HasatPiyasa.Entity", "HasatPiyasa.Entity\HasatPiyasa.Entity.csproj", "{E0E8B9B9-7396-408F-B5C6-544F30AF6C49}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DevExtreme NuGet.config", "DevExtreme NuGet.config", "{769176B1-1D35-427A-A184-0C46B196017A}"
-	ProjectSection(SolutionItems) = preProject
-		NuGet.config = NuGet.config
-	EndProjectSection
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HasatPiyasa.Web.UI", "HasatPiyasa.Web.UI\HasatPiyasa.Web.UI.csproj", "{28E4BB00-73E3-4277-9A8F-22F67C657B4D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HasatPiyasa.Web.UI", "HasatPiyasa.Web.UI\HasatPiyasa.Web.UI.csproj", "{28E4BB00-73E3-4277-9A8F-22F67C657B4D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

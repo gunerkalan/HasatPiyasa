@@ -32,11 +32,11 @@
         {
             if (Model.SelectedCityId == cty.Id)
             {
-                <option value="@cty.Id" selected>@cty.Name</option>
+                <option value="@cty.Id" selected>@cty.City.Name</option>
             }
             else
             {
-                <option value="@cty.Id">@cty.Name</option>
+                <option value="@cty.Id">@cty.City.Name</option>
             }
 
         }
