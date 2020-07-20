@@ -6,6 +6,7 @@
     var count = 0;
     var groupCount = 0;
     var dataInputCount = 0;
+    var DataInputModelCount = Model.DataInputs != null ? Model.DataInputs.Count : 0;
 }
 
 @section styles {
@@ -102,69 +103,75 @@
                     count++;
                     dataInputCount++;
 
-                    <tr class="@("datainput"+dataInputCount)" emteatype="@emteaType.Id" emteagroup="@grup.Id">
+        <tr class="@("datainput"+dataInputCount)" emteatype="@emteaType.Id" emteagroup="@grup.Id">
 
-                        @if (count < 2)
-                        {
-                            <td class="tdstyle" rowspan="@grup.EmteaTypes.Count" height="395" align="left" valign="middle" bgcolor="#F0F0F0" sdnum="1033;1055;Standard"><b><font face="Verdana" color="#C00000">@grup.GroupName</font></b></td>
-                        }
+            @if (count < 2)
+            {
+                <td class="tdstyle" rowspan="@grup.EmteaTypes.Count" height="395" align="left" valign="middle" bgcolor="#F0F0F0" sdnum="1033;1055;Standard"><b><font face="Verdana" color="#C00000">@grup.GroupName</font></b></td>
+            }
 
-                        <td class="tdstyle">
+            <td class="tdstyle">
 
-                            <font face="Verdana" color="#C00000">
-                                <b>
-                                    @emteaType.EmteaTypeName
-                                </b>
-                                <br>
-                                <span style="text-transform:capitalize;font-style:italic">(@string.Join(',', emteaType.EmteaTypeGroups.Select(s => s.EmteaTypeGroupName)))</span>
-                            </font>
+                <font face="Verdana" color="#C00000">
+                    <b>
+                        @emteaType.EmteaTypeName
+                    </b>
+                    <br>
+                    <span style="text-transform:capitalize;font-style:italic">(@string.Join(',', emteaType.EmteaTypeGroups.Select(s => s.EmteaTypeGroupName)))</span>
+                </font>
 
-                        </td>
-                        @{ if (groupCount > count)
+            </td>
+            @{ if (groupCount > count)
 
-                                count = ++groupCount;
+                    count = ++groupCount;
 
-                        }
-                        <td>
-                            <input name="tuik" type="number" readonly value="@(
+            }
+            <td>
+                <input name="tuik" type="number" readonly value="@(
                     emteaType.Tuiks.Where(x=>x.CityId==Model.SelectedCityId).Count() >0  ?
                     emteaType.Tuiks.FirstOrDefault(x=>x.EmteaGroupId==grup.Id && x.CityId==Model.SelectedCityId)!=null ?
                     emteaType.Tuiks.FirstOrDefault(x =>x.CityId==Model.SelectedCityId && x.EmteaGroupId==grup.Id && x.TuikYear == DateTime.Now.Year-1).TuikValue : 0:0 )" />
-                        </td>
+            </td>
 
-                        <td>
-                            <input readonly type="number" id="@("Tmo_"+count.ToString())" name="tmo" value="@(
+            <td>
+                <input readonly type="number" id="@("Tmo_"+count.ToString())" name="tmo" value="@(
                     emteaType.Tuiks.Where(x=>x.CityId==Model.SelectedCityId).Count() >0  ?
                     emteaType.Tuiks.FirstOrDefault(x=>x.EmteaGroupId==grup.Id && x.CityId==Model.SelectedCityId)!=null ?
                     emteaType.Tuiks.FirstOrDefault(x =>x.CityId==Model.SelectedCityId &&x.EmteaGroupId==grup.Id && x.GuessYear == DateTime.Now.Year).GuessValue : 0:0 )" />
-                        </td>
+            </td>
 
-                        <td><input type="number" id="@("HasatYuzde_"+count.ToString())" onkeyup="YuzdeHesapla(this);" name="percent" /></td>
-                        <td><input type="number" id="@("HasatEdilen_"+count.ToString())" name="hasatedilen" readonly value="0" /></td>
-                        <td><input type="number" name="bekleyenton" onkeyup="CalculateColumn('bekleyenton','bekleyentonTotal','topla')" /></td>
-
-                        @for (int i = 0; i < 5; i++)
-                        {
-                            <td><input type="number" data-bind="@i" name="@("naturel"+count.ToString())" id="@("naturel_"+count.ToString())" onkeyup="CalculateNaturel(this);" /></td>
-                        }
-
-                        <td><input type="number" readonly id="@("piyasaton"+count.ToString())" value="0" /></td>
+            <td><input type="number" id="@("HasatYuzde_"+count.ToString())" onkeyup="YuzdeHesapla(this);" name="percent" value="@(DataInputModelCount>=dataInputCount ? Model.HaveTodayInputData==true ? Model.DataInputs[dataInputCount-1].HasatOran:0:0)" /></td>
+            <td><input type="number" id="@("HasatEdilen_"+count.ToString())" name="hasatedilen" readonly value="@(DataInputModelCount>=dataInputCount ? Model.HaveTodayInputData==true ? Model.DataInputs[dataInputCount-1].HasatMiktar:0:0)" /></td>
+            <td><input type="number" name="bekleyenton" onkeyup="CalculateColumn('bekleyenton','bekleyentonTotal','topla')" value="@(DataInputModelCount>=dataInputCount ? Model.HaveTodayInputData==true ? Model.DataInputs[dataInputCount-1].UreticiKalanMiktar:0:0)" /></td>
 
 
-                        @for (int i = 0; i < 5; i++)
-                        {
-                            <td><input type="number" /></td>
-                        }
+            <td><input type="number" data-bind="1" name="@("naturel"+count.ToString())" id="@("naturel_"+count.ToString())" onkeyup="CalculateNaturel(this);" value="@(DataInputModelCount>=dataInputCount ? Model.HaveTodayInputData==true ? Model.DataInputs[dataInputCount-1].Natural1:0:0)" /></td>
+            <td><input type="number" data-bind="2" name="@("naturel"+count.ToString())" id="@("naturel_"+count.ToString())" onkeyup="CalculateNaturel(this);" value="@(DataInputModelCount>=dataInputCount ? Model.HaveTodayInputData==true ? Model.DataInputs[dataInputCount-1].Natural2:0:0)" /></td>
+            <td><input type="number" data-bind="3" name="@("naturel"+count.ToString())" id="@("naturel_"+count.ToString())" onkeyup="CalculateNaturel(this);" value="@(DataInputModelCount>=dataInputCount ? Model.HaveTodayInputData==true ? Model.DataInputs[dataInputCount-1].Natural3:0:0)" /></td>
+            <td><input type="number" data-bind="4" name="@("naturel"+count.ToString())" id="@("naturel_"+count.ToString())" onkeyup="CalculateNaturel(this);" value="@(DataInputModelCount>=dataInputCount ? Model.HaveTodayInputData==true ? Model.DataInputs[dataInputCount-1].Natural4:0:0)" /></td>
+            <td><input type="number" data-bind="5" name="@("naturel"+count.ToString())" id="@("naturel_"+count.ToString())" onkeyup="CalculateNaturel(this);" value="@(DataInputModelCount>=dataInputCount ? Model.HaveTodayInputData==true ? Model.DataInputs[dataInputCount-1].Natural5:0:0)" /></td>
 
-                        <td><input type="number" name="dfiyat" id="@("d_1_"+count.ToString())" onkeyup="Avarage(this);" /></td>
-                        <td><input type="number" name="yfiyat" id="@("y_1_"+count.ToString())" onkeyup="Avarage(this);" /></td>
-                        <td><input type="number" name="ofiyat" id="@("o_1_"+count.ToString())" readonly value="0" /></td>
 
-                        <td><input type="number" name="dfiyat2" id="@("d_2_"+count.ToString())" onkeyup="Avarage(this);" /></td>
-                        <td><input type="number" name="yfiyat2" id="@("y_2_"+count.ToString())" onkeyup="Avarage(this);" /></td>
-                        <td><input type="number" name="ofiyat2" id="@("o_2_"+count.ToString())" readonly value="0" /></td>
+            <td><input type="number" readonly id="@("piyasaton"+count.ToString())" value="@(DataInputModelCount>=dataInputCount ? Model.HaveTodayInputData==true ? Model.DataInputs[dataInputCount-1].NaturalToplam:0:0)" /></td>
 
-                    </tr>
+
+            
+                <td><input type="number" value="@(DataInputModelCount>=dataInputCount ? Model.HaveTodayInputData==true ? Model.DataInputs[dataInputCount-1].ToptanPiyasa1:0:0)"/></td>
+                <td><input type="number" value="@(DataInputModelCount>=dataInputCount ? Model.HaveTodayInputData==true ? Model.DataInputs[dataInputCount-1].ToptanPiyasa2:0:0)"/></td>
+                <td><input type="number" value="@(DataInputModelCount>=dataInputCount ? Model.HaveTodayInputData==true ? Model.DataInputs[dataInputCount-1].ToptanPiyasa3:0:0)"/></td>
+                <td><input type="number" value="@(DataInputModelCount>=dataInputCount ? Model.HaveTodayInputData==true ? Model.DataInputs[dataInputCount-1].ToptanPiyasa4:0:0)"/></td>
+                <td><input type="number" value="@(DataInputModelCount>=dataInputCount ? Model.HaveTodayInputData==true ? Model.DataInputs[dataInputCount-1].ToptanPiyasa5:0:0)" /></td>
+            
+
+            <td><input type="number" name="dfiyat" id="@("d_1_"+count.ToString())" onkeyup="Avarage(this);" value="@(DataInputModelCount>=dataInputCount ? Model.HaveTodayInputData==true ? Model.DataInputs[dataInputCount-1].Perakende1:0:0)"/></td>
+            <td><input type="number" name="yfiyat" id="@("y_1_"+count.ToString())" onkeyup="Avarage(this);" value="@(DataInputModelCount>=dataInputCount ? Model.HaveTodayInputData==true ? Model.DataInputs[dataInputCount-1].Perakende2:0:0)"/></td>
+            <td><input type="number" name="ofiyat" id="@("o_1_"+count.ToString())" readonly value="@(DataInputModelCount>=dataInputCount ? Model.HaveTodayInputData==true ? Model.DataInputs[dataInputCount-1].Perakende3:0:0)" /></td>
+
+            <td><input type="number" name="dfiyat2" id="@("d_2_"+count.ToString())" onkeyup="Avarage(this);" value="@(DataInputModelCount>=dataInputCount ? Model.HaveTodayInputData==true ? Model.DataInputs[dataInputCount-1].Perakende4:0:0)"/></td>
+            <td><input type="number" name="yfiyat2" id="@("y_2_"+count.ToString())" onkeyup="Avarage(this);" value="@(DataInputModelCount>=dataInputCount ? Model.HaveTodayInputData==true ? Model.DataInputs[dataInputCount-1].Perakende5:0:0)"/></td>
+            <td><input type="number" name="ofiyat2" id="@("o_2_"+count.ToString())" readonly value="@(DataInputModelCount>=dataInputCount ? Model.HaveTodayInputData==true ? Model.DataInputs[dataInputCount-1].Perakende6:0:0)"/></td>
+
+        </tr>
                 }
 
             }

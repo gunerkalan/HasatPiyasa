@@ -203,7 +203,7 @@ function Save() {
 
         var model = JSON.parse(JSON.stringify(res))
         if (model.success) {
-            SweetAlertMesaj("Hasat Piyasa  Kaydet", "Kaydedildi.", "success", "Kapat", "btn-success")
+            SweetAlertMesaj("Hasat Piyasa  Kaydet", model.messages, "success", "Kapat", "btn-success")
             setTimeout(() => {
 
                 window.location.href="/"
@@ -212,7 +212,7 @@ function Save() {
             },2000)
         }
         else {
-            SweetAlertMesaj("Hasat Piyasa  Kaydet", "Hata Oluştu. !", "error", "Kapat", "btn-danger")
+            SweetAlertMesaj("Hasat Piyasa  Kaydet", model.messages, "error", "Kapat", "btn-danger")
         }
 
     })
