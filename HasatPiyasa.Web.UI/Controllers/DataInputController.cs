@@ -33,7 +33,6 @@ namespace HasatPiyasa.Web.UI.Controllers
             var user = GetCurrentUser();
             if(user!=null)
             {
-                //var cities=  _cityService.ListAllCities().Veri;
                 var cities = await _subeCityService.GetSubeCityGTable(user.SubeId);
                 model.Cities = cities.Veri.Where(x=>x.SubeId ==user.SubeId).ToList();
             }            

@@ -3,8 +3,10 @@ using HasatPiyasa.Business.Abstract;
 using HasatPiyasa.Business.Constants;
 using HasatPiyasa.Core.Utilities.Results;
 using HasatPiyasa.Entity.Entity;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -39,6 +41,29 @@ namespace HasatPiyasa.Business.Concrete
                     BasariliMi = false,
                     Mesaj = Messages.ErrorAddSaleOrder,
                     ErrorMessage = hata.Message
+                };
+            }
+        }
+
+        public async Task<NIslemSonuc<FormDataInput>> GetFormDataInputTable(DateTime date)
+        {
+            try
+            {
+                var res = await _formDataInputDal.GetTable();
+
+                return new NIslemSonuc<FormDataInput>
+                {
+                    BasariliMi = true,
+                    Veri = res.AsQueryable().Include(x => x.DataInputs).ThenInclude(x=>x.EmteaType).ThenInclude(x=>x.EmteaGroup).ThenInclude(x=>x.Emtea).
+                    Where(x => x.AddedTime==date && x.IsActive && x.IsLock==false).ToList().FirstOrDefault()
+                };
+            }
+            catch (Exception hata)
+            {
+                return new NIslemSonuc<FormDataInput>
+                {
+                    BasariliMi = false,
+                    Mesaj = hata.InnerException.Message
                 };
             }
         }
