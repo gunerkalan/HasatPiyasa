@@ -107,6 +107,22 @@ namespace HasatPiyasa.Web.UI.Controllers
             return emteas;
         }
 
+        [HttpPost]
+        public async Task<ActionResult> CreateEmteaGroup(EmteaGroups emteaGroups)
+        {
+            emteaGroups.IsActive = true;
+            emteaGroups.AddedTime = DateTime.Now;
+            var sonuc = await _emteaGroupService.CreateEmteaGroup(emteaGroups);
+            if (sonuc.BasariliMi)
+            {
+                return Json(new { success = true, messages = sonuc.Mesaj });
+            }
+            else
+            {
+                return Json(new { success = false, messages = sonuc.Mesaj });
+            }
+        }
+
         #endregion
 
         #region EmteaTip işlemleri
