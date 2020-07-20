@@ -76,5 +76,10 @@ namespace HasatPiyasa.Web.UI.Controllers
             }
         }
 
+        public async Task<ActionResult> GetTodayDataInput()
+        {
+            
+        }
+
     }
 }

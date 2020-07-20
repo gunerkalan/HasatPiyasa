@@ -220,4 +220,14 @@ function Save() {
 
 }
 
+function GetTodayDataInput() {
+
+    $.get("/DataInput/GetTodayDataInput", (res) => {
+
+        var model = JSON.parse(res)
+
+    })
+}
+    
+
  
