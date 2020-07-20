@@ -1,6 +1,7 @@
 ﻿using HasastPiyasa.DataAccess.Abstract;
 using HasatPiyasa.Business.Abstract;
 using HasatPiyasa.Business.Constants;
+using HasatPiyasa.Core.Entities;
 using HasatPiyasa.Core.Utilities.Business;
 using HasatPiyasa.Core.Utilities.Results;
 using HasatPiyasa.Entity.Entity;
@@ -27,19 +28,27 @@ namespace HasatPiyasa.Business.Concrete
             try
             {
                 NIslemSonuc sonuc = BusinessRules.Run(CheckEmteaCodeExists(emtea.EmteaCode));
-                if(sonuc.BasariliMi != false)
+                if(sonuc.BasariliMi)
                 {
-                    return (NIslemSonuc<Emteas>)sonuc;
+                    var addedemtea = await _emteaDal.AddAsync(emtea);
+
+                    return new NIslemSonuc<Emteas>
+                    {
+                        BasariliMi = true,
+                        Veri = addedemtea,
+
+                    };
+                }
+                else
+                {
+                    return new NIslemSonuc<Emteas>
+                    {
+                        BasariliMi=false,
+                        Mesaj = Messages.ErrorEmteaCode
+                    };
                 }
 
-                var addedemtea = await _emteaDal.AddAsync(emtea);
-
-                return new NIslemSonuc<Emteas>
-                {
-                    BasariliMi = true,
-                    Veri = addedemtea,
-
-                };
+              
             }
             catch (Exception hata)
             {
@@ -52,17 +61,17 @@ namespace HasatPiyasa.Business.Concrete
             }
         }
 
-        private NIslemSonuc CheckEmteaCodeExists(string emteacode)
+        private NIslemSonuc<bool> CheckEmteaCodeExists(string emteacode)
         {
             if(_emteaDal.Get(p=>p.EmteaCode==emteacode) != null)
             {
-                return new NIslemSonuc
+                return new NIslemSonuc<bool>
                 {
                     BasariliMi = false,
                     Mesaj = Messages.ErrorAddSaleOrder
                 };
             }
-            return new NIslemSonuc
+            return new NIslemSonuc<bool>
             {
                 BasariliMi=true
             };
@@ -152,6 +161,40 @@ namespace HasatPiyasa.Business.Concrete
                     BasariliMi = false,
                     Mesaj = Messages.ErrorAddSaleOrder,
                     ErrorMessage = hata.Message
+                };
+            }
+        }
+
+        public async Task<NIslemSonuc<List<EmteaDto>>> GetEmteaGTable()
+        {
+            try
+            {
+                var res = await _emteaDal.GetTable();
+                var model = res.Include(x => x.EmteaGroups).Where(x => x.IsActive).ToList();
+
+
+                var response = model.Select(x => new EmteaDto
+                {
+                    Id = x.Id,
+                    EmteaCode = x.EmteaCode,
+                    EmteaName = x.EmteaName,
+                    AddedTime = x.AddedTime
+
+                }).ToList();
+
+                return new NIslemSonuc<List<EmteaDto>>
+                {
+                    BasariliMi = false,
+                    Veri = response
+                };
+
+            }
+            catch (Exception hata)
+            {
+                return new NIslemSonuc<List<EmteaDto>>
+                {
+                    BasariliMi = false,
+                    Mesaj = hata.InnerException.Message
                 };
             }
         }

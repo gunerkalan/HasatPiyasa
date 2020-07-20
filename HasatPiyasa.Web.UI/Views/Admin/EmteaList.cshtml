@@ -48,7 +48,7 @@
                     </div>
                     <div class="card-body">
                         <!--begin: Datatable-->
-                        @(Html.DevExtreme().DataGrid<HasatPiyasa.Entity.Entity.Emteas>().ID("GridContainer")
+                        @(Html.DevExtreme().DataGrid<HasatPiyasa.Core.Entities.EmteaDto>().ID("GridContainer")
     .SearchPanel(src => src.Visible(true).Width(250).Placeholder("Ara.."))
     .ShowBorders(true)
     .DataSource(d => d.Mvc().Controller("Admin").LoadAction("EmteaListData").Key("Id"))

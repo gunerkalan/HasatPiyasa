@@ -7,7 +7,7 @@ namespace HasatPiyasa.Core.Utilities.Business
 {
     public class BusinessRules
     {
-        public static NIslemSonuc Run(params NIslemSonuc[] logis)
+        public static NIslemSonuc<bool> Run(params NIslemSonuc<bool>[] logis)
         {
             foreach (var sonuc in logis)
             {
@@ -17,7 +17,10 @@ namespace HasatPiyasa.Core.Utilities.Business
                 }
             }
 
-            return null;
+            return new NIslemSonuc<bool>
+            {
+                BasariliMi = true,
+            };
         }
     }
 }

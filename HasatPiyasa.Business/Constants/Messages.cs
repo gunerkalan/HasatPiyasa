@@ -14,5 +14,6 @@ namespace HasatPiyasa.Business.Constants
         public static string SuccessfulyAddSendOrder = "Numralı Sevk Siparişiniz, Başarıyla Oluşturuldu !";
         public static string ErrorAddSendOrder = "Sevk Siparişi Oluşturma Sırasında Bir Hata Oluştu ! ";
         public static string ErrorEmteaCode = "Girilen Emtea Kodu ile daha önce Emtea tanımlanmış ! ";
+        public static string SuccessfulyAddEmtea = "Emtia Veritabanına Eklendi !";
     }
 }

@@ -43,8 +43,7 @@
 
     <script src="~/js/vendor.js" asp-append-version="true"></script>
 
-    <link href="~/css/SweetAlert.css" rel="stylesheet" />
-    <script src="~/js/sweetalert.min.js"></script>
+   
 
 
     @RenderSection("styles", false)
@@ -477,7 +476,7 @@
                                                 <i class="menu-arrow"></i>
                                                 <ul class="menu-subnav">
                                                     <li class="menu-item" aria-haspopup="true">
-                                                        <a href="Admin/UserList" class="menu-link">
+                                                        <a href="/Admin/UserList" class="menu-link">
                                                             <i class="menu-bullet menu-bullet-dot">
                                                                 <span></span>
                                                             </i>
@@ -2459,8 +2458,12 @@
     <!--end::Page Vendors-->
     <!--begin::Page Scripts(used by this page)-->
     <script src="/assets/js/pages/widgets.js?v=7.0.5"></script>
+    <link href="~/css/SweetAlert.css" rel="stylesheet" />
+    <script src="~/js/sweetalert.min.js"></script>
     <!--end::Page Scripts-->
     @RenderSection("scripts", false)
+
+
 </body>
 <!--end::Body-->
 </html>

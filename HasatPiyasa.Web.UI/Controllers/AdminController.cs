@@ -48,24 +48,26 @@ namespace HasatPiyasa.Web.UI.Controllers
         }
 
         [HttpGet]
-        public object EmteaListData()
+        public async Task<object> EmteaListData()
         {
-            var res = _emteaService.ListAllEmteas().Veri;
+            var res = await _emteaService.GetEmteaGTable();
 
-            return JsonConvert.SerializeObject(res);
+            return JsonConvert.SerializeObject(res.Veri);
         }
 
         [HttpPost]
         public async Task<ActionResult> CreateEmtea(Emteas emtea)
         {
+            emtea.IsActive = true;
+            emtea.AddedTime = DateTime.Now;
             var sonuc = await _emteaService.CreateEmtea(emtea);
             if(sonuc.BasariliMi)
             {
-                return Json(new { success = true });
+                return Json(new { success = true ,messages=sonuc.Mesaj});
             }
             else
             {
-                return Json(new { success = false, messages = sonuc.ErrorMessage });
+                return Json(new { success = false, messages = sonuc.Mesaj });
             }
         }
 
