@@ -16,5 +16,7 @@ namespace HasatPiyasa.Business.Constants
         public static string ErrorEmteaCode = "Girilen Emtea Kodu ile daha önce Emtea tanımlanmış ! ";
         public static string SuccessfulyAddEmtea = "Emtia Veritabanına Eklendi !";
         public static string DataInputControlError = "Emtia tipiyle bir şehire günde 1 kez kayıt yapılabilir ! ";
+        public static string ErrorEmteaGroupName = "Girilen Emtea Grup Name ile daha önce Emtea  Grup tanımlanmış ! ";
+        public static string ErrorAdd = "Veritabanına kayıt edilemedi ! ";
     }
 }

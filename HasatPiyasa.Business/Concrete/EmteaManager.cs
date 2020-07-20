@@ -55,7 +55,7 @@ namespace HasatPiyasa.Business.Concrete
                 return new NIslemSonuc<Emteas>
                 {
                     BasariliMi = false,
-                    Mesaj = Messages.ErrorAddSaleOrder,
+                    Mesaj = Messages.ErrorAdd,
                     ErrorMessage = hata.Message
                 };
             }

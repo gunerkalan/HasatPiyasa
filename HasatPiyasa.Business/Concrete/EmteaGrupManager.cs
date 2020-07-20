@@ -2,6 +2,7 @@
 using HasatPiyasa.Business.Abstract;
 using HasatPiyasa.Business.Constants;
 using HasatPiyasa.Core.Entities;
+using HasatPiyasa.Core.Utilities.Business;
 using HasatPiyasa.Core.Utilities.Results;
 using HasatPiyasa.Entity.Entity;
 using Microsoft.EntityFrameworkCore;
@@ -24,29 +25,57 @@ namespace HasatPiyasa.Business.Concrete
 
         public async Task<NIslemSonuc<EmteaGroups>> CreateEmteaGroup(EmteaGroups emteaGroups)
         {
-            try
+
+            NIslemSonuc sonuc = BusinessRules.Run(CheckEmteaGroupNameExists(emteaGroups.GroupName));
+            if(sonuc.BasariliMi)
             {
-                var addedemteagroup = await _emteaGrupDal.AddAsync(emteaGroups);
-
-                return new NIslemSonuc<EmteaGroups>
+                try
                 {
-                    BasariliMi = true,
-                    Veri = addedemteagroup,
+                    var addedemteagroup = await _emteaGrupDal.AddAsync(emteaGroups);
 
-                };
+                    return new NIslemSonuc<EmteaGroups>
+                    {
+                        BasariliMi = true,
+                        Veri = addedemteagroup,
+
+                    };
+                }
+                catch (Exception hata)
+                {
+                    return new NIslemSonuc<EmteaGroups>
+                    {
+                        BasariliMi = false,
+                        Mesaj = Messages.ErrorAdd,
+                        ErrorMessage = hata.InnerException.Message
+                    };
+                }
             }
-            catch (Exception hata)
+            else
             {
                 return new NIslemSonuc<EmteaGroups>
                 {
                     BasariliMi = false,
-                    Mesaj = Messages.ErrorAddSaleOrder,
-                    ErrorMessage = hata.Message
+                    Mesaj = Messages.ErrorEmteaGroupName
                 };
             }
+           
         }
 
-        //private NIslemSonuc<bool> CheckEmteaGoupName
+        private NIslemSonuc<bool> CheckEmteaGroupNameExists(string emteagoupname)
+        {
+            if (_emteaGrupDal.Get(p => p.GroupName == emteagoupname) != null)
+            {
+                return new NIslemSonuc<bool>
+                {
+                    BasariliMi = false,
+                    Mesaj = Messages.ErrorEmteaGroupName
+                };
+            }
+            return new NIslemSonuc<bool>
+            {
+                BasariliMi = true
+            };
+        }
 
         public NIslemSonuc<EmteaGroups> GetEmteaGroup(int id)
         {
