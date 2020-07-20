@@ -30,7 +30,7 @@ namespace HasatPiyasa.Business.Concrete
         {
             try
             {
-               var addeddatainput = await _dataInputDal.AddAsync(dataInput);
+                var addeddatainput = await _dataInputDal.AddAsync(dataInput);
 
                 return new NIslemSonuc<DataInputs>
                 {
@@ -52,14 +52,24 @@ namespace HasatPiyasa.Business.Concrete
 
         public async Task<NIslemSonuc<DataInputs>> CreateDataInputRange(List<DataInputs> dataInputs, int cityid, int subeid)
         {
-            
             try
             {
-                //NIslemSonuc sonuc = BusinessRules.Run(CheckDataInputForm(dataInputs.));
 
+                foreach (var item in dataInputs)
+                {                   
+                    NIslemSonuc sonuc = BusinessRules.Run(CheckDataInputForm(cityid, item.EmteaTypeId));
+                    if(sonuc.BasariliMi==false)
+                    {
+                        return new NIslemSonuc<DataInputs>
+                        {
+                            BasariliMi=false,
+                            Mesaj= Messages.DataInputControlError
+                        };
+                    }
+                }
 
-
-                FormDataInput formDataInput = new FormDataInput {
+                FormDataInput formDataInput = new FormDataInput
+                {
                     AddedTime = DateTime.Today,
                     IsActive = true,
                     IsLock = false,
@@ -70,7 +80,7 @@ namespace HasatPiyasa.Business.Concrete
                 var addedformdt = await _formDataInputDal.AddAsync(formDataInput);
 
                 dataInputs.ForEach(x => x.FormDataInputId = formDataInput.Id);
-               
+
                 await _dataInputDal.AddRange(dataInputs);
 
                 return new NIslemSonuc<DataInputs>
@@ -78,30 +88,30 @@ namespace HasatPiyasa.Business.Concrete
                     BasariliMi = true,
                     Mesaj = Messages.SuccessfulyAddSaleOrder
                 };
-                     
+
             }
             catch (Exception hata)
             {
-                     
-                    return new NIslemSonuc<DataInputs>
+
+                return new NIslemSonuc<DataInputs>
                 {
                     BasariliMi = false,
                     Mesaj = hata.InnerException.Message
                 };
-                    
-    
+
+
             }
-            
+
         }
 
         private NIslemSonuc<bool> CheckDataInputForm(int cityId, int emteatypeid)
         {
-            if (_dataInputDal.Get(p => p.CityId == cityId && p.AddedTime==DateTime.Today && p.EmteaTypeId==emteatypeid) != null)
+            if (_dataInputDal.Get(p => p.CityId == cityId && p.AddedTime == DateTime.Today && p.EmteaTypeId==emteatypeid) != null)
             {
                 return new NIslemSonuc<bool>
                 {
                     BasariliMi = false,
-                    Mesaj = Messages.ErrorAddSaleOrder
+                    Mesaj = Messages.DataInputControlError
                 };
             }
             return new NIslemSonuc<bool>
@@ -139,7 +149,7 @@ namespace HasatPiyasa.Business.Concrete
                 return new NIslemSonuc<DataInputs>
                 {
                     BasariliMi = true,
-                    Veri = res.AsQueryable().Include(x => x.City).Include(x=>x.Sube).Include(x=>x.EmteaType).Where(x => x.Id == value).ToList().FirstOrDefault()
+                    Veri = res.AsQueryable().Include(x => x.City).Include(x => x.Sube).Include(x => x.EmteaType).Where(x => x.Id == value).ToList().FirstOrDefault()
                 };
             }
             catch (Exception hata)
