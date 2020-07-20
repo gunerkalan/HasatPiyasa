@@ -11,6 +11,7 @@ namespace HasatPiyasa.Entity.Entity
             SubeCities = new HashSet<SubeCities>();
             Tuiks = new HashSet<Tuiks>();
             Users = new HashSet<Users>();
+            FormDataInputs = new HashSet<FormDataInput>();
         }
 
         public int Id { get; set; }
@@ -23,5 +24,6 @@ namespace HasatPiyasa.Entity.Entity
         public virtual ICollection<SubeCities> SubeCities { get; set; }
         public virtual ICollection<Tuiks> Tuiks { get; set; }
         public virtual ICollection<Users> Users { get; set; }
+        public virtual ICollection<FormDataInput> FormDataInputs { get; set; }
     }
 }

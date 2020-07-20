@@ -46,6 +46,8 @@ namespace HasatPiyasa.Business.Concrete
             }
         }
 
+   
+
         public NIslemSonuc<EmteaGroups> GetEmteaGroup(int id)
         {
             try
