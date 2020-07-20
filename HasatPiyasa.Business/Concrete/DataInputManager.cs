@@ -50,7 +50,7 @@ namespace HasatPiyasa.Business.Concrete
             }
         }
 
-        public async Task<NIslemSonuc<DataInputs>> CreateDataInputRange(List<DataInputs> dataInputs)
+        public async Task<NIslemSonuc<DataInputs>> CreateDataInputRange(List<DataInputs> dataInputs, int cityid, int subeid)
         {
             
             try
@@ -62,7 +62,9 @@ namespace HasatPiyasa.Business.Concrete
                 FormDataInput formDataInput = new FormDataInput {
                     AddedTime = DateTime.Today,
                     IsActive = true,
-                    IsLock = false
+                    IsLock = false,
+                    CityId = cityid,
+                    SubeId = subeid
                 };
 
                 var addedformdt = await _formDataInputDal.AddAsync(formDataInput);
