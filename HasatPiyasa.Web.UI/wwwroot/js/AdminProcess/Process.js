@@ -6,8 +6,13 @@
     });
 
 })*/
+
+
+
+
 function SaveEmtea() {
 
+  
     swal({
         title: "Emtea Kaydet",
         text: "Emtea Kaydedilsin Mi ?",
@@ -22,22 +27,29 @@ function SaveEmtea() {
         var emtea = {
             EmteaCode: $("#emteacode").val(),
             EmteaName: $("#emteaname").val(),
-           
+
         }
 
-            if (CheckValidateForm()) {
-                $.post("/Admin/CreateEmtea", { emtea: emtea }, function (res) {
+        if (CheckValidateForm()) {
+            $.post("/Admin/CreateEmtea", { emtea: emtea }, function (res) {
                 var model = JSON.parse(JSON.stringify(res));
 
                 if (model.success) {
-                    swal("Emtea Kaydedildi !");
-                    $(".confirm").html("")
-                    $(".confirm").append(href)
-                    $(".confirm a").css("color", "white")
-                    $(".confirm a").width($(".confirm").width())
+                    SweetAlertMesaj("Emtia Kaydet", model.messages, "success", "Kapat", "btn-success")
+                    $("#GridContainer").dxDataGrid("instance").refresh();
+                    $("#emtea-adding-modal").modal("hide")
+
+                    $('#emteacode').val('')
+                    $('#emteaname').val('')
+                  
                 }
                 else {
-                    swal("Hata :" + model.messages);
+                   
+                    SweetAlertMesaj("Emtia Kaydet", model.messages, "error", "Kapat", "btn-danger")
+                    $("#emtea-adding-modal").modal("hide")
+
+                    $('#emteacode').val('')
+                    $('#emteaname').val('')
                 }
 
             })
@@ -80,7 +92,18 @@ function ChangeColor(value, v) {
 
 }
 
-$("body").on("hide.bs.modal", "#confirmModal", () => {
-    $("#GridContainer").dxDataGrid("instance").refresh();
-})
+function SweetAlertMesaj(title, text, type, buttontext, btncss) {
+    swal({
+        title: title,
+        text: text,
+        type: type,
+        confirmButtonClass: btncss,
+        confirmButtonText: buttontext,
+        closeOnConfirm: false
+    })
+}
+
+//$("body").on("hide.bs.modal", "#emtea-adding-modal", () => {
+//    $("#GridContainer").dxDataGrid("instance").refresh();
+//})
 
