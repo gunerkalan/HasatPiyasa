@@ -53,11 +53,8 @@ namespace HasatPiyasa.Business.Concrete
         public async Task<NIslemSonuc<DataInputs>> CreateDataInputRange(List<DataInputs> dataInputs, int cityid, int subeid)
         {
             try
-            {
-
-                foreach (var item in dataInputs)
-                {                   
-                    NIslemSonuc sonuc = BusinessRules.Run(CheckDataInputForm(cityid, item.EmteaTypeId));
+            {   
+                    NIslemSonuc sonuc = CheckDataInputForm(cityid);
                     if(sonuc.BasariliMi==false)
                     {
                         return new NIslemSonuc<DataInputs>
@@ -66,7 +63,7 @@ namespace HasatPiyasa.Business.Concrete
                             Mesaj= Messages.DataInputControlError
                         };
                     }
-                }
+                
 
                 FormDataInput formDataInput = new FormDataInput
                 {
@@ -104,9 +101,9 @@ namespace HasatPiyasa.Business.Concrete
 
         }
 
-        private NIslemSonuc<bool> CheckDataInputForm(int cityId, int emteatypeid)
+        private NIslemSonuc<bool> CheckDataInputForm(int cityId)
         {
-            if (_dataInputDal.Get(p => p.CityId == cityId && p.AddedTime == DateTime.Today && p.EmteaTypeId==emteatypeid) != null)
+            if (_formDataInputDal.Get(p => p.CityId == cityId && p.AddedTime == DateTime.Today) != null)
             {
                 return new NIslemSonuc<bool>
                 {

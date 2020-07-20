@@ -29,9 +29,7 @@ namespace HasatPiyasa.Web.UI.Controllers
       
         [HttpGet]
         public async Task<ActionResult> DataInputRice(int cityId=0)
-        {
-           
-
+        { 
             var model = new HasaInputViewModel();
             var emtea = await _emteaService.GetEmteaTable(1,cityId);
             var user = GetCurrentUser();
@@ -86,7 +84,7 @@ namespace HasatPiyasa.Web.UI.Controllers
                 }
                 else
                 {
-                    return Json(new { success = false, messages = response.ErrorMessage });
+                    return Json(new { success = false, messages = response.Mesaj });
                 }
             }
             else
