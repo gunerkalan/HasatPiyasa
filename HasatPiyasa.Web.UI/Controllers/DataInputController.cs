@@ -30,7 +30,8 @@ namespace HasatPiyasa.Web.UI.Controllers
         [HttpGet]
         public async Task<ActionResult> DataInputRice(int cityId=0)
         {
-          
+           
+
             var model = new HasaInputViewModel();
             var emtea = await _emteaService.GetEmteaTable(1,cityId);
             var user = GetCurrentUser();
@@ -45,10 +46,14 @@ namespace HasatPiyasa.Web.UI.Controllers
             {
                 cityId = GetCurrentUser().Sube.SubeCities.FirstOrDefault().Id;
                 model.SelectedCityId = cityId;
+                var Inputs = await _formDataInputService.GetFormDataInputTable(DateTime.Today, cityId);
+                model.DataInputs = Inputs.Veri!=null ? Inputs.Veri.DataInputs.ToList():null;
             }
             else
             {
                 model.SelectedCityId = cityId;
+               var Inputs = await _formDataInputService.GetFormDataInputTable(DateTime.Today, cityId);
+                model.DataInputs = Inputs.Veri != null ? Inputs.Veri.DataInputs.ToList() : null;
             }
              
 
@@ -80,11 +85,7 @@ namespace HasatPiyasa.Web.UI.Controllers
             }
         }
 
-        public async Task<ActionResult> GetTodayDataInput()
-        {
-            var model = await _formDataInputService.GetFormDataInputTable(DateTime.Today);
-            return Json(model);
-        }
+      
 
     }
 }

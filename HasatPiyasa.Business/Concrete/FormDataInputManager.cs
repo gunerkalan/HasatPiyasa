@@ -45,7 +45,7 @@ namespace HasatPiyasa.Business.Concrete
             }
         }
 
-        public async Task<NIslemSonuc<FormDataInput>> GetFormDataInputTable(DateTime date)
+        public async Task<NIslemSonuc<FormDataInput>> GetFormDataInputTable(DateTime date,int cityId)
         {
             try
             {
@@ -55,7 +55,7 @@ namespace HasatPiyasa.Business.Concrete
                 {
                     BasariliMi = true,
                     Veri = res.AsQueryable().Include(x => x.DataInputs).ThenInclude(x=>x.EmteaType).ThenInclude(x=>x.EmteaGroup).ThenInclude(x=>x.Emtea).
-                    Where(x => x.AddedTime==date && x.IsActive && x.IsLock==false).ToList().FirstOrDefault()
+                    Where(x => x.AddedTime==date && x.IsActive && x.IsLock==false && x.CityId==cityId).ToList().FirstOrDefault()
                 };
             }
             catch (Exception hata)
