@@ -201,12 +201,12 @@ function Save() {
 
     $.post("/DataInput/DataInputRice", { dataInputs: dataInput }, (res) => {
 
-        var model = JSON.parse(res)
-        if (model.Veri.success) {
-            alert("Kaydeildi")
+        var model = JSON.parse(JSON.stringify(res))
+        if (model.success) {
+            SweetAlertMesaj("Hasat Piyasa  Kaydet", "Kaydedildi.", "success", "Kapat", "btn-success")
         }
         else {
-            alert("Hata")
+            SweetAlertMesaj("Hasat Piyasa  Kaydet", "Hata Oluştu. !", "error", "Kapat", "btn-danger")
         }
 
     })

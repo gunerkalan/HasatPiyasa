@@ -63,7 +63,7 @@
     <script src="https://unpkg.com/devextreme-cldr-data@1.0.2/ar.js"></script>
 
 
-    @RenderSection("Styles", false)
+ 
     <script src="~/js/devextreme/jszip.min.js"></script>
     <script src="~/js/devextreme/dx.all.js"></script>
 
@@ -2493,7 +2493,20 @@
 
     <script>
         Globalize.locale('tr');
+
+        function SweetAlertMesaj(title, text, type, buttontext, btncss) {
+            swal({
+                title: title,
+                text: text,
+                type: type,
+                confirmButtonClass: btncss,
+                confirmButtonText: buttontext,
+                closeOnConfirm: false
+            })
+        }
     </script>
+
+
 </body>
 <!--end::Body-->
 </html>

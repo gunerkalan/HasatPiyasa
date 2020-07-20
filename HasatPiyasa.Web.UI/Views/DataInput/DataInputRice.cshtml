@@ -42,7 +42,12 @@
         }
 
     </select>
+    <div style="margin-bottom:20px">
+        <div style="display:flex;float:left">
+            <span style="font-weight:bolder">@DateTime.Now</span>
+        </div>
 
+    </div>
     <table cellspacing="0" border="0" class="table" style="width:100%">
         <tbody>
             <tr height="30">
@@ -121,7 +126,7 @@
 
                         }
                         <td>
-                            <input  name="tuik" type="number" readonly value="@(
+                            <input name="tuik" type="number" readonly value="@(
                     emteaType.Tuiks.Where(x=>x.CityId==Model.SelectedCityId).Count() >0  ?
                     emteaType.Tuiks.FirstOrDefault(x=>x.EmteaGroupId==grup.Id && x.CityId==Model.SelectedCityId)!=null ?
                     emteaType.Tuiks.FirstOrDefault(x =>x.CityId==Model.SelectedCityId && x.EmteaGroupId==grup.Id && x.TuikYear == DateTime.Now.Year-1).TuikValue : 0:0 )" />
@@ -201,6 +206,10 @@
 
         </tbody>
     </table>
+
+    <div style="float:left;margin-bottom:10px" class="col-3">
+        <button onclick="Save()" class="btn btn-danger btn-block">Kaydet</button>
+    </div>
 
     @(Html.DevExtreme().LoadPanel()
         .ID("loadPanel")
