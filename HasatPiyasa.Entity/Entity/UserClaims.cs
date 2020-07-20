@@ -6,7 +6,6 @@ namespace HasatPiyasa.Entity.Entity
     public partial class UserClaims : BaseEntity
     {
         public int Id { get; set; }
-       
         public int UserId { get; set; }
         public int ClaimId { get; set; }
         public DateTime CreateDate { get; set; }

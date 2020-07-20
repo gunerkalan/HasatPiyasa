@@ -51,7 +51,7 @@ namespace HasatPiyasa.Business.Concrete
             try
             {
                 var res = await _subeDal.GetTable();
-                var model = res.Include(x => x.Bolge).Include(x=>x.Cities).Where(x => x.IsActive).ToList();
+                var model = res.Include(x => x.Bolge).Include(x=>x.SubeCities).ThenInclude(x=>x.City).Where(x => x.IsActive).ToList();
 
                 var response = model.Select(x => new SubeDto
                 {
@@ -60,7 +60,7 @@ namespace HasatPiyasa.Business.Concrete
                    SubeName = x.SubeName,
                    Id = x.Id,
                    AddedDate = x.AddedTime,
-                   Cities = string.Join(',',x.Cities.Select(x=>x.Name).ToArray())
+                   Cities = string.Join(',',x.SubeCities.Select(x=>x.City.Name).ToArray())
                     
                 }).ToList();
 
@@ -110,7 +110,7 @@ namespace HasatPiyasa.Business.Concrete
                 return new NIslemSonuc<Subes>
                 {
                     BasariliMi = true,
-                    Veri = res.AsQueryable().Include(x=>x.Tuiks).Include(x=>x.Bolge).Include(x=>x.Cities).Where(x => x.Id == value).ToList().FirstOrDefault()
+                    Veri = res.AsQueryable().Include(x=>x.Tuiks).Include(x=>x.Bolge).Include(x=>x.SubeCities).ThenInclude(x=>x.City).Where(x => x.Id == value).ToList().FirstOrDefault()
                 };
             }
             catch (Exception hata)

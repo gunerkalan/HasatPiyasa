@@ -14,34 +14,34 @@ namespace HasatPiyasa.Web.UI.Controllers
     {
         private IDataInputService _dataInputService;
         private IEmteaService _emteaService;
-        ICityService _cityService;
-        public DataInputController(IDataInputService dataInputService, IEmteaService emteaService ,ICityService cityService)
+        private ICityService _cityService;
+        private ISubeCityService _subeCityService;
+        public DataInputController(IDataInputService dataInputService, IEmteaService emteaService ,ICityService cityService, ISubeCityService subeCityService)
         {
             _dataInputService = dataInputService;
             _emteaService = emteaService;
             _cityService = cityService;
+            _subeCityService = subeCityService;
         }
       
         [HttpGet]
         public async Task<ActionResult> DataInputRice(int cityId=0)
         {
-            var userCity = ControllerContext.HttpContext.Session.Get<Users>("User");
-           
-
-
+          
             var model = new HasaInputViewModel();
             var emtea = await _emteaService.GetEmteaTable(1,cityId);
             var user = GetCurrentUser();
-            if(user!=null)
+            if(user!=null-------------------------------------------------------------------)
             {
-                var cities=  _cityService.ListAllCities().Veri;
-                model.Cities = cities.Where(x=>x.SubeId==user.SubeId).ToList();
+                //var cities=  _cityService.ListAllCities().Veri;
+                var cities = await _subeCityService.GetSubeCityGTable(user.SubeId);
+                model.Cities = cities.Veri.Where(x=>x.SubeId ==user.SubeId).ToList();
             }            
             model.Emteas = emtea.Veri;
 
             if (cityId == 0)
             {
-                cityId = userCity.Sube.Cities.FirstOrDefault().Id;
+                cityId =GetCurrentUser().
                 model.SelectedCityId = cityId;
             }
             else

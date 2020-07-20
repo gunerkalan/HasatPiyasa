@@ -6,7 +6,6 @@ namespace HasatPiyasa.Entity.Entity
     public partial class Tuiks : BaseEntity
     {
         public int Id { get; set; }
-      
         public int TuikYear { get; set; }
         public int? CityId { get; set; }
         public int? SubeId { get; set; }

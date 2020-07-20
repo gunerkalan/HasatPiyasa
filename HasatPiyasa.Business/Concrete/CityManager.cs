@@ -86,6 +86,28 @@ namespace HasatPiyasa.Business.Concrete
             }
         }
 
+        public async Task<NIslemSonuc<List<Cities>>> GetListCityTableForRiceInput()
+        {
+            try
+            {
+                var res = await _cityDal.GetTable();
+
+                return new NIslemSonuc<List<Cities>>
+                {
+                    BasariliMi = true,
+                    Veri = res.AsQueryable().Include(x=>x.SubeCities).ThenInclude(x=>x.City).ToList()
+                };
+            }
+            catch (Exception hata)
+            {
+                return new NIslemSonuc<List<Cities>>
+                {
+                    BasariliMi = false,
+                    Mesaj = hata.InnerException.Message
+                };
+            }
+        }
+
         public NIslemSonuc<List<Cities>> ListAllCities()
         {
             try

@@ -14,5 +14,6 @@ namespace HasatPiyasa.Business.Abstract
         NIslemSonuc<Cities> GetCity(int id);
         Task<NIslemSonuc<Cities>> UpdateCity(Cities city);
         Task<NIslemSonuc<Cities>> GetCityTable(int value);
+       
     }
 }

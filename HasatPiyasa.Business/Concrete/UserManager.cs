@@ -68,7 +68,7 @@ namespace HasatPiyasa.Business.Concrete
                 return new NIslemSonuc<Users>
                 {
                     BasariliMi = true,
-                    Veri = res.AsQueryable().Include(x => x.UserClaims).Include(x=>x.Sube).ThenInclude(x=>x.Cities).Where(x => x.IsActive && x.DomainUserName==username).ToList().FirstOrDefault()
+                    Veri = res.AsQueryable().Include(x => x.UserClaims).Include(x=>x.Sube).ThenInclude(x=>x.SubeCities).ThenInclude(x=>x.City).Where(x => x.IsActive && x.DomainUserName==username).ToList().FirstOrDefault()
                 };
             }
             catch (Exception hata)

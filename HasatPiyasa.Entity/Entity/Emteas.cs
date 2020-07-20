@@ -11,7 +11,6 @@ namespace HasatPiyasa.Entity.Entity
         }
 
         public int Id { get; set; }
-       
         public string EmteaName { get; set; }
         public string EmteaCode { get; set; }
 

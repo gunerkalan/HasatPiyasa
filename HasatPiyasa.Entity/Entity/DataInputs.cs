@@ -6,13 +6,11 @@ namespace HasatPiyasa.Entity.Entity
     public partial class DataInputs : BaseEntity
     {
         public int Id { get; set; }
-        
         public int SubeId { get; set; }
-        public int FormDataInputId { get; set; }
         public int CityId { get; set; }
         public int EmteaId { get; set; }
-        public int EmteaTypeId { get; set; }
         public int EmteaGroupId { get; set; }
+        public int EmteaTypeId { get; set; }
         public int AddUserId { get; set; }
         public int? UpdateUserId { get; set; }
         public int AlimYear { get; set; }
@@ -40,12 +38,13 @@ namespace HasatPiyasa.Entity.Entity
         public double? Perakende5 { get; set; }
         public double? Perakende6 { get; set; }
         public double? PerakendeToplam { get; set; }
+        public int FormDataInputId { get; set; }
 
         public virtual Users AddUser { get; set; }
         public virtual Cities City { get; set; }
         public virtual EmteaTypes EmteaType { get; set; }
+        public virtual FormDataInput FormDataInput { get; set; }
         public virtual Subes Sube { get; set; }
         public virtual Users UpdateUser { get; set; }
-        public virtual FormDataInput FormDataInput { get; set; }
     }
 }

@@ -13,7 +13,6 @@ namespace HasatPiyasa.Entity.Entity
         }
 
         public int Id { get; set; }
-       
         public string EmteaTypeName { get; set; }
         public int EmteaGroupId { get; set; }
 

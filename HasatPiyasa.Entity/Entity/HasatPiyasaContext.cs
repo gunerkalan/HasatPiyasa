@@ -23,38 +23,43 @@ namespace HasatPiyasa.Entity.Entity
         public virtual DbSet<EmteaTypeGroups> EmteaTypeGroups { get; set; }
         public virtual DbSet<EmteaTypes> EmteaTypes { get; set; }
         public virtual DbSet<Emteas> Emteas { get; set; }
+        public virtual DbSet<FormDataInput> FormDataInput { get; set; }
+        public virtual DbSet<SubeCities> SubeCities { get; set; }
         public virtual DbSet<Subes> Subes { get; set; }
         public virtual DbSet<Tuiks> Tuiks { get; set; }
         public virtual DbSet<UserClaims> UserClaims { get; set; }
         public virtual DbSet<Users> Users { get; set; }
-        public virtual DbSet<FormDataInput> FormDataInput { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
- 
-               optionsBuilder.UseSqlServer("data source =GUNER-PC\\SQLEXPRESS ;initial catalog=HasatPiyasa;persist security info=true; user id=sa;password=262835Gg");
-               //optionsBuilder.UseSqlServer("data source =.\\SQLEXPRESS ;initial catalog=HasatPiyasa;persist security info=true; user id=sa;password=123321");
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
+                optionsBuilder.UseSqlServer("data source =GUNER-PC\\SQLEXPRESS ;initial catalog=HasatPiyasa;persist security info=true; user id=sa;password=262835Gg");
             }
         }
 
-        #region Guner Context
-        
-        /*optionsBuilder.UseSqlServer("data source =GUNER-PC\\SQLEXPRESS ;initial catalog=HasatPiyasa;persist security info=true; user id=sa;password=262835Gg");*/
-
-        #endregion
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Bolges>(entity =>
+            {
+                entity.Property(e => e.Name)
+                    .IsRequired()
+                    .HasMaxLength(100);
+            });
+
             modelBuilder.Entity<Cities>(entity =>
             {
-                entity.HasIndex(e => e.SubeId);
+                entity.Property(e => e.Name)
+                    .IsRequired()
+                    .HasMaxLength(100);
+            });
 
-                entity.HasOne(d => d.Sube)
-                    .WithMany(p => p.Cities)
-                    .HasForeignKey(d => d.SubeId)
-                    .HasConstraintName("FK_Cities_Subes");
+            modelBuilder.Entity<Claims>(entity =>
+            {
+                entity.Property(e => e.ClaimName)
+                    .IsRequired()
+                    .HasMaxLength(100);
             });
 
             modelBuilder.Entity<DataInputs>(entity =>
@@ -87,6 +92,12 @@ namespace HasatPiyasa.Entity.Entity
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_DataInputs_EmteaTypes");
 
+                entity.HasOne(d => d.FormDataInput)
+                    .WithMany(p => p.DataInputs)
+                    .HasForeignKey(d => d.FormDataInputId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_DataInputs_FormDataInput");
+
                 entity.HasOne(d => d.Sube)
                     .WithMany(p => p.DataInputs)
                     .HasForeignKey(d => d.SubeId)
@@ -103,6 +114,10 @@ namespace HasatPiyasa.Entity.Entity
             {
                 entity.HasIndex(e => e.EmteaId);
 
+                entity.Property(e => e.GroupName)
+                    .IsRequired()
+                    .HasMaxLength(100);
+
                 entity.HasOne(d => d.Emtea)
                     .WithMany(p => p.EmteaGroups)
                     .HasForeignKey(d => d.EmteaId)
@@ -114,9 +129,14 @@ namespace HasatPiyasa.Entity.Entity
             {
                 entity.HasIndex(e => e.EmteaTypeId);
 
+                entity.Property(e => e.EmteaTypeGroupName)
+                    .IsRequired()
+                    .HasMaxLength(100);
+
                 entity.HasOne(d => d.EmteaType)
                     .WithMany(p => p.EmteaTypeGroups)
                     .HasForeignKey(d => d.EmteaTypeId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_EmteaTypeGroups_EmteaTypes");
             });
 
@@ -125,6 +145,10 @@ namespace HasatPiyasa.Entity.Entity
                 entity.HasIndex(e => e.EmteaGroupId)
                     .HasName("IX_EmteaTypes_EmteaId");
 
+                entity.Property(e => e.EmteaTypeName)
+                    .IsRequired()
+                    .HasMaxLength(100);
+
                 entity.HasOne(d => d.EmteaGroup)
                     .WithMany(p => p.EmteaTypes)
                     .HasForeignKey(d => d.EmteaGroupId)
@@ -132,9 +156,43 @@ namespace HasatPiyasa.Entity.Entity
                     .HasConstraintName("FK_EmteaTypes_EmteaGroups");
             });
 
+            modelBuilder.Entity<Emteas>(entity =>
+            {
+                entity.Property(e => e.EmteaCode)
+                    .IsRequired()
+                    .HasMaxLength(50);
+
+                entity.Property(e => e.EmteaName)
+                    .IsRequired()
+                    .HasMaxLength(100);
+            });
+
+            modelBuilder.Entity<SubeCities>(entity =>
+            {
+                entity.HasOne(d => d.City)
+                    .WithMany(p => p.SubeCities)
+                    .HasForeignKey(d => d.CityId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_SubeCities_Cities");
+
+                entity.HasOne(d => d.Sube)
+                    .WithMany(p => p.SubeCities)
+                    .HasForeignKey(d => d.SubeId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_SubeCities_Subes");
+            });
+
             modelBuilder.Entity<Subes>(entity =>
             {
                 entity.HasIndex(e => e.BolgeId);
+
+                entity.Property(e => e.SubeKod)
+                    .IsRequired()
+                    .HasMaxLength(25);
+
+                entity.Property(e => e.SubeName)
+                    .IsRequired()
+                    .HasMaxLength(100);
 
                 entity.HasOne(d => d.Bolge)
                     .WithMany(p => p.Subes)
@@ -208,13 +266,9 @@ namespace HasatPiyasa.Entity.Entity
 
                 entity.HasIndex(e => e.SubeId);
 
-                entity.Property(e => e.Title).HasMaxLength(50);
+                entity.Property(e => e.Email).HasMaxLength(50);
 
-                entity.HasOne(d => d.Sube)
-                    .WithMany(p => p.Users)
-                    .HasForeignKey(d => d.SubeId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_Users_Subes");
+                entity.Property(e => e.Title).HasMaxLength(50);
             });
 
             OnModelCreatingPartial(modelBuilder);

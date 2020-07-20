@@ -15,7 +15,6 @@ namespace HasatPiyasa.Entity.Entity
         }
 
         public int UserId { get; set; }
-      
         public string Name { get; set; }
         public string Surname { get; set; }
         public string SicilNumber { get; set; }
@@ -24,6 +23,7 @@ namespace HasatPiyasa.Entity.Entity
         public string Password { get; set; }
         public int SubeId { get; set; }
         public string Title { get; set; }
+        public string Email { get; set; }
 
         public virtual Subes Sube { get; set; }
         public virtual ICollection<DataInputs> DataInputsAddUser { get; set; }

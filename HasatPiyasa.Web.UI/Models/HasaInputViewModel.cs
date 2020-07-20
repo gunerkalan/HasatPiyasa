@@ -11,7 +11,7 @@ namespace HasatPiyasa_Web_UI.Models
         public EmteaGroups EmteaGroups { get; set; }
         public EmteaTypeGroups EmteaTypeGroups { get; set; }
         public EmteaTypes EmteaTypes { get; set; }
-        public List<Cities>  Cities { get; set; }
+        public List<SubeCities>  Cities { get; set; }
         public int SelectedCityId { get; set; }
 
     }
