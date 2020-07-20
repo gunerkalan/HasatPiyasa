@@ -9,7 +9,7 @@
             }
         });
     });
-     
+    GetTodayDataInput()
 })
 function YuzdeHesapla(e) {
     var value = Number(e.value);

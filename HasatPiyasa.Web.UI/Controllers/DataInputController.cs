@@ -16,12 +16,15 @@ namespace HasatPiyasa.Web.UI.Controllers
         private IEmteaService _emteaService;
         private ICityService _cityService;
         private ISubeCityService _subeCityService;
-        public DataInputController(IDataInputService dataInputService, IEmteaService emteaService ,ICityService cityService, ISubeCityService subeCityService)
+        private readonly IFormDataInputService _formDataInputService;
+
+        public DataInputController(IDataInputService dataInputService, IEmteaService emteaService ,ICityService cityService, ISubeCityService subeCityService ,IFormDataInputService formDataInputService)
         {
             _dataInputService = dataInputService;
             _emteaService = emteaService;
             _cityService = cityService;
             _subeCityService = subeCityService;
+            _formDataInputService = formDataInputService;
         }
       
         [HttpGet]
@@ -63,6 +66,7 @@ namespace HasatPiyasa.Web.UI.Controllers
                 x.AddUserId = user.UserId;
                 x.AlimYear = DateTime.Now.Year;
                 x.EmteaId = 1;
+                x.AddedTime = DateTime.Today;
             });
 
             var response = await _dataInputService.CreateDataInputRange(dataInputs);
@@ -78,7 +82,8 @@ namespace HasatPiyasa.Web.UI.Controllers
 
         public async Task<ActionResult> GetTodayDataInput()
         {
-            
+            var model = await _formDataInputService.GetFormDataInputTable(DateTime.Today);
+            return Json(model);
         }
 
     }
