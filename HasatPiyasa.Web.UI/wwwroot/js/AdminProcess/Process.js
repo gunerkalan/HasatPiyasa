@@ -116,6 +116,59 @@ function SaveEmteaGroup() {
 
 
 }
+function SaveTuikSube() {
+
+
+    swal({
+        title: "Emtea Grup Kaydet",
+        text: "Emtea Grup Kaydedilsin Mi ?",
+        type: "info",
+        showCancelButton: true,
+        closeOnConfirm: false,
+        showLoaderOnConfirm: true,
+        confirmButtonText: "Tamam",
+        cancelButtonText: "İptal",
+    }, function () {
+
+        var emteaGroups = {
+            EmteaId: $("#drpemtias :selected").val(),
+            GroupName: $("#emteagroupname").val(),
+
+        }
+
+        if (CheckValidateFormEg()) {
+            $.post("/Admin/CreateEmteaGroup", { emteaGroups: emteaGroups }, function (res) {
+                var model = JSON.parse(JSON.stringify(res));
+
+                if (model.success) {
+                    SweetAlertMesaj("Emtia Grup Kaydet", model.messages, "success", "Kapat", "btn-success")
+                    $("#GridContainer").dxDataGrid("instance").refresh();
+                    $("#emteagroup-adding-modal").modal("hide")
+
+                    $('#drpemtias').val('')
+                    $('#emteagroupname').val('')
+
+                }
+                else {
+
+                    SweetAlertMesaj("Emtia Grup Kaydet", model.messages, "error", "Kapat", "btn-danger")
+
+                }
+
+            })
+        }
+        else {
+            swal("Hata : Lütfen gerekli alanları doldurunuz !");
+            this.showLoaderOnConfirm = false
+            return false
+
+        }
+
+
+    });
+
+
+}
 function CheckValidateForm() {
 
     var EmteaCode = $("#emteacode").val()
