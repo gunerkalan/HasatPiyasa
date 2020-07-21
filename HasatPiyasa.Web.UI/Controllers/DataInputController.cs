@@ -95,7 +95,78 @@ namespace HasatPiyasa.Web.UI.Controllers
 
         }
 
-      
+        [HttpGet]//Hububat Get
+        public async Task<ActionResult> DataImputCereal()
+        {
+            return View();
+        }
+
+        [HttpPost] //Hububat Post
+        public async Task<ActionResult> DataInputCereal(List<DataInputs> dataInputs)
+        {
+            return View();
+        }
+
+        [HttpGet]//Mısır Get
+        public async Task<ActionResult> DataImputCorn(int cityId = 0)
+        {
+            return View();
+        }
+
+        [HttpPost] //Mısır Post
+        public async Task<ActionResult> DataInputCorn(List<DataInputs> dataInputs)
+        {
+            return View();
+        }
+
+        [HttpGet]//Kırmızı Mercimek Get
+        public async Task<ActionResult> DataImputRedLentil(int cityId = 0)
+        {
+            return View();
+        }
+
+        [HttpPost] //Kırmızı Mercimek Post
+        public async Task<ActionResult> DataInputRedLentil(List<DataInputs> dataInputs)
+        {
+            return View();
+        }
+
+        [HttpGet]//Yeşil Mercimek Get
+        public async Task<ActionResult> DataImputGreenLentil(int cityId = 0)
+        {
+            return View();
+        }
+
+        [HttpPost] //Yeşil Mercimek Post
+        public async Task<ActionResult> DataInputGreenLentil(List<DataInputs> dataInputs)
+        {
+            return View();
+        }
+
+        [HttpGet]//Kuru Fasulye Get
+        public async Task<ActionResult> DataImputBean(int cityId = 0)
+        {
+            return View();
+        }
+
+        [HttpPost] //Kuru Fasulye Post
+        public async Task<ActionResult> DataInputBean(List<DataInputs> dataInputs)
+        {
+            return View();
+        }
+
+        [HttpGet]//Nohut Get
+        public async Task<ActionResult> DataImputChickPea(int cityId = 0)
+        {
+            return View();
+        }
+
+        [HttpPost] //Nohut Post
+        public async Task<ActionResult> DataInputChickPea(List<DataInputs> dataInputs)
+        {
+            return View();
+        }
+
 
     }
 }
