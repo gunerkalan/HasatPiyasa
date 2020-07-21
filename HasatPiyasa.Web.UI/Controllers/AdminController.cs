@@ -230,6 +230,30 @@ namespace HasatPiyasa.Web.UI.Controllers
             return View(model);
         }
 
+        public JsonResult ChooseEmteaGrup(string emteaid)
+        {
+            var emteagoups = _emteaGroupService.ListAllEmteaGroups().Veri.AsEnumerable().Where(s => s.EmteaId == int.Parse(emteaid)).Select
+                (s => new
+                {
+                    id = s.Id,
+                    EmteaGrupName = s.GroupName
+                }).ToList();
+
+            return Json(emteagoups); 
+        }
+
+        public JsonResult ChooseEmteaType(string emteagroupid)
+        {
+            var emteatypes = _emteaTypeService.ListAllEmteType().Veri.AsEnumerable().Where(s => s.EmteaGroupId == int.Parse(emteagroupid)).Select(s => new
+            {
+                id=s.Id,
+                EmteaTpeName = s.EmteaTypeName
+
+            }).ToList();
+
+            return Json(emteatypes);
+        }
+
         [HttpGet]
         public async Task<object> TuikSubeListData()
         {
