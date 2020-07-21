@@ -11,6 +11,14 @@
 <script src="~/js/devextreme/aspnet/dx.aspnet.mvc.js"></script>
 <script src="~/js/devextreme/aspnet/dx.aspnet.data.js"></script>
 
+
+@section scripts{
+
+
+    <script src="~/js/AdminProcess/Process.js"></script>
+
+}
+
 <div class="row">
 
     <div class="col-sm-12">
@@ -32,7 +40,7 @@
                             <!--begin::Dropdown-->
                             <!--end::Dropdown-->
                             <!--begin::Button-->
-                            <a href="#" class="btn btn-primary font-weight-bolder" data-toggle="modal" data-target="#emtea-adding-modal">
+                            <a href="#" class="btn btn-danger font-weight-bolder" data-toggle="modal" data-target="#emtea-adding-modal">
                                 <span class="svg-icon svg-icon-md">
                                     <!--begin::Svg Icon | path:assets/media/svg/icons/Design/Flatten.svg-->
                                     <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
@@ -163,18 +171,12 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-bg-default" data-dismiss="modal">Kapat</button>
-                <button type="submit" class="btn btn-bg-success" data-dismiss="modal" onclick="SaveEmtea();" id="submit">Kaydet</button>
+                <button type="button" class="btn btn-bg-light" data-dismiss="modal">Kapat</button>
+                <button type="submit" class="btn btn-bg-danger" onclick="SaveEmtea();" id="submit">Kaydet</button>
             </div>
         </div>
 
     </div>
 </div>
 
-<script src="~/js/AdminProcess/Process.js"></script>
 
-@section scripts{
-
-
-
-}

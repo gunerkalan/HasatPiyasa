@@ -29,7 +29,7 @@
                             <!--begin::Dropdown-->
                             <!--end::Dropdown-->
                             <!--begin::Button-->
-                            <a href="#" class="btn btn-primary font-weight-bolder" data-toggle="modal" data-target="#emtea-adding-modal">
+                            <a href="#" class="btn btn-danger font-weight-bolder" data-toggle="modal" data-target="#tuiksube-adding-modal">
                                 <span class="svg-icon svg-icon-md">
                                     <!--begin::Svg Icon | path:assets/media/svg/icons/Design/Flatten.svg-->
                                     <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
@@ -145,4 +145,170 @@
 
 
 </div>
+
+<div id="tuiksube-adding-modal" class="modal fade updatemodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog">
+
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title"><i class="fa fa-plus-circle"></i> Tüik Şube Verisi Ekle</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="field-2" class="control-label">Emtia</label>
+                            <select class="form-control" id="drpemtias" asp-for="@Model.Tuik.EmteaId" asp-items="@Model.Emteas">
+                                <option disabled selected value="-1">--Seçiniz--</option>
+                            </select>  
+                        </div>
+
+                        <div class="form-group">
+                            <label for="field-2" class="control-label">Emtia Grup</label>
+                            <select class="form-control" id="drpemtiagroups" asp-for="@Model.Tuik.EmteaGroupId" asp-items="@Model.EmteaGroups">
+                                <option disabled selected value="-1">--Seçiniz--</option>
+                            </select>
+
+                        </div>
+
+                        <div class="form-group">
+                            <label for="field-2" class="control-label">Emtia Tipi</label>
+                            <select class="form-control" id="drpemtiatypes" asp-for="@Model.Tuik.EmteaTypeId" asp-items="@Model.EmteaTypes">
+                                <option disabled selected value="-1">--Seçiniz--</option>
+                            </select>                            
+                        </div>
+
+                        <div class="form-group">
+                            <label for="field-2" class="control-label">Şube</label>
+                            <select class="form-control" id="drpsubes" asp-for="@Model.Tuik.SubeId" asp-items="@Model.Subes">
+                                <option disabled selected value="-1">--Seçiniz--</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="tuikvalue" class="control-label">Tüik Değeri</label>
+                            <input type="text" name="TuikValue" id="tuikvalue" class="form-control" placeholder="Tüik Değeri" />
+                        </div>
+
+                        <div class="form-group">
+                           
+                            <label for="guessvalue" class="control-label">TMO Tahmini</label>
+                            <input type="text" name="GuessValue" id="guessvalue" class="form-control" placeholder="TMO Tahmini" />
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-bg-light" data-dismiss="modal">Kapat</button>
+                <button type="submit" class="btn btn-bg-danger" onclick="SaveTuikSube();" id="submit">Kaydet</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    var emteagroupid = 0;
+    var emteaid = 0;
+    $(document).ready(function () {
+        $("#drpemtias").change(function () {
+            $.ajax({
+                url: '/Admin/ChooseEmteaGrup/',
+                data: { emteaid: $(this).val() },
+                dataType: "JSON",
+                success: function (result) {
+                    var emteagroups = $("#drpemtiagroups");
+                    emteagroups.empty();
+                    $.each(result, function (i, item) {
+                        emteagroups.append($("<option></option>").attr("value", item.id)
+                            .html(item.EmteaGrupName));
+                    });
+                }
+            });
+            if (emteagroupid > 0) $("#drpemtiagroups").val(emteagroupid.toString())
+            emteaid = $("#drpemtias").val();
+        });
+       
+     
+      }
+    );
+    function Gozle(e) {
+        if (!e) e = event;
+        Izle(e);
+    }
+    function Izle(e) {
+        if (emteaid > 0)
+            $.ajax({
+                url: '/Admin/ChooseEmteaGrup/',
+                data: { emteaid: emteaid },
+                dataType: "JSON",
+                success: function (result) {
+                    var emteagroupid = $("#drpemtiagroups");
+                    emteagroupid.empty();
+                    $.each(result, function (i, item) {
+                        emteagroupid.append($("<option></option>").attr("value", item.id)
+                            .html(item.EmteaGrupName));
+                    });
+                    $("#drpemtiagroups").val(emteagroupid.toString());
+                }
+            });
+        emteaid = 0;
+    }
+
+</script>
+
+<script type="text/javascript">
+
+    var emteatypeid = 0;
+    var emteagroupid = 0;
+    $(document).ready(function () {
+        $("#drpemtiagroups").change(function () {
+            $.ajax({
+                url: '/Admin/ChooseEmteaType/',
+                data: { emteagroupid: $(this).val() },
+                dataType: "JSON",
+                success: function (result) {
+                    var emteatypes = $("#drpemtiatypes");
+                    emteatypes.empty();
+                    $.each(result, function (i, item) {
+                        emteatypes.append($("<option></option>").attr("value", item.id)
+                            .html(item.EmteaTpeName));
+                    });
+                }
+            });
+            if (emteatypeid > 0) $("#drpemtiatypes").val(emteatypeid.toString())
+            emteagroupid = $("#drpemtiagroups").val();
+        });
+       
+     
+      }
+    );
+    function Gozle(e) {
+        if (!e) e = event;
+        Izle(e);
+    }
+    function Izle(e) {
+        if (emteagroupid > 0)
+            $.ajax({
+                url: '/Admin/ChooseEmteaType/',
+                data: { emteagroupid: emteagroupid },
+                dataType: "JSON",
+                success: function (result) {
+                    var emteatypes = $("#drpemtiatypes");
+                    emteatypes.empty();
+                    $.each(result, function (i, item) {
+                        emteatypes.append($("<option></option>").attr("value", item.id)
+                            .html(item.EmteaTpeName));
+                    });
+                    $("#drpemtiatypes").val(emteatypes.toString());
+                }
+            });
+        emteagroupid = 0;
+    }
+
+</script>
+
 

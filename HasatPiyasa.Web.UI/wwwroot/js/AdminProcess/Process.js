@@ -1,18 +1,18 @@
-﻿/*$(function () {
+﻿$(function () {
     $("#GridContainer").dxDataGrid({
-       export: {
+        export: {
             enabled: true
         }
     });
 
-})*/
+}) 
 
 
 
 
 function SaveEmtea() {
 
-  
+
     swal({
         title: "Emtea Kaydet",
         text: "Emtea Kaydedilsin Mi ?",
@@ -41,15 +41,118 @@ function SaveEmtea() {
 
                     $('#emteacode').val('')
                     $('#emteaname').val('')
-                  
+
                 }
                 else {
-                   
-                    SweetAlertMesaj("Emtia Kaydet", model.messages, "error", "Kapat", "btn-danger")
-                    $("#emtea-adding-modal").modal("hide")
 
-                    $('#emteacode').val('')
-                    $('#emteaname').val('')
+                    SweetAlertMesaj("Emtia Kaydet", model.messages, "error", "Kapat", "btn-danger")
+                   
+                }
+
+            })
+        }
+        else {
+            swal("Hata : Lütfen gerekli alanları doldurunuz !");
+            this.showLoaderOnConfirm = false
+            return false
+
+        }
+
+
+    });
+
+
+}
+function SaveEmteaGroup() {
+
+
+    swal({
+        title: "Emtea Grup Kaydet",
+        text: "Emtea Grup Kaydedilsin Mi ?",
+        type: "info",
+        showCancelButton: true,
+        closeOnConfirm: false,
+        showLoaderOnConfirm: true,
+        confirmButtonText: "Tamam",
+        cancelButtonText: "İptal",
+    }, function () {
+
+        var emteaGroups = {
+            EmteaId: $("#drpemtias :selected").val(),
+            GroupName: $("#emteagroupname").val(),
+
+        }
+
+            if (CheckValidateFormEg()) {
+                $.post("/Admin/CreateEmteaGroup", { emteaGroups: emteaGroups }, function (res) {
+                var model = JSON.parse(JSON.stringify(res));
+
+                if (model.success) {
+                    SweetAlertMesaj("Emtia Grup Kaydet", model.messages, "success", "Kapat", "btn-success")
+                    $("#GridContainer").dxDataGrid("instance").refresh();
+                    $("#emteagroup-adding-modal").modal("hide")
+
+                    $('#drpemtias').val('')
+                    $('#emteagroupname').val('')
+
+                }
+                else {
+
+                    SweetAlertMesaj("Emtia Grup Kaydet", model.messages, "error", "Kapat", "btn-danger")
+                   
+                }
+
+            })
+        }
+        else {
+            swal("Hata : Lütfen gerekli alanları doldurunuz !");
+            this.showLoaderOnConfirm = false
+            return false
+
+        }
+
+
+    });
+
+
+}
+function SaveTuikSube() {
+
+
+    swal({
+        title: "Emtea Grup Kaydet",
+        text: "Emtea Grup Kaydedilsin Mi ?",
+        type: "info",
+        showCancelButton: true,
+        closeOnConfirm: false,
+        showLoaderOnConfirm: true,
+        confirmButtonText: "Tamam",
+        cancelButtonText: "İptal",
+    }, function () {
+
+        var emteaGroups = {
+            EmteaId: $("#drpemtias :selected").val(),
+            GroupName: $("#emteagroupname").val(),
+
+        }
+
+        if (CheckValidateFormEg()) {
+            $.post("/Admin/CreateEmteaGroup", { emteaGroups: emteaGroups }, function (res) {
+                var model = JSON.parse(JSON.stringify(res));
+
+                if (model.success) {
+                    SweetAlertMesaj("Emtia Grup Kaydet", model.messages, "success", "Kapat", "btn-success")
+                    $("#GridContainer").dxDataGrid("instance").refresh();
+                    $("#emteagroup-adding-modal").modal("hide")
+
+                    $('#drpemtias').val('')
+                    $('#emteagroupname').val('')
+
+                }
+                else {
+
+                    SweetAlertMesaj("Emtia Grup Kaydet", model.messages, "error", "Kapat", "btn-danger")
+
                 }
 
             })
@@ -77,6 +180,21 @@ function CheckValidateForm() {
     else {
         ChangeColor(EmteaCode, "emteacode")
         ChangeColor(EmteaName, "emteaname")
+        return false
+
+    }
+}
+function CheckValidateFormEg() {
+
+    var EmteaId = $("#drpemtias :selected").val()
+    var GroupName= $("#emteagroupname").val()
+
+    if (EmteaId != "" && GroupName != "") {
+        return true
+    }
+    else {
+        ChangeColor(EmteaId, "drpemtias")
+        ChangeColor(GroupName, "emteagroupname")
         return false
 
     }

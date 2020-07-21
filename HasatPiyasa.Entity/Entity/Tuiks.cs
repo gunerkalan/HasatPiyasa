@@ -13,7 +13,8 @@ namespace HasatPiyasa.Entity.Entity
         public int AddUserId { get; set; }
         public int? UpdateUserId { get; set; }
         public bool IsCity { get; set; }
-        public int? EmteaGroupId { get; set; }
+        public int EmteaGroupId { get; set; }
+        public int EmteaId { get; set; }
         public double TuikValue { get; set; }
         public int GuessYear { get; set; }
         public double GuessValue { get; set; }
