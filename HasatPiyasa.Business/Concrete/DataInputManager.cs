@@ -59,13 +59,13 @@ namespace HasatPiyasa.Business.Concrete
                     var formId = 0;
                     dataInputs.ForEach(f =>
                     {
-                        var gettable = _dataInputDal.GetTable().Result;
+                        var gettable = _dataInputDal.GetTable().Result.ToList();
                         var _dataInputItem = gettable.FirstOrDefault(x => x.Id == f.Id);
                         if (_dataInputItem != null)
                         {
                             //update
                             _dataInputItem = f;
-                            _dataInputDal.Update(_dataInputItem);
+                            _dataInputDal.SaveChange().SaveChanges();
                             formId = f.FormDataInputId;
 
                         }

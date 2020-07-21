@@ -128,10 +128,15 @@ namespace HasatPiyasa.Entity.DataAccess.EntityFrameworkCore
             
         }
 
+        public DbContext SaveChange()
+        {
+            return Context;
+        }
+
         public TEntity Update(TEntity entity)
         {
             
-                var updatedEntity = Context.Entry(entity);
+                var updatedEntity = Context.Entry(entity);                 
                 updatedEntity.State = EntityState.Modified;
                 Context.SaveChanges();
                 return entity;
