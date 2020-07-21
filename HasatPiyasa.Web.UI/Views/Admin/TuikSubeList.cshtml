@@ -159,14 +159,14 @@
                     <div class="col-md-12">
                         <div class="form-group">
                             <label for="field-2" class="control-label">Emtia</label>
-                            <select class="form-control" id="drpemtias" asp-for="@Model.Tuik.EmteaId" asp-items="@Model.Emteas">
+                            <select class="form-control" id="drpemtias" asp-for="@Model.Tuik.EmteaId" asp-items="@Model.Emteas" onchange="EmteaChange();">
                                 <option disabled selected value="-1">--Seçiniz--</option>
                             </select>  
                         </div>
 
                         <div class="form-group">
                             <label for="field-2" class="control-label">Emtia Grup</label>
-                            <select class="form-control" id="drpemtiagroups" asp-for="@Model.Tuik.EmteaGroupId" asp-items="@Model.EmteaGroups">
+                            <select class="form-control" id="drpemtiagroups" asp-for="@Model.Tuik.EmteaGroupId" asp-items="@Model.EmteaGroups" onchange="EmteaGroupChange();">
                                 <option disabled selected value="-1">--Seçiniz--</option>
                             </select>
 
@@ -213,102 +213,43 @@
 
     var emteagroupid = 0;
     var emteaid = 0;
-    $(document).ready(function () {
-        $("#drpemtias").change(function () {
-            $.ajax({
-                url: '/Admin/ChooseEmteaGrup/',
-                data: { emteaid: $(this).val() },
-                dataType: "JSON",
-                success: function (result) {
-                    var emteagroups = $("#drpemtiagroups");
-                    emteagroups.empty();
-                    $.each(result, function (i, item) {
-                        emteagroups.append($("<option></option>").attr("value", item.id)
-                            .html(item.EmteaGrupName));
-                    });
-                }
+    var selectedemteagroupid = 0;
+    var count = 0;
+   
+    function EmteaChange() {
+        $("#drpemtiagroups").empty()
+        var id = $("#drpemtias :selected").val()
+
+        $.post("/Admin/ChooseEmteaGrup", { emteaid: id }, (res) => {
+            var model = JSON.parse(JSON.stringify(res))
+            $.each(model, (i, item) => {
+                if (count == 1)
+                    selectedemteagroupid = item.id
+                $("#drpemtiagroups").append(`<option value="${item.id}">${item.EmteaGrupName}</option>`)
             });
-            if (emteagroupid > 0) $("#drpemtiagroups").val(emteagroupid.toString())
-            emteaid = $("#drpemtias").val();
-        });
-       
-     
-      }
-    );
-    function Gozle(e) {
-        if (!e) e = event;
-        Izle(e);
+
+            EmteaGroupChange()
+
+        })
+
     }
-    function Izle(e) {
-        if (emteaid > 0)
-            $.ajax({
-                url: '/Admin/ChooseEmteaGrup/',
-                data: { emteaid: emteaid },
-                dataType: "JSON",
-                success: function (result) {
-                    var emteagroupid = $("#drpemtiagroups");
-                    emteagroupid.empty();
-                    $.each(result, function (i, item) {
-                        emteagroupid.append($("<option></option>").attr("value", item.id)
-                            .html(item.EmteaGrupName));
-                    });
-                    $("#drpemtiagroups").val(emteagroupid.toString());
-                }
+    function  EmteaGroupChange()
+    {
+        var id = $("#drpemtiagroups :selected").val()
+        $.post("/Admin/ChooseEmteaType", { emteagroupid: id }, (res) => {
+            $("#drpemtiatypes").empty();
+            model = JSON.parse(JSON.stringify(res))
+
+            $.each(model, (i, item) => {
+                $("#drpemtiatypes").append(`<option value="${item.id}">${item.EmteaTpeName}</option>`)
+
             });
-        emteaid = 0;
+
+        })
+
     }
 
 </script>
 
-<script type="text/javascript">
-
-    var emteatypeid = 0;
-    var emteagroupid = 0;
-    $(document).ready(function () {
-        $("#drpemtiagroups").change(function () {
-            $.ajax({
-                url: '/Admin/ChooseEmteaType/',
-                data: { emteagroupid: $(this).val() },
-                dataType: "JSON",
-                success: function (result) {
-                    var emteatypes = $("#drpemtiatypes");
-                    emteatypes.empty();
-                    $.each(result, function (i, item) {
-                        emteatypes.append($("<option></option>").attr("value", item.id)
-                            .html(item.EmteaTpeName));
-                    });
-                }
-            });
-            if (emteatypeid > 0) $("#drpemtiatypes").val(emteatypeid.toString())
-            emteagroupid = $("#drpemtiagroups").val();
-        });
-       
-     
-      }
-    );
-    function Gozle(e) {
-        if (!e) e = event;
-        Izle(e);
-    }
-    function Izle(e) {
-        if (emteagroupid > 0)
-            $.ajax({
-                url: '/Admin/ChooseEmteaType/',
-                data: { emteagroupid: emteagroupid },
-                dataType: "JSON",
-                success: function (result) {
-                    var emteatypes = $("#drpemtiatypes");
-                    emteatypes.empty();
-                    $.each(result, function (i, item) {
-                        emteatypes.append($("<option></option>").attr("value", item.id)
-                            .html(item.EmteaTpeName));
-                    });
-                    $("#drpemtiatypes").val(emteatypes.toString());
-                }
-            });
-        emteagroupid = 0;
-    }
-
-</script>
 
 
