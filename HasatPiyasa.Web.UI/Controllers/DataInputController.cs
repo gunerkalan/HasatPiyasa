@@ -42,7 +42,7 @@ namespace HasatPiyasa.Web.UI.Controllers
 
             if (cityId == 0)
             {
-                cityId = GetCurrentUser().Sube.SubeCities.FirstOrDefault().Id;
+                cityId = GetCurrentUser().Sube.SubeCities.FirstOrDefault().CityId;
                 model.SelectedCityId = cityId;
                 var Inputs = await _formDataInputService.GetFormDataInputTable(DateTime.Today, cityId);
                 model.DataInputs = Inputs.Veri!=null ? Inputs.Veri.DataInputs.ToList():null;
