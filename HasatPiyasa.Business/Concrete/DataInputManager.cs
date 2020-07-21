@@ -57,8 +57,10 @@ namespace HasatPiyasa.Business.Concrete
                 if (dataInputs.Where(x => x.Id == 0).Count() != dataInputs.Count())
                 {
                     var formId = 0;
-                    dataInputs.ForEach(f => {
-                        var _dataInputItem = _dataInputDal.Get(x => x.Id == f.Id);
+                    dataInputs.ForEach(f =>
+                    {
+                        var gettable = _dataInputDal.GetTable().Result;
+                        var _dataInputItem = gettable.FirstOrDefault(x => x.Id == f.Id);
                         if (_dataInputItem != null)
                         {
                             //update
@@ -73,7 +75,7 @@ namespace HasatPiyasa.Business.Concrete
                             var addedDataInputItem = _dataInputDal.Add(f);
 
                         }
-                         
+
 
                     });
 
@@ -108,7 +110,7 @@ namespace HasatPiyasa.Business.Concrete
                         Mesaj = Messages.SuccessfulyAddSaleOrder
                     };
                 }
-                 
+
             }
             catch (Exception hata)
             {

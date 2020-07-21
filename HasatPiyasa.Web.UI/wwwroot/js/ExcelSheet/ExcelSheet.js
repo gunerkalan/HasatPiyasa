@@ -146,7 +146,7 @@ function Save() {
 
     for (var i = 1; i < inputs; i++) {
         var item = {
-
+           
             CityId: "",
             EmteaTypeId: "",
             EmteaGroupId:"",
@@ -171,8 +171,8 @@ function Save() {
             Perakende3: "",
             Perakende4: "",
             Perakende5: "",
-            Perakende6: ""
-
+            Perakende6: "",
+             id: "",
         }
       
 
@@ -181,6 +181,7 @@ function Save() {
         item.CityId = $("#cityId :selected").val()
         item.EmteaTypeId = $(`.datainput${i}`).attr("emteatype")
         item.EmteaGroupId = $(`.datainput${i}`).attr("emteagroup")
+        item.id = $(`.datainput${i}`).attr("dataInputId")
         $.each(input, (n, v) => {
 
             item[keys[n + 3]] = v.value

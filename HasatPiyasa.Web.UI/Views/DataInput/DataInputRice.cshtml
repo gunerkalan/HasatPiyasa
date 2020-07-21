@@ -103,7 +103,7 @@
                     count++;
                     dataInputCount++;
 
-        <tr class="@("datainput"+dataInputCount)" emteatype="@emteaType.Id" emteagroup="@grup.Id">
+        <tr class="@("datainput"+dataInputCount)" emteatype="@emteaType.Id" emteagroup="@grup.Id" dataInputId="@(DataInputModelCount>=dataInputCount ? Model.HaveTodayInputData==true ? Model.DataInputs[dataInputCount-1].Id:0:0)">
 
             @if (count < 2)
             {
