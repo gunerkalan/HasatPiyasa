@@ -53,39 +53,62 @@ namespace HasatPiyasa.Business.Concrete
         public async Task<NIslemSonuc<DataInputs>> CreateDataInputRange(List<DataInputs> dataInputs, int cityid, int subeid)
         {
             try
-            {   
-                    NIslemSonuc sonuc = CheckDataInputForm(cityid);
-                    if(sonuc.BasariliMi==false)
-                    {
-                        return new NIslemSonuc<DataInputs>
+            {
+                if (dataInputs.Where(x => x.Id == 0).Count() != dataInputs.Count())
+                {
+                    var formId = 0;
+                    dataInputs.ForEach(f => {
+                        var _dataInputItem = _dataInputDal.Get(x => x.Id == f.Id);
+                        if (_dataInputItem != null)
                         {
-                            BasariliMi=false,
-                            Mesaj= Messages.DataInputControlError
-                        };
-                    }
-                
+                            //update
+                            _dataInputItem = f;
+                            _dataInputDal.Update(_dataInputItem);
+                            formId = f.FormDataInputId;
 
-                FormDataInput formDataInput = new FormDataInput
+                        }
+                        else
+                        {
+                            f.FormDataInputId = formId;
+                            var addedDataInputItem = _dataInputDal.Add(f);
+
+                        }
+                         
+
+                    });
+
+
+                    return new NIslemSonuc<DataInputs>
+                    {
+                        BasariliMi = true,
+                        Mesaj = Messages.DataInputUpdate
+                    };
+
+                }
+                else
                 {
-                    AddedTime = DateTime.Today,
-                    IsActive = true,
-                    IsLock = false,
-                    CityId = cityid,
-                    SubeId = subeid
-                };
+                    FormDataInput formDataInput = new FormDataInput
+                    {
+                        AddedTime = DateTime.Today,
+                        IsActive = true,
+                        IsLock = false,
+                        CityId = cityid,
+                        SubeId = subeid
+                    };
 
-                var addedformdt = await _formDataInputDal.AddAsync(formDataInput);
+                    var addedformdt = await _formDataInputDal.AddAsync(formDataInput);
 
-                dataInputs.ForEach(x => x.FormDataInputId = formDataInput.Id);
+                    dataInputs.ForEach(x => x.FormDataInputId = formDataInput.Id);
 
-                await _dataInputDal.AddRange(dataInputs);
+                    await _dataInputDal.AddRange(dataInputs);
 
-                return new NIslemSonuc<DataInputs>
-                {
-                    BasariliMi = true,
-                    Mesaj = Messages.SuccessfulyAddSaleOrder
-                };
-
+                    return new NIslemSonuc<DataInputs>
+                    {
+                        BasariliMi = true,
+                        Mesaj = Messages.SuccessfulyAddSaleOrder
+                    };
+                }
+                 
             }
             catch (Exception hata)
             {

@@ -31,13 +31,13 @@
     <select class="form-control citie" onchange="CityChange();" id="cityId">
         @foreach (var cty in Model.Cities)
         {
-            if (Model.SelectedCityId == cty.Id)
+            if (Model.SelectedCityId == cty.CityId)
             {
-                <option value="@cty.Id" selected>@cty.City.Name</option>
+                <option value="@cty.CityId" selected>@cty.City.Name</option>
             }
             else
             {
-                <option value="@cty.Id">@cty.City.Name</option>
+                <option value="@cty.CityId">@cty.City.Name</option>
             }
 
         }
