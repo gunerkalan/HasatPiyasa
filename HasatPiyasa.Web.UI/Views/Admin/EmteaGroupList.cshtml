@@ -8,6 +8,14 @@
 
 @Html.AntiForgeryToken()
 
+
+@section scripts{
+   
+
+    <script src="~/js/AdminProcess/Process.js"></script>
+
+}
+
 <div class="row">
 
     <div class="col-sm-12">
@@ -29,7 +37,7 @@
                             <!--begin::Dropdown-->
                             <!--end::Dropdown-->
                             <!--begin::Button-->
-                            <a href="#" class="btn btn-primary font-weight-bolder" data-toggle="modal" data-target="#emtea-adding-modal">
+                            <a href="#" class="btn btn-danger font-weight-bolder" data-toggle="modal" data-target="#emteagroup-adding-modal">
                                 <span class="svg-icon svg-icon-md">
                                     <!--begin::Svg Icon | path:assets/media/svg/icons/Design/Flatten.svg-->
                                     <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
@@ -154,23 +162,20 @@
                             </select>
                         </div>
                         <div class="form-group">
-                            <label for="emteacode" class="control-label">Emtia Grup Kodu</label>
-                            <input type="text" name="EmteaCode" id="emteacode" class="form-control" placeholder="Emtia Kodu" />
-                        </div>
-
-                        <div class="form-group">
-                            <label for="emteaname" class="control-label">Emtia Adı</label>
-                            <input type="text" name="EmteaName" id="emteaname" class="form-control" placeholder="Emtia Adı" />
+                            <label for="emteacode" class="control-label">Emtia Grup Adı</label>
+                            <input type="text" name="EmteaGroupName" id="emteagroupname" class="form-control" placeholder="Emtia Grup Adı" />
                         </div>
 
                     </div>
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-bg-default" data-dismiss="modal">Kapat</button>
-                <button type="submit" class="btn btn-bg-success" data-dismiss="modal" onclick="SaveEmtea();" id="submit">Kaydet</button>
+                <button type="button" class="btn btn-bg-light" data-dismiss="modal">Kapat</button>
+                <button type="submit" class="btn btn-bg-danger" onclick="SaveEmteaGroup();" id="submit">Kaydet</button>
             </div>
         </div>
 
     </div>
 </div>
+
+

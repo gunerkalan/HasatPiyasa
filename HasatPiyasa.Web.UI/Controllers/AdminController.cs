@@ -61,9 +61,9 @@ namespace HasatPiyasa.Web.UI.Controllers
             emtea.IsActive = true;
             emtea.AddedTime = DateTime.Now;
             var sonuc = await _emteaService.CreateEmtea(emtea);
-            if(sonuc.BasariliMi)
+            if (sonuc.BasariliMi)
             {
-                return Json(new { success = true ,messages=sonuc.Mesaj});
+                return Json(new { success = true, messages = sonuc.Mesaj });
             }
             else
             {
@@ -107,6 +107,36 @@ namespace HasatPiyasa.Web.UI.Controllers
             return emteas;
         }
 
+        private List<SelectListItem> LoadEmteaGroups()
+        {
+            var emteas = LoadEmteas();
+            var emteagroups = new List<SelectListItem>();
+
+            _emteaGroupService.ListAllEmteaGroups().Veri
+                                                  .Where(s => s.EmteaId == int.Parse(emteas[0].Value)).ToList().
+                                                  ForEach(s => emteagroups.Add(new SelectListItem
+                                                  {
+                                                      Text = s.GroupName,
+                                                      Value = s.Id.ToString()
+                                                  }));
+            return emteagroups;
+        }
+
+        private List<SelectListItem> LoadEmteatypes()
+        {
+            var emteagorups = LoadEmteaGroups();
+            var emteatypes = new List<SelectListItem>();
+
+            _emteaTypeService.ListAllEmteType().Veri.
+                                               Where(s => s.EmteaGroupId == int.Parse(emteagorups[0].Value)).ToList().
+                                               ForEach(s => emteatypes.Add(new SelectListItem
+                                               {
+                                                   Text = s.EmteaTypeName,
+                                                   Value = s.Id.ToString()
+                                               }));
+            return emteatypes;
+        }
+
         [HttpPost]
         public async Task<ActionResult> CreateEmteaGroup(EmteaGroups emteaGroups)
         {
@@ -127,6 +157,7 @@ namespace HasatPiyasa.Web.UI.Controllers
 
         #region EmteaTip işlemleri
 
+
         [HttpGet]
         public ActionResult EmteaTypeList()
         {
@@ -137,6 +168,7 @@ namespace HasatPiyasa.Web.UI.Controllers
 
             return View(model);
         }
+
 
         [HttpGet]
         public async Task<object> EmteaTypeListData()
@@ -171,12 +203,28 @@ namespace HasatPiyasa.Web.UI.Controllers
 
         #region Tuik İşlemleri
 
+        private List<SelectListItem> LoadSubes()
+        {
+            List<SelectListItem> subes = (from sube in _subeService.ListAllSubes().Veri
+                                          select new SelectListItem
+                                          {
+                                              Value = sube.Id.ToString(),
+                                              Text = sube.SubeName
+                                          }
+                        ).ToList();
+            return subes;
+        }
+
         [HttpGet]
         public ActionResult TuikSubeList()
         {
             TuikAddModel model = new TuikAddModel
             {
-                Tuik = new Tuiks()
+                Tuik = new Tuiks(),
+                Subes = LoadSubes(),
+                Emteas = LoadEmteas(),
+                EmteaGroups = LoadEmteaGroups(),
+                EmteaTypes = LoadEmteatypes()
             };
 
             return View(model);

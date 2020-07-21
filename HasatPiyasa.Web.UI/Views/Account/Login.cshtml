@@ -1,12 +1,12 @@
-﻿@{ 
+﻿@{
     Layout = null;
 }
 <!DOCTYPE html>
- 
+
 <html lang="tr">
 <!--begin::Head-->
 <head>
-    
+
     <meta charset="utf-8" />
     <title>Hasat Piyasa | Login </title>
     <meta name="description" content="Login page example" />
@@ -29,6 +29,39 @@
     <link href="/assets/css/themes/layout/aside/dark.css?v=7.0.5" rel="stylesheet" type="text/css" />
     <!--end::Layout Themes-->
     <link rel="shortcut icon" href="/assets/media/logos/favicon.ico" />
+
+    <script src="~/js/devextreme/jquery.js"></script>
+
+    <script src="/assets/js/scripts.bundle.js?v=7.0.5"></script>
+
+    <script src="/assets/plugins/global/plugins.bundle.js?v=7.0.5"></script>
+    <script src="/assets/plugins/custom/prismjs/prismjs.bundle.js?v=7.0.5"></script>
+
+
+    <link href="~/css/devextreme/dx.common.css" rel="stylesheet" />
+    <script src="~/js/devextreme/cldr.js"></script>
+    <script src="~/js/devextreme/cldr/event.js"></script>
+    <script src="~/js/devextreme/cldr/supplemental.js"></script>
+    <script src="~/js/devextreme/cldr/unresolved.js"></script>
+
+    <script src="~/js/devextreme/globalize.js"></script>
+    <script src="~/js/devextreme/globalize/message.js"></script>
+    <script src="~/js/devextreme/globalize/number.js"></script>
+    <script src="~/js/devextreme/globalize/currency.js"></script>
+    <script src="~/js/devextreme/globalize/date.js"></script>
+    <script src="https://unpkg.com/devextreme-cldr-data/supplemental.js"></script>
+    <script src="https://unpkg.com/devextreme-cldr-data/tr.js"></script>
+    <script src="https://unpkg.com/devextreme-cldr-data@1.0.2/ar.js"></script>
+
+
+
+    <script src="~/js/devextreme/jszip.min.js"></script>
+    <script src="~/js/devextreme/dx.all.js"></script>
+
+    <script src="~/js/devextreme/aspnet/dx.aspnet.mvc.js"></script>
+    <script src="~/js/devextreme/aspnet/dx.aspnet.data.js"></script>
+    <script src="~/js/devextreme/localization/dx.messages.tr.js"></script>
+
 </head>
 <!--end::Head-->
 <!--begin::Body-->
@@ -93,7 +126,7 @@
                             <!--begin::Action-->
                             <div class="form-group d-flex flex-wrap justify-content-between align-items-center">
                                 <a href="javascript:;" class="text-dark-50 text-hover-primary my-3 mr-2" id="kt_login_forgot">Forgot Password ?</a>
-                                <button type="button" id="kt_login_signin_submit" class="btn btn-primary font-weight-bold px-9 py-4 my-3">Sign In</button>
+                                <button type="button" id="kt_login_signin_submit" class="btn btn-primary font-weight-bold px-9 py-4 my-3">Giriş Yap</button>
                             </div>
                             <!--end::Action-->
                         </form>
@@ -187,3 +220,27 @@
 </body>
 <!--end::Body-->
 </html>
+
+@(Html.DevExtreme().LoadPanel()
+        .ID("loadPanel")
+        .ShadingColor("rgba(0,0,0,0.2)")
+        .Position(p => p.Of(".centerlogin"))
+        .Visible(false)
+        .ShowIndicator(true)
+        .ShowPane(true)
+        .Shading(false)
+        .CloseOnOutsideClick(false)
+        .Message("Lütfen bekleyiniz..")
+
+    )
+
+<script>
+
+    $(document).ready(() => {
+        $("#loadPanel").dxLoadPanel("instance").hide();
+        $("#kt_login_signin_submit").click(() => {
+            $("#loadPanel").dxLoadPanel("instance").show();
+        })
+    })
+
+</script>
