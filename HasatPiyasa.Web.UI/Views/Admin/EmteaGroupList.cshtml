@@ -135,3 +135,42 @@
 
 </div>
 
+
+<div id="emteagroup-adding-modal" class="modal fade updatemodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog">
+
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title"><i class="fa fa-plus-circle"></i> Emtia Grup Ekle</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="field-2" class="control-label">Emtia</label>
+                            <select class="form-control" id="drpemtias" asp-for="@Model.EmteaGroup.EmteaId" asp-items="@Model.Emteas">
+                                <option disabled selected value="-1">--Seçiniz--</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="emteacode" class="control-label">Emtia Grup Kodu</label>
+                            <input type="text" name="EmteaCode" id="emteacode" class="form-control" placeholder="Emtia Kodu" />
+                        </div>
+
+                        <div class="form-group">
+                            <label for="emteaname" class="control-label">Emtia Adı</label>
+                            <input type="text" name="EmteaName" id="emteaname" class="form-control" placeholder="Emtia Adı" />
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-bg-default" data-dismiss="modal">Kapat</button>
+                <button type="submit" class="btn btn-bg-success" data-dismiss="modal" onclick="SaveEmtea();" id="submit">Kaydet</button>
+            </div>
+        </div>
+
+    </div>
+</div>
