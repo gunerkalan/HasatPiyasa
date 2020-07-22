@@ -1,0 +1,140 @@
+﻿@model HasatPiyasa.Web.UI.Models.IsLockModel
+@using DevExtreme.AspNet.Mvc
+
+@{
+    ViewData["Title"] = "IsLockFormData";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .font{
+        color:black !important
+    }
+</style>
+
+<div class="card" style="width:100%;height:100%">
+
+
+    <div class="form-inline">
+        @(Html.DevExtreme().SelectBox()
+                   .DataSource(Model.Emteas)
+                    .DisplayExpr("EmteaName")
+                    .ValueExpr("Id")
+                    .Placeholder("Emtea Seçiniz")
+                    .ShowClearButton(true)
+        .OnValueChanged("emtea_selectBox_valueChanged")
+        .SearchEnabled(true)
+         .Width(400)
+                )
+        @(Html.DevExtreme().SelectBox()
+                    .DataSource(Model.Subes)
+                    .DisplayExpr("SubeName")
+                    .ValueExpr("Id")
+                    .Placeholder("Şube Seçiniz")
+                    .ShowClearButton(true)
+        .OnValueChanged("sube_selectBox_valueChanged")
+    .Width(398)
+        .SearchEnabled(true)
+
+                )
+        <hr />
+    </div>
+
+    @(Html.DevExtreme().DataGrid()
+    .ID("gridContainer")
+    .ShowBorders(true).Width(800)
+    .DataSource(d => d.Mvc().Controller("Admin").LoadAction("GetFormData").Key("FormId"))
+    .OnSelectionChanged("selection_changed")
+   .Selection(s => s.Mode(SelectionMode.Single))
+    .HoverStateEnabled(true)
+    .ShowBorders(true)
+    .Paging(paging => paging.PageSize(10))
+    .Pager(pager => {
+        pager.ShowPageSizeSelector(true);
+        pager.AllowedPageSizes(new[] { 5, 10, 20,50,100 });
+        pager.ShowInfo(true);
+    })
+    .Columns(c => {
+        c.Add().DataField("CityName").Caption("Şehir Adı");
+        c.Add().DataField("FormDataDate").Caption("Oluşturma Tarihi");
+        c.Add().DataField("State").Caption("Durumu").Width(100).CellTemplate(@<text>
+                            <% if (value) { %>
+                            @(Html.DevExtreme().Switch().OnValueChanged("switch_valueChanged").Value(true) )
+                            <% } else { %>
+                             @(Html.DevExtreme().Switch().OnValueChanged("switch_valueChanged").Value(false)  )
+                            <% } %>
+            </text>);
+
+    })
+)
+
+</div>
+
+
+
+
+
+
+
+@section scripts {
+
+    <script>
+        var emteaid = null;
+        var subeid = null;
+        var Cityid;
+        var formid;
+
+        function emtea_selectBox_valueChanged(data) {
+            emteaid = data.value
+            if (emteaid != null && subeid != null) {
+                GetDataSource()
+            }
+        }
+
+        function sube_selectBox_valueChanged(data) {
+            subeid = data.value
+            if (emteaid != null && subeid != null) {
+                GetDataSource()
+            }
+        }
+
+        function switch_valueChanged(data) {
+
+            $.post("/Admin/UpdateFormDataState", { emteaid: emteaid, subeid: subeid, cityid: Cityid, state: data.value , formid: formid}, (res) => {
+
+                if (res.BasariliMi) {
+                    toastr.success("Bilgilendirme","Güncellendi" );
+                }
+                else {
+                    toastr.error("Bilgilendirme","Hata Oluştu !");
+                }
+
+
+            })
+        }
+
+        function selection_changed(selectedItems) {
+            var data = selectedItems.selectedRowsData[0];
+            Cityid = data.CityId
+            formid = data.FormId
+            console.log(data)
+           
+        }
+
+        function GetDataSource() {
+            $.post("/Admin/GetFormData", { emteaid: emteaid, subeid: subeid }, (res) => {
+
+                $("#gridContainer").dxDataGrid({
+                    dataSource: res,
+                    visible: true
+                });
+
+            })
+
+
+        }
+    </script>
+
+
+}
+

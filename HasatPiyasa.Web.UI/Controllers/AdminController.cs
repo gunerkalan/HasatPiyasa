@@ -24,8 +24,9 @@ namespace HasatPiyasa.Web.UI.Controllers
         private IUserService _userService;
         private ICityService _cityService;
         private ISubeCityService _subeCityService;
+        private IFormDataInputService _formDataInputService;
 
-        public AdminController(IEmteaService emteaService, IEmteaGroupService emteaGroupService, IEmteaTypeService emteaTypeService, IEmteaTypeGroupService emteaTypeGroupService, ITuikService tuikService, ISubeService subeService, IUserService userService, ICityService cityService, ISubeCityService subeCityService)
+        public AdminController(IEmteaService emteaService, IEmteaGroupService emteaGroupService, IEmteaTypeService emteaTypeService, IEmteaTypeGroupService emteaTypeGroupService, ITuikService tuikService, ISubeService subeService, IUserService userService, ICityService cityService, ISubeCityService subeCityService, IFormDataInputService formDataInputService)
         {
             _emteaService = emteaService;
             _emteaGroupService = emteaGroupService;
@@ -35,6 +36,7 @@ namespace HasatPiyasa.Web.UI.Controllers
             _subeService = subeService;
             _userService = userService;
             _subeCityService = subeCityService;
+            _formDataInputService = formDataInputService;
         }
 
         #region Emtea işlemleri
@@ -489,6 +491,62 @@ namespace HasatPiyasa.Web.UI.Controllers
         {
             var res = await _userService.GetUserGTable();
             return JsonConvert.SerializeObject(res.Veri);
+        }
+
+        #endregion
+
+        #region IsLock 
+
+        [HttpGet]
+        public ActionResult IsLockFormData()
+        {
+            IsLockModel model = new IsLockModel
+            {
+                Emteas = _emteaService.ListAllEmteas().Veri,
+                Subes = _subeService.ListAllSubes().Veri
+            };
+
+            return View(model);
+        }
+
+        public async Task<object> GetFormData(int emteaid,int subeid)
+        {
+            if(emteaid>0)
+            {
+                var formDatas = await _formDataInputService.GetFormDataGTable();
+
+                var fm = formDatas.Veri.Where(x => x.EmteaId == emteaid && x.SubeId == subeid).Select(s => new SetFormDataState
+                {
+                    FormId = s.Id,
+                    CityName = s.City.Name,
+                    FormDataDate = s.AddedTime,
+                    State = s.IsLock,
+                    CityId = s.CityId
+
+                }).ToList();
+
+
+                return fm;
+            }
+            else
+            {
+                var formData = new List<SetFormDataState>();
+                return formData;
+            }
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> UpdateFormDataState(int emteaid, int subeid, int cityid, bool state, int formid)
+        {
+            var sonuc = await _formDataInputService.UpdateFormData(emteaid,subeid,cityid,state,formid);
+            if (sonuc.BasariliMi)
+            {
+                return Json(new { success = true, messages = sonuc.Mesaj });
+            }
+            else
+            {
+                return Json(new { success = false, messages = sonuc.Mesaj });
+            }
         }
 
         #endregion
