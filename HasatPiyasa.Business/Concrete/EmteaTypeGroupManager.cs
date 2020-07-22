@@ -2,6 +2,7 @@
 using HasatPiyasa.Business.Abstract;
 using HasatPiyasa.Business.Constants;
 using HasatPiyasa.Core.Entities;
+using HasatPiyasa.Core.Utilities.Business;
 using HasatPiyasa.Core.Utilities.Results;
 using HasatPiyasa.Entity.Entity;
 using Microsoft.EntityFrameworkCore;
@@ -25,24 +26,56 @@ namespace HasatPiyasa.Business.Concrete
         {
             try
             {
-                var addedemteatypegroup = await _emteaTypeGroupDal.AddAsync(emteatypegroup);
+                NIslemSonuc sonuc = BusinessRules.Run(CheckEmteaTypeGroupNameExists(emteatypegroup.EmteaTypeGroupName));
 
-                return new NIslemSonuc<EmteaTypeGroups>
+                if (sonuc.BasariliMi)
                 {
-                    BasariliMi = true,
-                    Veri = addedemteatypegroup,
+                    var addedemteatypegroup = await _emteaTypeGroupDal.AddAsync(emteatypegroup);
 
-                };
+                    return new NIslemSonuc<EmteaTypeGroups>
+                    {
+                        BasariliMi = true,
+                        Veri = addedemteatypegroup,
+                        Mesaj = Messages.SuccessfulyAddEmteaTypeGroup
+
+                    };
+                }
+                else
+                {
+                    return new NIslemSonuc<EmteaTypeGroups>
+                    {
+                        BasariliMi=false,
+                        Mesaj = sonuc.Mesaj
+                    };
+                }
+
+               
             }
             catch (Exception hata)
             {
                 return new NIslemSonuc<EmteaTypeGroups>
                 {
                     BasariliMi = false,
-                    Mesaj = Messages.ErrorAddSaleOrder,
+                    Mesaj = Messages.ErrorAdd,
                     ErrorMessage = hata.Message
                 };
             }
+        }
+
+        private NIslemSonuc<bool> CheckEmteaTypeGroupNameExists(string emteatypegroupname)
+        {
+            if (_emteaTypeGroupDal.Get(p => p.EmteaTypeGroupName == emteatypegroupname) != null)
+            {
+                return new NIslemSonuc<bool>
+                {
+                    BasariliMi = false,
+                    Mesaj = Messages.ErrorEmteaGroupName
+                };
+            }
+            return new NIslemSonuc<bool>
+            {
+                BasariliMi = true
+            };
         }
 
         public NIslemSonuc<EmteaTypeGroups> GetEmteaTypeGroup(int id)
@@ -161,7 +194,7 @@ namespace HasatPiyasa.Business.Concrete
                 return new NIslemSonuc<EmteaTypeGroups>
                 {
                     BasariliMi = false,
-                    Mesaj = Messages.ErrorAddSaleOrder,
+                    Mesaj = Messages.ErrorAdd,
                     ErrorMessage = hata.Message
                 };
             }

@@ -37,7 +37,7 @@
                             <!--begin::Dropdown-->
                             <!--end::Dropdown-->
                             <!--begin::Button-->
-                            <a href="#" class="btn btn-primary font-weight-bolder" data-toggle="modal" data-target="#emtea-adding-modal">
+                            <a href="#" class="btn btn-primary font-weight-bolder" data-toggle="modal" data-target="#tuikcity-adding-modal">
                                 <span class="svg-icon svg-icon-md">
                                     <!--begin::Svg Icon | path:assets/media/svg/icons/Design/Flatten.svg-->
                                     <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
@@ -48,7 +48,7 @@
                                         </g>
                                     </svg>
                                     <!--end::Svg Icon-->
-                                </span>Yemi Tüik Şehir Verisi Ekle
+                                </span>Yeni Tüik Şehir Verisi Ekle
                             </a>
                             <!--end::Button-->
                         </div>
@@ -64,16 +64,13 @@
         .Columns(columns => {
             columns.AddFor(m => m.CityName).Caption("Şehir Adı").Width(100);
             columns.AddFor(m => m.TuikYear).Caption("Tüik Yılı");
-            columns.AddFor(m => m.EmteaCode).Caption("Emtea Kodu");
             columns.AddFor(m => m.EmteaName).Caption("Emtea Adı");
-            columns.AddFor(m => m.EmteaGroupName).Caption("Emtea Grp Adı");
             columns.AddFor(m => m.EmteaTypeName).Caption("Emtea Tipi");
             columns.AddFor(m => m.TuikYear).Caption("Tüik Yılı");
             columns.AddFor(m => m.TuikValue).Caption("Tüik Verisi");
             columns.AddFor(m => m.GuessYear).Caption("Tahmin Yılı");
-            columns.AddFor(m => m.GuessYear).Caption("Tahmini Veri");
+            columns.AddFor(m => m.GuessValue).Caption("Tahmini Veri");
             columns.AddFor(m => m.AddedTime).Caption("Eklenme Tarihi");
-            columns.AddFor(m => m.AddedUser).Caption("Ek. Kullanıcı");
             columns.Add().Caption("Düzenle").Width(60)
                    .Type(GridCommandColumnType.Buttons)
                    .Buttons(btns =>
@@ -166,14 +163,14 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="form-group">
-                            <label for="field-2" class="control-label">Emtia</label>
+                            <label for="drpemtias" class="control-label">Emtia</label>
                             <select class="form-control" id="drpemtias" asp-for="@Model.Tuik.EmteaId" asp-items="@Model.Emteas" onchange="EmteaChange();">
                                 <option selected value="-1">--Seçiniz--</option>
                             </select>
                         </div>
 
                         <div class="form-group">
-                            <label for="field-2" class="control-label">Emtia Grup</label>
+                            <label for="drpemtiagroups" class="control-label">Emtia Grup</label>
                             <select class="form-control" id="drpemtiagroups" asp-for="@Model.Tuik.EmteaGroupId" asp-items="@Model.EmteaGroups" onchange="EmteaGroupChange();">
                                 <option selected value="-1">--Seçiniz--</option>
                             </select>
@@ -181,22 +178,23 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="field-2" class="control-label">Emtia Tipi</label>
+                            <label for="drpemtiatypes" class="control-label">Emtia Tipi</label>
                             <select class="form-control" id="drpemtiatypes" asp-for="@Model.Tuik.EmteaTypeId" asp-items="@Model.EmteaTypes">
                                 <option selected value="-1">--Seçiniz--</option>
                             </select>
                         </div>
 
                         <div class="form-group">
-                            <label for="field-2" class="control-label">Şube</label>
-                            <select class="form-control" id="drpsubes" asp-for="@Model.Tuik.SubeId" asp-items="@Model.Subes">
+                            <label for="drpsubes" class="control-label">Şube</label>
+                            <select class="form-control" id="drpsubes"  asp-for="@Model.Tuik.SubeId" 
+                                    asp-items="@Model.Subes" onchange="SubeChange();">
                                 <option selected value="-1">--Seçiniz--</option>
                             </select>
                         </div>
 
                         <div class="form-group">
-                            <label for="field-2" class="control-label">İl</label>
-                            <select class="form-control" id="drpsubes" asp-for="@Model.Tuik.CityId" asp-items="@Model.Cities">
+                            <label for="drpcities" class="control-label">İl</label>
+                            <select class="form-control" id="drpcities" asp-for="@Model.Tuik.CityId" asp-items="@Model.Cities">
                                 <option selected value="-1">--Seçiniz--</option>
                             </select>
                         </div>
@@ -217,7 +215,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-bg-light" data-dismiss="modal">Kapat</button>
-                <button type="submit" class="btn btn-bg-danger" onclick="SaveTuikSube();" id="submit">Kaydet</button>
+                <button type="submit" class="btn btn-bg-danger" onclick="SaveTuikCity();" id="submit">Kaydet</button>
             </div>
         </div>
 

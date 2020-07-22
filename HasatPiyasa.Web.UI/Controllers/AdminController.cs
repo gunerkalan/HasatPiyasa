@@ -23,8 +23,9 @@ namespace HasatPiyasa.Web.UI.Controllers
         private ISubeService _subeService;
         private IUserService _userService;
         private ICityService _cityService;
+        private ISubeCityService _subeCityService;
 
-        public AdminController(IEmteaService emteaService, IEmteaGroupService emteaGroupService, IEmteaTypeService emteaTypeService, IEmteaTypeGroupService emteaTypeGroupService, ITuikService tuikService, ISubeService subeService, IUserService userService, ICityService cityService)
+        public AdminController(IEmteaService emteaService, IEmteaGroupService emteaGroupService, IEmteaTypeService emteaTypeService, IEmteaTypeGroupService emteaTypeGroupService, ITuikService tuikService, ISubeService subeService, IUserService userService, ICityService cityService, ISubeCityService subeCityService)
         {
             _emteaService = emteaService;
             _emteaGroupService = emteaGroupService;
@@ -33,6 +34,7 @@ namespace HasatPiyasa.Web.UI.Controllers
             _tuikService = tuikService;
             _subeService = subeService;
             _userService = userService;
+            _subeCityService = subeCityService;
         }
 
         #region Emtea işlemleri
@@ -131,12 +133,12 @@ namespace HasatPiyasa.Web.UI.Controllers
             var subes = LoadSubes();
             var cities = new List<SelectListItem>();
 
-            _cityService.ListAllCities().Veri
-                .Where(s => s.Id == int.Parse(subes[0].Value)).ToList().
+            _subeCityService.GetSbCityGTable().Result.Veri
+                .Where(s => s.SubeId == int.Parse(subes[0].Value)).ToList().
                 ForEach(s => cities.Add(new SelectListItem
                 {
-                    Text = s.Name,
-                    Value =s.Id.ToString()
+                    Text = s.CityName,
+                    Value =s.CityId.ToString()
                 }));
 
             return cities;
@@ -155,6 +157,21 @@ namespace HasatPiyasa.Web.UI.Controllers
                                                    Value = s.Id.ToString()
                                                }));
             return emteatypes;
+        }
+
+        private List<SelectListItem> LoadEmteaTypeGroups()
+        {
+            var emteatypes = LoadEmteatypes();
+            var emteatypegrops = new List<SelectListItem>();
+
+            _emteaTypeGroupService.ListAllEmteTypeGroups().Veri.
+                                               Where(s => s.EmteaTypeId == int.Parse(emteatypes[0].Value)).ToList().
+                                               ForEach(s => emteatypegrops.Add(new SelectListItem
+                                               {
+                                                   Text = s.EmteaTypeGroupName,
+                                                   Value = s.Id.ToString()
+                                               }));
+            return emteatypegrops;
         }
 
         [HttpPost]
@@ -183,7 +200,9 @@ namespace HasatPiyasa.Web.UI.Controllers
         {
             var model = new EmteTypeAddModel
             {
-                EmteaTypes = new EmteaTypes()
+                EmteaTypes = new EmteaTypes(),
+                Emteas = LoadEmteas(),
+                EmteaGroups = LoadEmteaGroups()
             };
 
             return View(model);
@@ -197,6 +216,22 @@ namespace HasatPiyasa.Web.UI.Controllers
             return JsonConvert.SerializeObject(res.Veri);
         }
 
+        [HttpPost]
+        public async Task<ActionResult> CreateEmteaType(EmteaTypes emteaTypes)
+        {
+            emteaTypes.IsActive = true;
+            emteaTypes.AddedTime = DateTime.Now;
+            var sonuc = await _emteaTypeService.CreateEmteaType(emteaTypes);
+            if (sonuc.BasariliMi)
+            {
+                return Json(new { success = true, messages = sonuc.Mesaj });
+            }
+            else
+            {
+                return Json(new { success = false, messages = sonuc.Mesaj });
+            }
+        }
+
         #endregion
 
         #region EmteaTypeGroup işlemleri
@@ -206,7 +241,10 @@ namespace HasatPiyasa.Web.UI.Controllers
         {
             var model = new EmteaTypeGroupAddModel
             {
-                EmteaTypeGroups = new EmteaTypeGroups()
+                EmteaTypeGroups = new EmteaTypeGroups(),
+                Emteas = LoadEmteas(),
+                EmteaGroups = LoadEmteaGroups(),
+                EmteaTypes = LoadEmteatypes()
             };
 
             return View(model);
@@ -219,13 +257,31 @@ namespace HasatPiyasa.Web.UI.Controllers
             return JsonConvert.SerializeObject(res.Veri);
         }
 
+        [HttpPost]
+        public async Task<ActionResult> CreateEmteaTypeGroups(EmteaTypeGroups emteaTypeGroups)
+        {
+            emteaTypeGroups.IsActive = true;
+            emteaTypeGroups.AddedTime = DateTime.Now;
+            var sonuc = await _emteaTypeGroupService.CreateEmteaTypeGroups(emteaTypeGroups);
+            if (sonuc.BasariliMi)
+            {
+                return Json(new { success = true, messages = sonuc.Mesaj });
+            }
+            else
+            {
+                return Json(new { success = false, messages = sonuc.Mesaj });
+            }
+        }
+
         #endregion
 
         #region Tuik İşlemleri
 
         private List<SelectListItem> LoadSubes()
         {
-            List<SelectListItem> subes = (from sube in _subeService.ListAllSubes().Veri
+            var subeler = _subeService.GetSubeGTable().Result;
+
+            List<SelectListItem> subes = (from sube in subeler.Veri
                                           select new SelectListItem
                                           {
                                               Value = sube.Id.ToString(),
@@ -260,6 +316,18 @@ namespace HasatPiyasa.Web.UI.Controllers
                 }).ToList();
 
             return Json(emteagoups); 
+        }
+
+        public JsonResult ChooseSubeCity(string subeid)
+        {
+            var cities = _subeCityService.GetSbCityGTable().Result.Veri.AsEnumerable().Where(s => s.SubeId == int.Parse(subeid)).Select
+                (s => new
+                {
+                    id = s.CityId,
+                    CitiName = s.CityName
+                }).ToList();
+
+            return Json(cities);
         }
 
         public JsonResult ChooseEmteaType(string emteagroupid)
@@ -338,7 +406,7 @@ namespace HasatPiyasa.Web.UI.Controllers
             citytuik.TuikYear = DateTime.Now.Year - 1;
             citytuik.GuessYear = DateTime.Now.Year;
 
-            var sonuc = await _tuikService.CreateTuikData(citytuik);
+            var sonuc = await _tuikService.CreateTuikDataForCity(citytuik);
             if (sonuc.BasariliMi)
             {
                 return Json(new { success = true, messages = sonuc.Mesaj });

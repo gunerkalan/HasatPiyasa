@@ -7,6 +7,13 @@
 
 @Html.AntiForgeryToken()
 
+@section scripts{
+
+
+    <script src="~/js/AdminProcess/Process.js"></script>
+
+}
+
 <div class="row">
 
     <div class="col-sm-12">
@@ -28,7 +35,7 @@
                             <!--begin::Dropdown-->
                             <!--end::Dropdown-->
                             <!--begin::Button-->
-                            <a href="#" class="btn btn-primary font-weight-bolder" data-toggle="modal" data-target="#emtea-adding-modal">
+                            <a href="#" class="btn btn-primary font-weight-bolder" data-toggle="modal" data-target="#emteatypegroup-adding-modal">
                                 <span class="svg-icon svg-icon-md">
                                     <!--begin::Svg Icon | path:assets/media/svg/icons/Design/Flatten.svg-->
                                     <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
@@ -39,7 +46,7 @@
                                         </g>
                                     </svg>
                                     <!--end::Svg Icon-->
-                                </span>Yemi Emtea Tip Grup Ekle
+                                </span>Yeni Emtea Tip Grup Ekle
                             </a>
                             <!--end::Button-->
                         </div>
@@ -134,5 +141,55 @@
     </div>
 
 
+</div>
+
+<div id="emteatypegroup-adding-modal" class="modal fade updatemodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog">
+
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title"><i class="fa fa-plus-circle"></i> Emtia Tip Grup Ekle</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="drpemtias" class="control-label">Emtia</label>
+                            <select class="form-control" id="drpemtias" asp-items="@Model.Emteas"
+                                    onchange="EmteaChange();">
+                                <option disabled selected value="-1">--Seçiniz--</option>
+
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="drpemtiagroups" class="control-label">Emtia Grup</label>
+                            <select class="form-control" id="drpemtiagroups" asp-items="@Model.EmteaGroups"
+                                    onchange="EmteaGroupChange();">
+                                <option disabled selected value="-1">--Seçiniz--</option>
+
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="drpemtiatypes" class="control-label">Emtia Tipi</label>
+                            <select class="form-control" id="drpemtiatypes" asp-for="@Model.EmteaTypeGroups.EmteaTypeId" asp-items="@Model.EmteaTypes">
+                                <option disabled selected value="-1">--Seçiniz--</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="emteatypegroupname" class="control-label">Emtia Tip Grup Adı</label>
+                            <input type="text" name="EmteaTypeGroupName" id="emteatypegroupname" class="form-control" placeholder="Emtia Tip Grup Adı" />
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-bg-light" data-dismiss="modal">Kapat</button>
+                <button type="submit" class="btn btn-bg-danger" onclick="SaveEmteaTypeGroup();" id="submit">Kaydet</button>
+            </div>
+        </div>
+
+    </div>
 </div>
 

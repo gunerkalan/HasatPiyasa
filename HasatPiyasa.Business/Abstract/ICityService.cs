@@ -1,4 +1,5 @@
-﻿using HasatPiyasa.Core.Utilities.Results;
+﻿using HasatPiyasa.Core.Entities;
+using HasatPiyasa.Core.Utilities.Results;
 using HasatPiyasa.Entity.Entity;
 using System;
 using System.Collections.Generic;
@@ -14,6 +15,6 @@ namespace HasatPiyasa.Business.Abstract
         NIslemSonuc<Cities> GetCity(int id);
         Task<NIslemSonuc<Cities>> UpdateCity(Cities city);
         Task<NIslemSonuc<Cities>> GetCityTable(int value);
-       
+        Task<NIslemSonuc<List<CityDto>>> GetCityGTable();
     }
 }

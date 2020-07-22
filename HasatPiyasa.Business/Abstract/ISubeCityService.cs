@@ -1,4 +1,5 @@
-﻿using HasatPiyasa.Core.Utilities.Results;
+﻿using HasatPiyasa.Core.Entities;
+using HasatPiyasa.Core.Utilities.Results;
 using HasatPiyasa.Entity.Entity;
 using System;
 using System.Collections.Generic;
@@ -10,5 +11,6 @@ namespace HasatPiyasa.Business.Abstract
     public interface ISubeCityService
     {
         Task<NIslemSonuc<List<SubeCities>>> GetSubeCityGTable(int id);
+        Task<NIslemSonuc<List<SubeCityDto>>> GetSbCityGTable();
     }
 }
