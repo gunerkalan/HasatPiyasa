@@ -54,8 +54,8 @@ namespace HasatPiyasa.Business.Concrete
                 return new NIslemSonuc<FormDataInput>
                 {
                     BasariliMi = true,
-                    Veri = res.AsQueryable().Include(x => x.DataInputs).ThenInclude(x=>x.EmteaType).ThenInclude(x=>x.EmteaGroup).ThenInclude(x=>x.Emtea).
-                    Where(x => x.AddedTime==date && x.IsActive && x.IsLock==false && x.CityId==cityId).ToList().FirstOrDefault()
+                    Veri = res.AsNoTracking().Include(x => x.DataInputs).ThenInclude(x=>x.EmteaType).ThenInclude(x=>x.EmteaGroup).ThenInclude(x=>x.Emtea).
+                    Where(x => x.AddedTime==date && x.IsActive && x.IsLock==false && x.CityId==cityId).FirstOrDefault()
                 };
             }
             catch (Exception hata)

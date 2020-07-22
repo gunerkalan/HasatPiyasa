@@ -24,6 +24,6 @@ namespace HasatPiyasa.Entity.DataAccess
         Task AddRange(IEnumerable<T> entities);
         Task DeleteRange(IEnumerable<T> entities);
         Task<IQueryable<T>> GetTable();
-        DbContext SaveChange();
+       
     }
 }

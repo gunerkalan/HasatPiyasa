@@ -170,7 +170,7 @@ namespace HasatPiyasa.Business.Concrete
             try
             {
                 var res = await _emteaDal.GetTable();
-                var model = res.AsNoTracking().Include(x => x.EmteaGroups).Where(x => x.IsActive).ToList();
+                var model = res.Include(x => x.EmteaGroups).Where(x => x.IsActive).ToList();
 
 
                 var response = model.Select(x => new EmteaDto
