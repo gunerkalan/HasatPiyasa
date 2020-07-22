@@ -23,8 +23,9 @@ namespace HasatPiyasa.Web.UI.Controllers
         private ISubeService _subeService;
         private IUserService _userService;
         private ICityService _cityService;
+        private ISubeCityService _subeCityService;
 
-        public AdminController(IEmteaService emteaService, IEmteaGroupService emteaGroupService, IEmteaTypeService emteaTypeService, IEmteaTypeGroupService emteaTypeGroupService, ITuikService tuikService, ISubeService subeService, IUserService userService, ICityService cityService)
+        public AdminController(IEmteaService emteaService, IEmteaGroupService emteaGroupService, IEmteaTypeService emteaTypeService, IEmteaTypeGroupService emteaTypeGroupService, ITuikService tuikService, ISubeService subeService, IUserService userService, ICityService cityService, ISubeCityService subeCityService)
         {
             _emteaService = emteaService;
             _emteaGroupService = emteaGroupService;
@@ -33,6 +34,7 @@ namespace HasatPiyasa.Web.UI.Controllers
             _tuikService = tuikService;
             _subeService = subeService;
             _userService = userService;
+            _subeCityService = subeCityService;
         }
 
         #region Emtea işlemleri
@@ -131,12 +133,12 @@ namespace HasatPiyasa.Web.UI.Controllers
             var subes = LoadSubes();
             var cities = new List<SelectListItem>();
 
-            _cityService.ListAllCities().Veri
-                .Where(s => s.Id == int.Parse(subes[0].Value)).ToList().
+            _subeCityService.GetSbCityGTable().Result.Veri
+                .Where(s => s.SubeId == int.Parse(subes[0].Value)).ToList().
                 ForEach(s => cities.Add(new SelectListItem
                 {
-                    Text = s.Name,
-                    Value =s.Id.ToString()
+                    Text = s.CityName,
+                    Value =s.CityId.ToString()
                 }));
 
             return cities;
@@ -225,7 +227,9 @@ namespace HasatPiyasa.Web.UI.Controllers
 
         private List<SelectListItem> LoadSubes()
         {
-            List<SelectListItem> subes = (from sube in _subeService.ListAllSubes().Veri
+            var subeler = _subeService.GetSubeGTable().Result;
+
+            List<SelectListItem> subes = (from sube in subeler.Veri
                                           select new SelectListItem
                                           {
                                               Value = sube.Id.ToString(),

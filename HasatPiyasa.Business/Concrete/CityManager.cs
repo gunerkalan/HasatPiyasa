@@ -1,6 +1,7 @@
 ﻿using HasastPiyasa.DataAccess.Abstract;
 using HasatPiyasa.Business.Abstract;
 using HasatPiyasa.Business.Constants;
+using HasatPiyasa.Core.Entities;
 using HasatPiyasa.Core.Utilities.Results;
 using HasatPiyasa.Entity.Entity;
 using Microsoft.EntityFrameworkCore;
@@ -57,6 +58,38 @@ namespace HasatPiyasa.Business.Concrete
             catch (Exception hata)
             {
                 return new NIslemSonuc<Cities>
+                {
+                    BasariliMi = false,
+                    Mesaj = hata.InnerException.Message
+                };
+            }
+        }
+
+        public async Task<NIslemSonuc<List<CityDto>>> GetCityGTable()
+        {
+            try
+            {
+                var res = await _cityDal.GetTable();
+                var model = res.Include(x => x.SubeCities).ThenInclude(x => x.Sube).Where(x => x.IsActive).ToList();
+
+                var response = model.Select(x => new CityDto
+                {
+                    Id = x.Id,
+                    Name = x.Name,
+                    
+
+                }).ToList();
+
+                return new NIslemSonuc<List<CityDto>>
+                {
+                    BasariliMi = false,
+                    Veri = response
+                };
+
+            }
+            catch (Exception hata)
+            {
+                return new NIslemSonuc<List<CityDto>>
                 {
                     BasariliMi = false,
                     Mesaj = hata.InnerException.Message

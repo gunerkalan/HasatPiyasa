@@ -37,7 +37,7 @@
                             <!--begin::Dropdown-->
                             <!--end::Dropdown-->
                             <!--begin::Button-->
-                            <a href="#" class="btn btn-primary font-weight-bolder" data-toggle="modal" data-target="#emtea-adding-modal">
+                            <a href="#" class="btn btn-primary font-weight-bolder" data-toggle="modal" data-target="#tuikcity-adding-modal">
                                 <span class="svg-icon svg-icon-md">
                                     <!--begin::Svg Icon | path:assets/media/svg/icons/Design/Flatten.svg-->
                                     <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
@@ -64,16 +64,13 @@
         .Columns(columns => {
             columns.AddFor(m => m.CityName).Caption("Şehir Adı").Width(100);
             columns.AddFor(m => m.TuikYear).Caption("Tüik Yılı");
-            columns.AddFor(m => m.EmteaCode).Caption("Emtea Kodu");
             columns.AddFor(m => m.EmteaName).Caption("Emtea Adı");
-            columns.AddFor(m => m.EmteaGroupName).Caption("Emtea Grp Adı");
             columns.AddFor(m => m.EmteaTypeName).Caption("Emtea Tipi");
             columns.AddFor(m => m.TuikYear).Caption("Tüik Yılı");
             columns.AddFor(m => m.TuikValue).Caption("Tüik Verisi");
             columns.AddFor(m => m.GuessYear).Caption("Tahmin Yılı");
-            columns.AddFor(m => m.GuessYear).Caption("Tahmini Veri");
+            columns.AddFor(m => m.GuessValue).Caption("Tahmini Veri");
             columns.AddFor(m => m.AddedTime).Caption("Eklenme Tarihi");
-            columns.AddFor(m => m.AddedUser).Caption("Ek. Kullanıcı");
             columns.Add().Caption("Düzenle").Width(60)
                    .Type(GridCommandColumnType.Buttons)
                    .Buttons(btns =>
