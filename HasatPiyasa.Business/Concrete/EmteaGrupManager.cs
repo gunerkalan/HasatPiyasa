@@ -168,7 +168,7 @@ namespace HasatPiyasa.Business.Concrete
                 return new NIslemSonuc<EmteaGroups>
                 {
                     BasariliMi = false,
-                    Mesaj = Messages.ErrorAddSaleOrder,
+                    Mesaj = Messages.ErrorAdd,
                     ErrorMessage = hata.Message
                 };
             }

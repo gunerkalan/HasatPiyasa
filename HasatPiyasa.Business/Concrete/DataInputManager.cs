@@ -44,7 +44,7 @@ namespace HasatPiyasa.Business.Concrete
                 return new NIslemSonuc<DataInputs>
                 {
                     BasariliMi = false,
-                    Mesaj = Messages.ErrorAddSaleOrder,
+                    Mesaj = Messages.ErrorAdd,
                     ErrorMessage = hata.Message
                 };
             }
@@ -113,7 +113,7 @@ namespace HasatPiyasa.Business.Concrete
                     return new NIslemSonuc<DataInputs>
                     {
                         BasariliMi = true,
-                        Mesaj = Messages.SuccessfulyAddSaleOrder
+                        Mesaj = Messages.ErrorAdd
                     };
                 }
 
@@ -230,7 +230,7 @@ namespace HasatPiyasa.Business.Concrete
                 return new NIslemSonuc<DataInputs>
                 {
                     BasariliMi = false,
-                    Mesaj = Messages.ErrorAddSaleOrder,
+                    Mesaj = Messages.ErrorAdd,
                     ErrorMessage = hata.Message
                 };
             }

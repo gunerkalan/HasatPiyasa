@@ -139,8 +139,8 @@ function SaveTuikSube() {
             EmteaId: $("#drpemtias :selected").val(),
         }
 
-            if (CheckValidateFormSubeTuik()) {
-                $.post("/Admin/CreateTuikSubeData", { subetuik: subetuik }, function (res) {
+        if (CheckValidateFormSubeTuik()) {
+            $.post("/Admin/CreateTuikSubeData", { subetuik: subetuik }, function (res) {
                 var model = JSON.parse(JSON.stringify(res));
 
                 if (model.success) {
@@ -159,6 +159,68 @@ function SaveTuikSube() {
                 else {
 
                     SweetAlertMesaj("Şube Tüik Veri Kaydet", model.messages, "error", "Kapat", "btn-danger")
+
+                }
+
+            })
+        }
+        else {
+            swal("Hata : Lütfen gerekli alanları doldurunuz !");
+            this.showLoaderOnConfirm = false
+            return false
+
+        }
+
+
+    });
+
+
+}
+function SaveTuikCity() {
+
+
+    swal({
+        title: "Tuik İl Verisi Kaydet",
+        text: "Tuik İl Verisi Kaydedilsin Mi ?",
+        type: "info",
+        showCancelButton: true,
+        closeOnConfirm: false,
+        showLoaderOnConfirm: true,
+        confirmButtonText: "Tamam",
+        cancelButtonText: "İptal",
+    }, function () {
+
+        var citytuik = {
+            SubeId: $("#drpsubes :selected").val(),
+            CityId: $("#drpcities :selected").val(),
+            EmteaTypeId: $("#drpemtiatypes :selected").val(),
+            EmteaGroupId: $("#drpemtiagroups :selected").val(),
+            TuikValue: $("#tuikvalue").val(),
+            GuessValue: $("#guessvalue").val(),
+            EmteaId: $("#drpemtias :selected").val(),
+        }
+
+        if (CheckValidateFormCityTuik()) {
+            $.post("/Admin/CreateTuikCityData", { citytuik: citytuik }, function (res) {
+                var model = JSON.parse(JSON.stringify(res));
+
+                if (model.success) {
+                    SweetAlertMesaj("İl Tuik Verisi Kaydet", model.messages, "success", "Kapat", "btn-success")
+                    $("#GridContainer").dxDataGrid("instance").refresh();
+                    $("#tuikcity-adding-modal").modal("hide")
+
+                    $('#drpemtias').val('')
+                    $('#guessvalue').val('')
+                    $('#tuikvalue').val('')
+                    $('#drpemtiagroups').val('')
+                    $('#drpemtiatypes').val('')
+                    $('#drpsubes').val('')
+                    $('#drpcities').val('')
+
+                }
+                else {
+
+                    SweetAlertMesaj("İl Tüik Veri Kaydet", model.messages, "error", "Kapat", "btn-danger")
 
                 }
 
@@ -215,7 +277,7 @@ function CheckValidateFormSubeTuik() {
     var TuikValue = $("#tuikvalue").val()
     var GuessValue = $("#guessvalue").val()
 
-    if (EmteaId != "-1" && EmteaGroupId != "-1" && EmteaTypeId != "-1" && SubeId != "-1" && TuikValue != "" && GuessValue !="") {
+    if (EmteaId != "-1" && EmteaGroupId != "-1" && EmteaTypeId != "-1" && SubeId != "-1" && TuikValue != "" && GuessValue != "") {
         return true
     }
     else {
@@ -229,9 +291,34 @@ function CheckValidateFormSubeTuik() {
 
     }
 }
+function CheckValidateFormCityTuik() {
+
+    var EmteaId = $("#drpemtias :selected").val()
+    var EmteaGroupId = $("#drpemtiagroups :selected").val()
+    var EmteaTypeId = $("#drpemtiatypes :selected").val()
+    var SubeId = $("#drpsubes :selected").val()
+    var CityId = $("#drpcities :selected").val()
+    var TuikValue = $("#tuikvalue").val()
+    var GuessValue = $("#guessvalue").val()
+
+    if (EmteaId != "-1" && EmteaGroupId != "-1" && EmteaTypeId != "-1" && SubeId != "-1" && TuikValue != "" && GuessValue != "" && CityId != "") {
+        return true
+    }
+    else {
+        ChangeColor(EmteaId, "drpemtias")
+        ChangeColor(EmteaGroupId, "drpemtiagroups")
+        ChangeColor(EmteaTypeId, "drpemtiatypes")
+        ChangeColor(SubeId, "drpsubes")
+        ChangeColor(CityId, "drpcities")
+        ChangeColor(TuikValue, "tuikvalue")
+        ChangeColor(GuessValue, "guessvalue")
+        return false
+
+    }
+}
 function ChangeColor(value, v) {
 
-    if (value == "0" || value == "" || value =="-1") {
+    if (value == "0" || value == "" || value == "-1") {
         $("#" + v).css("border", "1px solid red")
     }
     else {
@@ -269,6 +356,21 @@ function EmteaChange() {
         });
 
         EmteaGroupChange()
+
+    })
+
+}
+function SubeChange() {
+    $("#drpcities").empty()
+    var id = $("#drpsubes :selected").val()
+
+    $.post("/Admin/ChooseSubeCity", { subeid: id }, (res) => {
+        var model = JSON.parse(JSON.stringify(res))
+        $.each(model, (i, item) => {
+
+            $("#drpcities").append(`<option value="${item.id}">${item.CitiName}</option>`)
+        });
+
 
     })
 

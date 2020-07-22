@@ -266,6 +266,18 @@ namespace HasatPiyasa.Web.UI.Controllers
             return Json(emteagoups); 
         }
 
+        public JsonResult ChooseSubeCity(string subeid)
+        {
+            var cities = _subeCityService.GetSbCityGTable().Result.Veri.AsEnumerable().Where(s => s.SubeId == int.Parse(subeid)).Select
+                (s => new
+                {
+                    id = s.CityId,
+                    CitiName = s.CityName
+                }).ToList();
+
+            return Json(cities);
+        }
+
         public JsonResult ChooseEmteaType(string emteagroupid)
         {
             var emteatypes = _emteaTypeService.ListAllEmteType().Veri.AsEnumerable().Where(s => s.EmteaGroupId == int.Parse(emteagroupid)).Select(s => new
@@ -342,7 +354,7 @@ namespace HasatPiyasa.Web.UI.Controllers
             citytuik.TuikYear = DateTime.Now.Year - 1;
             citytuik.GuessYear = DateTime.Now.Year;
 
-            var sonuc = await _tuikService.CreateTuikData(citytuik);
+            var sonuc = await _tuikService.CreateTuikDataForCity(citytuik);
             if (sonuc.BasariliMi)
             {
                 return Json(new { success = true, messages = sonuc.Mesaj });

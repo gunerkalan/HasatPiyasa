@@ -39,7 +39,7 @@ namespace HasatPiyasa.Business.Concrete
                 return new NIslemSonuc<EmteaTypeGroups>
                 {
                     BasariliMi = false,
-                    Mesaj = Messages.ErrorAddSaleOrder,
+                    Mesaj = Messages.ErrorAdd,
                     ErrorMessage = hata.Message
                 };
             }
@@ -161,7 +161,7 @@ namespace HasatPiyasa.Business.Concrete
                 return new NIslemSonuc<EmteaTypeGroups>
                 {
                     BasariliMi = false,
-                    Mesaj = Messages.ErrorAddSaleOrder,
+                    Mesaj = Messages.ErrorAdd,
                     ErrorMessage = hata.Message
                 };
             }

@@ -48,7 +48,7 @@
                                         </g>
                                     </svg>
                                     <!--end::Svg Icon-->
-                                </span>Yemi Tüik Şehir Verisi Ekle
+                                </span>Yeni Tüik Şehir Verisi Ekle
                             </a>
                             <!--end::Button-->
                         </div>
@@ -163,14 +163,14 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="form-group">
-                            <label for="field-2" class="control-label">Emtia</label>
+                            <label for="drpemtias" class="control-label">Emtia</label>
                             <select class="form-control" id="drpemtias" asp-for="@Model.Tuik.EmteaId" asp-items="@Model.Emteas" onchange="EmteaChange();">
                                 <option selected value="-1">--Seçiniz--</option>
                             </select>
                         </div>
 
                         <div class="form-group">
-                            <label for="field-2" class="control-label">Emtia Grup</label>
+                            <label for="drpemtiagroups" class="control-label">Emtia Grup</label>
                             <select class="form-control" id="drpemtiagroups" asp-for="@Model.Tuik.EmteaGroupId" asp-items="@Model.EmteaGroups" onchange="EmteaGroupChange();">
                                 <option selected value="-1">--Seçiniz--</option>
                             </select>
@@ -178,22 +178,23 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="field-2" class="control-label">Emtia Tipi</label>
+                            <label for="drpemtiatypes" class="control-label">Emtia Tipi</label>
                             <select class="form-control" id="drpemtiatypes" asp-for="@Model.Tuik.EmteaTypeId" asp-items="@Model.EmteaTypes">
                                 <option selected value="-1">--Seçiniz--</option>
                             </select>
                         </div>
 
                         <div class="form-group">
-                            <label for="field-2" class="control-label">Şube</label>
-                            <select class="form-control" id="drpsubes" asp-for="@Model.Tuik.SubeId" asp-items="@Model.Subes">
+                            <label for="drpsubes" class="control-label">Şube</label>
+                            <select class="form-control" id="drpsubes"  asp-for="@Model.Tuik.SubeId" 
+                                    asp-items="@Model.Subes" onchange="SubeChange();">
                                 <option selected value="-1">--Seçiniz--</option>
                             </select>
                         </div>
 
                         <div class="form-group">
-                            <label for="field-2" class="control-label">İl</label>
-                            <select class="form-control" id="drpsubes" asp-for="@Model.Tuik.CityId" asp-items="@Model.Cities">
+                            <label for="drpcities" class="control-label">İl</label>
+                            <select class="form-control" id="drpcities" asp-for="@Model.Tuik.CityId" asp-items="@Model.Cities">
                                 <option selected value="-1">--Seçiniz--</option>
                             </select>
                         </div>
@@ -214,7 +215,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-bg-light" data-dismiss="modal">Kapat</button>
-                <button type="submit" class="btn btn-bg-danger" onclick="SaveTuikSube();" id="submit">Kaydet</button>
+                <button type="submit" class="btn btn-bg-danger" onclick="SaveTuikCity();" id="submit">Kaydet</button>
             </div>
         </div>
 
