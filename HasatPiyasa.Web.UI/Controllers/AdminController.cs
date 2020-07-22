@@ -190,6 +190,35 @@ namespace HasatPiyasa.Web.UI.Controllers
             }
         }
 
+        public JsonResult EditEmteaGroup(int id)
+        {
+            if(id>0)
+            {
+                var result = _emteaGroupService.GetEmteaGroup(id);
+
+                return Json(result);
+            }
+            return Json(0);
+        }
+
+        [HttpPost]
+        public async Task<object>UpdateEmteaGroup(EmteaGroups emteaGroups)
+        {
+
+            emteaGroups.UpdatedTime = DateTime.Now;
+
+            var res = await _emteaGroupService.UpdateEmteaGroup(emteaGroups);
+            if(res.BasariliMi)
+            {
+                return Json(new { success = true, messages = res.Mesaj });
+            }
+            else
+            {
+                return Json(new { success = true, messages = res.Mesaj });
+            }
+
+        }
+
         #endregion
 
         #region EmteaTip işlemleri
