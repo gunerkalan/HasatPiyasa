@@ -3,6 +3,7 @@ using HasastPiyasa.DataAccess.Abstract;
 using HasatPiyasa.Business.Abstract;
 using HasatPiyasa.Business.Constants;
 using HasatPiyasa.Core.Entities;
+using HasatPiyasa.Core.Utilities.Business;
 using HasatPiyasa.Core.Utilities.Results;
 using HasatPiyasa.Entity.Entity;
 using Microsoft.EntityFrameworkCore;
@@ -25,16 +26,31 @@ namespace HasatPiyasa.Business.Concrete
         }
         public async Task<NIslemSonuc<EmteaTypes>> CreateEmteaType(EmteaTypes emteatype)
         {
+           
             try
             {
-                var addedemteatype = await _emteaTypeDal.AddAsync(emteatype);
-
-                return new NIslemSonuc<EmteaTypes>
+                NIslemSonuc sonuc = BusinessRules.Run(CheckEmteaTypeNameExists(emteatype.EmteaTypeName));
+                if (sonuc.BasariliMi)
                 {
-                    BasariliMi = true,
-                    Veri = addedemteatype,
+                    var addedemteatype = await _emteaTypeDal.AddAsync(emteatype);
 
-                };
+                    return new NIslemSonuc<EmteaTypes>
+                    {
+                        BasariliMi = true,
+                        Veri = addedemteatype,
+
+                    };
+                }
+                else
+                {
+                    return new NIslemSonuc<EmteaTypes>
+                    {
+                        BasariliMi = false,
+                        Mesaj = sonuc.Mesaj
+                    };
+
+                }
+               
             }
             catch (Exception hata)
             {
@@ -45,6 +61,22 @@ namespace HasatPiyasa.Business.Concrete
                     ErrorMessage = hata.Message
                 };
             }
+        }
+
+        private NIslemSonuc<bool> CheckEmteaTypeNameExists(string emteatypename)
+        {
+            if (_emteaTypeDal.Get(p => p.EmteaTypeName == emteatypename) != null)
+            {
+                return new NIslemSonuc<bool>
+                {
+                    BasariliMi = false,
+                    Mesaj = Messages.ErrorEmteaGroupName
+                };
+            }
+            return new NIslemSonuc<bool>
+            {
+                BasariliMi = true
+            };
         }
 
         public async Task<NIslemSonuc<List<EmteaTypeDto>>> GetEmteaTypeGTable()

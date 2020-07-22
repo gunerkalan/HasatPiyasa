@@ -116,6 +116,59 @@ function SaveEmteaGroup() {
 
 
 }
+function SaveEmteaType() {
+
+
+    swal({
+        title: "Emtea Tipi Kaydet",
+        text: "Emtea Tipi Kaydedilsin Mi ?",
+        type: "info",
+        showCancelButton: true,
+        closeOnConfirm: false,
+        showLoaderOnConfirm: true,
+        confirmButtonText: "Tamam",
+        cancelButtonText: "İptal",
+    }, function () {
+
+        var emteaTypes = {
+            EmteaGroupId: $("#drpemtiagroups :selected").val(),
+            EmteaTypeName: $("#emteatypename").val(),
+
+        }
+
+        if (CheckValidateFormEmteaType()) {
+            $.post("/Admin/CreateEmteaType", { emteaTypes: emteaTypes }, function (res) {
+                var model = JSON.parse(JSON.stringify(res));
+
+                if (model.success) {
+                    SweetAlertMesaj("Emtia Tipi Kaydet", model.messages, "success", "Kapat", "btn-success")
+                    $("#GridContainer").dxDataGrid("instance").refresh();
+                    $("#emteatype-adding-modal").modal("hide")
+
+                    $('#drpemtias').val('')
+                    $('#drpemtiagroups').val('')
+                    $('#emteatypename').val('')
+
+                }
+                else {
+
+                    SweetAlertMesaj("Emtia Tipi Kaydet", model.messages, "error", "Kapat", "btn-danger")
+
+                }
+
+            })
+        }
+        else {
+            swal("Hata : Lütfen gerekli alanları doldurunuz !");
+            this.showLoaderOnConfirm = false
+            return false
+
+        }
+
+    });
+
+
+}
 function SaveTuikSube() {
 
 
@@ -264,6 +317,23 @@ function CheckValidateFormEg() {
     else {
         ChangeColor(EmteaId, "drpemtias")
         ChangeColor(GroupName, "emteagroupname")
+        return false
+
+    }
+}
+function CheckValidateFormEmteaType() {
+
+    var EmteaId = $("#drpemtias :selected").val()
+    var EmteaGroupId = $("#drpemtiagroups :selected").val()
+    var EmteaTypeName = $("#emteatypename").val()
+
+    if (EmteaGroupId != "" && EmteaTypeName != "" && EmteaGroupId != "-1" && EmteaId != "" && EmteaId != "-1") {
+        return true
+    }
+    else {
+        ChangeColor(EmteaId, "drpemtias")
+        ChangeColor(EmteaGroupId, "drpemtiagroups")
+        ChangeColor(EmteaTypeName, "emteatypename")
         return false
 
     }

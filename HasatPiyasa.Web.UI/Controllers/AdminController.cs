@@ -185,7 +185,9 @@ namespace HasatPiyasa.Web.UI.Controllers
         {
             var model = new EmteTypeAddModel
             {
-                EmteaTypes = new EmteaTypes()
+                EmteaTypes = new EmteaTypes(),
+                Emteas = LoadEmteas(),
+                EmteaGroups = LoadEmteaGroups()
             };
 
             return View(model);
@@ -197,6 +199,22 @@ namespace HasatPiyasa.Web.UI.Controllers
         {
             var res = await _emteaTypeService.GetEmteaTypeGTable();
             return JsonConvert.SerializeObject(res.Veri);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> CreateEmteaType(EmteaTypes emteaTypes)
+        {
+            emteaTypes.IsActive = true;
+            emteaTypes.AddedTime = DateTime.Now;
+            var sonuc = await _emteaTypeService.CreateEmteaType(emteaTypes);
+            if (sonuc.BasariliMi)
+            {
+                return Json(new { success = true, messages = sonuc.Mesaj });
+            }
+            else
+            {
+                return Json(new { success = false, messages = sonuc.Mesaj });
+            }
         }
 
         #endregion
