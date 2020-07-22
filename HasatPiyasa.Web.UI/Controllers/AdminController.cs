@@ -159,6 +159,21 @@ namespace HasatPiyasa.Web.UI.Controllers
             return emteatypes;
         }
 
+        private List<SelectListItem> LoadEmteaTypeGroups()
+        {
+            var emteatypes = LoadEmteatypes();
+            var emteatypegrops = new List<SelectListItem>();
+
+            _emteaTypeGroupService.ListAllEmteTypeGroups().Veri.
+                                               Where(s => s.EmteaTypeId == int.Parse(emteatypes[0].Value)).ToList().
+                                               ForEach(s => emteatypegrops.Add(new SelectListItem
+                                               {
+                                                   Text = s.EmteaTypeGroupName,
+                                                   Value = s.Id.ToString()
+                                               }));
+            return emteatypegrops;
+        }
+
         [HttpPost]
         public async Task<ActionResult> CreateEmteaGroup(EmteaGroups emteaGroups)
         {
@@ -226,7 +241,10 @@ namespace HasatPiyasa.Web.UI.Controllers
         {
             var model = new EmteaTypeGroupAddModel
             {
-                EmteaTypeGroups = new EmteaTypeGroups()
+                EmteaTypeGroups = new EmteaTypeGroups(),
+                Emteas = LoadEmteas(),
+                EmteaGroups = LoadEmteaGroups(),
+                EmteaTypes = LoadEmteatypes()
             };
 
             return View(model);
@@ -237,6 +255,22 @@ namespace HasatPiyasa.Web.UI.Controllers
         {
             var res = await _emteaTypeGroupService.GetEmteatypeGroupGTable();
             return JsonConvert.SerializeObject(res.Veri);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> CreateEmteaTypeGroups(EmteaTypeGroups emteaTypeGroups)
+        {
+            emteaTypeGroups.IsActive = true;
+            emteaTypeGroups.AddedTime = DateTime.Now;
+            var sonuc = await _emteaTypeGroupService.CreateEmteaTypeGroups(emteaTypeGroups);
+            if (sonuc.BasariliMi)
+            {
+                return Json(new { success = true, messages = sonuc.Mesaj });
+            }
+            else
+            {
+                return Json(new { success = false, messages = sonuc.Mesaj });
+            }
         }
 
         #endregion
