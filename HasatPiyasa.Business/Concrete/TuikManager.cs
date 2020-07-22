@@ -2,6 +2,7 @@
 using HasatPiyasa.Business.Abstract;
 using HasatPiyasa.Business.Constants;
 using HasatPiyasa.Core.Entities;
+using HasatPiyasa.Core.Utilities.Business;
 using HasatPiyasa.Core.Utilities.Results;
 using HasatPiyasa.Entity.Entity;
 using Microsoft.EntityFrameworkCore;
@@ -11,6 +12,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Threading.Tasks.Sources;
 
 namespace HasatPiyasa.Business.Concrete
 {
@@ -27,14 +29,30 @@ namespace HasatPiyasa.Business.Concrete
         {
             try
             {
-                var addedtuikdata = await _tuikDal.AddAsync(tuik);
+                NIslemSonuc sonuc = BusinessRules.Run(CheckTuikSubeDataExists(tuik.GuessYear, tuik.EmteaTypeId, (int)tuik.SubeId));
 
-                return new NIslemSonuc<Tuiks>
+                if (sonuc.BasariliMi)
                 {
-                    BasariliMi = true,
-                    Veri = addedtuikdata,
+                    var addedtuikdata = await _tuikDal.AddAsync(tuik);
 
-                };
+                    return new NIslemSonuc<Tuiks>
+                    {
+                        BasariliMi = true,
+                        Veri = addedtuikdata,
+
+                    };
+                }
+                else
+                {
+                    return new NIslemSonuc<Tuiks>
+                    {
+                        BasariliMi = true,
+                        Mesaj = sonuc.Mesaj,
+
+                    };
+                }
+
+
             }
             catch (Exception hata)
             {
@@ -47,12 +65,28 @@ namespace HasatPiyasa.Business.Concrete
             }
         }
 
+        private NIslemSonuc<bool> CheckTuikSubeDataExists(int year, int emteatypeid, int subeid)
+        {
+            if (_tuikDal.Get(p => p.GuessYear == year && p.EmteaTypeId == emteatypeid && p.SubeId == subeid) != null)
+            {
+                return new NIslemSonuc<bool>
+                {
+                    BasariliMi = false,
+                    Mesaj = Messages.ErrorAddTuikSubeData
+                };
+            }
+            return new NIslemSonuc<bool>
+            {
+                BasariliMi = true
+            };
+        }
+
         public async Task<NIslemSonuc<List<TuikCityDto>>> GetTuikCityGTable()
         {
             try
             {
                 var res = await _tuikDal.GetTable();
-                var model = res.Include(x => x.City).Include(x=>x.Sube).Include(x => x.AddUser).Include(x => x.EmteaType).ThenInclude(x => x.EmteaGroup).ThenInclude(x => x.Emtea).Where(x=>x.IsActive && x.IsCity).ToList();
+                var model = res.Include(x => x.City).Include(x => x.Sube).Include(x => x.AddUser).Include(x => x.EmteaType).ThenInclude(x => x.EmteaGroup).ThenInclude(x => x.Emtea).Where(x => x.IsActive && x.IsCity).ToList();
 
                 var response = model.Select(x => new TuikCityDto
                 {
@@ -80,7 +114,7 @@ namespace HasatPiyasa.Business.Concrete
             {
                 return new NIslemSonuc<List<TuikCityDto>>
                 {
-                    BasariliMi=false,
+                    BasariliMi = false,
                     Mesaj = hata.InnerException.Message
                 };
             }
@@ -154,7 +188,7 @@ namespace HasatPiyasa.Business.Concrete
                 return new NIslemSonuc<Tuiks>
                 {
                     BasariliMi = true,
-                    Veri = res.AsQueryable().Include(x => x.City).Include(x=>x.EmteaType).Where(x => x.Id == value).ToList().FirstOrDefault()
+                    Veri = res.AsQueryable().Include(x => x.City).Include(x => x.EmteaType).Where(x => x.Id == value).ToList().FirstOrDefault()
                 };
             }
             catch (Exception hata)
@@ -213,6 +247,6 @@ namespace HasatPiyasa.Business.Concrete
             }
         }
 
-   
+
     }
 }
