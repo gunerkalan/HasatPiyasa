@@ -37,6 +37,7 @@ namespace HasatPiyasa.Business.Concrete
                     {
                         BasariliMi = true,
                         Veri = addedemteagroup,
+                        Mesaj = Messages.SuccessfulyAddEmteaGruo
 
                     };
                 }
