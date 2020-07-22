@@ -22,8 +22,9 @@ namespace HasatPiyasa.Web.UI.Controllers
         private ITuikService _tuikService;
         private ISubeService _subeService;
         private IUserService _userService;
+        private ICityService _cityService;
 
-        public AdminController(IEmteaService emteaService, IEmteaGroupService emteaGroupService, IEmteaTypeService emteaTypeService, IEmteaTypeGroupService emteaTypeGroupService, ITuikService tuikService, ISubeService subeService, IUserService userService)
+        public AdminController(IEmteaService emteaService, IEmteaGroupService emteaGroupService, IEmteaTypeService emteaTypeService, IEmteaTypeGroupService emteaTypeGroupService, ITuikService tuikService, ISubeService subeService, IUserService userService, ICityService cityService)
         {
             _emteaService = emteaService;
             _emteaGroupService = emteaGroupService;
@@ -107,6 +108,9 @@ namespace HasatPiyasa.Web.UI.Controllers
             return emteas;
         }
 
+        
+
+
         private List<SelectListItem> LoadEmteaGroups()
         {
             var emteas = LoadEmteas();
@@ -120,6 +124,22 @@ namespace HasatPiyasa.Web.UI.Controllers
                                                       Value = s.Id.ToString()
                                                   }));
             return emteagroups;
+        }
+
+        private List<SelectListItem> LoadCities()
+        {
+            var subes = LoadSubes();
+            var cities = new List<SelectListItem>();
+
+            _cityService.ListAllCities().Veri
+                .Where(s => s.Id == int.Parse(subes[0].Value)).ToList().
+                ForEach(s => cities.Add(new SelectListItem
+                {
+                    Text = s.Name,
+                    Value =s.Id.ToString()
+                }));
+
+            return cities;
         }
 
         private List<SelectListItem> LoadEmteatypes()
@@ -272,9 +292,14 @@ namespace HasatPiyasa.Web.UI.Controllers
         [HttpGet]
         public ActionResult TuikCityList()
         {
-            TuikAddModel model = new TuikAddModel
+            TuikCityAddModel model = new TuikCityAddModel
             {
-                Tuik = new Tuiks()
+                Tuik = new Tuiks(),
+                EmteaGroups = LoadEmteaGroups(),
+                Emteas = LoadEmteas(),
+                EmteaTypes = LoadEmteatypes(),
+                Subes = LoadSubes(),
+                Cities = LoadCities()
             };
 
             return View(model);
@@ -292,6 +317,28 @@ namespace HasatPiyasa.Web.UI.Controllers
             subetuik.GuessYear = DateTime.Now.Year;
 
             var sonuc = await _tuikService.CreateTuikData(subetuik);
+            if (sonuc.BasariliMi)
+            {
+                return Json(new { success = true, messages = sonuc.Mesaj });
+            }
+            else
+            {
+                return Json(new { success = false, messages = sonuc.Mesaj });
+            }
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> CreateTuikCityData(Tuiks citytuik)
+        {
+            var user = GetCurrentUser();
+            citytuik.AddUserId = user.UserId;
+            citytuik.IsCity = true;
+            citytuik.IsActive = true;
+            citytuik.AddedTime = DateTime.Now;
+            citytuik.TuikYear = DateTime.Now.Year - 1;
+            citytuik.GuessYear = DateTime.Now.Year;
+
+            var sonuc = await _tuikService.CreateTuikData(citytuik);
             if (sonuc.BasariliMi)
             {
                 return Json(new { success = true, messages = sonuc.Mesaj });

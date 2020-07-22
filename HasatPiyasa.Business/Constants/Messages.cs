@@ -20,6 +20,7 @@ namespace HasatPiyasa.Business.Constants
        
         public static string ErrorEmteaGroupName = "Girilen Emtea Grup Name ile daha önce Emtea  Grup tanımlanmış ! ";
         public static string ErrorAddTuikSubeData = "Seçilen işyerine amevcut yıl içerisinde seçilem emtia tipi ile 1 kez kayıt yapılabilir ! ";
+        public static string ErrorAddTuikCityData = "Seçilen şehire amevcut yıl içerisinde seçilem emtia tipi ile 1 kez kayıt yapılabilir ! ";
         public static string ErrorAdd = "Veritabanına kayıt edilemedi ! ";
     }
 }

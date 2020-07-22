@@ -11,6 +11,7 @@ namespace HasatPiyasa.Business.Abstract
     public interface ITuikService
     {
         Task<NIslemSonuc<Tuiks>> CreateTuikData(Tuiks tuik);
+        Task<NIslemSonuc<Tuiks>> CreateTuikDataForCity(Tuiks tuik);
         NIslemSonuc<List<Tuiks>> ListAllTuikData();
         NIslemSonuc<Tuiks> GetTuikData(int id);
         Task<NIslemSonuc<Tuiks>> UpdateTuikData(Tuiks tuik);

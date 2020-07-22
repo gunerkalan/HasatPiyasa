@@ -81,6 +81,22 @@ namespace HasatPiyasa.Business.Concrete
             };
         }
 
+        private NIslemSonuc<bool> CheckTuikCityDataExists(int year, int emteatypeid, int cityid)
+        {
+            if (_tuikDal.Get(p => p.GuessYear == year && p.EmteaTypeId == emteatypeid && p.CityId == cityid) != null)
+            {
+                return new NIslemSonuc<bool>
+                {
+                    BasariliMi = false,
+                    Mesaj = Messages.ErrorAddTuikCityData
+                };
+            }
+            return new NIslemSonuc<bool>
+            {
+                BasariliMi = true
+            };
+        }
+
         public async Task<NIslemSonuc<List<TuikCityDto>>> GetTuikCityGTable()
         {
             try
@@ -247,6 +263,44 @@ namespace HasatPiyasa.Business.Concrete
             }
         }
 
+        public async Task<NIslemSonuc<Tuiks>> CreateTuikDataForCity(Tuiks tuik)
+        {
+            try
+            {
+                NIslemSonuc sonuc = BusinessRules.Run(CheckTuikCityDataExists(tuik.GuessYear, tuik.EmteaTypeId, (int)tuik.CityId));
 
+                if (sonuc.BasariliMi)
+                {
+                    var addedtuikdata = await _tuikDal.AddAsync(tuik);
+
+                    return new NIslemSonuc<Tuiks>
+                    {
+                        BasariliMi = true,
+                        Veri = addedtuikdata,
+
+                    };
+                }
+                else
+                {
+                    return new NIslemSonuc<Tuiks>
+                    {
+                        BasariliMi = true,
+                        Mesaj = sonuc.Mesaj,
+
+                    };
+                }
+
+
+            }
+            catch (Exception hata)
+            {
+                return new NIslemSonuc<Tuiks>
+                {
+                    BasariliMi = false,
+                    Mesaj = Messages.ErrorAddSaleOrder,
+                    ErrorMessage = hata.Message
+                };
+            }
+        }
     }
 }
