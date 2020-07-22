@@ -45,14 +45,14 @@ namespace HasatPiyasa.Web.UI.Controllers
                 cityId = GetCurrentUser().Sube.SubeCities.FirstOrDefault().CityId;
                 model.SelectedCityId = cityId;
                 var Inputs = await _formDataInputService.GetFormDataInputTable(DateTime.Today, cityId);
-                model.DataInputs = Inputs.Veri!=null ? Inputs.Veri.DataInputs.ToList():null;
+                model.DataInputs = Inputs.Veri!=null ? _dataInputService.ListAllDataInputs().Veri.Where(x=>x.FormDataInputId==Inputs.Veri.Id).ToList():null;
                 model.HaveTodayInputData = model.DataInputs != null ? true : false;
             }
             else
             {
                 model.SelectedCityId = cityId;
                var Inputs = await _formDataInputService.GetFormDataInputTable(DateTime.Today, cityId);
-                model.DataInputs = Inputs.Veri != null ? Inputs.Veri.DataInputs.ToList() : null;
+                model.DataInputs = Inputs.Veri != null ? _dataInputService.ListAllDataInputs().Veri.Where(x => x.FormDataInputId == Inputs.Veri.Id).ToList() : null;
                 model.HaveTodayInputData = model.DataInputs != null ? true : false;
             }
              

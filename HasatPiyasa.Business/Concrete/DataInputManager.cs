@@ -59,14 +59,20 @@ namespace HasatPiyasa.Business.Concrete
                     var formId = 0;
                     dataInputs.ForEach(f =>
                     {
-                        var gettable = _dataInputDal.GetTable().Result;
-                        var _dataInputItem = gettable.FirstOrDefault(x => x.Id == f.Id);
-                        if (_dataInputItem != null)
+
+                       
+                        if (f.Id>0)
                         {
-                            //update
-                            _dataInputItem = f;
-                            _dataInputDal.Update(_dataInputItem);
-                            formId = f.FormDataInputId;
+                            formId = _dataInputDal.Get(x=>x.Id==f.Id).FormDataInputId;
+                            using (var dbcontext = new HasatPiyasaContext())
+                            {
+                                var update = dbcontext.Entry(f);
+                                update.Entity.FormDataInputId = formId;
+                                update.State = EntityState.Modified;
+                                var count = dbcontext.SaveChanges();
+
+                            }
+                             
 
                         }
                         else

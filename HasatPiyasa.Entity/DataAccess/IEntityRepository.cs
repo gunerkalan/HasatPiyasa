@@ -1,5 +1,6 @@
 ﻿using HasatPiyasa.Entity.DataAccess.Entities;
 using HasatPiyasa.Entity.Entity;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,5 +24,6 @@ namespace HasatPiyasa.Entity.DataAccess
         Task AddRange(IEnumerable<T> entities);
         Task DeleteRange(IEnumerable<T> entities);
         Task<IQueryable<T>> GetTable();
+       
     }
 }

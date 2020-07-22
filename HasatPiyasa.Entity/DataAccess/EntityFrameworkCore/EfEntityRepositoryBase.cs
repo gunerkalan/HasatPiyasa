@@ -15,9 +15,9 @@ namespace HasatPiyasa.Entity.DataAccess.EntityFrameworkCore
         where TEntity : BaseEntity, new()
 
     {
-        private static DbContext _context;        
+        private   DbContext _context;        
 
-        public static DbContext Context
+        public   DbContext Context
         {
             get {
                 

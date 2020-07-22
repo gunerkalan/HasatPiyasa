@@ -9,7 +9,7 @@
             }
         });
     });
-    GetTodayDataInput()
+     
 })
 function YuzdeHesapla(e) {
     var value = Number(e.value);
@@ -99,6 +99,7 @@ function CalculateNaturel(totalid) {
     $("#" + totalid).val(total)
     $("#toplanaturel_" + index).val(columntotal)
 
+    CalculateColumn('piyasaton', 'piyasatonTotal', 'topla')
 
 }
 function Avarage(e) {
@@ -229,6 +230,13 @@ function GetTodayDataInput() {
 
     })
 }
+
+$("input").focus((e) => {
+
+    if (e.target.value == "0")
+        e.target.value = null;
+
+})
     
 
  
