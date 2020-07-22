@@ -44,7 +44,7 @@ namespace HasatPiyasa.Business.Concrete
                     return new NIslemSonuc<Emteas>
                     {
                         BasariliMi=false,
-                        Mesaj = Messages.ErrorEmteaCode
+                        Mesaj = sonuc.Mesaj
                     };
                 }
 

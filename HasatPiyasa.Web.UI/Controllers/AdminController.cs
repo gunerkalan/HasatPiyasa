@@ -280,6 +280,28 @@ namespace HasatPiyasa.Web.UI.Controllers
             return View(model);
         }
 
+        [HttpPost]
+        public async Task<ActionResult> CreateTuikSubeData(Tuiks subetuik)
+        {
+            var user = GetCurrentUser();
+            subetuik.AddUserId = user.UserId;
+            subetuik.IsCity = false;
+            subetuik.IsActive = true;
+            subetuik.AddedTime = DateTime.Now;
+            subetuik.TuikYear = DateTime.Now.Year - 1;
+            subetuik.GuessYear = DateTime.Now.Year;
+
+            var sonuc = await _tuikService.CreateTuikData(subetuik);
+            if (sonuc.BasariliMi)
+            {
+                return Json(new { success = true, messages = sonuc.Mesaj });
+            }
+            else
+            {
+                return Json(new { success = false, messages = sonuc.Mesaj });
+            }
+        }
+
 
         #endregion
 
