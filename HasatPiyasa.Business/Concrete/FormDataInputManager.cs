@@ -96,30 +96,29 @@ namespace HasatPiyasa.Business.Concrete
             }
         }
 
-        public async Task<NIslemSonuc<List<FormDataReportDto>>> GetReporFormDataGTable(int id)
+        public async Task<NIslemSonuc<List<DateTime>>> GetReporFormDataGTable(int id)
         {
             try
             {
                 var res = await _formDataInputDal.GetTable();
-                var model = res.Where(x => x.IsActive && x.EmteaId==id).Distinct().ToList();
+                var model = res.Where(x => x.IsActive && x.EmteaId==id).Select(x=>x.AddedTime).Distinct().ToList();
 
-                var response = model.Select(x => new FormDataReportDto
-                {
-                    Id = x.Id,
-                    Date = x.AddedTime.ToShortDateString()
-                }).ToList();
+                //var response = model.Select(x => new FormDataReportDto
+                //{
+                //    Date = x.AddedTime.ToShortDateString()
+                //}).ToList();
 
 
-                return new NIslemSonuc<List<FormDataReportDto>>
+                return new NIslemSonuc<List<DateTime>>
                 {
                     BasariliMi = true,
-                    Veri = response
+                    Veri = model
                 };
 
             }
             catch (Exception hata)
             {
-                return new NIslemSonuc<List<FormDataReportDto>>
+                return new NIslemSonuc<List<DateTime>>
                 {
                     BasariliMi = false,
                     Mesaj = hata.InnerException.Message

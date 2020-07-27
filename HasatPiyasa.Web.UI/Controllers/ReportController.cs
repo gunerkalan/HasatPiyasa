@@ -24,15 +24,15 @@ namespace HasatPiyasa.Web.UI.Controllers
        [HttpGet]
        public ActionResult RiceGeneralReportBySube()
         {
-            var formdatas = _formDataInputService.GetReporFormDataGTable((int)DataInput.Data.Rice).Result;
+            /*var formdatas = _formDataInputService.GetReporFormDataGTable((int)DataInput.Data.Rice).Result;
             GreportRiceBySubeModel model = new GreportRiceBySubeModel
             {
                 FormDataInputs = formdatas.Veri,
                 Subes = _subeService.ListAllSubes().Veri
 
-            };
+            };*/
 
-            return View(model);
+            return View();
         }
 
         [HttpGet]
