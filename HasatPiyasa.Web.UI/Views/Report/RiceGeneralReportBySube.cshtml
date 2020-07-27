@@ -27,9 +27,9 @@
             <div class="form-inline">
 
                 @(Html.DevExtreme().DropDownBox().Width(400)
-                .Value(new[] { 2 })
+                .Value(new[] { 1 })
                 .ValueExpr("Id")
-                .DisplayExpr("Date")
+                .DisplayExpr("AddedTime")
                 .DataSource(d => d.WebApi()
                     .Controller("Report").LoadAction("ChooseFormDataInput")
                     .LoadMode(DataSourceLoadMode.Raw)
@@ -47,8 +47,8 @@
         .ID("embedded-datagrid")
         .DataSource(new JS(@"component.getDataSource()"))
         .Columns(columns => {
-            columns.Add().DataField("Id");
-            columns.Add().DataField("Date");
+            
+            columns.Add().DataField("AddedTime");
            
         })
         .HoverStateEnabled(true)
