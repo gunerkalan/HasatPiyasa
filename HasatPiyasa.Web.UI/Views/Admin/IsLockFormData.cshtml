@@ -14,9 +14,16 @@
 
 <div class="card" style="width:100%;height:100%">
 
-
-    <div class="form-inline">
-        @(Html.DevExtreme().SelectBox()
+    <div class="card-header flex-wrap py-3">
+        <div class="card-title">
+            <h3 class="card-label">
+               
+                <span class="d-block text-muted pt-2 font-size-sm">Ver Giriş Ayarlarını Değiştir</span>
+            </h3>
+        </div>
+        <div class="card-toolbar">
+            <div class="form-inline">
+                @(Html.DevExtreme().SelectBox()
                    .DataSource(Model.Emteas)
                     .DisplayExpr("EmteaName")
                     .ValueExpr("Id")
@@ -24,25 +31,31 @@
                     .ShowClearButton(true)
         .OnValueChanged("emtea_selectBox_valueChanged")
         .SearchEnabled(true)
-         .Width(400)
+         .Width("auto")
                 )
-        @(Html.DevExtreme().SelectBox()
+                @(Html.DevExtreme().SelectBox()
                     .DataSource(Model.Subes)
                     .DisplayExpr("SubeName")
                     .ValueExpr("Id")
                     .Placeholder("Şube Seçiniz")
                     .ShowClearButton(true)
         .OnValueChanged("sube_selectBox_valueChanged")
-    .Width(398)
+    .Width("auto")
         .SearchEnabled(true)
 
                 )
-        <hr />
+                <hr />
+            </div>
+
+        </div>
     </div>
+
+
+
 
     @(Html.DevExtreme().DataGrid()
     .ID("gridContainer")
-    .ShowBorders(true).Width(800)
+    .ShowBorders(true).Width("auto")
     .DataSource(d => d.Mvc().Controller("Admin").LoadAction("GetFormData").Key("FormId"))
     .OnSelectionChanged("selection_changed")
    .Selection(s => s.Mode(SelectionMode.Single))
