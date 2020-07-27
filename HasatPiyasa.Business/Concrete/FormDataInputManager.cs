@@ -1,12 +1,14 @@
 ﻿using HasastPiyasa.DataAccess.Abstract;
 using HasatPiyasa.Business.Abstract;
 using HasatPiyasa.Business.Constants;
+using HasatPiyasa.Core.Entities;
 using HasatPiyasa.Core.Utilities.Results;
 using HasatPiyasa.Entity.Entity;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -87,6 +89,37 @@ namespace HasatPiyasa.Business.Concrete
             catch (Exception hata)
             {
                 return new NIslemSonuc<FormDataInput>
+                {
+                    BasariliMi = false,
+                    Mesaj = hata.InnerException.Message
+                };
+            }
+        }
+
+        public async Task<NIslemSonuc<List<FormDataReportDto>>> GetReporFormDataGTable(int id)
+        {
+            try
+            {
+                var res = await _formDataInputDal.GetTable();
+                var model = res.Where(x => x.IsActive && x.EmteaId==id).Distinct().ToList();
+
+                var response = model.Select(x => new FormDataReportDto
+                {
+                    Id = x.Id,
+                    Date = x.AddedTime.ToShortDateString()
+                }).ToList();
+
+
+                return new NIslemSonuc<List<FormDataReportDto>>
+                {
+                    BasariliMi = true,
+                    Veri = response
+                };
+
+            }
+            catch (Exception hata)
+            {
+                return new NIslemSonuc<List<FormDataReportDto>>
                 {
                     BasariliMi = false,
                     Mesaj = hata.InnerException.Message

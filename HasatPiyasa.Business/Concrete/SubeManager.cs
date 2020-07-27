@@ -75,7 +75,7 @@ namespace HasatPiyasa.Business.Concrete
             {
                 return new NIslemSonuc<List<SubeDto>>
                 {
-                    BasariliMi = false,
+                    BasariliMi = true,
                     Mesaj = hata.InnerException.Message
                 };
             }
