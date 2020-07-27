@@ -101,7 +101,8 @@ namespace HasatPiyasa.Business.Concrete
                         IsActive = true,
                         IsLock = false,
                         CityId = cityid,
-                        SubeId = subeid
+                        SubeId = subeid,
+                        EmteaId= dataInputs.FirstOrDefault().EmteaId
                     };
 
                     var addedformdt = await _formDataInputDal.AddAsync(formDataInput);

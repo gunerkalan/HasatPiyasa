@@ -14,6 +14,7 @@ namespace HasatPiyasa.Entity.Entity
         public bool IsLock { get; set; }
         public int CityId { get; set; }
         public int SubeId { get; set; }
+        public int EmteaId { get; set; }
 
         public virtual Cities City { get; set; }
         public virtual Subes Sube { get; set; }

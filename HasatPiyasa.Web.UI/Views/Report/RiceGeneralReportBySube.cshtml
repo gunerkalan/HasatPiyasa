@@ -1,0 +1,131 @@
+﻿@model HasatPiyasa.Web.UI.Models.GreportRiceBySubeModel
+@using DevExtreme.AspNet.Mvc
+
+@{
+    ViewData["Title"] = "RiceGeneralReportBySube";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<style>
+    .font {
+        color: black !important
+    }
+</style>
+
+
+<div class="card" style="width:100%;height:100%">
+
+    <div class="card-header flex-wrap py-3">
+        <div class="card-title">
+            <h3 class="card-label">
+
+                <span class="d-block text-muted pt-2 font-size-sm">Şube Bazlı Genel Rapor</span>
+            </h3>
+        </div>
+        <div class="card-toolbar">
+            <div class="form-inline">
+
+                @(Html.DevExtreme().DropDownBox().Width(400)
+                .Value(new[] { 2 })
+                .ValueExpr("Id")
+                .DisplayExpr("Date")
+                .DataSource(d => d.WebApi()
+                    .Controller("Report").LoadAction("ChooseFormDataInput")
+                    .LoadMode(DataSourceLoadMode.Raw)
+                    .Key("Id")
+                )
+                .Placeholder("Tarih Aralığını Seçiniz...")
+                .ShowClearButton(true)
+                .ContentTemplate(new TemplateName("EmbeddedDataGridMultiple"))
+                .OnValueChanged("gridBox_valueChanged")
+
+            )
+                @using (Html.DevExtreme().NamedTemplate("EmbeddedDataGridMultiple"))
+                {
+                    @(Html.DevExtreme().DataGrid()
+        .ID("embedded-datagrid")
+        .DataSource(new JS(@"component.getDataSource()"))
+        .Columns(columns => {
+            columns.Add().DataField("Id");
+            columns.Add().DataField("Date");
+           
+        })
+        .HoverStateEnabled(true)
+        .Paging(p => p.PageSize(10))
+        .FilterRow(f => f.Visible(true))
+        .Scrolling(s => s.Mode(GridScrollingMode.Infinite))
+        .Height(345)
+        .Selection(s => s.Mode(SelectionMode.Multiple))
+        .SelectedRowKeys(new JS(@"component.option(""value"")"))
+        .OnSelectionChanged(@<text>
+            function(selectedItems) {
+                var keys = selectedItems.selectedRowKeys;
+                component.option("value", keys);
+            }
+        </text>)
+    )
+                }
+
+
+            </div>
+
+        </div>
+    </div>
+
+
+
+
+    @(Html.DevExtreme().DataGrid()
+    .ID("gridContainer")
+    .ShowBorders(true).Width("auto")
+    .DataSource(d => d.Mvc().Controller("Admin").LoadAction("GetFormData").Key("FormId"))
+
+   .Selection(s => s.Mode(SelectionMode.Single))
+    .HoverStateEnabled(true)
+    .ShowBorders(true)
+    .Paging(paging => paging.PageSize(10))
+    .Pager(pager => {
+        pager.ShowPageSizeSelector(true);
+        pager.AllowedPageSizes(new[] { 5, 10, 20,50,100 });
+        pager.ShowInfo(true);
+    })
+    .Columns(c => {
+        c.Add().DataField("CityName").Caption("Şehir Adı");
+        c.Add().DataField("FormDataDate").Caption("Oluşturma Tarihi");
+
+
+    })
+   )
+
+
+
+</div>
+
+
+<script>
+   
+
+    function gridBox_valueChanged(e) {
+        var $dataGrid = $("#embedded-datagrid");
+
+        if ($dataGrid.length) {
+            var dataGrid = $dataGrid.dxDataGrid("instance");
+            dataGrid.selectRows(e.value, false);
+        }
+    }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

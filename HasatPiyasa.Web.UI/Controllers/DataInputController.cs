@@ -30,6 +30,9 @@ namespace HasatPiyasa.Web.UI.Controllers
         [HttpGet]
         public async Task<ActionResult> DataInputRice(int cityId=0)
         { 
+            
+
+            
             var model = new HasaInputViewModel();
             var emtea = await _emteaService.GetEmteaTable(1,cityId);
             var user = GetCurrentUser();
@@ -42,6 +45,7 @@ namespace HasatPiyasa.Web.UI.Controllers
 
             if (cityId == 0)
             {
+                
                 cityId = GetCurrentUser().Sube.SubeCities.FirstOrDefault().CityId;
                 model.SelectedCityId = cityId;
                 var Inputs = await _formDataInputService.GetFormDataInputTable(DateTime.Today, cityId);

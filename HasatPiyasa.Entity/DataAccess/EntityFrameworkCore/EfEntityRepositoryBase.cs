@@ -15,45 +15,46 @@ namespace HasatPiyasa.Entity.DataAccess.EntityFrameworkCore
         where TEntity : BaseEntity, new()
 
     {
-        private   DbContext _context;        
+        private DbContext _context;
 
-        public   DbContext Context
+        public DbContext Context
         {
-            get {
-                
-                if(_context==null)
+            get
+            {
+
+                if (_context == null)
                 {
                     _context = new HasatPiyasaContext();
-                    
+
                 }
 
-                return _context; 
+                return _context;
             }
 
             set { _context = value; }
         }
 
 
-        
+
 
         public TEntity Add(TEntity entity)
         {
-           
-                var addedEntity = Context.Entry(entity);
-                addedEntity.State = EntityState.Added;
-                Context.SaveChanges();
-                return entity;
-             
+
+            var addedEntity = Context.Entry(entity);
+            addedEntity.State = EntityState.Added;
+            Context.SaveChanges();
+            return entity;
+
         }
 
         public async Task<TEntity> AddAsync(TEntity entity)
         {
-            
-                var addedEntity = Context.Entry(entity);
-                addedEntity.State = EntityState.Added;
-                await Context.SaveChangesAsync();
-                return entity;
-            
+
+            var addedEntity = Context.Entry(entity);
+            addedEntity.State = EntityState.Added;
+            await Context.SaveChangesAsync();
+            return entity;
+
         }
 
         public async Task AddRange(IEnumerable<TEntity> entities)
@@ -68,84 +69,92 @@ namespace HasatPiyasa.Entity.DataAccess.EntityFrameworkCore
 
                 throw;
             }
-             
+
         }
 
         public async Task<int> Count(Expression<Func<TEntity, bool>> filter = null)
         {
-             
-                return filter == null
-              ? await Context.Set<TEntity>().CountAsync()
-              : await Context.Set<TEntity>().Where(filter).CountAsync();
-             
+
+            return filter == null
+          ? await Context.Set<TEntity>().CountAsync()
+          : await Context.Set<TEntity>().Where(filter).CountAsync();
+
         }
 
         public void Delete(TEntity entity)
         {
-            
-                var deletedEntity = Context.Entry(entity);
-                deletedEntity.State = EntityState.Deleted;
-                Context.SaveChanges();
-            
+
+            var deletedEntity = Context.Entry(entity);
+            deletedEntity.State = EntityState.Deleted;
+            Context.SaveChanges();
+
         }
 
         public async Task DeleteAsync(TEntity entity)
         {
-             
-                var deletedEntity = Context.Entry(entity);
-                deletedEntity.State = EntityState.Deleted;
-                await Context.SaveChangesAsync();
-             
+
+            var deletedEntity = Context.Entry(entity);
+            deletedEntity.State = EntityState.Deleted;
+            await Context.SaveChangesAsync();
+
         }
 
         public async Task DeleteRange(IEnumerable<TEntity> entities)
         {
-            
-                Context.Set<TEntity>().RemoveRange(entities);
-                await Context.SaveChangesAsync();
-            
+
+            Context.Set<TEntity>().RemoveRange(entities);
+            await Context.SaveChangesAsync();
+
         }
 
         public TEntity Get(Expression<Func<TEntity, bool>> filter = null)
-        { 
-                return Context.Set<TEntity>().SingleOrDefault(filter);
-            
+        {
+            return Context.Set<TEntity>().SingleOrDefault(filter);
+
         }
 
         public IEnumerable<TEntity> GetList(Expression<Func<TEntity, bool>> filter = null)
         {
-             
-                return filter == null
-                    ? Context.Set<TEntity>().ToList()
-                    : Context.Set<TEntity>().Where(filter).ToList();
-             
+
+            return filter == null
+                ? Context.Set<TEntity>().ToList()
+                : Context.Set<TEntity>().Where(filter).ToList();
+
         }
 
         public async Task<IQueryable<TEntity>> GetTable()
         {
-             
-                return Context.Set<TEntity>().AsQueryable();
-            
+
+            return Context.Set<TEntity>().AsQueryable();
+
         }
 
         public TEntity Update(TEntity entity)
         {
-            
-                var updatedEntity = Context.Entry(entity);
-                updatedEntity.State = EntityState.Modified;
-                Context.SaveChanges();
-                return entity;
-             
+
+            var updatedEntity = Context.Entry(entity);
+            updatedEntity.State = EntityState.Modified;
+            Context.SaveChanges();
+            return entity;
+
         }
 
         public async Task<TEntity> UpdateAsync(TEntity entity)
         {
-             
-                var updatedEntity = Context.Entry(entity);
-                updatedEntity.State = EntityState.Modified;
-                await Context.SaveChangesAsync();
+
+            var updatedEntity = Context.Entry(entity);
+            updatedEntity.State = EntityState.Modified;
+            var count = await Context.SaveChangesAsync();
+            if (count > 0)
+            {
                 return entity;
-             
+            }
+            else
+            {
+                return null;
+            }
+
+
         }
     }
 }
