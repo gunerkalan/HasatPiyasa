@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using HasatPiyasa.Business.Abstract;
 using HasatPiyasa.Core.Utilities.Enums;
 using HasatPiyasa.Web.UI.Models;
+using HasatPiyasa_Web_UI.Models;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
@@ -24,15 +25,9 @@ namespace HasatPiyasa.Web.UI.Controllers
        [HttpGet]
        public ActionResult RiceGeneralReportBySube()
         {
-            /*var formdatas = _formDataInputService.GetReporFormDataGTable((int)DataInput.Data.Rice).Result;
-            GreportRiceBySubeModel model = new GreportRiceBySubeModel
-            {
-                FormDataInputs = formdatas.Veri,
-                Subes = _subeService.ListAllSubes().Veri
-
-            };*/
-
-            return View();
+            var model = new  HasaInputViewModel();
+           
+            return View(model);
         }
 
         [HttpGet]
