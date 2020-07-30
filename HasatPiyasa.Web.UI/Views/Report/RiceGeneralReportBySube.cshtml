@@ -71,12 +71,12 @@
 
     <div class="row">
         <div class="col-md-6">
-            <label><input type="checkbox" /><span class="title">Tüm Tarihler</span></label><br />
+            <label><input type="checkbox" id="alldate"/><span class="title">Tüm Tarihler</span></label><br />
             <label for="dates">Tarihler</label>
             <select class="js-example-basic-multiple form-control" name="dates[]" multiple="multiple" id="dates">
                 @foreach (var cty in Model.DateInputs)
                 {
-                    <option value="@cty.Date">@cty.ToShortDateString()</option>
+                    <option value="@cty.ToShortDateString()">@cty.ToShortDateString()</option>
 
                 }
             </select>
@@ -84,237 +84,35 @@
 
         <div class="col-md-6">
 
-            <label><input type="checkbox" /><span class="title">Tüm Türkiye</span></label><br />
+            <label><input type="checkbox" id="allcities" /><span class="title">Tüm Türkiye</span></label><br />
             <label for="cities">Şubeler</label>
             <select class="js-example-basic-multiple form-control" name="cities[]" multiple="multiple" id="cities">
-                @foreach (var cty in Model.CitiesRapor)
+                @foreach (var cty in Model.CitiesRapor.Distinct())
                 {
                     if (Model.SelectedCityId == cty.CityId)
                     {
-                        <option value="@cty.CityId" selected>@cty.CityName</option>
+                        <option value="@cty.CityId" selected>@cty.SubeName</option>
                     }
                     else
                     {
-                        <option value="@cty.CityId">@cty.CityName</option>
+                        <option value="@cty.CityId">@cty.SubeName</option>
                     }
 
                 }
             </select>
         </div>
-    </div>
-    <div style="margin-bottom:20px">
-        <div style="display:flex;float:left">
-            <span style="font-weight:bolder">@DateTime.Now</span>
+
+        <div style="float:left;margin-bottom:10px;position: relative; margin-top: 10px;" class="col-3">
+            <button onclick="LoadTable()" class="btn btn-primary btn-block">Rapor Oluştur</button>
         </div>
+    </div>
+ 
+    <div class="rapor">
 
     </div>
-    <table cellspacing="0" border="0" class="table" style="width:100%">
-        <tbody>
-            <tr height="30">
-                <td class="tdstyle" border-right: 1px solid #bfbfbf" rowspan="4" height="166" align="center" valign="middle" bgcolor="#F0F0F0" sdnum="1033;1055;Standard"><b> Grup Adı</b></td>
-                <td class="tdstyle tdwidth" rowspan="4" align="left" valign="middle" bgcolor="#F0F0F0" sdnum="1033;1055;Standard" style="vertical-align:central!important"><b>Çeşit Adı</b></td>
-                <td class="tdstyle" colspan="16" align="center" valign="middle" bgcolor="#F0F0F0" sdnum="1033;1055;Standard"><b>@Model.Emteas.EmteaName</b></td>
-                <td class="tdstyle" colspan="6" align="center" valign="middle" bgcolor="#F0F0F0" sdnum="1033;1055;Standard"><b>PİRİNÇ</b></td>
+    
 
-            </tr>
-            <tr class="td1">
-                <td width="50" class="tdstyle" rowspan="3" align="center" valign="middle" bgcolor="#F0F0F0" sdnum="1033;1055;Standard"><b><font face="Verdana" color="#C00000">@(DateTime.Now.Year)<br>TÜİK<br>Üretim<br>( Ton )</font></b></td>
-                <td class="tdstyle" rowspan="3" align="center" valign="middle" bgcolor="#F0F0F0" sdnum="1033;1055;Standard"><b><font face="Verdana" color="#C00000">@DateTime.Now.Year<br>TMO Tahmini<br>Üretim<br>( Ton )</font></b></td>
-                <td class="tdstyle" rowspan="3" align="center" valign="middle" bgcolor="#F0F0F0" sdnum="1033;1055;Standard"><b><font face="Verdana" color="#C00000">Hasat<br>Oranı<br>( % )</font></b></td>
-                <td class="tdstyle" rowspan="3" align="center" valign="middle" bgcolor="#F0F0F0" sdnum="1033;1055;Standard"><b><font face="Verdana" color="#C00000">Hasat<br>Edilen<br>Miktar<br>( Ton )</font></b></td>
-                <td class="tdstyle" rowspan="3" align="center" valign="middle" bgcolor="#F0F0F0" sdnum="1033;1055;Standard"><b><font face="Verdana" color="#C00000">Üreticide<br>Bekleyen<br>( Ton )</font></b></td>
-                <td class="tdstyle" colspan="5" rowspan="2" align="center" valign="middle" bgcolor="#F0F0F0" sdnum="1033;1055;Standard"><b><font face="Verdana" color="#C00000">Randıman Aralığına Göre<br>Piyasada Alınıp Satılan Miktar ( Ton )</font></b></td>
-                <td class="tdstyle" rowspan="3" align="center" valign="middle" bgcolor="#F0F0F0" sdnum="1033;1055;Standard"><b><font face="Verdana" color="#C00000">Piyasada<br>İşl.Gören<br>( Ton )</font></b></td>
-                <td class="tdstyle" colspan="5" rowspan="2" align="center" valign="middle" bgcolor="#F0F0F0" sdnum="1033;1055;Standard"><b><font face="Verdana" color="#C00000">Brüt Piyasa Fiyatı<br>( TL/Ton )</font></b></td>
-                <td class="tdstyle" colspan="3" rowspan="2" align="center" valign="middle" bgcolor="#F0F0F0" sdnum="1033;1055;Standard"><b><font face="Verdana" color="#C00000">Piyasa Toptan Fiyatı (TL/Ton)</font></b></td>
-                <td class="tdstyle" colspan="3" rowspan="2" align="center" valign="middle" bgcolor="#F0F0F0" sdnum="1033;1055;Standard"><b><font face="Verdana" color="#C00000">Perakende Fiyatı (TL/kg)</font></b></td>
-
-            </tr>
-            <tr>
-            </tr>
-            <tr class="td2">
-                <td class="td2" align="center" valign="middle" bgcolor="#F0F0F0" sdnum="1033;1055;Standard"><b><font face="Verdana" color="#C00000">49 ve<br>Altı</font></b></td>
-                <td class="tdstyle" align="center" valign="middle" bgcolor="#F0F0F0" sdnum="1033;1055;Standard"><b><font face="Verdana" color="#C00000">50-54</font></b></td>
-                <td class="tdstyle" align="center" valign="middle" bgcolor="#F0F0F0" sdnum="1033;1055;Standard"><b><font face="Verdana" color="#C00000">55-59</font></b></td>
-                <td class="tdstyle" align="center" valign="middle" bgcolor="#F0F0F0" sdnum="1033;0;"><b><font face="Verdana" color="#C00000">60</font></b></td>
-                <td class="tdstyle" align="center" valign="middle" bgcolor="#F0F0F0" sdnum="1033;1055;Standard"><b><font face="Verdana" color="#C00000">61<br>Üzeri</font></b></td>
-                <td class="tdstyle" align="center" valign="middle" bgcolor="#F0F0F0" sdnum="1033;1055;Standard"><b><font face="Verdana" color="#C00000">49 ve Altı</font></b></td>
-                <td class="tdstyle" align="center" valign="middle" bgcolor="#F0F0F0" sdnum="1033;1055;Standard"><b><font face="Verdana" color="#C00000">50-54</font></b></td>
-                <td class="tdstyle" align="center" valign="middle" bgcolor="#F0F0F0" sdnum="1033;1055;Standard"><b><font face="Verdana" color="#C00000">55-59</font></b></td>
-                <td class="tdstyle" align="center" valign="middle" bgcolor="#F0F0F0" sdval="60" sdnum="1033;1055;Standard"><b><font face="Verdana" color="#C00000">60</font></b></td>
-                <td class="tdstyle" align="center" valign="middle" bgcolor="#F0F0F0" sdnum="1033;1055;Standard"><b><font face="Verdana" color="#C00000">61 ve<br>Üzeri</font></b></td>
-                <td class="tdstyle" align="center" valign="middle" bgcolor="#F0F0F0" sdnum="1033;1055;Standard"><b><font face="Verdana" color="#C00000">Düşük Fiyat Ortalaması</font></b></td>
-                <td class="tdstyle" align="center" valign="middle" bgcolor="#F0F0F0" sdnum="1033;1055;Standard"><b><font face="Verdana" color="#C00000">Yüksek Fiyat Ortalaması</font></b></td>
-                <td class="tdstyle" align="center" valign="middle" bgcolor="#F0F0F0" sdnum="1033;1055;Standard"><b><font face="Verdana" color="#C00000">Ağırlıklı Ort. Fiyat</font></b></td>
-                <td class="tdstyle" align="center" valign="middle" bgcolor="#F0F0F0" sdnum="1033;1055;Standard"><b><font face="Verdana" color="#C00000">Düşük Fiyat Ortalaması</font></b></td>
-                <td class="tdstyle" align="center" valign="middle" bgcolor="#F0F0F0" sdnum="1033;1055;Standard"><b><font face="Verdana" color="#C00000">Yüksek Fiyat Ortalaması</font></b></td>
-                <td class="tdstyle" align="center" valign="middle" bgcolor="#F0F0F0" sdnum="1033;1055;Standard"><b><font face="Verdana" color="#C00000">Ağırlıklı Ort. Fiyat</font></b></td>
-
-            </tr>
-
-            @foreach (var grup in Model.Emteas.EmteaGroups)
-            {
-                groupCount = count;
-                count = 0;
-
-                @foreach (var emteaType in grup.EmteaTypes)
-                {
-                    count++;
-                    dataInputCount++;
-                    var tuikCheck =
-                    emteaType.Tuiks.Where(x => x.CityId == Model.SelectedCityId).Count() > 0 ?
-                    emteaType.Tuiks.FirstOrDefault(x => x.EmteaGroupId == grup.Id && x.CityId == Model.SelectedCityId) != null ?
-                    emteaType.Tuiks.FirstOrDefault(x => x.CityId == Model.SelectedCityId && x.EmteaGroupId == grup.Id && x.TuikYear == DateTime.Now.Year - 1).TuikValue : 0 : 0;
-
-                    if (tuikCheck == 0)
-                    {
-                        dataInputCount--;
-                        <tr>
-                            @if (count < 2)
-                            {
-                                <td class="tdstyle" rowspan="@grup.EmteaTypes.Count" height="395" align="left" valign="middle" bgcolor="#F0F0F0" sdnum="1033;1055;Standard"><b><font face="Verdana" color="#C00000">@grup.GroupName</font></b></td>
-                            }
-
-                            <td class="tdstyle">
-
-                                <font face="Verdana" color="#C00000">
-                                    <b>
-                                        @emteaType.EmteaTypeName
-                                    </b>
-                                    <br>
-                                    <span style="text-transform:capitalize;font-style:italic">(@string.Join(',', emteaType.EmteaTypeGroups.Select(s => s.EmteaTypeGroupName)))</span>
-                                </font>
-
-                            </td>
-                            @for (int i = 0; i < 22; i++)
-                            {
-                                <td style="background-color:lightgray"><input type="number" disabled /></td>
-                            }
-
-                        </tr>
-                    }
-                    else
-                    {
-                        <tr class="@("datainput"+dataInputCount)" emteatype="@emteaType.Id" emteagroup="@grup.Id" dataInputId="@(DataInputModelCount>=dataInputCount ? Model.HaveTodayInputData==true ? Model.DataInputs[dataInputCount-1].Id:0:0)">
-
-                            @if (count < 2)
-                            {
-                                <td class="tdstyle" rowspan="@grup.EmteaTypes.Count" height="395" align="left" valign="middle" bgcolor="#F0F0F0" sdnum="1033;1055;Standard"><b><font face="Verdana" color="#C00000">@grup.GroupName</font></b></td>
-                            }
-
-                            <td class="tdstyle">
-
-                                <font face="Verdana" color="#C00000">
-                                    <b>
-                                        @emteaType.EmteaTypeName
-                                    </b>
-                                    <br>
-                                    <span style="text-transform:capitalize;font-style:italic">(@string.Join(',', emteaType.EmteaTypeGroups.Select(s => s.EmteaTypeGroupName)))</span>
-                                </font>
-
-                            </td>
-                            @{ if (groupCount > count)
-
-                                    count = ++groupCount;
-
-                            }
-                            <td>
-                                <input name="tuik" type="number" readonly value="@(
-                    emteaType.Tuiks.Where(x=>x.CityId==Model.SelectedCityId).Count() >0  ?
-                    emteaType.Tuiks.FirstOrDefault(x=>x.EmteaGroupId==grup.Id && x.CityId==Model.SelectedCityId)!=null ?
-                    emteaType.Tuiks.FirstOrDefault(x =>x.CityId==Model.SelectedCityId && x.EmteaGroupId==grup.Id && x.TuikYear == DateTime.Now.Year-1).TuikValue : 0:0 )" />
-                            </td>
-
-                            <td>
-                                <input readonly type="number" id="@("Tmo_"+count.ToString())" name="tmo" value="@(
-                    emteaType.Tuiks.Where(x=>x.CityId==Model.SelectedCityId).Count() >0  ?
-                    emteaType.Tuiks.FirstOrDefault(x=>x.EmteaGroupId==grup.Id && x.CityId==Model.SelectedCityId)!=null ?
-                    emteaType.Tuiks.FirstOrDefault(x =>x.CityId==Model.SelectedCityId &&x.EmteaGroupId==grup.Id && x.GuessYear == DateTime.Now.Year).GuessValue : 0:0 )" />
-                            </td>
-
-                            <td><input type="number" id="@("HasatYuzde_"+count.ToString())" onkeyup="YuzdeHesapla(this);" name="percent" value="@(DataInputModelCount>=dataInputCount ? Model.HaveTodayInputData==true ? Model.DataInputs[dataInputCount-1].HasatOran:0:0)" /></td>
-                            <td><input type="number" id="@("HasatEdilen_"+count.ToString())" name="hasatedilen" readonly value="@(DataInputModelCount>=dataInputCount ? Model.HaveTodayInputData==true ? Model.DataInputs[dataInputCount-1].HasatMiktar:0:0)" /></td>
-                            <td><input type="number" name="bekleyenton" onkeyup="CalculateColumn('bekleyenton','bekleyentonTotal','topla')" value="@(DataInputModelCount>=dataInputCount ? Model.HaveTodayInputData==true ? Model.DataInputs[dataInputCount-1].UreticiKalanMiktar:0:0)" /></td>
-
-
-                            <td><input type="number" data-bind="0" name="@("naturel"+count.ToString())" id="@("naturel_"+count.ToString())" onkeyup="CalculateNaturel(this);" value="@(DataInputModelCount>=dataInputCount ? Model.HaveTodayInputData==true ? Model.DataInputs[dataInputCount-1].Natural1:0:0)" /></td>
-                            <td><input type="number" data-bind="1" name="@("naturel"+count.ToString())" id="@("naturel_"+count.ToString())" onkeyup="CalculateNaturel(this);" value="@(DataInputModelCount>=dataInputCount ? Model.HaveTodayInputData==true ? Model.DataInputs[dataInputCount-1].Natural2:0:0)" /></td>
-                            <td><input type="number" data-bind="2" name="@("naturel"+count.ToString())" id="@("naturel_"+count.ToString())" onkeyup="CalculateNaturel(this);" value="@(DataInputModelCount>=dataInputCount ? Model.HaveTodayInputData==true ? Model.DataInputs[dataInputCount-1].Natural3:0:0)" /></td>
-                            <td><input type="number" data-bind="3" name="@("naturel"+count.ToString())" id="@("naturel_"+count.ToString())" onkeyup="CalculateNaturel(this);" value="@(DataInputModelCount>=dataInputCount ? Model.HaveTodayInputData==true ? Model.DataInputs[dataInputCount-1].Natural4:0:0)" /></td>
-                            <td><input type="number" data-bind="4" name="@("naturel"+count.ToString())" id="@("naturel_"+count.ToString())" onkeyup="CalculateNaturel(this);" value="@(DataInputModelCount>=dataInputCount ? Model.HaveTodayInputData==true ? Model.DataInputs[dataInputCount-1].Natural5:0:0)" /></td>
-
-
-                            <td><input type="number" name="piyasaton" readonly id="@("piyasaton"+count.ToString())" value="@(DataInputModelCount>=dataInputCount ? Model.HaveTodayInputData==true ? Model.DataInputs[dataInputCount-1].NaturalToplam:0:0)" /></td>
-
-
-
-                            <td><input type="number" name="toptan0" onchange="CalculateColumn('toptan0', 'toptan0', 'topla');" value="@(DataInputModelCount>=dataInputCount ? Model.HaveTodayInputData==true ? Model.DataInputs[dataInputCount-1].ToptanPiyasa1:0:0)" /></td>
-                            <td><input type="number" name="toptan1" onchange="CalculateColumn('toptan1', 'toptan1', 'topla');" value="@(DataInputModelCount>=dataInputCount ? Model.HaveTodayInputData==true ? Model.DataInputs[dataInputCount-1].ToptanPiyasa2:0:0)" /></td>
-                            <td><input type="number" name="toptan2" onchange="CalculateColumn('toptan2', 'toptan2', 'topla');" value="@(DataInputModelCount>=dataInputCount ? Model.HaveTodayInputData==true ? Model.DataInputs[dataInputCount-1].ToptanPiyasa3:0:0)" /></td>
-                            <td><input type="number" name="toptan3" onchange="CalculateColumn('toptan3', 'toptan3', 'topla');" value="@(DataInputModelCount>=dataInputCount ? Model.HaveTodayInputData==true ? Model.DataInputs[dataInputCount-1].ToptanPiyasa4:0:0)" /></td>
-                            <td><input type="number" name="toptan4" onchange="CalculateColumn('toptan4', 'toptan4', 'topla');" value="@(DataInputModelCount>=dataInputCount ? Model.HaveTodayInputData==true ? Model.DataInputs[dataInputCount-1].ToptanPiyasa5:0:0)" /></td>
-
-
-                            <td><input type="number" name="dfiyat" id="@("d_1_"+count.ToString())" onkeyup="Avarage(this);" value="@(DataInputModelCount>=dataInputCount ? Model.HaveTodayInputData==true ? Model.DataInputs[dataInputCount-1].Perakende1:0:0)" /></td>
-                            <td><input type="number" name="yfiyat" id="@("y_1_"+count.ToString())" onkeyup="Avarage(this);" value="@(DataInputModelCount>=dataInputCount ? Model.HaveTodayInputData==true ? Model.DataInputs[dataInputCount-1].Perakende2:0:0)" /></td>
-                            <td><input type="number" name="ofiyat" id="@("o_1_"+count.ToString())" readonly value="@(DataInputModelCount>=dataInputCount ? Model.HaveTodayInputData==true ? Model.DataInputs[dataInputCount-1].Perakende3:0:0)" /></td>
-
-                            <td><input type="number" name="dfiyat2" id="@("d_2_"+count.ToString())" onkeyup="Avarage(this);" value="@(DataInputModelCount>=dataInputCount ? Model.HaveTodayInputData==true ? Model.DataInputs[dataInputCount-1].Perakende4:0:0)" /></td>
-                            <td><input type="number" name="yfiyat2" id="@("y_2_"+count.ToString())" onkeyup="Avarage(this);" value="@(DataInputModelCount>=dataInputCount ? Model.HaveTodayInputData==true ? Model.DataInputs[dataInputCount-1].Perakende5:0:0)" /></td>
-                            <td><input type="number" name="ofiyat2" id="@("o_2_"+count.ToString())" readonly value="@(DataInputModelCount>=dataInputCount ? Model.HaveTodayInputData==true ? Model.DataInputs[dataInputCount-1].Perakende6:0:0)" /></td>
-
-                        </tr>
-                    }
-
-
-
-                }
-
-            }
-
-            <tr class="total">
-                <td style="border-top: 1px solid #bfbfbf; border-bottom: 1px solid #bfbfbf; border-left: 1px solid #bfbfbf; border-right: 1px solid #bfbfbf" colspan="2" height="43" align="left" valign="middle" bgcolor="#F0F0F0" sdnum="1033;1055;Standard"><b><font face="Verdana" color="#C00000">TOPLAM ÇELTİK</font></b></td>
-
-                <td><input type="number" readonly id="tuikTotal" value="0" /></td>
-                <td><input type="number" readonly id="tmoTotal" value="0" /></td>
-                <td><input type="number" readonly id="percentTotal" value="0" /></td>
-                <td><input type="number" readonly id="hasatedilenTotal" value="0" /></td>
-                <td><input type="number" readonly id="bekleyentonTotal" value="0" /></td>
-
-                @for (int i = 0; i < 5; i++)
-                {
-                    <td><input type="number" id="@("toplanaturel_"+i.ToString())" readonly value="0" /></td>
-                }
-
-                <td><input type="number" readonly id="piyasatonTotal" value="0" /></td>
-
-                @for (int i = 0; i < 5; i++)
-                {
-                    <td><input type="number" readonly value="0" id="@("toptan"+i)" /></td>
-                }
-
-
-                <td><input type="number" readonly id="dfiyatTotal" value="0" /></td>
-                <td><input type="number" readonly id="yfiyatTotal" value="0" /></td>
-                <td><input type="number" readonly id="ofiyatTotal" value="0" /></td>
-
-                <td><input type="number" readonly id="dfiyat2Total" value="0" /></td>
-                <td><input type="number" readonly id="yfiyat2Total" value="0" /></td>
-                <td><input type="number" readonly id="ofiyat2Total" value="0" /></td>
-
-
-
-
-
-            </tr>
-
-
-        </tbody>
-    </table>
-
-    <div style="float:left;margin-bottom:10px" class="col-3">
-        <button onclick="Save()" class="btn btn-danger btn-block">Kaydet</button>
-    </div>
+ 
 
     @(Html.DevExtreme().LoadPanel()
         .ID("loadPanel")
@@ -336,15 +134,13 @@
 
     <script src="~/js/ExcelSheet/ExcelSheet.js"></script>
     <script>
-
-
+         
         $("td input").on('keyup', function (e) {
             if (e.keyCode === 13) {
                 $(this).closest('td').nextAll().eq(0).find('input').focus();
             }
         });
-
-
+         
     </script>
 }
 

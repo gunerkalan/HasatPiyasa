@@ -1,7 +1,19 @@
-﻿$(document).ready(() => {
+﻿var Dates = [];
+var Cities = [];
+var AllDate = false;
+var AllCities = false;
+
+LoadTable();
+
+$(document).ready(() => {
+    LoadProcess()
+})
+
+function LoadProcess() {
     CalculateColumn("tuik", "tuikTotal", "topla");
     CalculateColumn("tmo", "tmoTotal", "topla");
-    console.clear()
+    CalculateColumn("percent", "percentTotal", "ortalama");
+    CalculateColumn("hasatedilen", "hasatedilenTotal", "topla");       
     $("input[type=number]").on("focus", function () {
         $(this).on("keydown", function (event) {
             if (event.keyCode === 38 || event.keyCode === 40) {
@@ -9,8 +21,12 @@
             }
         });
     });
-     
-})
+    $("input").trigger('keyup')
+    $("body").trigger('keyup')
+    $("input").trigger('change')
+    console.clear()
+}
+
 function YuzdeHesapla(e) {
     var value = Number(e.value);
     var percent = 0;
@@ -239,4 +255,20 @@ $("input").focus((e) => {
 })
     
 
- 
+function LoadTable() {
+
+    Dates = $('#dates').select2('val')
+    Cities = $('#cities').select2('val')
+    AllCities = document.getElementById("alldate").checked
+    AllDate = document.getElementById("allcities").checked
+
+    $.post("/report/RiceGeneralReportBySubePartial", { dates: Dates, cities: Cities, allDate: AllDate, allcities: AllCities }, (res) => {
+        $(".rapor").html(res)
+        LoadProcess()
+        LoadProcess2();
+    })
+}
+
+function numberWithCommas(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+}
