@@ -4,9 +4,17 @@ var AllDate = false;
 var AllCities = false;
 
 LoadTable();
+setTimeout(() => {
+    LoadProcess()
+}, 1000)
 
 $(document).ready(() => {
-    LoadProcess()
+   LoadProcess()      
+   
+})
+
+$("body").on("load", () => {
+    LoadProcess()      
 })
 
 function LoadProcess() {
@@ -24,6 +32,13 @@ function LoadProcess() {
 
     $("table input").trigger('keyup')   
     $("table input").trigger('change')
+    $("input").focus((e) => {
+
+        if (e.target.value == "0")
+            e.target.value = null;
+
+    })
+    
     console.clear()
 }
 
@@ -148,6 +163,7 @@ function CityChange() {
     var value = $("#cityId :selected").val()
     window.location.href = `/DataInput/DataInputRice?cityId=${value}`;
     getLoadPanelInstance().show();
+    LoadProcess();
 
 }
 
@@ -247,12 +263,7 @@ function GetTodayDataInput() {
     })
 }
 
-$("input").focus((e) => {
 
-    if (e.target.value == "0")
-        e.target.value = null;
-
-})
     
 
 function LoadTable() {

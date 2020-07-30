@@ -34,7 +34,7 @@ namespace HasatPiyasa.Web.UI.Controllers
         {
             var model = new  HasaInputViewModel();
             var _cities = await _subeCityService.GetSbCityGTable();
-            model.CitiesRapor = _cities.Veri;
+            model.CitiesRapor = _cities.Veri.Distinct().ToList();
            var _dates =await  _formDataInputService.GetTable();
             model.DateInputs=_dates.Select(x => x.AddedTime.Date).Distinct().ToList();
             var emtea = await _emteaService.GetEmteaTable(1,0);
@@ -45,12 +45,10 @@ namespace HasatPiyasa.Web.UI.Controllers
         [HttpPost]
         public async Task<ActionResult> RiceGeneralReportBySubePartial(string[] dates,string[] cities,bool allDate ,bool allcities)
         {
-            var model = new HasaInputViewModel();
-          
+            var model = new HasaInputViewModel();          
             var emtea = await _emteaService.GetEmteaTable(1, 1);
             var dataInputs = _dataInputService.ListAllDataInputs().Veri;
-            model.Emteas = emtea.Veri;
-             
+            model.Emteas = emtea.Veri;             
             foreach (var item in model.Emteas.EmteaGroups)
             {
                 foreach (var emteaTypes in item.EmteaTypes)
@@ -107,7 +105,6 @@ namespace HasatPiyasa.Web.UI.Controllers
                 }
 
             }
-
             return  PartialView (model);
         }
 
