@@ -73,6 +73,12 @@
             margin-bottom: 10px;
             background-color: whitesmoke;
         }
+
+        .rapor {
+            width: 143%;
+            border: 1px solid lightgrey;
+            font-weight: 800;
+        }
     </style>
 }
 
@@ -81,7 +87,7 @@
 
     <div class="row rowstyle">
         <div class="col-md-6">
-            <label><input type="checkbox" id="alldate"/><span class="title text-primary">Tüm Tarihler</span></label><br />
+            <label><input type="checkbox" id="alldate" /><span class="title text-primary font-weight-bolder">Tüm Tarihler</span></label><br />
             <label for="dates" class="text-primary font-weight-bolder"> Tarihler</label><br />
             <select class="js-example-basic-multiple form-control" name="dates[]" multiple="multiple" id="dates">
                 @foreach (var cty in Model.DateInputs)
@@ -94,7 +100,7 @@
 
         <div class="col-md-6">
 
-            <label><input type="checkbox" id="allcities" /><span class="title text-primary">Tüm Türkiye</span></label><br />
+            <label><input type="checkbox" id="allcities" class="font-weight-bolder" /><span class="title text-primary font-weight-bolder">Tüm Türkiye</span></label><br />
             <label for="cities" class="text-primary font-weight-bolder">Şubeler</label><br />
             <select class="js-example-basic-multiple form-control" name="cities[]" multiple="multiple" id="cities">
                 @foreach (var cty in Model.CitiesRapor.Distinct())
@@ -117,8 +123,8 @@
         </div>
     </div>
  
-    <div class="rapor">
-
+    <div class="rapor text-center">
+        <span class="text-muted">Filtre Seçiniz</span>
     </div>
     
 
