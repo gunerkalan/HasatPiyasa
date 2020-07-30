@@ -124,11 +124,11 @@
 
                             }
                             <td>
-                                <input name="tuik" type="number" readonly value="@emteaType.Tuiks.Sum(x=>x.TuikValue)" />
+                                <input name="tuik" type="number" readonly value="@emteaType.DataInputs.Sum(x=>x.TuikValue)" />
                             </td>
                                
                             <td>
-                                <input name="tmo" type="number" readonly value="@emteaType.Tuiks.Sum(x=>x.GuessValue)" />
+                                <input name="tmo" type="number" readonly value="@emteaType.DataInputs.Sum(x=>x.GuessValue)" />
                             </td>
 
                             <td><input type="number" id="@("HasatYuzde_"+count.ToString())" onkeyup="YuzdeHesapla(this);" name="percent" value="@emteaType.DataInputs.Sum(x=>x.HasatOran)" /></td>

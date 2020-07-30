@@ -55,46 +55,50 @@ namespace HasatPiyasa.Web.UI.Controllers
             {
                 foreach (var emteaTypes in item.EmteaTypes)
                 {
-                     
-                    if (dates.Count()>0)
-                    {
-                        emteaTypes.DataInputs = dataInputs.Where(x => dates.Contains(x.AddedTime.ToShortDateString()) && x.EmteaTypeId==emteaTypes.Id).ToList();
-                    }
-
-                    if (cities.Count() > 0)
-                    {
-                        emteaTypes.DataInputs = dataInputs.Where(x => cities.Contains(x.SubeId.ToString()) && x.EmteaTypeId == emteaTypes.Id).ToList();
-                    }
-
-                    if (cities.Count() > 0 && dates.Count() > 0)
-                    {
-                        emteaTypes.DataInputs = dataInputs.Where(x => cities.Contains(x.SubeId.ToString()) && dates.Contains(x.AddedTime.ToShortDateString()) && x.EmteaTypeId == emteaTypes.Id).ToList();
-                    }
-
-                    if(allcities)
+                    if(!allcities && !allDate)
                     {
                         if (dates.Count() > 0)
                         {
                             emteaTypes.DataInputs = dataInputs.Where(x => dates.Contains(x.AddedTime.ToShortDateString()) && x.EmteaTypeId == emteaTypes.Id).ToList();
                         }
-                        else
-                        {
-                            emteaTypes.DataInputs = dataInputs.Where(x=> x.EmteaTypeId == emteaTypes.Id).ToList();
-                        }
-                    }
 
-                    if(allDate)
-                    {
                         if (cities.Count() > 0)
                         {
                             emteaTypes.DataInputs = dataInputs.Where(x => cities.Contains(x.SubeId.ToString()) && x.EmteaTypeId == emteaTypes.Id).ToList();
                         }
-                        else
+
+                        if (cities.Count() > 0 && dates.Count() > 0)
                         {
-                            emteaTypes.DataInputs = dataInputs.Where(x => x.EmteaTypeId == emteaTypes.Id).ToList();
+                            emteaTypes.DataInputs = dataInputs.Where(x => cities.Contains(x.SubeId.ToString()) && dates.Contains(x.AddedTime.ToShortDateString()) && x.EmteaTypeId == emteaTypes.Id).ToList();
                         }
                     }
+                    else
+                    {
+                        if (allcities)
+                        {
+                            if (dates.Count() > 0)
+                            {
+                                emteaTypes.DataInputs = dataInputs.Where(x => dates.Contains(x.AddedTime.ToShortDateString()) && x.EmteaTypeId == emteaTypes.Id).ToList();
+                            }
+                            else
+                            {
+                                emteaTypes.DataInputs = dataInputs.Where(x => x.EmteaTypeId == emteaTypes.Id).ToList();
+                            }
+                        }
 
+                        if (allDate)
+                        {
+                            if (cities.Count() > 0)
+                            {
+                                emteaTypes.DataInputs = dataInputs.Where(x => cities.Contains(x.SubeId.ToString()) && x.EmteaTypeId == emteaTypes.Id).ToList();
+                            }
+                            else
+                            {
+                                emteaTypes.DataInputs = dataInputs.Where(x => x.EmteaTypeId == emteaTypes.Id).ToList();
+                            }
+                        }
+                    }
+                      
                     if(allcities && allDate)
                     {
                         emteaTypes.DataInputs = dataInputs.Where(x => x.EmteaTypeId == emteaTypes.Id).ToList();

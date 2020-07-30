@@ -21,9 +21,9 @@ function LoadProcess() {
             }
         });
     });
-    $("input").trigger('keyup')
-    $("body").trigger('keyup')
-    $("input").trigger('change')
+
+    $("table input").trigger('keyup')   
+    $("table input").trigger('change')
     console.clear()
 }
 
