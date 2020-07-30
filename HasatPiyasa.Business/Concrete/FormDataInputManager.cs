@@ -1,4 +1,5 @@
 ﻿using HasastPiyasa.DataAccess.Abstract;
+using HasastPiyasa.DataAccess.Concrete;
 using HasatPiyasa.Business.Abstract;
 using HasatPiyasa.Business.Constants;
 using HasatPiyasa.Core.Entities;
@@ -14,7 +15,8 @@ using System.Threading.Tasks;
 
 namespace HasatPiyasa.Business.Concrete
 {
-    public class FormDataInputManager : IFormDataInputService
+    
+    public class FormDataInputManager : EfFormDataInputDal,IFormDataInputService
     {
         private IFormDataInputDal _formDataInputDal;
 

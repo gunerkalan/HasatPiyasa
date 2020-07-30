@@ -1,4 +1,5 @@
 ﻿using HasastPiyasa.DataAccess.Abstract;
+using HasastPiyasa.DataAccess.Concrete;
 using HasatPiyasa.Business.Abstract;
 using HasatPiyasa.Core.Entities;
 using HasatPiyasa.Core.Utilities.Results;
@@ -12,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace HasatPiyasa.Business.Concrete
 {
-    public class SubeCityManager : ISubeCityService
+    public class SubeCityManager : EfSubeCityDal, ISubeCityService 
     {
         private ISubeCityDal _subeCityDal;
 

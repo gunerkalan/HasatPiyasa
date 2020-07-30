@@ -22,27 +22,86 @@
         .total td input {
             font-weight: bolder !important
         }
+
+        .select2-container--default .select2-selection--multiple .select2-selection__rendered .select2-selection__choice {
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-align: center;
+            -ms-flex-align: center;
+            align-items: center;
+            padding: 0.25rem 0.75rem;
+            font-size: 1rem;
+            margin: 0.1rem 0.4rem 0.1rem 0;
+            position: relative;
+            float: left /*rtl:right*/;
+            color: #3699ff!important ;
+            background: #F3F6F9;
+            border: 0;
+            border-radius: 0.42rem;
+            font-weight: 900;
+        }
+
+            .select2-container--default .select2-selection--multiple .select2-selection__rendered .select2-selection__choice .select2-selection__choice__remove:before {
+                font-family: Ki;
+                font-style: normal;
+                font-weight: normal;
+                font-variant: normal;
+                line-height: 1;
+                text-decoration: inherit;
+                text-rendering: optimizeLegibility;
+                text-transform: none;
+                -moz-osx-font-smoothing: grayscale;
+                -webkit-font-smoothing: antialiased;
+                font-smoothing: antialiased;
+                content: "";
+                font-size: 0.6rem;
+                color: #f64e60;
+                font-weight: bolder;
+            }
+        .title {
+            position: relative;
+            left: 10px;
+        }
     </style>
 }
 
 
 <div style="position:relative;left:-240px;width:100%;padding-top:15px;" class="body">
 
-    <select class="form-control citie" onchange="CityChange();" id="cityId" multiple>
-        @foreach (var cty in Model.Cities)
-        {
-            if (Model.SelectedCityId == cty.CityId)
-            {
-                <option value="@cty.CityId" selected>@cty.City.Name</option>
-            }
-            else
-            {
-                <option value="@cty.CityId">@cty.City.Name</option>
-            }
+    <div class="row">
+        <div class="col-md-6">
+            <label><input type="checkbox" /><span class="title">Tüm Tarihler</span></label><br />
+            <label for="dates">Tarihler</label>
+            <select class="js-example-basic-multiple form-control" name="dates[]" multiple="multiple" id="dates">
+                @foreach (var cty in Model.DateInputs)
+                {
+                    <option value="@cty.Date">@cty.ToShortDateString()</option>
 
-        }
+                }
+            </select>
+        </div>
 
-    </select>
+        <div class="col-md-6">
+
+            <label><input type="checkbox" /><span class="title">Tüm Türkiye</span></label><br />
+            <label for="cities">Şubeler</label>
+            <select class="js-example-basic-multiple form-control" name="cities[]" multiple="multiple" id="cities">
+                @foreach (var cty in Model.CitiesRapor)
+                {
+                    if (Model.SelectedCityId == cty.CityId)
+                    {
+                        <option value="@cty.CityId" selected>@cty.CityName</option>
+                    }
+                    else
+                    {
+                        <option value="@cty.CityId">@cty.CityName</option>
+                    }
+
+                }
+            </select>
+        </div>
+    </div>
     <div style="margin-bottom:20px">
         <div style="display:flex;float:left">
             <span style="font-weight:bolder">@DateTime.Now</span>

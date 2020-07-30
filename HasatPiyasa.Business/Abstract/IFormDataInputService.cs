@@ -1,4 +1,5 @@
-﻿using HasatPiyasa.Core.Entities;
+﻿using HasastPiyasa.DataAccess.Abstract;
+using HasatPiyasa.Core.Entities;
 using HasatPiyasa.Core.Utilities.Results;
 using HasatPiyasa.Entity.Entity;
 using System;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace HasatPiyasa.Business.Abstract
 {
-    public interface IFormDataInputService
+    public interface IFormDataInputService:IFormDataInputDal
     {
         Task<NIslemSonuc<FormDataInput>> CreateFormDataInput(FormDataInput formDataInput);
         Task<NIslemSonuc<FormDataInput>> GetFormDataInputTable(DateTime date , int cityId);

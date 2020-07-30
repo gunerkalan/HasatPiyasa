@@ -1,3 +1,4 @@
+using HasatPiyasa.Core.Entities;
 using HasatPiyasa.Entity.Entity;
 using System;
 using System.Collections.Generic;
@@ -12,6 +13,7 @@ namespace HasatPiyasa_Web_UI.Models
         public EmteaTypeGroups EmteaTypeGroups { get; set; }
         public EmteaTypes EmteaTypes { get; set; }
         public List<SubeCities>  Cities { get; set; }
+        public List<SubeCityDto>  CitiesRapor { get; set; }
         public List<DataInputs>  DataInputs { get; set; }
         public List<DateTime>  DateInputs { get; set; }
         public bool HaveTodayInputData { get; set; }
