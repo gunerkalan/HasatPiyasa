@@ -289,6 +289,6 @@ function numberWithCommas(x) {
 function exportTableToExcel(tableID, filename = '') {
 
     $('#table').tableExport({ type: 'excel', fileName: filename, bootstrap: true });
-
+    $.fn.tableExport.defaultButton = "button-default";
  
 }
