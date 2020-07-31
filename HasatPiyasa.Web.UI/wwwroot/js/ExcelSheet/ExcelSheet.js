@@ -38,6 +38,8 @@ function LoadProcess() {
             e.target.value = null;
 
     })
+
+    $.fn.tableExport.bootstrap = ["btn", "btn-default", "btn-toolbar"];
     
     console.clear()
 }
@@ -288,7 +290,10 @@ function numberWithCommas(x) {
 
 function exportTableToExcel(tableID, filename = '') {
 
-    $('#table').tableExport({ type: 'excel', fileName: filename, bootstrap: true });
+    $('#table').tableExport({ type: 'xls', fileName: filename, bootstrap: true });
     $.fn.tableExport.defaultButton = "button-default";
+    
+   
  
 }
+ 
