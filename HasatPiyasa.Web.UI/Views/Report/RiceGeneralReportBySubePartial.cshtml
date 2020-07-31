@@ -21,9 +21,14 @@
         left: 34px;
         margin-bottom: 7px;
     }
+    .btn.btn-success:hover:not(.btn-text):not(:disabled):not(.disabled), .btn.btn-success:focus:not(.btn-text), .btn.btn-success.focus:not(.btn-text) {
+        color: #ffffff;
+        background-color: #206207;
+        border-color: #2e6506;
+    }
 </style>
 <table cellspacing="0" border="0" class="table" style="width:100%" id="table">
-    <button class="btn btn-success float-right excel" onclick="exportTableToExcel('table', 'PirinçEmteaRaporu')">Excel</button>
+    <button class="btn btn-success float-right excel xls" onclick="exportTableToExcel('table', 'PirinçEmteaRaporu')">Excel</button>
     <thead>
         <tr height="30">
             <td class="tdstyle" border-right: 1px solid #bfbfbf" rowspan="4" height="166" align="center" valign="middle" bgcolor="#F0F0F0" sdnum="1033;1055;Standard"><b> Grup Adı</b></td>
@@ -226,6 +231,7 @@ else
 <script type="text/javascript" src="~/tableexport.jquery.plugin/libs/es6-promise/es6-promise.auto.min.js"></script>
 <script type="text/javascript" src="~/tableexport.jquery.plugin/libs/html2canvas/html2canvas.min.js"></script>
 <script src="~/tableexport.jquery.plugin/tableExport.min.js"></script>
+<link href="~/TableExport/css/tableexport.css" rel="stylesheet" />
 
 <script>
 

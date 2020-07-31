@@ -288,7 +288,7 @@ function numberWithCommas(x) {
 
 function exportTableToExcel(tableID, filename = '') {
 
-    $('#table').tableExport({ type: 'excel', fileName: filename });
+    $('#table').tableExport({ type: 'excel', fileName: filename, bootstrap: true });
 
  
 }
