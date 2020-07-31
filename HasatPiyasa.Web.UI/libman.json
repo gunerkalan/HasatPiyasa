@@ -1,0 +1,20 @@
+{
+  "version": "1.0",
+  "defaultProvider": "jsdelivr",
+  "libraries": [
+    {
+      "library": "jsreport@2.9.0",
+      "destination": "wwwroot/jsreport/"
+    },
+    {
+      "provider": "cdnjs",
+      "library": "TableExport@5.2.0",
+      "destination": "wwwroot/TableExport/"
+    },
+    {
+      "provider": "unpkg",
+      "library": "tableexport.jquery.plugin@1.10.20",
+      "destination": "wwwroot/tableexport.jquery.plugin/"
+    }
+  ]
+}

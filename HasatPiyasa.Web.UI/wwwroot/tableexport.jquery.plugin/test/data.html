@@ -1,0 +1,180 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+
+<HTML>
+<HEAD>
+
+  <META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=windows-1252">
+  <TITLE></TITLE>
+  <META NAME="GENERATOR" CONTENT="OpenOffice 4.1.3  (Win32)">
+  <META NAME="CREATED" CONTENT="0;0">
+  <META NAME="CHANGED" CONTENT="0;0">
+
+  <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+  <script type="text/javascript" src="../libs/js-xlsx/xlsx.core.min.js"></script>
+  <script type="text/javascript" src="../libs/FileSaver/FileSaver.min.js"></script>
+  <script type="text/javascript" src="../tableExport.js"></script>
+  <script type="text/javaScript">
+
+    function doExport(selector, params) {
+      var options = {
+        type: 'excel',
+        tableName: 'Raport przeplywu',
+        csvEnclosure: '"',
+        csvSeparator: ';',
+        csvUseBOM: true,
+        mso: {
+          fileFormat: 'xlsx',
+          worksheetName: 'Raport przeplywu',
+          xslx: {
+            formatId: {
+              numbers: function(cell, row, col) {return (row > 0 ? ((row % 2 === 0 && col === 1)? 2 : '0.0000') : 49);}
+            }
+          }
+        },
+        numbers: {
+          html: {
+            decimalMark: ',',
+            thousandsSeparator: ' '
+          },
+          output: {
+            decimalMark: ',',
+            thousandsSeparator: ''
+          }
+        },
+        preventInjection: false
+      };
+
+      jQuery.extend(true, options, params);
+
+      $(selector).tableExport(options);
+    }
+  </script>
+
+  <STYLE>
+    <!--
+    BODY,DIV,TABLE,THEAD,TBODY,TFOOT,TR,TH,TD,P { font-family:"Arial"; font-size:x-small }
+     -->
+  </STYLE>
+
+</HEAD>
+
+<BODY TEXT="#000000">
+  <section>
+    <ul>
+      <li><a href="#" onClick="doExport('table', {});">XLSX data</a></li>
+    </ul>
+
+<TABLE FRAME=VOID CELLSPACING=0 COLS=2 RULES=NONE BORDER=0>
+  <COLGROUP><COL WIDTH=91><COL WIDTH=177></COLGROUP>
+  <TBODY>
+    <TR>
+      <TD WIDTH=91 HEIGHT=17 ALIGN=LEFT>Dataczas</TD>
+      <TD WIDTH=177 ALIGN=LEFT>Przep&#322;yw sumaryczny [m3]</TD>
+    </TR>
+    <TR>
+      <TD HEIGHT=17 ALIGN=LEFT>00:00 - 01:00</TD>
+      <TD ALIGN=RIGHT SDVAL="15,1" SDNUM="1031;">15,1</TD>
+    </TR>
+    <TR>
+      <TD HEIGHT=17 ALIGN=LEFT>01:00 - 02:00</TD>
+      <TD ALIGN=RIGHT SDVAL="7,6" SDNUM="1031;">7,6</TD>
+    </TR>
+    <TR>
+      <TD HEIGHT=17 ALIGN=LEFT>02:00 - 03:00</TD>
+      <TD ALIGN=RIGHT SDVAL="7" SDNUM="1031;">7</TD>
+    </TR>
+    <TR>
+      <TD HEIGHT=17 ALIGN=LEFT>03:00 - 04:00</TD>
+      <TD ALIGN=RIGHT SDVAL="3,9" SDNUM="1031;">3,9</TD>
+    </TR>
+    <TR>
+      <TD HEIGHT=17 ALIGN=LEFT>04:00 - 05:00</TD>
+      <TD ALIGN=RIGHT SDVAL="3,5" SDNUM="1031;">3,5</TD>
+    </TR>
+    <TR>
+      <TD HEIGHT=17 ALIGN=LEFT>05:00 - 06:00</TD>
+      <TD ALIGN=RIGHT SDVAL="5,6" SDNUM="1031;">5,6</TD>
+    </TR>
+    <TR>
+      <TD HEIGHT=17 ALIGN=LEFT>06:00 - 07:00</TD>
+      <TD ALIGN=RIGHT SDVAL="5,4" SDNUM="1031;">5,4</TD>
+    </TR>
+    <TR>
+      <TD HEIGHT=17 ALIGN=LEFT>07:00 - 08:00</TD>
+      <TD ALIGN=RIGHT SDVAL="7,5" SDNUM="1031;">7,5</TD>
+    </TR>
+    <TR>
+      <TD HEIGHT=17 ALIGN=LEFT>08:00 - 09:00</TD>
+      <TD ALIGN=RIGHT SDVAL="13" SDNUM="1031;">13</TD>
+    </TR>
+    <TR>
+      <TD HEIGHT=17 ALIGN=LEFT>09:00 - 10:00</TD>
+      <TD ALIGN=RIGHT SDVAL="22,4" SDNUM="1031;">22,4</TD>
+    </TR>
+    <TR>
+      <TD HEIGHT=17 ALIGN=LEFT>10:00 - 11:00</TD>
+      <TD ALIGN=RIGHT SDVAL="22,1" SDNUM="1031;">22,1</TD>
+    </TR>
+    <TR>
+      <TD HEIGHT=17 ALIGN=LEFT>11:00 - 12:00</TD>
+      <TD ALIGN=RIGHT SDVAL="25" SDNUM="1031;">25</TD>
+    </TR>
+    <TR>
+      <TD HEIGHT=17 ALIGN=LEFT>12:00 - 13:00</TD>
+      <TD ALIGN=RIGHT SDVAL="23,3" SDNUM="1031;">23,3</TD>
+    </TR>
+    <TR>
+      <TD HEIGHT=17 ALIGN=LEFT>13:00 - 14:00</TD>
+      <TD ALIGN=RIGHT SDVAL="23,4" SDNUM="1031;">23,4</TD>
+    </TR>
+    <TR>
+      <TD HEIGHT=17 ALIGN=LEFT>14:00 - 15:00</TD>
+      <TD ALIGN=RIGHT SDVAL="20,9" SDNUM="1031;">20,9</TD>
+    </TR>
+    <TR>
+      <TD HEIGHT=17 ALIGN=LEFT>15:00 - 16:00</TD>
+      <TD ALIGN=RIGHT SDVAL="22,6" SDNUM="1031;">22,6</TD>
+    </TR>
+    <TR>
+      <TD HEIGHT=17 ALIGN=LEFT>16:00 - 17:00</TD>
+      <TD ALIGN=RIGHT SDVAL="20,8" SDNUM="1031;">20,8</TD>
+    </TR>
+    <TR>
+      <TD HEIGHT=17 ALIGN=LEFT>17:00 - 18:00</TD>
+      <TD ALIGN=RIGHT SDVAL="20,9" SDNUM="1031;">20,9</TD>
+    </TR>
+    <TR>
+      <TD HEIGHT=17 ALIGN=LEFT>18:00 - 19:00</TD>
+      <TD ALIGN=RIGHT SDVAL="19,5" SDNUM="1031;">19,5</TD>
+    </TR>
+    <TR>
+      <TD HEIGHT=17 ALIGN=LEFT>19:00 - 20:00</TD>
+      <TD ALIGN=RIGHT SDVAL="24,9" SDNUM="1031;">24,9</TD>
+    </TR>
+    <TR>
+      <TD HEIGHT=17 ALIGN=LEFT>20:00 - 21:00</TD>
+      <TD ALIGN=RIGHT SDVAL="24,4" SDNUM="1031;">24,4</TD>
+    </TR>
+    <TR>
+      <TD HEIGHT=17 ALIGN=LEFT>21:00 - 22:00</TD>
+      <TD ALIGN=RIGHT SDVAL="22" SDNUM="1031;">22</TD>
+    </TR>
+    <TR>
+      <TD HEIGHT=17 ALIGN=LEFT>22:00 - 23:00</TD>
+      <TD ALIGN=RIGHT SDVAL="18,1" SDNUM="1031;">18,1</TD>
+    </TR>
+    <TR>
+      <TD HEIGHT=17 ALIGN=LEFT>23:00 - 00:00</TD>
+      <TD ALIGN=RIGHT SDVAL="19,8" SDNUM="1031;">19,8</TD>
+    </TR>
+    <TR>
+      <TD HEIGHT=17 ALIGN=LEFT>RAZEM:</TD>
+      <TD ALIGN=LEFT>398,5 m3</TD>
+    </TR>
+  </TBODY>
+</TABLE>
+<!-- ************************************************************************** -->
+  </section>
+</BODY>
+
+</HTML>

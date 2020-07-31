@@ -285,3 +285,10 @@ function LoadTable() {
 function numberWithCommas(x) {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
 }
+
+function exportTableToExcel(tableID, filename = '') {
+
+    $('#table').tableExport({ type: 'excel', fileName: filename });
+
+ 
+}
