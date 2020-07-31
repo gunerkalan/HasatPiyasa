@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 
 namespace HasatPiyasa.Entity.Entity
 {
@@ -11,5 +12,7 @@ namespace HasatPiyasa.Entity.Entity
         
         public virtual Cities City { get; set; }
         public virtual Subes Sube { get; set; }
+
+ 
     }
 }

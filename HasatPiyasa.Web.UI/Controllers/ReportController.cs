@@ -8,6 +8,7 @@ using HasatPiyasa.Entity.Entity;
 using HasatPiyasa.Web.UI.Models;
 using HasatPiyasa_Web_UI.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Internal;
 using Newtonsoft.Json;
 
 namespace HasatPiyasa.Web.UI.Controllers
@@ -33,7 +34,7 @@ namespace HasatPiyasa.Web.UI.Controllers
        public async Task<ActionResult> RiceGeneralReportBySube()
         {
             var model = new  HasaInputViewModel();
-            var _cities = await _subeCityService.GetSbCityGTable();
+            var _cities = await _subeCityService.GetSbCityGTable();            
             model.CitiesRapor = _cities.Veri.Distinct().ToList();
            var _dates =await  _formDataInputService.GetTable();
             model.DateInputs=_dates.Select(x => x.AddedTime.Date).Distinct().ToList();
