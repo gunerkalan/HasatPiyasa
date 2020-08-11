@@ -1,4 +1,6 @@
-﻿$(function () {
+﻿var GlobalEmteaId;
+
+$(function () {
     $("#GridContainer").dxDataGrid({
         export: {
             enabled: true
@@ -360,6 +362,21 @@ function CheckValidateForm() {
 
     }
 }
+function CheckValidateForm2() {
+
+    var EmteaCode = $("#emteacode2").val()
+    var EmteaName = $("#emteaname2").val()
+
+    if (EmteaCode != "" && EmteaName != "") {
+        return true
+    }
+    else {
+        ChangeColor(EmteaCode, "emteacode2")
+        ChangeColor(EmteaName, "emteaname2")
+        return false
+
+    }
+}
 function CheckValidateFormEg() {
 
     var EmteaId = $("#drpemtias :selected").val()
@@ -399,7 +416,7 @@ function CheckValidateFormEmteaTypeGroup() {
     var EmteaTypeId = $("#drpemtiatypes :selected").val()
     var EmteaTypeGroupName = $("#emteatypegroupname").val()
 
-    if (EmteaGroupId != "" &&  EmteaGroupId != "-1" && EmteaId != "" && EmteaId != "-1" && EmteaTypeId != "" && EmteaTypeId != "-1" && EmteaTypeGroupName != "") {
+    if (EmteaGroupId != "" && EmteaGroupId != "-1" && EmteaId != "" && EmteaId != "-1" && EmteaTypeId != "" && EmteaTypeId != "-1" && EmteaTypeGroupName != "") {
         return true
     }
     else {
@@ -532,6 +549,116 @@ function EmteaGroupChange() {
     })
 
 }
+function EditEmtea(id) {
+    GlobalEmteaId = id
+
+    $.post("/Admin/GetEmtea", { id: id }, (res) => {
+        $("#loadPanel").dxLoadPanel("instance").show();
+        var model = JSON.parse(res)
+
+        if (model.BasariliMi) {
+
+            $("#emteacode2").val(model.Veri.EmteaCode)
+            $("#emteaname2").val(model.Veri.EmteaName)
+
+            $("#usermodeltitleEditSiparis").html(`${model.Veri.EmteaCode}  kodlu Emtea'yı Düzenle `)
+            $("#loadPanel").dxLoadPanel("instance").hide();
+            $("#EditModal").modal("show")
+
+        }
+        else {
+            $("#loadPanel").dxLoadPanel("instance").hide();
+            swal("Hata !", model.ErrorMessage, "error");
+        }
+    })
+}
+function UpdateEmtea() {
+
+
+    swal({
+        title: "Emtea Güncelle",
+        text: "Emtea Güncellensin Mi ?",
+        type: "info",
+        showCancelButton: true,
+        closeOnConfirm: false,
+        showLoaderOnConfirm: true,
+        confirmButtonText: "Tamam",
+        cancelButtonText: "İptal",
+    }, function () {
+
+        var emtea = {
+            Id: GlobalEmteaId,
+            EmteaCode: $("#emteacode2").val(),
+            EmteaName: $("#emteaname2").val(),
+
+        }
+
+        if (CheckValidateForm2()) {
+            $.post("/Admin/UpdateEmtea", { emtea: emtea }, function (res) {
+                var model = JSON.parse(res);
+
+                if (model.success) {
+                    SweetAlertMesaj("Emtea Güncelle", model.Mesaj, "success", "Kapat", "btn-success")
+                    $("#GridContainer").dxDataGrid("instance").refresh();
+                    $("#EditModal").modal("hide")
+                    loadpanel.hide()
+
+                    $('#emteacode2').val('')
+                    $('#emteaname2').val('')
+
+                }
+                else {
+
+                    SweetAlertMesaj("Emtia Güncelle", model.messages, "error", "Kapat", "btn-danger")
+
+                }
+
+            })
+        }
+        else {
+            swal("Hata : Lütfen gerekli alanları doldurunuz !");
+            this.showLoaderOnConfirm = false
+            return false
+
+        }
+
+
+    });
+
+
+   
+
+}
+function DeleteEmtea(id, EmteaCode) {
+
+    swal({
+        title: "Sil ?",
+        text: `${EmteaCode} kodlu Emtea Silinsin mi ?`,
+        type: "input",
+        showCancelButton: true,
+        closeOnConfirm: false,
+        showLoaderOnConfirm: true,
+        confirmButtonText: "Evet",
+        cancelButtonText: "Vazgeç"
+
+    }, 
+        $.post("/Admin/DeleteEmtea", { id: id, }, (res) => {
+
+            var model = JSON.parse(res)
+
+            if (model.BasariliMi) {
+                SweetAlertMesaj("Silme", "Emtea Silinmiştir !", "success", "Kapat", "btn-success")
+                $("#GridContainer").dxDataGrid("instance").refresh();
+                this.showLoaderOnConfirm = false
+            }
+            else {
+                swal("Hata !", model.ErrorMessage, "error");
+                this.showLoaderOnConfirm = false
+            }
+        })
+    );
+}
+
 
 //$("body").on("hide.bs.modal", "#emtea-adding-modal", () => {
 //    $("#GridContainer").dxDataGrid("instance").refresh();

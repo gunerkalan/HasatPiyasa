@@ -15,12 +15,18 @@
     <style>
         .citie {
             position: relative;
-            top: -20px;
-            width: 200px;
+            top: 0px;
+            
+            right:400px;
         }
 
         .total td input {
             font-weight: bolder !important
+        }
+        .alert-danger{
+            font-weight:bolder !important;
+            position:relative;
+            width:1590px !important;
         }
     </style>
 }
@@ -28,25 +34,32 @@
 
 <div style="position:relative;left:-240px;width:100%;padding-top:15px;" class="body">
 
-    <select class="form-control citie" onchange="CityChange();" id="cityId">
-        @foreach (var cty in Model.Cities)
-        {
-            if (Model.SelectedCityId == cty.CityId)
-            {
-                <option value="@cty.CityId" selected>@cty.City.Name</option>
-            }
-            else
-            {
-                <option value="@cty.CityId">@cty.City.Name</option>
-            }
-
-        }
-
-    </select>
+    
     <div style="margin-bottom:20px">
-        <div style="display:flex;float:left">
-            <span style="font-weight:bolder">@DateTime.Now</span>
+ 
+        <div class="alert alert-danger" role="alert">
+
+            <div class="col-md-2">
+                <select class="form-control" onchange="CityChange();" id="cityId">
+                    @foreach (var cty in Model.Cities)
+                    {
+                        if (Model.SelectedCityId == cty.CityId)
+                        {
+                            <option value="@cty.CityId" selected>@cty.City.Name</option>
+                        }
+                        else
+                        {
+                            <option value="@cty.CityId">@cty.City.Name</option>
+                        }
+
+                    }
+
+                </select>
+
+            </div>
+            <span style="font-weight:bolder; float:right; margin-top:-23px; margin-right:50px;">@DateTime.Today.ToShortDateString()</span>
         </div>
+        
 
     </div>
     <table cellspacing="0" border="0" class="table" style="width:100%">

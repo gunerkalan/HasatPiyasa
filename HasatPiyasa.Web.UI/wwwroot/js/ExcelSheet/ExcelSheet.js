@@ -39,7 +39,7 @@ function LoadProcess() {
 
     })
 
-    $.fn.tableExport.bootstrap = ["btn", "btn-default", "btn-toolbar"];
+   
     
     console.clear()
 }

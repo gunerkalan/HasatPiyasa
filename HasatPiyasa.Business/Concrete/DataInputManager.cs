@@ -114,7 +114,7 @@ namespace HasatPiyasa.Business.Concrete
                     return new NIslemSonuc<DataInputs>
                     {
                         BasariliMi = true,
-                        Mesaj = Messages.ErrorAdd
+                        Mesaj = Messages.DataInputAdd
                     };
                 }
 
