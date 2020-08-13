@@ -107,10 +107,10 @@ namespace HasatPiyasa.Entity.DataAccess.EntityFrameworkCore
 
         }
 
-        public async Task<bool> DeleteSoftAsync(int id)
+        public async Task<bool> DeleteSoftAsync(TEntity entity)
         {
 
-            var updatedEntity = Context.Entry(id);
+            var updatedEntity = Context.Entry(entity);
             updatedEntity.State = EntityState.Modified;
             var count = await Context.SaveChangesAsync();
             if (count > 0)

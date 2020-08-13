@@ -85,7 +85,7 @@
              {
                  btns.Add().Name(GridColumnButtonName.Delete).Text("Sil");
              }).CellTemplate(@<text>
-                <button title="Silme" onclick="Delete('<%= data.Id %>');"><i class="fa fa-trash" aria-hidden="true" style="color:red"></i></button>
+                <button title="Silme" onclick="SoftDeleteEmtea('<%= data.Id %>','<%= data.EmteaCode %>','<%= data.EmteaName %>');"><i class="fa fa-trash" aria-hidden="true" style="color:red"></i></button>
 
             </text>);
 

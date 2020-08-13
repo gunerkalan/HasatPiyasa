@@ -19,6 +19,7 @@ namespace HasatPiyasa.Business.Constants
         public static string DataInputUpdate = " Güncelleme yapılmıştır ";
         public static string EmteaUpdate = " Emtea Güncellemesi yapılmıştır ";
         public static string EmteaDelete = " Emtea Silme işlemi gerçekleştirilmiştir ";
+        public static string EmteaDeleteError = " Emtea Silme işlemi sırasında bir hata oluştu ! ";
         public static string DataInputAdd = "Veri girişleriniz veritabanına eklendi !";
 
         public static string ErrorEmteaGroupName = "Girilen Emtea Grup Adı ile daha önce Emtea  Grup tanımlanmış ! ";

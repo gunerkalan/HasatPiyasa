@@ -223,17 +223,17 @@ namespace HasatPiyasa.Business.Concrete
             }
         }
 
-        public async Task<NIslemSonuc<bool>> DeleteEmtea(int id)
+        public async Task<NIslemSonuc<bool>> DeleteEmtea(Emteas emtea)
         {
             try
             {
-                var deletedemtea = await _emteaDal.DeleteSoftAsync(id);
+                var deletedemtea = await _emteaDal.DeleteSoftAsync(emtea);
 
                 return new NIslemSonuc<bool>
                 {
                     BasariliMi = true,
                     Veri = deletedemtea,
-                    Mesaj = Messages.EmteaUpdate
+                    Mesaj = Messages.EmteaDelete
 
                 };
             }
@@ -243,7 +243,7 @@ namespace HasatPiyasa.Business.Concrete
                 {
                     BasariliMi = false,
                     Mesaj = Messages.ErrorAdd,
-                    ErrorMessage = hata.Message
+                    ErrorMessage = hata.InnerException.Message
                 };
             }
         }

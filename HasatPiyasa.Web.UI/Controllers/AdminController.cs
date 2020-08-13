@@ -104,10 +104,20 @@ namespace HasatPiyasa.Web.UI.Controllers
         }
 
         [HttpPost]
-        public async Task<object> DeleteEmtea(int id)
+        public async Task<object> DeleteEmtea(Emteas emtea)
         {
-            var res = await _emteaService.DeleteEmtea(id);
-            return JsonConvert.SerializeObject(res);
+            var sonuc = await _emteaService.DeleteEmtea(emtea);
+
+            if(sonuc.BasariliMi)
+            {
+                return JsonConvert.SerializeObject(new { success = true, messages = sonuc.Mesaj });
+            }
+            else
+            {
+                return JsonConvert.SerializeObject(new { success = false, messages = sonuc.Mesaj });
+            }
+
+           
         }
 
 

@@ -626,36 +626,47 @@ function UpdateEmtea() {
     });
 
 
-   
+
 
 }
-function DeleteEmtea(id, EmteaCode) {
-
+function SoftDeleteEmtea(Id, EmteaCode, EmteaName) {
+    GlobalEmteaId = Id
     swal({
         title: "Sil ?",
         text: `${EmteaCode} kodlu Emtea Silinsin mi ?`,
-        type: "input",
+        type: "info",
         showCancelButton: true,
         closeOnConfirm: false,
         showLoaderOnConfirm: true,
-        confirmButtonText: "Evet",
-        cancelButtonText: "Vazgeç"
+        confirmButtonText: "Tamam",
+        cancelButtonText: "İptal",
 
-    }, 
-        $.post("/Admin/DeleteEmtea", { id: id, }, (res) => {
+    },
+        function () {
 
-            var model = JSON.parse(res)
+            var emtea = {
+                Id: GlobalEmteaId,
+                IsActive: false,
+                EmteaCode: EmteaCode,
+                EmteaName: EmteaName
 
-            if (model.BasariliMi) {
-                SweetAlertMesaj("Silme", "Emtea Silinmiştir !", "success", "Kapat", "btn-success")
-                $("#GridContainer").dxDataGrid("instance").refresh();
-                this.showLoaderOnConfirm = false
             }
-            else {
-                swal("Hata !", model.ErrorMessage, "error");
-                this.showLoaderOnConfirm = false
-            }
-        })
+
+            $.post("/Admin/DeleteEmtea", { emtea: emtea, }, (res) => {
+
+                var model = JSON.parse(res)
+
+                if (model.success) {
+                    SweetAlertMesaj("Silme", "Emtea Silinmiştir !", "success", "Kapat", "btn-success")
+                    $("#GridContainer").dxDataGrid("instance").refresh();
+                    this.showLoaderOnConfirm = false
+                }
+                else {
+                    swal("Hata !", model.ErrorMessage, "error");
+                    this.showLoaderOnConfirm = false
+                }
+            })
+        }
     );
 }
 
