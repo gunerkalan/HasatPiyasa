@@ -126,7 +126,7 @@ namespace HasatPiyasa.Business.Concrete
                 return new NIslemSonuc<List<Emteas>>
                 {
                     BasariliMi = true,
-                    Veri = _emteaDal.GetList().ToList()
+                    Veri = _emteaDal.GetList(u=>u.IsActive).ToList()
                 };
 
             }

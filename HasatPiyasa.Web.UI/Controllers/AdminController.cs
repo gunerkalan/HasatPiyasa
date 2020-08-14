@@ -157,8 +157,6 @@ namespace HasatPiyasa.Web.UI.Controllers
         }
 
 
-
-
         private List<SelectListItem> LoadEmteaGroups()
         {
             var emteas = LoadEmteas();
@@ -248,19 +246,45 @@ namespace HasatPiyasa.Web.UI.Controllers
         }
 
         [HttpPost]
-        public async Task<object> UpdateEmteaGroup(EmteaGroups emteaGroups)
+        public async Task<object> GetEmteaGroup(int id)
+        {
+            var res = await _emteaGroupService.GetEmteaGroupAsync(id);
+            return JsonConvert.SerializeObject(res);
+        }
+
+
+        [HttpPost]
+        public async Task<object> UpdateEmteaGroup(EmteaGroups emteagroup)
         {
 
-            emteaGroups.UpdatedTime = DateTime.Now;
+            emteagroup.UpdatedTime = DateTime.Now;
+            emteagroup.IsActive = true;
 
-            var res = await _emteaGroupService.UpdateEmteaGroup(emteaGroups);
-            if (res.BasariliMi)
+
+            var sonuc = await _emteaGroupService.UpdateEmteaGroup(emteagroup);
+            if (sonuc.BasariliMi)
             {
-                return Json(new { success = true, messages = res.Mesaj });
+                return JsonConvert.SerializeObject(new { success = true, messages = sonuc.Mesaj });
             }
             else
             {
-                return Json(new { success = true, messages = res.Mesaj });
+                return JsonConvert.SerializeObject(new { success = false, messages = sonuc.Mesaj });
+            }
+
+        }
+
+        [HttpPost]
+        public async Task<object> DeleteEmteaGroup(EmteaGroups emteagroup)
+        {
+            var sonuc = await _emteaGroupService.DeleteEmteaGroup(emteagroup);
+
+            if (sonuc.BasariliMi)
+            {
+                return JsonConvert.SerializeObject(new { success = true, messages = sonuc.Mesaj });
+            }
+            else
+            {
+                return JsonConvert.SerializeObject(new { success = false, messages = sonuc.Mesaj });
             }
 
         }

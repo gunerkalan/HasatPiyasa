@@ -161,7 +161,7 @@ namespace HasatPiyasa.Business.Concrete
                 return new NIslemSonuc<List<EmteaTypeGroups>>
                 {
                     BasariliMi = true,
-                    Veri = _emteaTypeGroupDal.GetList().ToList()
+                    Veri = _emteaTypeGroupDal.GetList(u=>u.IsActive).ToList()
                 };
 
             }

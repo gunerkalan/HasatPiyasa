@@ -15,5 +15,7 @@ namespace HasatPiyasa.Business.Abstract
         NIslemSonuc<EmteaGroups> GetEmteaGroup(int id);
         Task<NIslemSonuc<EmteaGroups>> UpdateEmteaGroup(EmteaGroups emteaGroup);
         Task<NIslemSonuc<List<EmteaGrupDto>>> GetEmteaGroupTable();
+        Task<NIslemSonuc<EmteaGroups>> GetEmteaGroupAsync(int id);
+        Task<NIslemSonuc<bool>> DeleteEmteaGroup(EmteaGroups emteagroup);
     }
 }
