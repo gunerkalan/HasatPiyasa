@@ -5,6 +5,9 @@ using HasatPiyasa.Entity.Dtos;
 using HasatPiyasa.Entity.Entity;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
+using System.DirectoryServices;
+using System.Security;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -13,33 +16,46 @@ namespace HasatPiyasa.Business.Concrete
     public class AuthManager : IAuthService
     {
         private IUserService _userService;
+        private const string DisplayNameAttribute = "DisplayName";
+        private const string SAMAccountNameAttribute = "SAMAccountName";
         public AuthManager(IUserService userService)
         {
             _userService = userService;
         }
         public async Task<NIslemSonuc<Users>> Login(UserForLoginDto userForLoginDto)
         {
-            var res = await _userService.GetUserTable(userForLoginDto.UserName);
 
-            if(res.Veri ==null)
-            {
-                return new NIslemSonuc<Users>
+            if (LdapAuth(userForLoginDto).BasariliMi)
                 {
-                    BasariliMi = false,
-                    Mesaj = Messages.ErrorDatabaseLogin
+                var res = await _userService.GetUserTable(userForLoginDto.UserName);
 
-                };
+                if (res.Veri == null)
+                {
+                    return new NIslemSonuc<Users>
+                    {
+                        BasariliMi = false,
+                        Mesaj = Messages.ErrorDatabaseLogin
+
+                    };
+                }
+                else
+                {
+                    return new NIslemSonuc<Users>
+                    {
+                        BasariliMi = true,
+                        Veri = res.Veri,
+                        Mesaj = Messages.SusccesfulyLogin
+                    };
+                }
             }
             else
             {
                 return new NIslemSonuc<Users>
                 {
-                    BasariliMi = true,
-                    Veri = res.Veri,
-                    Mesaj = Messages.SusccesfulyLogin
+                    BasariliMi = false,
+                    Mesaj = Messages.ErrorDomainLogin
                 };
             }
-            
             
             /*var userToCheckServer = await _userService.GetUserName(userForLoginDto.UserName);
             if (userToCheckServer == null)
@@ -68,7 +84,43 @@ namespace HasatPiyasa.Business.Concrete
                 Mesaj = Messages.SusccesfulyLogin
             };*/
         }
+        public NIslemSonuc<bool> LdapAuth(UserForLoginDto userForLoginDto)
+        {
+            try
+            {
+                using (DirectoryEntry entry = new DirectoryEntry(ConfigurationManager.AppSettings["LDAP"], userForLoginDto.UserName, userForLoginDto.Password))
+                {
+                    using (DirectorySearcher searcher = new DirectorySearcher(entry))
+                    {
+                        searcher.Filter = String.Format("({0}={1})", SAMAccountNameAttribute, userForLoginDto.UserName);
+                        searcher.PropertiesToLoad.Add(DisplayNameAttribute);
+                        searcher.PropertiesToLoad.Add(SAMAccountNameAttribute);
+                        var result = searcher.FindOne();
+                        if (result != null)
+                        {
+                            var displayName = result.Properties[DisplayNameAttribute];
+                            var samAccountName = result.Properties[SAMAccountNameAttribute];
 
+                            return new NIslemSonuc<bool>
+                            {
+                                BasariliMi = true,                               
+                            };
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // if we get an error, it means we have a login failure.
+                // Log specific exception
+                return new NIslemSonuc<bool>
+                {
+                    BasariliMi = false,
+                    Mesaj = ex.Message
+                };
+            }
+            return null;
+        }
         public async Task<NIslemSonuc<Users>> Profil(int id)
         {
             var user = await _userService.GetUserName(id);

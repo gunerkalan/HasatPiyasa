@@ -4,6 +4,8 @@ var AllDate = false;
 var AllCities = false;
 
 LoadTable();
+LoadTableCity();
+
 setTimeout(() => {
     LoadProcess()
 }, 1000)
@@ -20,8 +22,27 @@ $("body").on("load", () => {
 function LoadProcess() {
     CalculateColumn("tuik", "tuikTotal", "topla");
     CalculateColumn("tmo", "tmoTotal", "topla");
-    CalculateColumn("percent", "percentTotal", "ortalama");
-    CalculateColumn("hasatedilen", "hasatedilenTotal", "topla");       
+    //CalculateColumn("percent", "percentTotal", "ortalama");
+    CalculateColumn("hasatedilen", "hasatedilenTotal", "topla");  
+    CalculateColumn("bekleyenton", "bekleyentonTotal", "topla");
+    CalculateColumn("piyasaton", "piyasatonTotal", "topla");
+    CalculateColumnByCumulative("percent", "tmo", "percentTotal", "ağırlıklı"); 
+    CalculateColumnByCumulative('toptan0', 'piyasaton', 'toptan0', 'ağırlıklı');
+    CalculateColumnByCumulative('toptan1', 'piyasaton', 'toptan1', 'ağırlıklı');
+    CalculateColumnByCumulative('toptan2', 'piyasaton', 'toptan2', 'ağırlıklı');
+    CalculateColumnByCumulative('toptan3', 'piyasaton', 'toptan3', 'ağırlıklı');
+    CalculateColumnByCumulative('toptan4', 'piyasaton', 'toptan4', 'ağırlıklı');
+    CalculateColumn('naturel0', 'toplanaturel_0', 'topla');
+    CalculateColumn('naturel1', 'toplanaturel_1', 'topla');
+    CalculateColumn('naturel2', 'toplanaturel_2', 'topla');
+    CalculateColumn('naturel3', 'toplanaturel_3', 'topla');
+    CalculateColumn('naturel4', 'toplanaturel_4', 'topla');
+    CalculateColumn('dfiyat', 'dfiyatTotal', 'ortalama');
+    CalculateColumn('yfiyat', 'yfiyatTotal', 'ortalama');
+    CalculateColumn('ofiyat', 'ofiyatTotal', 'ortalama');
+    CalculateColumn('dfiyat2', 'dfiyat2Total', 'ortalama');
+    CalculateColumn('yfiyat2', 'yfiyat2Total', 'ortalama');
+    CalculateColumn('ofiyat2', 'ofiyat2Total', 'ortalama');
     $("input[type=number]").on("focus", function () {
         $(this).on("keydown", function (event) {
             if (event.keyCode === 38 || event.keyCode === 40) {
@@ -106,6 +127,34 @@ function CalculateColumn(name, totalid, calculateType) {
         $("#" + totalid).val(total / _count)
 
     }
+
+
+}
+function CalculateColumnByCumulative(name, relatedcolumnname, totalid, calculateType) {
+
+    if (calculateType == "ağırlıklı") {
+        var tuiks = $(`input[name=${name}]`);
+        var miktars = $(`input[name=${relatedcolumnname}]`);
+        var miktartotal = 0;
+        var total = 0;
+        $.each(miktars, (i, v) => {
+            if (v.value != "0") {
+                miktartotal += Number(v.value)
+            }
+        })
+        $.each(miktars, (a, b) => {
+            $.each(tuiks, (i, v) => {
+                if (v.value != "0" & a == i) {
+                    total += Number(v.value) * Number(b.value)
+            }
+        })
+        })
+
+        $("#" + totalid).val(parseInt(total / miktartotal))
+
+    }
+
+  
 
 
 }
@@ -277,6 +326,22 @@ function LoadTable() {
     AllDate = document.getElementById("allcities").checked
     getLoadPanelInstance().show()
     $.post("/report/RiceGeneralReportBySubePartial", { dates: Dates, cities: Cities, allDate: AllDate, allcities: AllCities }, (res) => {
+        $(".rapor").html(res)
+        LoadProcess()
+        LoadProcess2();
+        getLoadPanelInstance().hide()
+    })
+}
+
+function LoadTableCity() {
+
+    Dates = $('#dates').select2('val')
+    Cities = $('#cities').select2('val')
+    $('.rapor').css("border", "none")
+    AllCities = document.getElementById("alldate").checked
+    AllDate = document.getElementById("allcities").checked
+    getLoadPanelInstance().show()
+    $.post("/report/RiceGeneralReportByCityPartial", { dates: Dates, cities: Cities, allDate: AllDate, allcities: AllCities }, (res) => {
         $(".rapor").html(res)
         LoadProcess()
         LoadProcess2();

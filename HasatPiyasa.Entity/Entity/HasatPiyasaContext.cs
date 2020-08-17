@@ -36,7 +36,8 @@ namespace HasatPiyasa.Entity.Entity
             {
  
                 //optionsBuilder.UseSqlServer("data source =GUNER-PC\\SQLEXPRESS ;initial catalog=HasatPiyasa;persist security info=true; user id=sa;password=262835Gg");
-                optionsBuilder.UseSqlServer("data source =.\\SQLEXPRESS ;initial catalog=HasatPiyasa;persist security info=true; user id=sa;password=123321");
+                //optionsBuilder.UseSqlServer("data source =.\\SQLEXPRESS ;initial catalog=HasatPiyasa;persist security info=true; user id=sa;password=123321");
+                optionsBuilder.UseSqlServer("data source =.;initial catalog=HasatPiyasa;persist security info=true; user id=sa;password=123321");
             }
         }
 

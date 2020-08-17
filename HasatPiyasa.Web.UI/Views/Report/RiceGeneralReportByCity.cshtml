@@ -1,0 +1,172 @@
+﻿@model HasaInputViewModel
+@using DevExtreme.AspNet.Mvc
+@{
+    ViewData["Title"] = "DataInputRice";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var count = 0;
+    var groupCount = 0;
+    var dataInputCount = 0;
+    var DataInputModelCount = Model.DataInputs != null ? Model.DataInputs.Count : 0;
+}
+
+@section styles {
+
+    <link rel="stylesheet" href="~/css/Site.css" />
+    <style>
+        .citie {
+            position: relative;
+            top: -20px;
+            width: 200px;
+        }
+
+        .total td input {
+            font-weight: bolder !important
+        }
+
+        .select2-container--default .select2-selection--multiple .select2-selection__rendered .select2-selection__choice {
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-align: center;
+            -ms-flex-align: center;
+            align-items: center;
+            padding: 0.25rem 0.75rem;
+            font-size: 1rem;
+            margin: 0.1rem 0.4rem 0.1rem 0;
+            position: relative;
+            float: left /*rtl:right*/;
+            color: #3699ff !important;
+            background: #F3F6F9;
+            border: 0;
+            border-radius: 0.42rem;
+            font-weight: 900;
+        }
+
+            .select2-container--default .select2-selection--multiple .select2-selection__rendered .select2-selection__choice .select2-selection__choice__remove:before {
+                font-family: Ki;
+                font-style: normal;
+                font-weight: normal;
+                font-variant: normal;
+                line-height: 1;
+                text-decoration: inherit;
+                text-rendering: optimizeLegibility;
+                text-transform: none;
+                -moz-osx-font-smoothing: grayscale;
+                -webkit-font-smoothing: antialiased;
+                font-smoothing: antialiased;
+                content: "";
+                font-size: 0.6rem;
+                color: #f64e60;
+                font-weight: bolder;
+            }
+
+        .title {
+            position: relative;
+            left: 10px;
+        }
+
+        .rowstyle {
+            border: 1px solid #dcd9d9;
+            width: 144%;
+            padding: 10px 0px;
+            position: relative;
+            left: 15px;
+            margin-bottom: 10px;
+            background-color: whitesmoke;
+        }
+
+        .rapor {
+            width: 143%;
+            border: 1px solid lightgrey;
+            font-weight: 800;
+        }
+        input[type=number] {
+            -moz-appearance: textfield;
+            border: none !important
+        }
+
+            input[type=number] :focus {
+                -moz-appearance: textfield;
+                border: none !important
+            }
+    </style>
+}
+
+
+<div style="position:relative;left:-240px;width:100%;padding-top:15px;" class="body">
+
+    <div class="row rowstyle">
+        <div class="col-md-6">
+            <label><input type="checkbox" id="alldate" /><span class="title text-primary font-weight-bolder">Tüm Tarihler</span></label><br />
+            <label for="dates" class="text-primary font-weight-bolder"> Tarihler</label><br />
+            <select class="js-example-basic-multiple form-control" name="dates[]" multiple="multiple" id="dates">
+                @foreach (var cty in Model.DateInputs)
+                {
+                    <option value="@cty.ToShortDateString()">@cty.ToShortDateString()</option>
+
+                }
+            </select>
+        </div>
+
+        <div class="col-md-6">
+
+            <label><input type="checkbox" id="allcities" class="font-weight-bolder" /><span class="title text-primary font-weight-bolder">Tüm Türkiye</span></label><br />
+            <label for="cities" class="text-primary font-weight-bolder">Şubeler</label><br />
+            <select class="js-example-basic-multiple form-control" name="cities[]" multiple="multiple" id="cities">
+                @foreach (var cty in Model.CitiesRapor)
+                {
+                    if (Model.SelectedCityId == cty.CityId)
+                    {
+                        <option value="@cty.CityId" selected>@cty.CityName</option>
+                    }
+                    else
+                    {
+                        <option value="@cty.CityId">@cty.CityName</option>
+                    }
+
+                }
+            </select>
+        </div>
+
+        <div style="float:left;margin-bottom:10px;position: relative; margin-top: 10px;" class="col-3">
+            <button onclick="LoadTableCity()" class="btn btn-primary btn-block" style="width: 150px;">Rapor Oluştur</button>
+        </div>
+    </div>
+
+    <div class="rapor text-center">
+        <span class="text-muted">Filtre Seçiniz</span>
+    </div>
+
+
+
+
+    @(Html.DevExtreme().LoadPanel()
+        .ID("loadPanel")
+        .ShadingColor("rgba(0,0,0,0.4)")
+        .Position(p => p.Of(".body"))
+        .Visible(false)
+        .ShowIndicator(true)
+        .ShowPane(true)
+        .Shading(true)
+        .CloseOnOutsideClick(false)
+        .Message("Lütfen bekleyiniz..")
+
+    )
+
+</div>
+
+
+@section scripts {
+
+    <script src="~/js/ExcelSheet/ExcelSheet.js"></script>
+    <script>
+
+        $("td input").on('keyup', function (e) {
+            if (e.keyCode === 13) {
+                $(this).closest('td').nextAll().eq(0).find('input').focus();
+            }
+        });
+
+    </script>
+}
+
