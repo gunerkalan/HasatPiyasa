@@ -3,6 +3,8 @@ using HasatPiyasa.Entity.Entity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Globalization;
+
 
 namespace HasatPiyasa_Web_UI.Models
 {
