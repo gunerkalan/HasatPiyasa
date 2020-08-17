@@ -72,7 +72,7 @@
                    {
                        btns.Add().Name(GridColumnButtonName.Edit).Text("Düzenle");
                    }).CellTemplate(@<text>
-                <button title="Düzenle" onclick="Edit('<%= data.Id %>','<%= data.IsSale %>');"><i class="fa fa-pen-square" aria-hidden="true" style="color:#1b70cc"></i></button>
+                <button title="Düzenle" onclick="EditEmteaType('<%= data.EmteaTypeId %>','<%= data.EmteaId %>');"><i class="fa fa-pen-square" aria-hidden="true" style="color:#1b70cc"></i></button>
 
             </text>);
 
@@ -83,7 +83,7 @@
              {
                  btns.Add().Name(GridColumnButtonName.Delete).Text("Sil");
              }).CellTemplate(@<text>
-                <button title="Silme" onclick="Delete('<%= data.Id %>','<%= data.OrderNumber %>');"><i class="fa fa-trash" aria-hidden="true" style="color:red"></i></button>
+                <button title="Silme" onclick="SoftDeleteEmteaType('<%= data.EmteaTypeId %>','<%= data.EmteaGroupId %>','<%= data.EmteaTypeName %>');"><i class="fa fa-trash" aria-hidden="true" style="color:red"></i></button>
 
             </text>);
 
@@ -163,7 +163,7 @@
                             </select>
                         </div>
                         <div class="form-group">
-                            <label for="drpemtiagroups" class="control-label">Emtia</label>
+                            <label for="drpemtiagroups" class="control-label">Emtia Gurup</label>
                             <select class="form-control" id="drpemtiagroups" asp-for="@Model.EmteaTypes.EmteaGroupId" asp-items="@Model.EmteaGroups">
                                 <option disabled selected value="-1">--Seçiniz--</option>
                             </select>
@@ -184,5 +184,51 @@
 
     </div>
 </div>
+
+
+<div class="modal fade updatemodal" id="EditModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span class="closeModal" aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title usermodaltitle" id="usermodeltitleEditSiparis"></h4>
+
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="drpemtias" class="control-label">Emtia</label>
+                            <select class="form-control" id="drpemtias2" asp-items="@Model.Emteas"
+                                    onchange="EmteaChange3();">
+                                <option disabled selected value="-1">--Seçiniz--</option>
+
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="drpemtiagroups" class="control-label">Emtia Grup</label>
+                            <select class="form-control" id="drpemtiagroups2" asp-for="@Model.EmteaTypes.EmteaGroupId" asp-items="@Model.EmteaGroups">
+                                <option disabled selected value="-1">--Seçiniz--</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="emteatypename" class="control-label">Emtia Tip Adı</label>
+                            <input type="text" name="EmteaTypeName" id="emteatypename2" class="form-control" placeholder="Emtia Tip Adı" />
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-bg-light" data-dismiss="modal">Kapat</button>
+                <button type="submit" class="btn btn-bg-danger" onclick="UpdateEmteaType();" id="submit">Kaydet</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 

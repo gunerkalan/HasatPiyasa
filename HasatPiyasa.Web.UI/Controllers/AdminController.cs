@@ -331,6 +331,61 @@ namespace HasatPiyasa.Web.UI.Controllers
             }
         }
 
+        public JsonResult EditEmteaType(int id)
+        {
+            if (id > 0)
+            {
+                var result = _emteaTypeService.GetEmteaType(id);
+
+                return Json(result);
+            }
+            return Json(0);
+        }
+
+        [HttpPost]
+        public async Task<object> GetEmteaType(int id)
+        {
+            var res = await _emteaTypeService.GetEmteaTypesAsync(id);
+            return JsonConvert.SerializeObject(res);
+        }
+
+
+        [HttpPost]
+        public async Task<object> UpdateEmteaType(EmteaTypes emteatype)
+        {
+
+            emteatype.UpdatedTime = DateTime.Now;
+            emteatype.IsActive = true;
+
+
+            var sonuc = await _emteaTypeService.UpdateEmteaType(emteatype);
+            if (sonuc.BasariliMi)
+            {
+                return JsonConvert.SerializeObject(new { success = true, messages = sonuc.Mesaj });
+            }
+            else
+            {
+                return JsonConvert.SerializeObject(new { success = false, messages = sonuc.Mesaj });
+            }
+
+        }
+
+        [HttpPost]
+        public async Task<object> DeleteEmteaType(EmteaTypes emteatype)
+        {
+            var sonuc = await _emteaTypeService.DeleteEmteaType(emteatype);
+
+            if (sonuc.BasariliMi)
+            {
+                return JsonConvert.SerializeObject(new { success = true, messages = sonuc.Mesaj });
+            }
+            else
+            {
+                return JsonConvert.SerializeObject(new { success = false, messages = sonuc.Mesaj });
+            }
+
+        }
+
         #endregion
 
         #region EmteaTypeGroup işlemleri

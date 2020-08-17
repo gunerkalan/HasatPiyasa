@@ -110,7 +110,8 @@ namespace HasatPiyasa.Business.Concrete
                     EmteaGrupAd = x.GroupName,
                     Id = x.Id,
                     EmteaKod = x.Emtea.EmteaCode,
-                    EmteaName = x.Emtea.EmteaName
+                    EmteaName = x.Emtea.EmteaName,
+                    EmteaId = x.EmteaId
                 }).ToList();
 
                 return new NIslemSonuc<List<EmteaGrupDto>>

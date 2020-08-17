@@ -16,5 +16,7 @@ namespace HasatPiyasa.Business.Abstract
         Task<NIslemSonuc<EmteaTypes>> UpdateEmteaType(EmteaTypes emteatype);
         Task<NIslemSonuc<EmteaTypes>> GetEmteaTypeTable(int value);
         Task<NIslemSonuc<List<EmteaTypeDto>>> GetEmteaTypeGTable();
+        Task<NIslemSonuc<EmteaTypeEditDto>> GetEmteaTypesAsync(int id);
+        Task<NIslemSonuc<bool>> DeleteEmteaType(EmteaTypes emteatype);
     }
 }
