@@ -136,7 +136,7 @@ namespace HasatPiyasa.Business.Concrete
                 return new NIslemSonuc<List<EmteaGroups>>
                 {
                     BasariliMi = true,
-                    Veri = _emteaGrupDal.GetList().ToList()
+                    Veri = _emteaGrupDal.GetList(u=>u.IsActive).ToList()
                 };
 
             }
@@ -171,6 +171,54 @@ namespace HasatPiyasa.Business.Concrete
                     BasariliMi = false,
                     Mesaj = Messages.ErrorAdd,
                     ErrorMessage = hata.Message
+                };
+            }
+        }
+
+        public async Task<NIslemSonuc<EmteaGroups>> GetEmteaGroupAsync(int id)
+        {
+            try
+            {
+                var res = await _emteaGrupDal.GetTable();
+                var model = res.FirstOrDefault(x => x.Id == id);
+
+                return new NIslemSonuc<EmteaGroups>
+                {
+                    BasariliMi = true,
+                    Veri = model
+                };
+            }
+            catch (Exception hata)
+            {
+                return new NIslemSonuc<EmteaGroups>
+                {
+                    BasariliMi = true,
+                    Mesaj = hata.InnerException.Message
+                };
+            }
+        }
+
+        public async Task<NIslemSonuc<bool>> DeleteEmteaGroup(EmteaGroups emteagroup)
+        {
+            try
+            {
+                var deletedemteagroup = await _emteaGrupDal.DeleteSoftAsync(emteagroup);
+
+                return new NIslemSonuc<bool>
+                {
+                    BasariliMi = true,
+                    Veri = deletedemteagroup,
+                    Mesaj = Messages.EmteaGroupDelete
+
+                };
+            }
+            catch (Exception hata)
+            {
+                return new NIslemSonuc<bool>
+                {
+                    BasariliMi = false,
+                    Mesaj = Messages.ErrorAdd,
+                    ErrorMessage = hata.InnerException.Message
                 };
             }
         }

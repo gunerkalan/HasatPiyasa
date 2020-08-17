@@ -126,7 +126,7 @@ namespace HasatPiyasa.Business.Concrete
                 return new NIslemSonuc<List<Emteas>>
                 {
                     BasariliMi = true,
-                    Veri = _emteaDal.GetList().ToList()
+                    Veri = _emteaDal.GetList(u=>u.IsActive).ToList()
                 };
 
             }
@@ -151,6 +151,7 @@ namespace HasatPiyasa.Business.Concrete
                 {
                     BasariliMi = true,
                     Veri = updatedemtea,
+                    Mesaj = Messages.EmteaUpdate
 
                 };
             }
@@ -195,6 +196,54 @@ namespace HasatPiyasa.Business.Concrete
                 {
                     BasariliMi = false,
                     Mesaj = hata.InnerException.Message
+                };
+            }
+        }
+
+        public async Task<NIslemSonuc<Emteas>> GetEmteaAsync(int id)
+        {
+            try
+            {
+                var res = await _emteaDal.GetTable();
+                var model = res.FirstOrDefault(x => x.Id == id);
+
+                return new NIslemSonuc<Emteas>
+                {
+                    BasariliMi=true,
+                    Veri = model
+                };
+            }
+            catch (Exception hata)
+            {
+                return new NIslemSonuc<Emteas>
+                {
+                    BasariliMi = true,
+                    Mesaj = hata.InnerException.Message
+                };
+            }
+        }
+
+        public async Task<NIslemSonuc<bool>> DeleteEmtea(Emteas emtea)
+        {
+            try
+            {
+                var deletedemtea = await _emteaDal.DeleteSoftAsync(emtea);
+
+                return new NIslemSonuc<bool>
+                {
+                    BasariliMi = true,
+                    Veri = deletedemtea,
+                    Mesaj = Messages.EmteaDelete
+
+                };
+            }
+            catch (Exception hata)
+            {
+                return new NIslemSonuc<bool>
+                {
+                    BasariliMi = false,
+                    Mesaj = Messages.ErrorAdd,
+                    ErrorMessage = hata.InnerException.Message
                 };
             }
         }

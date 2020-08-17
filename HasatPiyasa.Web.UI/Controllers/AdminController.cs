@@ -76,6 +76,50 @@ namespace HasatPiyasa.Web.UI.Controllers
             }
         }
 
+        [HttpPost]
+        public async Task<object> GetEmtea(int id)
+        {
+            var res = await _emteaService.GetEmteaAsync(id);
+            return JsonConvert.SerializeObject(res);
+        }
+
+        [HttpPost]
+        public async Task<object> UpdateEmtea(Emteas emtea)
+        {
+
+            emtea.UpdatedTime = DateTime.Now;
+            emtea.IsActive = true;
+
+
+            var sonuc = await _emteaService.UpdateEmtea(emtea);
+            if (sonuc.BasariliMi)
+            {
+                return JsonConvert.SerializeObject(new { success = true, messages = sonuc.Mesaj });
+            }
+            else
+            {
+                return JsonConvert.SerializeObject(new { success = false, messages = sonuc.Mesaj });
+            }
+
+        }
+
+        [HttpPost]
+        public async Task<object> DeleteEmtea(Emteas emtea)
+        {
+            var sonuc = await _emteaService.DeleteEmtea(emtea);
+
+            if(sonuc.BasariliMi)
+            {
+                return JsonConvert.SerializeObject(new { success = true, messages = sonuc.Mesaj });
+            }
+            else
+            {
+                return JsonConvert.SerializeObject(new { success = false, messages = sonuc.Mesaj });
+            }
+
+           
+        }
+
 
         #endregion
 
@@ -112,8 +156,6 @@ namespace HasatPiyasa.Web.UI.Controllers
             return emteas;
         }
 
-        
-
 
         private List<SelectListItem> LoadEmteaGroups()
         {
@@ -140,7 +182,7 @@ namespace HasatPiyasa.Web.UI.Controllers
                 ForEach(s => cities.Add(new SelectListItem
                 {
                     Text = s.CityName,
-                    Value =s.CityId.ToString()
+                    Value = s.CityId.ToString()
                 }));
 
             return cities;
@@ -194,7 +236,7 @@ namespace HasatPiyasa.Web.UI.Controllers
 
         public JsonResult EditEmteaGroup(int id)
         {
-            if(id>0)
+            if (id > 0)
             {
                 var result = _emteaGroupService.GetEmteaGroup(id);
 
@@ -204,19 +246,45 @@ namespace HasatPiyasa.Web.UI.Controllers
         }
 
         [HttpPost]
-        public async Task<object>UpdateEmteaGroup(EmteaGroups emteaGroups)
+        public async Task<object> GetEmteaGroup(int id)
+        {
+            var res = await _emteaGroupService.GetEmteaGroupAsync(id);
+            return JsonConvert.SerializeObject(res);
+        }
+
+
+        [HttpPost]
+        public async Task<object> UpdateEmteaGroup(EmteaGroups emteagroup)
         {
 
-            emteaGroups.UpdatedTime = DateTime.Now;
+            emteagroup.UpdatedTime = DateTime.Now;
+            emteagroup.IsActive = true;
 
-            var res = await _emteaGroupService.UpdateEmteaGroup(emteaGroups);
-            if(res.BasariliMi)
+
+            var sonuc = await _emteaGroupService.UpdateEmteaGroup(emteagroup);
+            if (sonuc.BasariliMi)
             {
-                return Json(new { success = true, messages = res.Mesaj });
+                return JsonConvert.SerializeObject(new { success = true, messages = sonuc.Mesaj });
             }
             else
             {
-                return Json(new { success = true, messages = res.Mesaj });
+                return JsonConvert.SerializeObject(new { success = false, messages = sonuc.Mesaj });
+            }
+
+        }
+
+        [HttpPost]
+        public async Task<object> DeleteEmteaGroup(EmteaGroups emteagroup)
+        {
+            var sonuc = await _emteaGroupService.DeleteEmteaGroup(emteagroup);
+
+            if (sonuc.BasariliMi)
+            {
+                return JsonConvert.SerializeObject(new { success = true, messages = sonuc.Mesaj });
+            }
+            else
+            {
+                return JsonConvert.SerializeObject(new { success = false, messages = sonuc.Mesaj });
             }
 
         }
@@ -346,7 +414,7 @@ namespace HasatPiyasa.Web.UI.Controllers
                     EmteaGrupName = s.GroupName
                 }).ToList();
 
-            return Json(emteagoups); 
+            return Json(emteagoups);
         }
 
         public JsonResult ChooseSubeCity(string subeid)
@@ -365,7 +433,7 @@ namespace HasatPiyasa.Web.UI.Controllers
         {
             var emteatypes = _emteaTypeService.ListAllEmteType().Veri.AsEnumerable().Where(s => s.EmteaGroupId == int.Parse(emteagroupid)).Select(s => new
             {
-                id=s.Id,
+                id = s.Id,
                 EmteaTpeName = s.EmteaTypeName
 
             }).ToList();
@@ -509,9 +577,9 @@ namespace HasatPiyasa.Web.UI.Controllers
             return View(model);
         }
 
-        public async Task<object> GetFormData(int emteaid,int subeid)
+        public async Task<object> GetFormData(int emteaid, int subeid)
         {
-            if(emteaid>0)
+            if (emteaid > 0)
             {
                 var formDatas = await _formDataInputService.GetFormDataGTable();
 
@@ -538,7 +606,7 @@ namespace HasatPiyasa.Web.UI.Controllers
         [HttpPost]
         public async Task<ActionResult> UpdateFormDataState(int emteaid, int subeid, int cityid, bool state, int formid)
         {
-            var sonuc = await _formDataInputService.UpdateFormData(emteaid,subeid,cityid,state,formid);
+            var sonuc = await _formDataInputService.UpdateFormData(emteaid, subeid, cityid, state, formid);
             if (sonuc.BasariliMi)
             {
                 return Json(new { success = true, messages = sonuc.Mesaj });

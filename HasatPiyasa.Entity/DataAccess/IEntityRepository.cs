@@ -16,6 +16,7 @@ namespace HasatPiyasa.Entity.DataAccess
         Task<T> AddAsync(T entity);
         T Update(T entity);
         Task<T> UpdateAsync(T entity);
+        Task<bool> DeleteSoftAsync(T entity);
         void Delete(T entity);
         Task DeleteAsync(T entity);
         T Get(Expression<Func<T, bool>> filter = null);

@@ -107,6 +107,22 @@ namespace HasatPiyasa.Entity.DataAccess.EntityFrameworkCore
 
         }
 
+        public async Task<bool> DeleteSoftAsync(TEntity entity)
+        {
+
+            var updatedEntity = Context.Entry(entity);
+            updatedEntity.State = EntityState.Modified;
+            var count = await Context.SaveChangesAsync();
+            if (count > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
         public TEntity Get(Expression<Func<TEntity, bool>> filter = null)
         {
             return Context.Set<TEntity>().SingleOrDefault(filter);
@@ -156,5 +172,7 @@ namespace HasatPiyasa.Entity.DataAccess.EntityFrameworkCore
 
 
         }
+
+       
     }
 }
