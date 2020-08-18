@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -196,6 +197,63 @@ namespace HasatPiyasa.Business.Concrete
                     BasariliMi = false,
                     Mesaj = Messages.ErrorAdd,
                     ErrorMessage = hata.Message
+                };
+            }
+        }
+
+        public async Task<NIslemSonuc<EmteaGroupTypeDto>> GetEmteaGroupTypesAsync(int id)
+        {
+            try
+            {
+                var res = await _emteaTypeGroupDal.GetTable();
+                var model = res.Include(x => x.EmteaType).ThenInclude(x => x.EmteaGroup).ThenInclude(x=>x.Emtea).FirstOrDefault(x => x.Id == id && x.IsActive);
+
+                var response = (new EmteaGroupTypeDto
+                {
+                    Id = model.Id,
+                    EmteaTypeGroupName = model.EmteaTypeGroupName,
+                    EmteaTypeId = model.EmteaTypeId,
+                    EmteaGroupId = model.EmteaType.EmteaGroup.Id,
+                    EmteaId = model.EmteaType.EmteaGroup.Emtea.Id
+                });
+
+                return new NIslemSonuc<EmteaGroupTypeDto>
+                {
+                    BasariliMi = true,
+                    Veri = response
+                };
+            }
+            catch (Exception hata)
+            {
+                return new NIslemSonuc<EmteaGroupTypeDto>
+                {
+                    BasariliMi = true,
+                    Mesaj = hata.InnerException.Message
+                };
+            }
+        }
+
+        public async Task<NIslemSonuc<bool>> DeleteEmteaTypeGroup(EmteaTypeGroups emteatypegroup)
+        {
+            try
+            {
+                var deletedemteatypegroup = await _emteaTypeGroupDal.DeleteSoftAsync(emteatypegroup);
+
+                return new NIslemSonuc<bool>
+                {
+                    BasariliMi = true,
+                    Veri = deletedemteatypegroup,
+                    Mesaj = Messages.EmteaGroupDelete
+
+                };
+            }
+            catch (Exception hata)
+            {
+                return new NIslemSonuc<bool>
+                {
+                    BasariliMi = false,
+                    Mesaj = Messages.ErrorAdd,
+                    ErrorMessage = hata.InnerException.Message
                 };
             }
         }

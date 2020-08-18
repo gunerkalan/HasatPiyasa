@@ -427,6 +427,50 @@ namespace HasatPiyasa.Web.UI.Controllers
             }
         }
 
+        [HttpPost]
+        public async Task<object> GetEmteaGroupType(int id)
+        {
+            var res = await _emteaTypeGroupService.GetEmteaGroupTypesAsync(id);
+            return JsonConvert.SerializeObject(res);
+        }
+
+
+        [HttpPost]
+        public async Task<object> UpdateEmteaTypeGroup(EmteaTypeGroups emteatypegroup)
+        {
+
+            emteatypegroup.UpdatedTime = DateTime.Now;
+            emteatypegroup.IsActive = true;
+
+
+            var sonuc = await _emteaTypeGroupService.UpdateEmteaTypeGroup(emteatypegroup);
+            if (sonuc.BasariliMi)
+            {
+                return JsonConvert.SerializeObject(new { success = true, messages = sonuc.Mesaj });
+            }
+            else
+            {
+                return JsonConvert.SerializeObject(new { success = false, messages = sonuc.Mesaj });
+            }
+
+        }
+
+        [HttpPost]
+        public async Task<object> DeleteEmteaTypeGroup(EmteaTypeGroups emteatypegroup)
+        {
+            var sonuc = await _emteaTypeGroupService.DeleteEmteaTypeGroup(emteatypegroup);
+
+            if (sonuc.BasariliMi)
+            {
+                return JsonConvert.SerializeObject(new { success = true, messages = sonuc.Mesaj });
+            }
+            else
+            {
+                return JsonConvert.SerializeObject(new { success = false, messages = sonuc.Mesaj });
+            }
+
+        }
+
         #endregion
 
         #region Tuik İşlemleri
