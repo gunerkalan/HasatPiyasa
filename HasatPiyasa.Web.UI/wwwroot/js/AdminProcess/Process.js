@@ -1,6 +1,7 @@
 ﻿var GlobalEmteaId;
 var GlobalEmteaGroupId;
 var GlobalEmteaTypeId;
+var GlobalEmteaTypeGroupId;
 
 $(function () {
     $("#GridContainer").dxDataGrid({
@@ -988,6 +989,35 @@ function UpdateEmteaType() {
 
     });
 
+}
+function EditEmteaTypeGroup(id, EmteaId, EmteaGroupId) {
+    GlobalEmteaTypeGroupId = id
+    EmteaChange2(EmteaId)
+    $.post("/Admin/GetEmteaGroupType", { id: id }, (res) => {
+        $("#loadPanel").dxLoadPanel("instance").show();
+        var model = JSON.parse(res)
+
+        if (model.BasariliMi) {
+
+            $("#drpemtias2").val(model.Veri.EmteaId)
+            $("#drpemtiagroups2").val(model.Veri.EmteaGroupId)
+            $("#drpemtiatypes2").val(model.Veri.EmteaTypeId)
+
+           
+            $("#emteatypegroupname2").val(model.Veri.EmteaTypeGroupName)
+
+            $("#usermodeltitleEditSiparis").html(`${model.Veri.EmteaTypeGroupName}  isimli Emtea Tip Gurubu Düzenle `)
+            $("#loadPanel").dxLoadPanel("instance").hide();
+            $("#EditModal").modal("show")
+
+
+
+        }
+        else {
+            $("#loadPanel").dxLoadPanel("instance").hide();
+            swal("Hata !", model.ErrorMessage, "error");
+        }
+    })
 }
 
 

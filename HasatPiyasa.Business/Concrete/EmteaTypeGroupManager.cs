@@ -114,7 +114,10 @@ namespace HasatPiyasa.Business.Concrete
                     EmteaName = x.EmteaType.EmteaGroup.Emtea.EmteaName,
                     EmteaTypeName = x.EmteaType.EmteaTypeName,
                     EmteaTypeGroupName = x.EmteaTypeGroupName,
-                    EmteaGroupName = x.EmteaType.EmteaGroup.GroupName
+                    EmteaGroupName = x.EmteaType.EmteaGroup.GroupName,
+                    EmteaTypeId = x.EmteaTypeId,
+                    EmteaGroupId = x.EmteaType.EmteaGroup.Id,
+                    EmteaId = x.EmteaType.EmteaGroup.Emtea.Id
                 }).ToList();
 
                 return new NIslemSonuc<List<EmteaTypeGroupDto>>

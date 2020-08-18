@@ -13,5 +13,8 @@ namespace HasatPiyasa.Core.Entities
         public string EmteaTypeName { get; set; }
         public string EmteaName { get; set; }
         public string EmteaCode { get; set; }
+        public int EmteaId { get; set; }
+        public int EmteaGroupId { get; set; }
+        public int EmteaTypeId { get; set; }
     }
 }
