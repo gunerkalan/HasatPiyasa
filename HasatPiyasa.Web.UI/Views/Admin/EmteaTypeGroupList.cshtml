@@ -208,21 +208,29 @@
                     <div class="col-md-12">
                         <div class="form-group">
                             <label for="drpemtias" class="control-label">Emtia</label>
-                            <select class="form-control" id="drpemtias2" asp-items="@Model.Emteas"
-                                    onchange="EmteaChange3();">
+                            <select class="form-control" id="drpemtias" asp-items="@Model.Emteas"
+                                    onchange="EmteaChange();">
                                 <option disabled selected value="-1">--Seçiniz--</option>
 
                             </select>
                         </div>
                         <div class="form-group">
                             <label for="drpemtiagroups" class="control-label">Emtia Grup</label>
-                            <select class="form-control" id="drpemtiagroups2" asp-for="@Model.EmteaTypes.EmteaGroupId" asp-items="@Model.EmteaGroups">
+                            <select class="form-control" id="drpemtiagroups" asp-items="@Model.EmteaGroups"
+                                    onchange="EmteaGroupChange();">
+                                <option disabled selected value="-1">--Seçiniz--</option>
+
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="drpemtiatypes" class="control-label">Emtia Tipi</label>
+                            <select class="form-control" id="drpemtiatypes" asp-for="@Model.EmteaTypeGroups.EmteaTypeId" asp-items="@Model.EmteaTypes">
                                 <option disabled selected value="-1">--Seçiniz--</option>
                             </select>
                         </div>
                         <div class="form-group">
-                            <label for="emteatypename" class="control-label">Emtia Tip Adı</label>
-                            <input type="text" name="EmteaTypeName" id="emteatypename2" class="form-control" placeholder="Emtia Tip Adı" />
+                            <label for="emteatypegroupname" class="control-label">Emtia Tip Grup Adı</label>
+                            <input type="text" name="EmteaTypeGroupName" id="emteatypegroupname" class="form-control" placeholder="Emtia Tip Grup Adı" />
                         </div>
 
                     </div>
