@@ -463,6 +463,25 @@ function CheckValidateFormEmteaTypeGroup() {
 
     }
 }
+function CheckValidateFormEmteaTypeGroup2() {
+
+    var EmteaId = $("#drpemtias2 :selected").val()
+    var EmteaGroupId = $("#drpemtiagroups2 :selected").val()
+    var EmteaTypeId = $("#drpemtiatypes2 :selected").val()
+    var EmteaTypeGroupName = $("#emteatypegroupname2").val()
+
+    if (EmteaGroupId != "" && EmteaGroupId != "-1" && EmteaId != "" && EmteaId != "-1" && EmteaTypeId != "" && EmteaTypeId != "-1" && EmteaTypeGroupName != "") {
+        return true
+    }
+    else {
+        ChangeColor(EmteaId, "drpemtias2")
+        ChangeColor(EmteaGroupId, "drpemtiagroups2")
+        ChangeColor(EmteaTypeId, "drpemtiatypes2")
+        ChangeColor(EmteaTypeGroupName, "emteatypegroupname2")
+        return false
+
+    }
+}
 function CheckValidateFormSubeTuik() {
 
     var EmteaId = $("#drpemtias :selected").val()
@@ -618,8 +637,22 @@ function EmteaGroupChange() {
     })
 
 }
-function EmteaGroupChange2() {
+function EmteaGroupChange3() {
     var id = $("#drpemtiagroups2 :selected").val()
+    $.post("/Admin/ChooseEmteaType", { emteagroupid: id }, (res) => {
+        $("#drpemtiatypes2").empty();
+        model = JSON.parse(JSON.stringify(res))
+
+        $.each(model, (i, item) => {
+            $("#drpemtiatypes2").append(`<option value="${item.id}">${item.EmteaTpeName}</option>`)
+
+        });
+
+    })
+
+}
+function EmteaGroupChange2(id) {
+    
     $.post("/Admin/ChooseEmteaType", { emteagroupid: id }, (res) => {
         $("#drpemtiatypes").empty();
         model = JSON.parse(JSON.stringify(res))
@@ -993,6 +1026,7 @@ function UpdateEmteaType() {
 function EditEmteaTypeGroup(id, EmteaId, EmteaGroupId) {
     GlobalEmteaTypeGroupId = id
     EmteaChange2(EmteaId)
+    EmteaGroupChange2(EmteaGroupId)
     $.post("/Admin/GetEmteaGroupType", { id: id }, (res) => {
         $("#loadPanel").dxLoadPanel("instance").show();
         var model = JSON.parse(res)
@@ -1012,6 +1046,122 @@ function EditEmteaTypeGroup(id, EmteaId, EmteaGroupId) {
 
 
 
+        }
+        else {
+            $("#loadPanel").dxLoadPanel("instance").hide();
+            swal("Hata !", model.ErrorMessage, "error");
+        }
+    })
+}
+function UpdateEmteaTypeGroup() {
+
+
+    swal({
+        title: "Emtea Tip Gurubu Güncelle",
+        text: "Emtea Gurubu Güncellensin Mi ?",
+        type: "info",
+        showCancelButton: true,
+        closeOnConfirm: false,
+        showLoaderOnConfirm: true,
+        confirmButtonText: "Tamam",
+        cancelButtonText: "İptal",
+    }, function () {
+
+            var emteatypegroup = {
+            Id: GlobalEmteaTypeGroupId,
+            EmteaTypeGroupName: $("#emteatypegroupname2").val(),
+            EmteaTypeId: $("#drpemtiatypes2").val(),
+        }
+
+            if (CheckValidateFormEmteaTypeGroup2()) {
+            $.post("/Admin/UpdateEmteaTypeGroup", { emteatypegroup: emteatypegroup }, function (res) {
+                var model = JSON.parse(res);
+
+                if (model.success) {
+                    SweetAlertMesaj("Emtea Tip Gurubu Güncelle", model.Mesaj, "success", "Kapat", "btn-success")
+                    $("#GridContainer").dxDataGrid("instance").refresh();
+                    $("#EditModal").modal("hide")
+                    loadpanel.hide()
+
+                    $('#drpemtias2').val('')
+                    $('#drpemtiagroups2').val('')
+                    $('#drpemtiatypes2').val('')
+                    $('#emteatypegroupname2').val('')
+
+                }
+                else {
+
+                    SweetAlertMesaj("Emtia Tipi Güncelle", model.messages, "error", "Kapat", "btn-danger")
+
+                }
+
+            })
+        }
+        else {
+            swal("Hata : Lütfen gerekli alanları doldurunuz !");
+            this.showLoaderOnConfirm = false
+            return false
+
+        }
+
+
+    });
+
+}
+function SoftDeleteEmteaTypeGroup(Id, EmteaTypeId, EmteaTypeGroupName) {
+    GlobalEmteaTypeId = EmteaTypeId,
+    GlobalEmteaTypeGroupId = Id
+    swal({
+        title: "Sil ?",
+        text: `${EmteaTypeGroupName} isimli Emtea Tip Gurubu Silinsin mi ?`,
+        type: "info",
+        showCancelButton: true,
+        closeOnConfirm: false,
+        showLoaderOnConfirm: true,
+        confirmButtonText: "Tamam",
+        cancelButtonText: "İptal",
+
+    },
+        function () {
+
+            var emteatypegroup = {
+                Id: GlobalEmteaTypeGroupId,
+                IsActive: false,
+                EmteaTypeId: GlobalEmteaTypeId,
+                EmteaTypeGroupName: EmteaTypeGroupName
+
+            }
+
+            $.post("/Admin/DeleteEmteaTypeGroup", { emteatypegroup: emteatypegroup, }, (res) => {
+
+                var model = JSON.parse(res)
+
+                if (model.success) {
+                    SweetAlertMesaj("Silme", "Emtea Tip Gurubu Silinmiştir !", "success", "Kapat", "btn-success")
+                    $("#GridContainer").dxDataGrid("instance").refresh();
+                    this.showLoaderOnConfirm = false
+                }
+                else {
+                    swal("Hata !", model.ErrorMessage, "error");
+                    this.showLoaderOnConfirm = false
+                }
+            })
+        }
+    );
+}
+function TuikDetail(id, isCity) {
+
+    $.post("/Admin/GetDetail", { id: id }, (res) => {
+        $("#loadPanel").dxLoadPanel("instance").show();
+        var model = JSON.parse(res)
+
+        if (model.BasariliMi) {
+            var table = CreatDetailTable(model, isSale)
+            $("#list").empty()
+            $("#list").append(table)
+            $("#orderid").html(`Sipariş No :${model.Veri.OrderNumber}`)
+            $("#loadPanel").dxLoadPanel("instance").hide();
+            $("#detailModal").modal("show")
         }
         else {
             $("#loadPanel").dxLoadPanel("instance").hide();

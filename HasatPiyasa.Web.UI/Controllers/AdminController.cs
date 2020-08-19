@@ -554,6 +554,13 @@ namespace HasatPiyasa.Web.UI.Controllers
             return JsonConvert.SerializeObject(res.Veri);
         }
 
+        [HttpPost]
+        public async Task<object> GetDetail(int id)
+        {
+            var res = await _tuikService.GetDetail(id);
+            return JsonConvert.SerializeObject(res);
+        }
+
 
         [HttpGet]
         public ActionResult TuikCityList()
@@ -613,6 +620,51 @@ namespace HasatPiyasa.Web.UI.Controllers
             {
                 return Json(new { success = false, messages = sonuc.Mesaj });
             }
+        }
+
+        [HttpPost]
+        public async Task<object> GetTuikSube(int id)
+        {
+            var res = await _tuikService.GetTuikSubeAsync(id);
+            return JsonConvert.SerializeObject(res);
+        }
+
+
+        [HttpPost]
+        public async Task<object> UpdateTuikSube(Tuiks tuik)
+        {
+
+            tuik.UpdatedTime = DateTime.Now;
+            tuik.IsActive = true;
+            tuik.IsCity = false;
+
+
+            var sonuc = await _tuikService.UpdateTuikData(tuik);
+            if (sonuc.BasariliMi)
+            {
+                return JsonConvert.SerializeObject(new { success = true, messages = sonuc.Mesaj });
+            }
+            else
+            {
+                return JsonConvert.SerializeObject(new { success = false, messages = sonuc.Mesaj });
+            }
+
+        }
+
+        [HttpPost]
+        public async Task<object> DeleteTuikData(Tuiks tuik)
+        {
+            var sonuc = await _tuikService.DeleteTuik(tuik);
+
+            if (sonuc.BasariliMi)
+            {
+                return JsonConvert.SerializeObject(new { success = true, messages = sonuc.Mesaj });
+            }
+            else
+            {
+                return JsonConvert.SerializeObject(new { success = false, messages = sonuc.Mesaj });
+            }
+
         }
 
 

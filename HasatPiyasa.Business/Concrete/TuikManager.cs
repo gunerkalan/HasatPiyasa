@@ -39,7 +39,7 @@ namespace HasatPiyasa.Business.Concrete
                     {
                         BasariliMi = true,
                         Veri = addedtuikdata,
-
+                        Mesaj = Messages.TuikSubeAdd
                     };
                 }
                 else
@@ -47,8 +47,8 @@ namespace HasatPiyasa.Business.Concrete
                     return new NIslemSonuc<Tuiks>
                     {
                         BasariliMi = true,
-                        Mesaj = sonuc.Mesaj,
-
+                        Mesaj = Messages.TuikSubeAddError,
+                        
                     };
                 }
 
@@ -67,7 +67,8 @@ namespace HasatPiyasa.Business.Concrete
 
         private NIslemSonuc<bool> CheckTuikSubeDataExists(int year, int emteatypeid, int subeid)
         {
-            if (_tuikDal.Get(p => p.GuessYear == year && p.EmteaTypeId == emteatypeid && p.SubeId == subeid) != null)
+
+            if (_tuikDal.Get(p => p.GuessYear == year && p.EmteaTypeId == emteatypeid && p.SubeId == subeid && p.IsActive && p.IsCity==false) != null)
             {
                 return new NIslemSonuc<bool>
                 {
@@ -176,7 +177,8 @@ namespace HasatPiyasa.Business.Concrete
                     TuikValue = x.TuikValue,
                     TuikYear = x.TuikYear,
                     GuessValue = x.GuessValue,
-                    GuessYear = x.GuessYear
+                    GuessYear = x.GuessYear,
+                    IsCity = x.IsCity
                 }).ToList();
 
                 return new NIslemSonuc<List<TuikSubeDto>>
@@ -299,6 +301,110 @@ namespace HasatPiyasa.Business.Concrete
                     BasariliMi = false,
                     Mesaj = Messages.ErrorAdd,
                     ErrorMessage = hata.Message
+                };
+            }
+        }
+
+        public async Task<NIslemSonuc<TuikSubeEditDto>> GetTuikSubeAsync(int id)
+        {
+            try
+            {
+                var res = await _tuikDal.GetTable();
+                var model = res.Include(x => x.City).Include(x=>x.Sube).Include(x=>x.EmteaType).ThenInclude(x => x.EmteaGroup).ThenInclude(x=>x.Emtea).FirstOrDefault(x => x.Id == id && x.IsActive);
+
+                var response = (new TuikSubeEditDto
+                {
+                    Id = model.Id,
+                    
+                });
+
+                return new NIslemSonuc<TuikSubeEditDto>
+                {
+                    BasariliMi = true,
+                    Veri = response
+                };
+            }
+            catch (Exception hata)
+            {
+                return new NIslemSonuc<TuikSubeEditDto>
+                {
+                    BasariliMi = true,
+                    Mesaj = hata.InnerException.Message
+                };
+            }
+        }
+
+        public async Task<NIslemSonuc<bool>> DeleteTuik(Tuiks tuik)
+        {
+            try
+            {
+                var deletedtuik = await _tuikDal.DeleteSoftAsync(tuik);
+
+                return new NIslemSonuc<bool>
+                {
+                    BasariliMi = true,
+                    Veri = deletedtuik,
+                    Mesaj = Messages.TuikDelete
+
+                };
+            }
+            catch (Exception hata)
+            {
+                return new NIslemSonuc<bool>
+                {
+                    BasariliMi = false,
+                    Mesaj = Messages.ErrorAdd,
+                    ErrorMessage = hata.InnerException.Message
+                };
+            }
+        }
+
+        public async Task<NIslemSonuc<TuikSubeDto>> GetDetail(int id)
+        {
+            try
+            {
+                var res = await _tuikDal.GetTable();
+                var model = await res.Include(a => a.AddUser)
+                    .Include(a => a.City)
+                    .Include(a => a.UpdateUser)
+                    .Include(a => a.Sube)
+                    .Include(a => a.EmteaType)
+                    .ThenInclude(a => a.EmteaGroup)
+                    .ThenInclude(a=>a.Emtea)
+                    .AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
+
+                var response = new TuikSubeDto
+                {
+                   Id =model.Id,
+                   AddedUser = model.AddUser.Name + model.AddUser.Surname,
+                   Sicil = model.AddUser.SicilNumber,
+                   AddedTime = model.AddedTime,
+                   EmteaCode = model.EmteaType.EmteaGroup.Emtea.EmteaCode,
+                   EmteaName = model.EmteaType.EmteaGroup.Emtea.EmteaName,
+                   EmteaGroupName = model.EmteaType.EmteaGroup.GroupName,
+                   EmteaTypeName = model.EmteaType.EmteaTypeName,
+                   GuessValue = model.GuessValue,
+                   GuessYear = model.GuessYear,
+                   IsCity = model.IsCity,
+                   TuikValue = model.TuikValue,
+                   TuikYear = model.TuikYear,
+                   UpdatedUser = model.UpdateUser.Name + model.UpdateUser.Surname,
+                   UpdatedTime = model.UpdatedTime,
+                   SubeName = model.Sube.SubeName
+                };
+
+                return new NIslemSonuc<TuikSubeDto>
+                {
+                    BasariliMi = true,
+                    Veri = response
+                };
+            }
+            catch (Exception hata)
+            {
+                return new NIslemSonuc<TuikSubeDto>
+                {
+                    BasariliMi = false,
+                    Mesaj = hata.InnerException.Message
                 };
             }
         }

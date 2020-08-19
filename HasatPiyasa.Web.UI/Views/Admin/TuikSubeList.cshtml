@@ -63,7 +63,7 @@
         .Columns(columns => {
             columns.AddFor(m => m.SubeName).Caption("Şube Adı").Width(100);
             columns.AddFor(m => m.TuikYear).Caption("Tüik Yılı");
-           
+
             columns.AddFor(m => m.EmteaName).Caption("Emtea Adı");
             columns.AddFor(m => m.EmteaGroupName).Caption("Emtea Grp Adı");
             columns.AddFor(m => m.EmteaTypeName).Caption("Emtea Tipi");
@@ -72,7 +72,16 @@
             columns.AddFor(m => m.GuessYear).Caption("Tahmin Yılı");
             columns.AddFor(m => m.GuessValue).Caption("Tahmini Veri");
             columns.AddFor(m => m.AddedTime).Caption("Eklenme Tarihi");
-           
+            columns.Add().Caption("Detay").Width(50)
+                .Type(GridCommandColumnType.Buttons)
+                .Buttons(btns =>
+                {
+                    btns.Add().Name(GridColumnButtonName.Edit).Text("Detay");
+                }).CellTemplate(@<text>
+                <button  title="Detay" onclick="Detail('<%= data.Id %>','<%= data.IsCity %>');"><i class="fa fa-list-alt" aria-hidden="true"></i></button>
+
+            </text>);
+
             columns.Add().Caption("Düzenle").Width(60)
                    .Type(GridCommandColumnType.Buttons)
                    .Buttons(btns =>

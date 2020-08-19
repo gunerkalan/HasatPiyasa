@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 
 namespace HasatPiyasa.Core.Entities
@@ -8,6 +9,7 @@ namespace HasatPiyasa.Core.Entities
     {
         public int Id { get; set; }
         public DateTime AddedTime { get; set; }
+        public DateTime? UpdatedTime { get; set; }
         public int TuikYear { get; set; }
         public string SubeName { get; set; }
         public string EmteaTypeName { get; set; }
@@ -18,5 +20,8 @@ namespace HasatPiyasa.Core.Entities
         public string EmteaCode { get; set; }
         public int GuessYear { get; set; }
         public double GuessValue { get; set; }
+        public bool IsCity { get; set; }
+        public string UpdatedUser { get; set; }
+        public string Sicil { get; set; }
     }
 }

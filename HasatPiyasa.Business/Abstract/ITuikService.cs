@@ -18,5 +18,8 @@ namespace HasatPiyasa.Business.Abstract
         Task<NIslemSonuc<Tuiks>> GetTuikTable(int value);
         Task<NIslemSonuc<List<TuikSubeDto>>> GetTuikSubeGTable();
         Task<NIslemSonuc<List<TuikCityDto>>> GetTuikCityGTable();
+        Task<NIslemSonuc<TuikSubeEditDto>> GetTuikSubeAsync(int id);
+        Task<NIslemSonuc<bool>> DeleteTuik(Tuiks tuik);
+        Task<NIslemSonuc<TuikSubeDto>> GetDetail(int id);
     }
 }

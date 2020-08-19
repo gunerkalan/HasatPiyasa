@@ -125,7 +125,7 @@ namespace HasatPiyasa.Entity.DataAccess.EntityFrameworkCore
 
         public TEntity Get(Expression<Func<TEntity, bool>> filter = null)
         {
-            return Context.Set<TEntity>().SingleOrDefault(filter);
+            return Context.Set<TEntity>().FirstOrDefault(filter);
 
         }
 

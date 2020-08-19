@@ -83,7 +83,7 @@
              {
                  btns.Add().Name(GridColumnButtonName.Delete).Text("Sil");
              }).CellTemplate(@<text>
-                <button title="Silme" onclick="Delete('<%= data.Id %>','<%= data.OrderNumber %>');"><i class="fa fa-trash" aria-hidden="true" style="color:red"></i></button>
+                <button title="Silme" onclick="SoftDeleteEmteaTypeGroup('<%= data.Id %>','<%= data.EmteaTypeId %>','<%= data.EmteaTypeGroupName %>');"><i class="fa fa-trash" aria-hidden="true" style="color:red"></i></button>
 
             </text>);
 
@@ -209,7 +209,7 @@
                         <div class="form-group">
                             <label for="drpemtias" class="control-label">Emtia</label>
                             <select class="form-control" id="drpemtias2" asp-items="@Model.Emteas"
-                                    onchange="EmteaChange();">
+                                    onchange="EmteaChange3();">
                                 <option disabled selected value="-1">--Seçiniz--</option>
 
                             </select>
@@ -217,7 +217,7 @@
                         <div class="form-group">
                             <label for="drpemtiagroups" class="control-label">Emtia Grup</label>
                             <select class="form-control" id="drpemtiagroups2" asp-items="@Model.EmteaGroups"
-                                    onchange="EmteaGroupChange();">
+                                    onchange="EmteaGroupChange3();">
                                 <option disabled selected value="-1">--Seçiniz--</option>
 
                             </select>
@@ -239,7 +239,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-bg-light" data-dismiss="modal">Kapat</button>
-                <button type="submit" class="btn btn-bg-danger" onclick="UpdateEmteaType();" id="submit">Kaydet</button>
+                <button type="submit" class="btn btn-bg-danger" onclick="UpdateEmteaTypeGroup();" id="submit">Kaydet</button>
             </div>
         </div>
     </div>
