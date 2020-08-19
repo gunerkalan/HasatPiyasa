@@ -24,28 +24,54 @@ namespace HasatPiyasa.Business.Concrete
         }
         public async Task<NIslemSonuc<Users>> Login(UserForLoginDto userForLoginDto)
         {
+            var res = await _userService.GetUserTable(userForLoginDto.UserName);
 
-            if (LdapAuth(userForLoginDto).BasariliMi)
-                {
-                var res = await _userService.GetUserTable(userForLoginDto.UserName);
+            if(res.BasariliMi)
+            {
+                var isdomain = res.Veri.IsDomain;
+                var password = res.Veri.Password;
 
-                if (res.Veri == null)
+                if(isdomain)
                 {
-                    return new NIslemSonuc<Users>
+                    if (LdapAuth(userForLoginDto).BasariliMi)
                     {
-                        BasariliMi = false,
-                        Mesaj = Messages.ErrorDatabaseLogin
+                        return new NIslemSonuc<Users>
+                        {
+                            BasariliMi = true,
+                            Veri = res.Veri,
+                            Mesaj = Messages.SusccesfulyLogin
+                        };
+                    }
+                    else
+                    {
+                        return new NIslemSonuc<Users>
+                        {
+                            BasariliMi = false,
+                            Mesaj = Messages.ErrorDomainLogin
 
-                    };
+                        };
+                    }
                 }
                 else
                 {
-                    return new NIslemSonuc<Users>
+                    if(password==userForLoginDto.Password)
                     {
-                        BasariliMi = true,
-                        Veri = res.Veri,
-                        Mesaj = Messages.SusccesfulyLogin
-                    };
+                        return new NIslemSonuc<Users>
+                        {
+                            BasariliMi = true,
+                            Veri = res.Veri,
+                            Mesaj = Messages.SusccesfulyLogin
+                        };
+                    }
+                    else
+                    {
+                        return new NIslemSonuc<Users>
+                        {
+                            BasariliMi = false,
+                            Mesaj = Messages.ErrorDomainLogin
+
+                        };
+                    }
                 }
             }
             else
@@ -53,36 +79,11 @@ namespace HasatPiyasa.Business.Concrete
                 return new NIslemSonuc<Users>
                 {
                     BasariliMi = false,
-                    Mesaj = Messages.ErrorDomainLogin
+                    Mesaj = Messages.ErrorDatabaseLogin
+
                 };
             }
-            
-            /*var userToCheckServer = await _userService.GetUserName(userForLoginDto.UserName);
-            if (userToCheckServer == null)
-            {
-                return new NIslemSonuc<Users>
-                {
-                    BasariliMi = false,
-                    Mesaj = Messages.ErrorDatabaseLogin
-                };
-            }*/
-
-            //var usertoChechDomain = _userService.UserExitsDomain(userForLoginDto);
-            //if (!usertoChechDomain.BasariliMi)
-            //{
-            //    return new NIslemSonuc<Users>
-            //    {
-            //        BasariliMi = false,
-            //        Mesaj = usertoChechDomain.Mesaj
-            //    };
-            //}
-
-            /*return new NIslemSonuc<Users>
-            {
-                BasariliMi = true,
-                Veri = userToCheckServer,
-                Mesaj = Messages.SusccesfulyLogin
-            };*/
+           
         }
         public NIslemSonuc<bool> LdapAuth(UserForLoginDto userForLoginDto)
         {
