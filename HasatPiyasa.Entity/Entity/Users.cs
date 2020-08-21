@@ -24,6 +24,7 @@ namespace HasatPiyasa.Entity.Entity
         public int SubeId { get; set; }
         public string Title { get; set; }
         public string Email { get; set; }
+        public string Roles { get; set; }
 
         public virtual Subes Sube { get; set; }
         public virtual ICollection<DataInputs> DataInputsAddUser { get; set; }

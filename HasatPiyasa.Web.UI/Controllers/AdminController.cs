@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using DevExpress.DirectX.Common.Direct2D;
 using HasatPiyasa.Business.Abstract;
 using HasatPiyasa.Entity.Entity;
+using HasatPiyasa.Web.UI.FilterAttributes;
 using HasatPiyasa.Web.UI.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -42,6 +43,7 @@ namespace HasatPiyasa.Web.UI.Controllers
         #region Emtea işlemleri
 
         [HttpGet]
+        [AuthorizedUser("Admin")]
         public ActionResult EmteaList()
         {
             EmteaModel model = new EmteaModel

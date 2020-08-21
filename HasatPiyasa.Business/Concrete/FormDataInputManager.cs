@@ -85,7 +85,7 @@ namespace HasatPiyasa.Business.Concrete
                 {
                     BasariliMi = true,
                     Veri = res.AsNoTracking().Include(x => x.DataInputs).ThenInclude(x => x.EmteaType).ThenInclude(x => x.EmteaGroup).ThenInclude(x => x.Emtea).
-                    Where(x => x.AddedTime == date && x.IsActive && x.IsLock == false && x.CityId == cityId).FirstOrDefault()
+                    Where(x => x.IsActive && x.IsLock == false && x.CityId == cityId).OrderByDescending(x => x.Id).FirstOrDefault()
                 };
             }
             catch (Exception hata)

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using HasatPiyasa.Business;
 using HasatPiyasa.Business.Abstract;
 using HasatPiyasa.Entity.Entity;
+using HasatPiyasa.Web.UI.FilterAttributes;
 using HasatPiyasa_Web_UI.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -27,7 +28,7 @@ namespace HasatPiyasa.Web.UI.Controllers
             _formDataInputService = formDataInputService;
         }
       
-        [HttpGet]
+        [HttpGet]      
         public async Task<ActionResult> DataInputRice(int cityId=0)
         { 
             
@@ -39,7 +40,7 @@ namespace HasatPiyasa.Web.UI.Controllers
             if(user!=null)
             {
                 var cities = await _subeCityService.GetSubeCityGTable(user.SubeId);
-                model.Cities = cities.Veri.Where(x=>x.SubeId ==user.SubeId).ToList();
+                model.Cities = cities.Veri.Where(x=>x.SubeId ==user.SubeId).OrderBy(x=>x.Id).ToList();
             }            
             model.Emteas = emtea.Veri;
 
