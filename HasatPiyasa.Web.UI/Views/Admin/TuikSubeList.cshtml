@@ -15,46 +15,91 @@
 
 }
 
-    <div class="row">
 
-        <div class="col-sm-12">
-            <div class="d-flex flex-column-fluid">
-                <!--begin::Container-->
-                <div class="container">
-                    <!--begin::Notice-->
-                    <!--end::Notice-->
-                    <!--begin::Card-->
-                    <div class="card card-custom gutter-b">
-                        <div class="card-header flex-wrap py-3">
-                            <div class="card-title">
-                                <h3 class="card-label">
-                                    Tüik Şube Listei
-                                    <span class="d-block text-muted pt-2 font-size-sm">Tüik &amp; Şube Listesi</span>
-                                </h3>
-                            </div>
-                            <div class="card-toolbar">
-                                <!--begin::Dropdown-->
-                                <!--end::Dropdown-->
-                                <!--begin::Button-->
-                                <a href="#" class="btn btn-danger font-weight-bolder" data-toggle="modal" data-target="#tuiksube-adding-modal">
-                                    <span class="svg-icon svg-icon-md">
-                                        <!--begin::Svg Icon | path:assets/media/svg/icons/Design/Flatten.svg-->
-                                        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
-                                            <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                                                <rect x="0" y="0" width="24" height="24" />
-                                                <circle fill="#000000" cx="9" cy="15" r="6" />
-                                                <path d="M8.8012943,7.00241953 C9.83837775,5.20768121 11.7781543,4 14,4 C17.3137085,4 20,6.6862915 20,10 C20,12.2218457 18.7923188,14.1616223 16.9975805,15.1987057 C16.9991904,15.1326658 17,15.0664274 17,15 C17,10.581722 13.418278,7 9,7 C8.93357256,7 8.86733422,7.00080962 8.8012943,7.00241953 Z" fill="#000000" opacity="0.3" />
-                                            </g>
-                                        </svg>
-                                        <!--end::Svg Icon-->
-                                    </span>Yemi Tüik Şube Verisi Ekle
-                                </a>
-                                <!--end::Button-->
-                            </div>
+<style>
+    .detailname {
+        color: #1b70cc
+    }
+
+    .detailvalue {
+        color: black;
+        font-weight: 400
+    }
+
+    #detailTable table tr, #detailTable table tr td {
+        border: 0px !important
+    }
+
+   
+</style>
+<style>
+   
+    .detal-left {
+        position: relative;
+        left: 21px;
+    }
+
+    .detal-left-td {
+        position: relative;
+        left: -35%;
+    }
+
+    .detal-left-td-2 {
+        position: relative;
+        left: -84%;
+    }
+
+    .detail-sevk {
+        position: relative;
+        left: -22px;
+    }
+
+    .detail-sevk-2 {
+        position: relative;
+        left: -97%;
+    }
+</style>
+
+<div class="row">
+
+    <div class="col-sm-12">
+        <div class="d-flex flex-column-fluid">
+            <!--begin::Container-->
+            <div class="container">
+                <!--begin::Notice-->
+                <!--end::Notice-->
+                <!--begin::Card-->
+                <div class="card card-custom gutter-b">
+                    <div class="card-header flex-wrap py-3">
+                        <div class="card-title">
+                            <h3 class="card-label">
+                                Tüik Şube Listesi
+                                <span class="d-block text-muted pt-2 font-size-sm">Tüik &amp; Şube Listesi</span>
+                            </h3>
                         </div>
-                        <div class="card-body">
-                            <!--begin: Datatable-->
-                            @(Html.DevExtreme().DataGrid<HasatPiyasa.Core.Entities.TuikSubeDto>().ID("GridContainer")
+                        <div class="card-toolbar">
+                            <!--begin::Dropdown-->
+                            <!--end::Dropdown-->
+                            <!--begin::Button-->
+                            <a href="#" class="btn btn-danger font-weight-bolder" data-toggle="modal" data-target="#tuiksube-adding-modal">
+                                <span class="svg-icon svg-icon-md">
+                                    <!--begin::Svg Icon | path:assets/media/svg/icons/Design/Flatten.svg-->
+                                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                        <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                            <rect x="0" y="0" width="24" height="24" />
+                                            <circle fill="#000000" cx="9" cy="15" r="6" />
+                                            <path d="M8.8012943,7.00241953 C9.83837775,5.20768121 11.7781543,4 14,4 C17.3137085,4 20,6.6862915 20,10 C20,12.2218457 18.7923188,14.1616223 16.9975805,15.1987057 C16.9991904,15.1326658 17,15.0664274 17,15 C17,10.581722 13.418278,7 9,7 C8.93357256,7 8.86733422,7.00080962 8.8012943,7.00241953 Z" fill="#000000" opacity="0.3" />
+                                        </g>
+                                    </svg>
+                                    <!--end::Svg Icon-->
+                                </span>Yemi Tüik Şube Verisi Ekle
+                            </a>
+                            <!--end::Button-->
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <!--begin: Datatable-->
+                        @(Html.DevExtreme().DataGrid<HasatPiyasa.Core.Entities.TuikSubeDto>().ID("GridContainer")
         .SearchPanel(src => src.Visible(true).Width(250).Placeholder("Ara.."))
         .ShowBorders(true)
         .DataSource(d => d.Mvc().Controller("Admin").LoadAction("TuikSubeListData").Key("Id"))
@@ -78,7 +123,7 @@
                 {
                     btns.Add().Name(GridColumnButtonName.Edit).Text("Detay");
                 }).CellTemplate(@<text>
-                <button  title="Detay" onclick="Detail('<%= data.Id %>','<%= data.IsCity %>');"><i class="fa fa-list-alt" aria-hidden="true"></i></button>
+                <button  title="Detay" onclick="TuikDetail('<%= data.Id %>');"><i class="fa fa-list-alt" aria-hidden="true" style="color:#ff6a00"></i></button>
 
             </text>);
 
@@ -134,7 +179,7 @@
 
 
     )
-                            @(Html.DevExtreme().LoadPanel()
+                        @(Html.DevExtreme().LoadPanel()
         .ID("loadPanel")
         .ShadingColor("rgba(0,0,0,0.4)")
         .Position(p => p.Of("body"))
@@ -146,84 +191,105 @@
         .Message("Lütfen bekleyiniz..")
 
     )
-                            <!--end: Datatable-->
-                        </div>
+                        <!--end: Datatable-->
                     </div>
-                    <!--end::Card-->
-                    <!--begin::Card-->
-                    <!--end::Card-->
                 </div>
-                <!--end::Container-->
+                <!--end::Card-->
+                <!--begin::Card-->
+                <!--end::Card-->
             </div>
-
-
+            <!--end::Container-->
         </div>
 
 
     </div>
 
-    <div id="tuiksube-adding-modal" class="modal fade updatemodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
-        <div class="modal-dialog">
 
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                    <h4 class="modal-title"><i class="fa fa-plus-circle"></i> Tüik Şube Verisi Ekle</h4>
-                </div>
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label for="field-2" class="control-label">Emtia</label>
-                                <select class="form-control" id="drpemtias" asp-for="@Model.Tuik.EmteaId" asp-items="@Model.Emteas" onchange="EmteaChange();">
-                                    <option selected value="-1">--Seçiniz--</option>
-                                </select>
-                            </div>
+</div>
 
-                            <div class="form-group">
-                                <label for="field-2" class="control-label">Emtia Grup</label>
-                                <select class="form-control" id="drpemtiagroups" asp-for="@Model.Tuik.EmteaGroupId" asp-items="@Model.EmteaGroups" onchange="EmteaGroupChange();">
-                                    <option selected value="-1">--Seçiniz--</option>
-                                </select>
+<div id="tuiksube-adding-modal" class="modal fade updatemodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog">
 
-                            </div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title"><i class="fa fa-plus-circle"></i> Tüik Şube Verisi Ekle</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="field-2" class="control-label">Emtia</label>
+                            <select class="form-control" id="drpemtias" asp-for="@Model.Tuik.EmteaId" asp-items="@Model.Emteas" onchange="EmteaChange();">
+                                <option selected value="-1">--Seçiniz--</option>
+                            </select>
+                        </div>
 
-                            <div class="form-group">
-                                <label for="field-2" class="control-label">Emtia Tipi</label>
-                                <select class="form-control" id="drpemtiatypes" asp-for="@Model.Tuik.EmteaTypeId" asp-items="@Model.EmteaTypes">
-                                    <option selected value="-1">--Seçiniz--</option>
-                                </select>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="field-2" class="control-label">Şube</label>
-                                <select class="form-control" id="drpsubes" asp-for="@Model.Tuik.SubeId" asp-items="@Model.Subes">
-                                    <option selected value="-1">--Seçiniz--</option>
-                                </select>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="tuikvalue" class="control-label">Tüik Değeri</label>
-                                <input type="text" name="TuikValue" id="tuikvalue" class="form-control" placeholder="Tüik Değeri" />
-                            </div>
-
-                            <div class="form-group">
-
-                                <label for="guessvalue" class="control-label">TMO Tahmini</label>
-                                <input type="text" name="GuessValue" id="guessvalue" class="form-control" placeholder="TMO Tahmini" />
-                            </div>
+                        <div class="form-group">
+                            <label for="field-2" class="control-label">Emtia Grup</label>
+                            <select class="form-control" id="drpemtiagroups" asp-for="@Model.Tuik.EmteaGroupId" asp-items="@Model.EmteaGroups" onchange="EmteaGroupChange();">
+                                <option selected value="-1">--Seçiniz--</option>
+                            </select>
 
                         </div>
+
+                        <div class="form-group">
+                            <label for="field-2" class="control-label">Emtia Tipi</label>
+                            <select class="form-control" id="drpemtiatypes" asp-for="@Model.Tuik.EmteaTypeId" asp-items="@Model.EmteaTypes">
+                                <option selected value="-1">--Seçiniz--</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="field-2" class="control-label">Şube</label>
+                            <select class="form-control" id="drpsubes" asp-for="@Model.Tuik.SubeId" asp-items="@Model.Subes">
+                                <option selected value="-1">--Seçiniz--</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="tuikvalue" class="control-label">Tüik Değeri</label>
+                            <input type="text" name="TuikValue" id="tuikvalue" class="form-control" placeholder="Tüik Değeri" />
+                        </div>
+
+                        <div class="form-group">
+
+                            <label for="guessvalue" class="control-label">TMO Tahmini</label>
+                            <input type="text" name="GuessValue" id="guessvalue" class="form-control" placeholder="TMO Tahmini" />
+                        </div>
+
                     </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-bg-light" data-dismiss="modal">Kapat</button>
-                    <button type="submit" class="btn btn-bg-danger" onclick="SaveTuikSube();" id="submit">Kaydet</button>
-                </div>
             </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-bg-light" data-dismiss="modal">Kapat</button>
+                <button type="submit" class="btn btn-bg-danger" onclick="SaveTuikSube();" id="submit">Kaydet</button>
+            </div>
+        </div>
 
+    </div>
+</div>
+
+<div class="modal fade" id="detailModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #f35c5c;padding:2px!important">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span class="closeModal" aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title usermodaltitle" id="orderid"></h4>
+
+            </div>
+            <div class="modal-body" id="list">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal"><span class="glyphicon glyphicon-off" style="padding-right:5px"></span>Kapat</button>
+
+            </div>
         </div>
     </div>
+</div>
 
 
 

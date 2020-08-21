@@ -377,7 +377,7 @@ namespace HasatPiyasa.Business.Concrete
                 {
                    Id =model.Id,
                    AddedUser = model.AddUser.Name + model.AddUser.Surname,
-                   Sicil = model.AddUser.SicilNumber,
+                   AddSicil = model.AddUser.SicilNumber,
                    AddedTime = model.AddedTime,
                    EmteaCode = model.EmteaType.EmteaGroup.Emtea.EmteaCode,
                    EmteaName = model.EmteaType.EmteaGroup.Emtea.EmteaName,
@@ -388,9 +388,11 @@ namespace HasatPiyasa.Business.Concrete
                    IsCity = model.IsCity,
                    TuikValue = model.TuikValue,
                    TuikYear = model.TuikYear,
-                   UpdatedUser = model.UpdateUser.Name + model.UpdateUser.Surname,
+                   //UpdatedUser = model.UpdateUser.Name + model.UpdateUser.Surname,
                    UpdatedTime = model.UpdatedTime,
-                   SubeName = model.Sube.SubeName
+                   //UpdateSicil = model.UpdateUser.SicilNumber,
+                   SubeName = model.Sube.SubeName,
+                   //CityName = model.City.Name
                 };
 
                 return new NIslemSonuc<TuikSubeDto>

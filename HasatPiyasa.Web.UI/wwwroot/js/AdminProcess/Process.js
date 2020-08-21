@@ -652,7 +652,7 @@ function EmteaGroupChange3() {
 
 }
 function EmteaGroupChange2(id) {
-    
+
     $.post("/Admin/ChooseEmteaType", { emteagroupid: id }, (res) => {
         $("#drpemtiatypes").empty();
         model = JSON.parse(JSON.stringify(res))
@@ -1037,7 +1037,7 @@ function EditEmteaTypeGroup(id, EmteaId, EmteaGroupId) {
             $("#drpemtiagroups2").val(model.Veri.EmteaGroupId)
             $("#drpemtiatypes2").val(model.Veri.EmteaTypeId)
 
-           
+
             $("#emteatypegroupname2").val(model.Veri.EmteaTypeGroupName)
 
             $("#usermodeltitleEditSiparis").html(`${model.Veri.EmteaTypeGroupName}  isimli Emtea Tip Gurubu Düzenle `)
@@ -1067,13 +1067,13 @@ function UpdateEmteaTypeGroup() {
         cancelButtonText: "İptal",
     }, function () {
 
-            var emteatypegroup = {
+        var emteatypegroup = {
             Id: GlobalEmteaTypeGroupId,
             EmteaTypeGroupName: $("#emteatypegroupname2").val(),
             EmteaTypeId: $("#drpemtiatypes2").val(),
         }
 
-            if (CheckValidateFormEmteaTypeGroup2()) {
+        if (CheckValidateFormEmteaTypeGroup2()) {
             $.post("/Admin/UpdateEmteaTypeGroup", { emteatypegroup: emteatypegroup }, function (res) {
                 var model = JSON.parse(res);
 
@@ -1110,7 +1110,7 @@ function UpdateEmteaTypeGroup() {
 }
 function SoftDeleteEmteaTypeGroup(Id, EmteaTypeId, EmteaTypeGroupName) {
     GlobalEmteaTypeId = EmteaTypeId,
-    GlobalEmteaTypeGroupId = Id
+        GlobalEmteaTypeGroupId = Id
     swal({
         title: "Sil ?",
         text: `${EmteaTypeGroupName} isimli Emtea Tip Gurubu Silinsin mi ?`,
@@ -1149,17 +1149,17 @@ function SoftDeleteEmteaTypeGroup(Id, EmteaTypeId, EmteaTypeGroupName) {
         }
     );
 }
-function TuikDetail(id, isCity) {
+function TuikDetail(id) {
 
     $.post("/Admin/GetDetail", { id: id }, (res) => {
         $("#loadPanel").dxLoadPanel("instance").show();
         var model = JSON.parse(res)
 
         if (model.BasariliMi) {
-            var table = CreatDetailTable(model, isSale)
+            var table = CreatDetailTable(model)
             $("#list").empty()
             $("#list").append(table)
-            $("#orderid").html(`Sipariş No :${model.Veri.OrderNumber}`)
+            $("#orderid").html(`Emtea Tipi :${model.Veri.EmteaTypeName}`)
             $("#loadPanel").dxLoadPanel("instance").hide();
             $("#detailModal").modal("show")
         }
@@ -1168,6 +1168,56 @@ function TuikDetail(id, isCity) {
             swal("Hata !", model.ErrorMessage, "error");
         }
     })
+}
+function CreatDetailTable(model) {
+    var table = "";
+
+        table = `<table class="table table-striped" id="detailTable">
+                            <tbody>
+                               <tr>
+                                   
+                                     <td colspan="2"><span class="detailname">Eklenme Tarihi</span> :<span class="detailvalue ">${model.Veri.AddedTime}</span> </td>
+                                      <td><span class="detailname">Şube Adı</span> :</td><td><span class="detailvalue">${model.Veri.SubeName}</span> </td>                          
+                                </tr>
+
+                                <tr>
+                                    <td><span class="detailname">Emtea Kodu</span> :</td><td><span class="detailvalue">${model.Veri.EmteaCode}</span> </td>
+                                    <td><span class="detailname">Emtea Adı</span> :</td><td><span class="detailvalue">${model.Veri.EmteaName}</span> </td>
+                                                                       
+                                </tr>
+                                <tr>
+                                    <td><span class="detailname">Emtea Gurup Adı</span> :</td><td><span class="detailvalue">${model.Veri.EmteaGroupName}</span> </td>
+                                    <td><span class="detailname">Emtea Tip Adı</span> :</td><td><span class="detailvalue">${model.Veri.EmteaTypeName}</span> </td>
+                                                                       
+                                </tr>
+                                <tr>
+                                    <td><span class="detailname">Tüik Yılı</span> :</td><td><span class="detailvalue">${model.Veri.TuikYear}</span> </td>
+                                     <td><span class="detailname">Tüik Verisi</span> :</td><td><span class="detailvalue">${model.Veri.TuikValue}</span> </td>
+                                                                       
+                                </tr>
+                                 <tr>
+                                    <td><span class="detailname">TMO Tahmin Yılı</span> :</td><td><span class="detailvalue">${model.Veri.GuessYear}</span> </td>
+                                     <td><span class="detailname">TMO Tahmin Verisi</span> :</td><td><span class="detailvalue">${model.Veri.GuessValue}</span> </td>
+                                                                       
+                                </tr>
+                                 <tr>
+                                    <td><span class="detailname">Ek. Kullanıcı</span> :</td><td><span class="detailvalue">${model.Veri.AddedUser}</span> </td>
+                                     <td><span class="detailname">Ek. Kullanıcı</span> :</td><td><span class="detailvalue">${model.Veri.AddSicil}</span> </td>
+                                                                       
+                                </tr>
+                                  
+                                 <tr>
+                                    <td><span class="detailname">Güncellenme Tarihi</span> :</td><td><span class="detailvalue">${model.Veri.UpdatedTime == null ? '' : model.Veri.UpdatedTime}</span> </td>
+                                    <td><span class="detailname">Güncel. Kullanıcı</span> :</td><td><span class="detailvalue">${model.Veri.UpdatedUser == null ? '' : model.Veri.UpdatedUser}</span> </td>
+                                </tr>
+                               
+                              
+                            </tbody>
+                        </table>`
+   
+    
+
+    return table;
 }
 
 
