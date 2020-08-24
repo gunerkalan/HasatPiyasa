@@ -635,10 +635,13 @@ namespace HasatPiyasa.Web.UI.Controllers
         [HttpPost]
         public async Task<object> UpdateTuikSube(Tuiks tuik)
         {
-
+            var user = GetCurrentUser();
+            tuik.UpdateUserId = user.UserId;
             tuik.UpdatedTime = DateTime.Now;
             tuik.IsActive = true;
             tuik.IsCity = false;
+            tuik.TuikYear = DateTime.Now.Year - 1;
+            tuik.GuessYear = DateTime.Now.Year;
 
 
             var sonuc = await _tuikService.UpdateTuikData(tuik);
@@ -656,6 +659,10 @@ namespace HasatPiyasa.Web.UI.Controllers
         [HttpPost]
         public async Task<object> DeleteTuikData(Tuiks tuik)
         {
+            var user = GetCurrentUser();
+            tuik.UpdateUserId = user.UserId;
+            tuik.UpdatedTime = DateTime.Now;
+
             var sonuc = await _tuikService.DeleteTuik(tuik);
 
             if (sonuc.BasariliMi)

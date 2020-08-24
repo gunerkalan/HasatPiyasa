@@ -2,6 +2,10 @@
 var GlobalEmteaGroupId;
 var GlobalEmteaTypeId;
 var GlobalEmteaTypeGroupId;
+var GlobalTuikSubeId;
+var GlobalTuikUserId;
+var GlobalSubeId;
+var GlobalAddedTime;
 
 $(function () {
     $("#GridContainer").dxDataGrid({
@@ -505,6 +509,29 @@ function CheckValidateFormSubeTuik() {
 
     }
 }
+function CheckValidateFormSubeTuik2() {
+
+    var EmteaId = $("#drpemtias2 :selected").val()
+    var EmteaGroupId = $("#drpemtiagroups2 :selected").val()
+    var EmteaTypeId = $("#drpemtiatypes2 :selected").val()
+    var SubeId = $("#drpsubes2 :selected").val()
+    var TuikValue = $("#tuikvalue2").val()
+    var GuessValue = $("#guessvalue2").val()
+
+    if (EmteaId != "-1" && EmteaGroupId != "-1" && EmteaTypeId != "-1" && SubeId != "-1" && TuikValue != "" && GuessValue != "") {
+        return true
+    }
+    else {
+        ChangeColor(EmteaId, "drpemtias2")
+        ChangeColor(EmteaGroupId, "drpemtiagroups2")
+        ChangeColor(EmteaTypeId, "drpemtiatypes2")
+        ChangeColor(SubeId, "drpsubes2")
+        ChangeColor(TuikValue, "tuikvalue2")
+        ChangeColor(GuessValue, "guessvalue2")
+        return false
+
+    }
+}
 function CheckValidateFormCityTuik() {
 
     var EmteaId = $("#drpemtias :selected").val()
@@ -586,10 +613,9 @@ function EmteaChange2(id) {
             $("#drpemtiagroups2").append(`<option value="${item.id}">${item.EmteaGrupName}</option>`)
         });
 
-
-
     })
 
+   
 }
 function EmteaChange3() {
     $("#drpemtiagroups2").empty()
@@ -603,7 +629,7 @@ function EmteaChange3() {
             $("#drpemtiagroups2").append(`<option value="${item.id}">${item.EmteaGrupName}</option>`)
         });
 
-        EmteaGroupChange()
+        EmteaGroupChange3()
 
     })
 
@@ -1218,6 +1244,149 @@ function CreatDetailTable(model) {
     
 
     return table;
+}
+function EditTuikSubeData(id, EmteaId, EmteaGroupId, SubeName, TuikYear, UserId, AddedTime) {
+    GlobalTuikSubeId = id
+    GlobalTuikUserId = UserId
+    GlobalAddedTime = AddedTime
+    EmteaChange2(EmteaId)
+    EmteaGroupChange2(EmteaGroupId)
+    $.post("/Admin/GetTuikSube", { id: id }, (res) => {
+        $("#loadPanel").dxLoadPanel("instance").show();
+        var model = JSON.parse(res)
+
+        if (model.BasariliMi) {
+
+            $("#drpemtias2").val(model.Veri.EmteaId)
+            $("#drpemtiagroups2").val(model.Veri.EmteaGroupId)
+            $("#drpemtiatypes2").val(model.Veri.EmteaTypeId)
+            $("#drpsubes2").val(model.Veri.SubeId)
+
+            $("#tuikvalue2").val(model.Veri.TuikValue)
+            $("#guessvalue2").val(model.Veri.GuessValue)
+
+            $("#usermodeltitleEditSiparis").html(`${model.Veri.SubeName + " " + model.Veri.TuikYear}  Tüik Verisini Düzenle `)
+            $("#loadPanel").dxLoadPanel("instance").hide();
+            $("#EditModal").modal("show")
+
+
+
+        }
+        else {
+            $("#loadPanel").dxLoadPanel("instance").hide();
+            swal("Hata !", model.ErrorMessage, "error");
+        }
+    })
+}
+function UpdateTuikSubeData() {
+
+
+    swal({
+        title: "Tüik Verisi Güncelle",
+        text: "Tüik Verisi Güncellensin Mi ?",
+        type: "info",
+        showCancelButton: true,
+        closeOnConfirm: false,
+        showLoaderOnConfirm: true,
+        confirmButtonText: "Tamam",
+        cancelButtonText: "İptal",
+    }, function () {
+
+        var tuik = {
+            Id: GlobalTuikSubeId,
+            AddUserId: GlobalTuikUserId,
+            EmteaId: $("#drpemtias2").val(),
+            EmteaGroupId: $("#drpemtiagroups2").val(),
+            EmteaTypeId: $("#drpemtiatypes2").val(),
+            SubeId: $("#drpsubes2").val(),
+            TuikValue: $("#tuikvalue2").val(),
+            GuessValue: $("#guessvalue2").val(),
+            AddedTime: GlobalAddedTime
+        }
+
+            if (CheckValidateFormSubeTuik2()) {
+                $.post("/Admin/UpdateTuikSube", { tuik: tuik }, function (res) {
+                var model = JSON.parse(res);
+
+                if (model.success) {
+                    SweetAlertMesaj("Tük Verisini Güncelle", model.Mesaj, "success", "Kapat", "btn-success")
+                    $("#GridContainer").dxDataGrid("instance").refresh();
+                    $("#EditModal").modal("hide")
+                    loadpanel.hide()
+
+                    $('#drpemtias2').val('')
+                    $('#drpemtiagroups2').val('')
+                    $('#drpemtiatypes2').val('')
+                    $('#drpsubes2').val('')
+                    $('#tuikvalue2').val('')
+                    $('#guessvalue2').val('')
+                }
+                else {
+
+                    SweetAlertMesaj("Tüik Verisi Güncelle", model.messages, "error", "Kapat", "btn-danger")
+
+                }
+
+            })
+        }
+        else {
+            swal("Hata : Lütfen gerekli alanları doldurunuz !");
+            this.showLoaderOnConfirm = false
+            return false
+
+        }
+
+
+    });
+
+}
+function SoftDeleteTuikSubeData(id, EmteaId, EmteaGroupId, EmteaTypeId, SubeId, UserId) {
+    GlobalEmteaTypeId = EmteaTypeId,
+    GlobalEmteaGroupId = EmteaGroupId
+    GlobalEmteaId = EmteaId
+    GlobalTuikSubeId = id
+    GlobalSubeId = SubeId
+    GlobalTuikUserId = UserId
+    swal({
+        title: "Sil ?",
+        text: `Tüik Verisi Silinsin mi ?`,
+        type: "info",
+        showCancelButton: true,
+        closeOnConfirm: false,
+        showLoaderOnConfirm: true,
+        confirmButtonText: "Tamam",
+        cancelButtonText: "İptal",
+
+    },
+        function () {
+
+            var tuik = {
+                Id: GlobalTuikSubeId,
+                IsActive: false,
+                IsCity:false,
+                EmteaTypeId: GlobalEmteaTypeId,
+                EmteaId: GlobalEmteaId,
+                EmteaGroupId: GlobalEmteaGroupId,
+                AddUserId: SubeId,
+                SubeId: SubeId
+            }
+
+            $.post("/Admin/DeleteTuikData", { tuik: tuik, }, (res) => {
+
+                var model = JSON.parse(res)
+
+                if (model.success) {
+                    SweetAlertMesaj("Silme", "Tüik Verisi Silinmiştir !", "success", "Kapat", "btn-success")
+                    $("#GridContainer").dxDataGrid("instance").refresh();
+                    this.showLoaderOnConfirm = false
+                }
+                else {
+                    swal("Hata !", model.ErrorMessage, "error");
+                    this.showLoaderOnConfirm = false
+                }
+            })
+        }
+    );
 }
 
 
