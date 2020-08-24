@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using DevExpress.Xpo.Metadata.Helpers;
 using HasatPiyasa.Business;
 using HasatPiyasa.Business.Abstract;
 using HasatPiyasa.Entity.Entity;
@@ -35,7 +36,8 @@ namespace HasatPiyasa.Web.UI.Controllers
 
             
             var model = new HasaInputViewModel();
-            var emtea = await _emteaService.GetEmteaTable(1,cityId);
+            int em = (int)Core.Utilities.Enums.DataInput.Data.Rice;
+            var emtea = await _emteaService.GetEmteaTable(em,cityId);
             var user = GetCurrentUser();
             if(user!=null)
             {
@@ -52,6 +54,15 @@ namespace HasatPiyasa.Web.UI.Controllers
                 var Inputs = await _formDataInputService.GetFormDataInputTable(DateTime.Today, cityId);
                 model.DataInputs = Inputs.Veri!=null ? _dataInputService.ListAllDataInputs().Veri.Where(x=>x.FormDataInputId==Inputs.Veri.Id).ToList():null;
                 model.HaveTodayInputData = model.DataInputs != null ? true : false;
+
+                if(Inputs.Veri.AddedTime!=DateTime.Today)
+                {
+                    model.DataInputs.ForEach(x =>
+                    {
+                        x.Id = 0;
+                    });
+                    
+                }
             }
             else
             {
@@ -60,6 +71,8 @@ namespace HasatPiyasa.Web.UI.Controllers
                 model.DataInputs = Inputs.Veri != null ? _dataInputService.ListAllDataInputs().Veri.Where(x => x.FormDataInputId == Inputs.Veri.Id).ToList() : null;
                 model.HaveTodayInputData = model.DataInputs != null ? true : false;
             }
+
+            
              
 
             return View(model);
@@ -75,7 +88,7 @@ namespace HasatPiyasa.Web.UI.Controllers
                 x.SubeId = user.SubeId;
                 x.AddUserId = user.UserId;
                 x.AlimYear = DateTime.Now.Year;
-                x.EmteaId = 1;
+                x.EmteaId = (int)Core.Utilities.Enums.DataInput.Data.Rice;
                 x.AddedTime = DateTime.Today;
             });
 
