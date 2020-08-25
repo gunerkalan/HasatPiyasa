@@ -336,7 +336,7 @@ function SaveTuikCity() {
                 }
                 else {
 
-                    SweetAlertMesaj("İl Tüik Veri Kaydet", model.messages, "error", "Kapat", "btn-danger")
+                    SweetAlertMesaj("İl Tüik Veri Güner Kaydet", model.messages, "error", "Kapat", "btn-danger")
 
                 }
 

@@ -148,7 +148,7 @@ namespace HasatPiyasa.Business.Concrete
                 return new NIslemSonuc<List<Cities>>
                 {
                     BasariliMi = true,
-                    Veri = _cityDal.GetList().ToList()
+                    Veri = _cityDal.GetList(u=>u.IsActive).ToList()
                 };
 
             }

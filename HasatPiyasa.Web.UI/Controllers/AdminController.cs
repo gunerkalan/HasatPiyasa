@@ -38,6 +38,7 @@ namespace HasatPiyasa.Web.UI.Controllers
             _userService = userService;
             _subeCityService = subeCityService;
             _formDataInputService = formDataInputService;
+            _cityService = cityService;
         }
 
         #region Emtea işlemleri
@@ -192,6 +193,7 @@ namespace HasatPiyasa.Web.UI.Controllers
         {
             var cities = new List<SelectListItem>();
 
+            
             _cityService.GetCityGTable().Result.Veri.ToList().ForEach(
                 s => cities.Add(new SelectListItem
                 {

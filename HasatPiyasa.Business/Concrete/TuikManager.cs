@@ -46,8 +46,8 @@ namespace HasatPiyasa.Business.Concrete
                 {
                     return new NIslemSonuc<Tuiks>
                     {
-                        BasariliMi = true,
-                        Mesaj = Messages.TuikSubeAddError,
+                        BasariliMi = false,
+                        Mesaj = sonuc.Mesaj,
                         
                     };
                 }
@@ -291,7 +291,7 @@ namespace HasatPiyasa.Business.Concrete
                 {
                     return new NIslemSonuc<Tuiks>
                     {
-                        BasariliMi = true,
+                        BasariliMi = false,
                         Mesaj = sonuc.Mesaj,
 
                     };
