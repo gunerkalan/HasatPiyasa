@@ -190,6 +190,8 @@ namespace HasatPiyasa.Business.Concrete
             }
         }
 
+     
+
         public NIslemSonuc<List<DataInputs>> ListAllDataInputs()
         {
             try

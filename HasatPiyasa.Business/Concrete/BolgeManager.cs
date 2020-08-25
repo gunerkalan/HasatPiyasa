@@ -92,6 +92,7 @@ namespace HasatPiyasa.Business.Concrete
         {
             try
             {
+               
                 return new NIslemSonuc<List<Bolges>>
                 {
                     BasariliMi = true,

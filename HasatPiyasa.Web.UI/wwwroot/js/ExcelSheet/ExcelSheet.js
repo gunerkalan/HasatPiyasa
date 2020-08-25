@@ -317,7 +317,7 @@ function GetTodayDataInput() {
 
     
 
-function LoadTable() {
+function LoadTable(pathh) {
 
     Dates = $('#dates').select2('val')
     Cities = $('#cities').select2('val')
@@ -325,7 +325,7 @@ function LoadTable() {
     AllCities = document.getElementById("alldate").checked
     AllDate = document.getElementById("allcities").checked
     getLoadPanelInstance().show()
-    $.post("/report/RiceGeneralReportBySubePartial", { dates: Dates, cities: Cities, allDate: AllDate, allcities: AllCities }, (res) => {
+    $.post("/report/" + pathh, { dates: Dates, cities: Cities, allDate: AllDate, allcities: AllCities }, (res) => {
         $(".rapor").html(res)
         LoadProcess()
         LoadProcess2();
@@ -333,21 +333,6 @@ function LoadTable() {
     })
 }
 
-function LoadTableCity() {
-
-    Dates = $('#dates').select2('val')
-    Cities = $('#cities').select2('val')
-    $('.rapor').css("border", "none")
-    AllCities = document.getElementById("alldate").checked
-    AllDate = document.getElementById("allcities").checked
-    getLoadPanelInstance().show()
-    $.post("/report/RiceGeneralReportByCityPartial", { dates: Dates, cities: Cities, allDate: AllDate, allcities: AllCities }, (res) => {
-        $(".rapor").html(res)
-        LoadProcess()
-        LoadProcess2();
-        getLoadPanelInstance().hide()
-    })
-}
 
 function numberWithCommas(x) {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
