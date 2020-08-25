@@ -70,13 +70,13 @@ namespace HasatPiyasa.Business.Concrete
             try
             {
                 var res = await _cityDal.GetTable();
-                var model = res.Include(x => x.SubeCities).ThenInclude(x => x.Sube).Where(x => x.IsActive).ToList();
+                var model = res.Where(x => x.IsActive).ToList();
 
                 var response = model.Select(x => new CityDto
                 {
-                    Id = x.Id,
-                    Name = x.Name,
-                    
+                    CityId = x.Id,
+                    CityName = x.Name,
+                    Plaka =x.Plaka
 
                 }).ToList();
 

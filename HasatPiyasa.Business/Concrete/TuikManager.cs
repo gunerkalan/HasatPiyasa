@@ -432,5 +432,57 @@ namespace HasatPiyasa.Business.Concrete
                 };
             }
         }
+
+        public async Task<NIslemSonuc<TuikSubeDto>> GetDetailTuikCity(int id)
+        {
+            try
+            {
+                var res = await _tuikDal.GetTable();
+                var model = await res.Include(a => a.AddUser)
+                    .Include(a => a.City)
+                    .Include(a => a.UpdateUser)
+                    .Include(a => a.Sube)
+                    .Include(a => a.EmteaType)
+                    .ThenInclude(a => a.EmteaGroup)
+                    .ThenInclude(a => a.Emtea)
+                    .AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
+
+                var response = new TuikSubeDto
+                {
+                    Id = model.Id,
+                    AddedUser = model.AddUser.Name + model.AddUser.Surname,
+                    AddSicil = model.AddUser.SicilNumber,
+                    AddedTime = model.AddedTime,
+                    EmteaCode = model.EmteaType.EmteaGroup.Emtea.EmteaCode,
+                    EmteaName = model.EmteaType.EmteaGroup.Emtea.EmteaName,
+                    EmteaGroupName = model.EmteaType.EmteaGroup.GroupName,
+                    EmteaTypeName = model.EmteaType.EmteaTypeName,
+                    GuessValue = model.GuessValue,
+                    GuessYear = model.GuessYear,
+                    IsCity = model.IsCity,
+                    TuikValue = model.TuikValue,
+                    TuikYear = model.TuikYear,
+                    //UpdatedUser = model.UpdateUser.Name + model.UpdateUser.Surname,
+                    UpdatedTime = model.UpdatedTime,
+                    //UpdateSicil = model.UpdateUser.SicilNumber,
+                    //SubeName = model.Sube.SubeName,
+                    CityName = model.City.Name
+                };
+
+                return new NIslemSonuc<TuikSubeDto>
+                {
+                    BasariliMi = true,
+                    Veri = response
+                };
+            }
+            catch (Exception hata)
+            {
+                return new NIslemSonuc<TuikSubeDto>
+                {
+                    BasariliMi = false,
+                    Mesaj = hata.InnerException.Message
+                };
+            }
+        }
     }
 }

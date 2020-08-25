@@ -22,6 +22,38 @@ namespace HasatPiyasa.Business.Concrete
             _subeCityDal = subeCityDal;
         }
 
+        public async Task<NIslemSonuc<List<CityDto>>> GetCitiesGTable()
+        {
+            try
+            {
+                var res = await _subeCityDal.GetTable();
+                var model = res.Where(x => x.IsActive).ToList();
+
+                var response = model.Select(x => new CityDto
+                {
+                    CityId = x.City.Id,
+                    CityName = x.City.Name,
+                    Plaka = x.City.Plaka                   
+
+                }).ToList();
+
+                return new NIslemSonuc<List<CityDto>>
+                {
+                    BasariliMi = false,
+                    Veri = response
+                };
+
+            }
+            catch (Exception hata)
+            {
+                return new NIslemSonuc<List<CityDto>>
+                {
+                    BasariliMi = false,
+                    Mesaj = hata.InnerException.Message
+                };
+            }
+        }
+
         public async Task<NIslemSonuc<List<SubeCityDto>>> GetSbCityGTable()
         {
             try
