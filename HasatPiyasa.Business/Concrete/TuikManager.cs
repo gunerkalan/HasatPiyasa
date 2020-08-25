@@ -178,7 +178,12 @@ namespace HasatPiyasa.Business.Concrete
                     TuikYear = x.TuikYear,
                     GuessValue = x.GuessValue,
                     GuessYear = x.GuessYear,
-                    IsCity = x.IsCity
+                    IsCity = x.IsCity,
+                    EmteaId = x.EmteaId,
+                    EmteaGroupId = x.EmteaGroupId,
+                    SubeId = x.SubeId,
+                    EmteaTypeId = x.EmteaTypeId,
+                    UserId = x.AddUserId 
                 }).ToList();
 
                 return new NIslemSonuc<List<TuikSubeDto>>
@@ -260,7 +265,7 @@ namespace HasatPiyasa.Business.Concrete
                 {
                     BasariliMi = false,
                     Mesaj = Messages.ErrorAdd,
-                    ErrorMessage = hata.Message
+                    ErrorMessage = hata.InnerException.Message
                 };
             }
         }
@@ -310,12 +315,27 @@ namespace HasatPiyasa.Business.Concrete
             try
             {
                 var res = await _tuikDal.GetTable();
-                var model = res.Include(x => x.City).Include(x=>x.Sube).Include(x=>x.EmteaType).ThenInclude(x => x.EmteaGroup).ThenInclude(x=>x.Emtea).FirstOrDefault(x => x.Id == id && x.IsActive);
+                var model = res.Include(x => x.City).Include(x=>x.Sube).Include(x=>x.EmteaType).ThenInclude(x => x.EmteaGroup).ThenInclude(x=>x.Emtea).AsNoTracking().FirstOrDefault(x => x.Id == id && x.IsActive);
 
                 var response = (new TuikSubeEditDto
                 {
                     Id = model.Id,
-                    
+                    EmteaGroupName = model.EmteaType.EmteaGroup.GroupName,
+                    EmteaName = model.EmteaType.EmteaGroup.Emtea.EmteaName,
+                    EmteaTypeName = model.EmteaType.EmteaTypeName,
+                    SubeName = model.Sube.SubeName,
+                    EmteaCode = model.EmteaType.EmteaGroup.Emtea.EmteaCode,
+                    TuikValue = model.TuikValue,
+                    TuikYear = model.TuikYear,
+                    GuessValue = model.GuessValue,
+                    GuessYear = model.GuessYear,
+                    IsCity = model.IsCity,
+                    EmteaId = model.EmteaId,
+                    EmteaGroupId = model.EmteaGroupId,
+                    SubeId = model.SubeId,
+                    EmteaTypeId = model.EmteaTypeId,
+                    UserId = model.AddUserId
+                                       
                 });
 
                 return new NIslemSonuc<TuikSubeEditDto>
@@ -338,6 +358,8 @@ namespace HasatPiyasa.Business.Concrete
         {
             try
             {
+               
+
                 var deletedtuik = await _tuikDal.DeleteSoftAsync(tuik);
 
                 return new NIslemSonuc<bool>

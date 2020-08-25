@@ -80,12 +80,14 @@ namespace HasatPiyasa.Business.Concrete
             try
             {
                 var res = await _formDataInputDal.GetTable();
+                var result = res.AsNoTracking().Include(x => x.DataInputs).ThenInclude(x => x.EmteaType).ThenInclude(x => x.EmteaGroup).ThenInclude(x => x.Emtea).
+                    Where(x => x.IsActive && x.IsLock == false && x.CityId == cityId).OrderByDescending(x => x.Id).FirstOrDefault();
+
 
                 return new NIslemSonuc<FormDataInput>
                 {
                     BasariliMi = true,
-                    Veri = res.AsNoTracking().Include(x => x.DataInputs).ThenInclude(x => x.EmteaType).ThenInclude(x => x.EmteaGroup).ThenInclude(x => x.Emtea).
-                    Where(x => x.IsActive && x.IsLock == false && x.CityId == cityId).OrderByDescending(x => x.Id).FirstOrDefault()
+                    Veri = result
                 };
             }
             catch (Exception hata)

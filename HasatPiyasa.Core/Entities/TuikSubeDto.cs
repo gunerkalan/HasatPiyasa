@@ -25,5 +25,10 @@ namespace HasatPiyasa.Core.Entities
         public string UpdatedUser { get; set; }
         public string AddSicil { get; set; }
         public string UpdateSicil { get; set; }
+        public int EmteaId { get; set; }
+        public int EmteaGroupId { get; set; }
+        public int? SubeId { get; set; }
+        public int EmteaTypeId { get; set; }
+        public int UserId { get; set; }
     }
 }

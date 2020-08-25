@@ -56,6 +56,7 @@ namespace HasatPiyasa.Business.Concrete
             {
                 if (dataInputs.Where(x => x.Id == 0).Count() != dataInputs.Count())
                 {
+                    
                     var formId = 0;
                     dataInputs.ForEach(f =>
                     {
@@ -128,9 +129,7 @@ namespace HasatPiyasa.Business.Concrete
                     Mesaj = hata.InnerException.Message
                 };
 
-
             }
-
         }
 
         private NIslemSonuc<bool> CheckDataInputForm(int cityId)
