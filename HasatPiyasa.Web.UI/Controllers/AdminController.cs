@@ -44,7 +44,7 @@ namespace HasatPiyasa.Web.UI.Controllers
         #region Emtea işlemleri
 
         [HttpGet]
-        //[AuthorizedUser("Admin")]
+        [AuthorizedUser("Admin")]
         public ActionResult EmteaList()
         {
             EmteaModel model = new EmteaModel
