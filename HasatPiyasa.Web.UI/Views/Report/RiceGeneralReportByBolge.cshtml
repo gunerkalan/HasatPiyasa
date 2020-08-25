@@ -104,15 +104,15 @@
             <label><input type="checkbox" id="allcities" class="font-weight-bolder" /><span class="title text-primary font-weight-bolder">Tüm Türkiye</span></label><br />
             <label for="cities" class="text-primary font-weight-bolder">Şubeler</label><br />
             <select class="js-example-basic-multiple form-control" name="cities[]" multiple="multiple" id="cities">
-                @foreach (var cty in Model.CitiesRapor.Distinct())
+                @foreach (var cty in Model.Bolges)
                 {
-                    if (Model.SelectedCityId == cty.CityId)
+                    if (Model.SelectedCityId == cty.Id)
                     {
-                        <option value="@cty.CityId" selected>@cty.SubeName</option>
+                        <option value="@cty.Id" selected>@cty.Name</option>
                     }
                     else
                     {
-                        <option value="@cty.CityId">@cty.SubeName</option>
+                        <option value="@cty.Id">@cty.Name</option>
                     }
 
                 }
@@ -120,7 +120,7 @@
         </div>
 
         <div style="float:left;margin-bottom:10px;position: relative; margin-top: 10px;" class="col-3">
-            <button onclick="LoadTable()" class="btn btn-primary btn-block" style="width: 150px;">Rapor Oluştur</button>
+            <button onclick="LoadTable('RiceGeneralReportByBolgePartial')" class="btn btn-primary btn-block" style="width: 150px;">Rapor Oluştur</button>
         </div>
     </div>
 

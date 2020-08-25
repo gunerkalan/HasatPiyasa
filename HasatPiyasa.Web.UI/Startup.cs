@@ -55,6 +55,7 @@ namespace HasatPiyasa_Web_UI
             services.AddScoped<IUserService, UserManager>();
             services.AddScoped<ICityService, CityManager>();
             services.AddScoped<ISubeCityService, SubeCityManager>();
+            services.AddScoped<IBolgeService, BolgeManager>();
             services.AddScoped<IEmteaService, EmteaManager>();
             services.AddScoped<IEmteaTypeService, EmteaTypeManager>();
             services.AddScoped<IEmteaGroupService, EmteaGrupManager>();

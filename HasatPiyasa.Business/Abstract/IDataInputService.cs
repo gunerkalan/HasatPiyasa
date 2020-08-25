@@ -15,5 +15,6 @@ namespace HasatPiyasa.Business.Abstract
         NIslemSonuc<DataInputs> GetDataInput(int id);
         Task<NIslemSonuc<DataInputs>> UpdateDataInput(DataInputs dataInput);
         Task<NIslemSonuc<DataInputs>> GetDataInputTable(int value);
+       
     }
 }
