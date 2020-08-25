@@ -70,10 +70,16 @@ namespace HasatPiyasa.Web.UI.Controllers
                var Inputs = await _formDataInputService.GetFormDataInputTable(DateTime.Today, cityId);
                 model.DataInputs = Inputs.Veri != null ? _dataInputService.ListAllDataInputs().Veri.Where(x => x.FormDataInputId == Inputs.Veri.Id).ToList() : null;
                 model.HaveTodayInputData = model.DataInputs != null ? true : false;
-            }
 
-            
-             
+                if (Inputs.Veri.AddedTime != DateTime.Today)
+                {
+                    model.DataInputs.ForEach(x =>
+                    {
+                        x.Id = 0;
+                    });
+
+                }
+            }            
 
             return View(model);
         }

@@ -10,7 +10,6 @@ namespace HasatPiyasa.Web.UI.Models
     public class TuikCityAddModel
     {
         public Tuiks Tuik { get; set; }
-        public List<SelectListItem> Subes { get; set; }
         public List<SelectListItem> Cities { get; set; }
         public List<SelectListItem> Emteas { get; set; }
         public List<SelectListItem> EmteaGroups { get; set; }

@@ -184,14 +184,7 @@
                             </select>
                         </div>
 
-                        <div class="form-group">
-                            <label for="drpsubes" class="control-label">Şube</label>
-                            <select class="form-control" id="drpsubes"  asp-for="@Model.Tuik.SubeId" 
-                                    asp-items="@Model.Subes" onchange="SubeChange();">
-                                <option selected value="-1">--Seçiniz--</option>
-                            </select>
-                        </div>
-
+                   
                         <div class="form-group">
                             <label for="drpcities" class="control-label">İl</label>
                             <select class="form-control" id="drpcities" asp-for="@Model.Tuik.CityId" asp-items="@Model.Cities">

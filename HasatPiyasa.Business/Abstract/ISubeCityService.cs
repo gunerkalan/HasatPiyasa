@@ -13,5 +13,6 @@ namespace HasatPiyasa.Business.Abstract
     {
         Task<NIslemSonuc<List<SubeCities>>> GetSubeCityGTable(int id);
         Task<NIslemSonuc<List<SubeCityDto>>> GetSbCityGTable();
+        Task<NIslemSonuc<List<CityDto>>> GetCitiesGTable();
     }
 }

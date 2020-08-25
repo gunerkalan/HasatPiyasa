@@ -41,7 +41,6 @@ namespace HasatPiyasa_Web_UI
             services.AddScoped<IDataInputDal, EfDataInputDal>();
             services.AddScoped<IDataInputService, DataInputManager>();
             services.AddScoped<IEmteaDal, EfEmteaDal>();
-            services.AddScoped<ICityDal, EfCityManager>();
             services.AddScoped<IEmteaGroupDal, EfEmteaGroupDal>();
             services.AddScoped<IEmteaTypeDal, EfEmteaTypeDal>();
             services.AddScoped<IEmteaTypeGroupDal, EfEmteaTypeGroupDal>();
@@ -54,6 +53,7 @@ namespace HasatPiyasa_Web_UI
             services.AddScoped<IAuthService, AuthManager>();
             services.AddScoped<IUserService, UserManager>();
             services.AddScoped<ICityService, CityManager>();
+            services.AddScoped<ICityDal, EfCityManager>();
             services.AddScoped<ISubeCityService, SubeCityManager>();
             services.AddScoped<IBolgeService, BolgeManager>();
             services.AddScoped<IEmteaService, EmteaManager>();

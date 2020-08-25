@@ -38,12 +38,13 @@ namespace HasatPiyasa.Web.UI.Controllers
             _userService = userService;
             _subeCityService = subeCityService;
             _formDataInputService = formDataInputService;
+            _cityService = cityService;
         }
 
         #region Emtea işlemleri
 
         [HttpGet]
-        [AuthorizedUser("Admin")]
+        //[AuthorizedUser("Admin")]
         public ActionResult EmteaList()
         {
             EmteaModel model = new EmteaModel
@@ -118,7 +119,6 @@ namespace HasatPiyasa.Web.UI.Controllers
             {
                 return JsonConvert.SerializeObject(new { success = false, messages = sonuc.Mesaj });
             }
-
            
         }
 
@@ -179,9 +179,23 @@ namespace HasatPiyasa.Web.UI.Controllers
             var subes = LoadSubes();
             var cities = new List<SelectListItem>();
 
-            _subeCityService.GetSbCityGTable().Result.Veri
-                .Where(s => s.SubeId == int.Parse(subes[0].Value)).ToList().
+            _subeCityService.GetSbCityGTable().Result.Veri.ToList().
                 ForEach(s => cities.Add(new SelectListItem
+                {
+                    Text = s.CityName,
+                    Value = s.CityId.ToString()
+                }));
+
+            return cities;
+        }
+
+        private List<SelectListItem> LoadOnlyCities()
+        {
+            var cities = new List<SelectListItem>();
+
+            
+            _cityService.GetCityGTable().Result.Veri.ToList().ForEach(
+                s => cities.Add(new SelectListItem
                 {
                     Text = s.CityName,
                     Value = s.CityId.ToString()
@@ -563,6 +577,13 @@ namespace HasatPiyasa.Web.UI.Controllers
             return JsonConvert.SerializeObject(res);
         }
 
+        [HttpPost]
+        public async Task<object> GetDetailTuikCity(int id)
+        {
+            var res = await _tuikService.GetDetailTuikCity(id);
+            return JsonConvert.SerializeObject(res);
+        }
+
 
         [HttpGet]
         public ActionResult TuikCityList()
@@ -573,8 +594,7 @@ namespace HasatPiyasa.Web.UI.Controllers
                 EmteaGroups = LoadEmteaGroups(),
                 Emteas = LoadEmteas(),
                 EmteaTypes = LoadEmteatypes(),
-                Subes = LoadSubes(),
-                Cities = LoadCities()
+                Cities = LoadOnlyCities()
             };
 
             return View(model);
