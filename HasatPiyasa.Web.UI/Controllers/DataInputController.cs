@@ -136,16 +136,17 @@ namespace HasatPiyasa.Web.UI.Controllers
         public async Task<object> DataInputRiceListData()
         {
             var user = GetCurrentUser();
-            if(user.Roles=="Admin")
+            int ChooseEmteaId = (int)Core.Utilities.Enums.DataInput.Data.Rice;
+            if (user.Roles=="Admin")
             {
-                var res = await _formDataInputService.GetFormDataInputGTable(null,null);
+                var res = await _formDataInputService.GetFormDataInputGTable(null,ChooseEmteaId);
 
                 return JsonConvert.SerializeObject(res.Veri);
             }                                                                                                                
             else
             {
                 int ChoseeSubeId = user.SubeId;
-                int ChooseEmteaId = (int) Core.Utilities.Enums.DataInput.Data.Rice;
+                
 
                 var res = await _formDataInputService.GetFormDataInputGTable(ChoseeSubeId,ChooseEmteaId);
 

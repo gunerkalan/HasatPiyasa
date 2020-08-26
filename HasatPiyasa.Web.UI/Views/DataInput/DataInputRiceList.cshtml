@@ -64,7 +64,7 @@
    .Selection(s => s.Mode(SelectionMode.Single))
    .HoverStateEnabled(true)
    .Columns(columns => {
-   columns.AddFor(m => m.SubeName).Caption("İşyeri Adı");
+   columns.AddFor(m => m.SubeName).Caption("İşyeri Adı").Width(250);
    columns.AddFor(m => m.SubeCode).Caption("İşyeri Kodu");
    columns.AddFor(m => m.CityName).Caption("Şehir Adı");
    columns.AddFor(m => m.EmteaName).Caption("Emtea Adı");

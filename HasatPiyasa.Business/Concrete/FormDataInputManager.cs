@@ -19,12 +19,12 @@ namespace HasatPiyasa.Business.Concrete
     public class FormDataInputManager : EfFormDataInputDal,IFormDataInputService
     {
         private IFormDataInputDal _formDataInputDal;
-        private IEmteaDal _emteaDal;
+        private IEmteaService _emteaservice;
 
-        public FormDataInputManager(IFormDataInputDal formDataInputDal, IEmteaDal emteaDal)
+        public FormDataInputManager(IFormDataInputDal formDataInputDal, IEmteaService emteaService)
         {
             _formDataInputDal = formDataInputDal;
-            _emteaDal = emteaDal;
+            _emteaservice = emteaService;
         }
 
         public async Task<NIslemSonuc<FormDataInput>> CreateFormDataInput(FormDataInput formDataInput)
@@ -51,18 +51,17 @@ namespace HasatPiyasa.Business.Concrete
             }
         }
 
-        public async Task<NIslemSonuc<List<FormDataInputDto>>> GetFormDataInputGTable(int? SubeId, int? EmteaId)
+        public async Task<NIslemSonuc<List<FormDataInputDto>>> GetFormDataInputGTable(int? SubeId, int EmteaId)
         {
             try
             {
                 var res = await _formDataInputDal.GetTable();
 
-                if(SubeId!=null && EmteaId!=null)
+                var resc = _emteaservice.GetEmteaAsync(EmteaId);
+
+                if (SubeId!=null)
                 {
                     var model = res.Include(x => x.Sube).Include(x => x.City).Where(x => x.IsActive && x.SubeId == SubeId && x.EmteaId == EmteaId).AsNoTracking().ToList();
-
-                    var resc = _emteaDal.Get(x => x.Id == EmteaId);
-
 
                     var response = model.Select(x => new FormDataInputDto
                     {
@@ -78,12 +77,12 @@ namespace HasatPiyasa.Business.Concrete
                         SubeCode = x.Sube.SubeKod,
                         UpdatedTime = x.UpdatedTime,
 
-                    }).ToList();
+                    }).OrderByDescending(u => u.Id).ToList();
 
                     response.ForEach(x =>
                     {
-                        x.EmteaName = resc.EmteaName;
-                        x.EmteaCode = resc.EmteaCode;
+                        x.EmteaName = resc.Result.Veri.EmteaName;
+                        x.EmteaCode = resc.Result.Veri.EmteaCode;
                     });
 
 
@@ -97,9 +96,6 @@ namespace HasatPiyasa.Business.Concrete
                 {
                     var model = res.Include(x => x.Sube).Include(x => x.City).Where(x => x.IsActive).AsNoTracking().ToList();
 
-                    var resc = _emteaDal.Get(x => x.Id == EmteaId);
-
-
                     var response = model.Select(x => new FormDataInputDto
                     {
                         Id = x.Id,
@@ -114,12 +110,12 @@ namespace HasatPiyasa.Business.Concrete
                         SubeCode = x.Sube.SubeKod,
                         UpdatedTime = x.UpdatedTime,
 
-                    }).ToList();
+                    }).OrderByDescending(u=>u.Id).ToList();
 
                     response.ForEach(x =>
                     {
-                        x.EmteaName = resc.EmteaName;
-                        x.EmteaCode = resc.EmteaCode;
+                        x.EmteaName = resc.Result.Veri.EmteaName;
+                        x.EmteaCode = resc.Result.Veri.EmteaCode;
                     });
 
 

@@ -16,6 +16,6 @@ namespace HasatPiyasa.Business.Abstract
         Task<NIslemSonuc<List<FormDataInput>>> GetFormDataGTable();
         Task<NIslemSonuc<List<DateTime>>> GetReporFormDataGTable(int id);
         Task<NIslemSonuc<FormDataInput>> UpdateFormData(int emteaid, int subeid, int cityid, bool state, int formid);
-        Task<NIslemSonuc<List<FormDataInputDto>>> GetFormDataInputGTable(int? SubeId, int? EmteaId);
+        Task<NIslemSonuc<List<FormDataInputDto>>> GetFormDataInputGTable(int? SubeId, int EmteaId);
     }
 }
