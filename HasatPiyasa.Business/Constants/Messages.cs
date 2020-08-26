@@ -26,6 +26,8 @@ namespace HasatPiyasa.Business.Constants
         public static string EmteaDeleteError = " Emtea Silme işlemi sırasında bir hata oluştu ! ";
         public static string DataInputAdd = "Veri girişleriniz veritabanına eklendi !";
         public static string TuikSubeAdd = "Tuik Şube verisi veritabanına  kaydedildi !";
+        public static string TuikCityAdd = "Tuik İl verisi veritabanına  kaydedildi !";
+        public static string TuikCityUpdate = "Tuik verisi güncellendi !";
         public static string TuikSubeAddError = "Tuik Şube verisi veritabanına  kaydedilemedi !";
 
         public static string ErrorEmteaGroupName = "Girilen Emtea Grup Adı ile daha önce Emtea  Grup tanımlanmış ! ";

@@ -27,6 +27,7 @@ namespace HasatPiyasa.Core.Entities
         public int EmteaId { get; set; }
         public int EmteaGroupId { get; set; }
         public int? SubeId { get; set; }
+        public int? CityId { get; set; }
         public int EmteaTypeId { get; set; }
         public int UserId { get; set; }
     }

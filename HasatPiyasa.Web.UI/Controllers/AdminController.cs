@@ -651,6 +651,13 @@ namespace HasatPiyasa.Web.UI.Controllers
             return JsonConvert.SerializeObject(res);
         }
 
+        [HttpPost]
+        public async Task<object> GetTuikCity(int id)
+        {
+            var res = await _tuikService.GetTuikCityAsync(id);
+            return JsonConvert.SerializeObject(res);
+        }
+
 
         [HttpPost]
         public async Task<object> UpdateTuikSube(Tuiks tuik)
@@ -660,6 +667,30 @@ namespace HasatPiyasa.Web.UI.Controllers
             tuik.UpdatedTime = DateTime.Now;
             tuik.IsActive = true;
             tuik.IsCity = false;
+            tuik.TuikYear = DateTime.Now.Year - 1;
+            tuik.GuessYear = DateTime.Now.Year;
+
+
+            var sonuc = await _tuikService.UpdateTuikData(tuik);
+            if (sonuc.BasariliMi)
+            {
+                return JsonConvert.SerializeObject(new { success = true, messages = sonuc.Mesaj });
+            }
+            else
+            {
+                return JsonConvert.SerializeObject(new { success = false, messages = sonuc.Mesaj });
+            }
+
+        }
+
+        [HttpPost]
+        public async Task<object> UpdateTuikCity(Tuiks tuik)
+        {
+            var user = GetCurrentUser();
+            tuik.UpdateUserId = user.UserId;
+            tuik.UpdatedTime = DateTime.Now;
+            tuik.IsActive = true;
+            tuik.IsCity = true;
             tuik.TuikYear = DateTime.Now.Year - 1;
             tuik.GuessYear = DateTime.Now.Year;
 
