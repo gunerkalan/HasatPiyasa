@@ -8,6 +8,6 @@ namespace HasatPiyasa.Web.UI.Models
 {
     public class DataInputRiceListModel
     {
-        public DataInputs DataInput { get; set; }
+        public FormDataInput FormDataInput { get; set; }
     }
 }

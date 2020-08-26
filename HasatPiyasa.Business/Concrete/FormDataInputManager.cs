@@ -51,44 +51,86 @@ namespace HasatPiyasa.Business.Concrete
             }
         }
 
-        public async Task<NIslemSonuc<List<FormDataInputDto>>> GetFormDataInputGTable(int SubeId, int EmteaId)
+        public async Task<NIslemSonuc<List<FormDataInputDto>>> GetFormDataInputGTable(int? SubeId, int? EmteaId)
         {
             try
             {
                 var res = await _formDataInputDal.GetTable();
-                var model = res.Include(x => x.Sube).Include(x=>x.City).Where(x => x.IsActive && x.SubeId==SubeId && x.EmteaId==EmteaId).ToList();
 
-                var resc = _emteaDal.Get(x=>x.Id==EmteaId);
-
-
-                var response = model.Select(x => new FormDataInputDto
+                if(SubeId!=null && EmteaId!=null)
                 {
-                    Id = x.Id,
-                    AddedTime = x.AddedTime,
-                    CityId = x.CityId,
-                    CityName = x.City.Name,
-                    EmteaId = x.EmteaId,
-                    IsActive = x.IsActive,
-                    IsLock = x.IsLock,
-                    SubeId = x.SubeId,
-                    SubeName = x.Sube.SubeName,
-                    SubeCode = x.Sube.SubeKod,
-                    UpdatedTime = x.UpdatedTime,
+                    var model = res.Include(x => x.Sube).Include(x => x.City).Where(x => x.IsActive && x.SubeId == SubeId && x.EmteaId == EmteaId).AsNoTracking().ToList();
 
-                }).ToList();
+                    var resc = _emteaDal.Get(x => x.Id == EmteaId);
 
-                response.ForEach(x =>
+
+                    var response = model.Select(x => new FormDataInputDto
+                    {
+                        Id = x.Id,
+                        AddedTime = x.AddedTime,
+                        CityId = x.CityId,
+                        CityName = x.City.Name,
+                        EmteaId = x.EmteaId,
+                        IsActive = x.IsActive,
+                        IsLock = x.IsLock,
+                        SubeId = x.SubeId,
+                        SubeName = x.Sube.SubeName,
+                        SubeCode = x.Sube.SubeKod,
+                        UpdatedTime = x.UpdatedTime,
+
+                    }).ToList();
+
+                    response.ForEach(x =>
+                    {
+                        x.EmteaName = resc.EmteaName;
+                        x.EmteaCode = resc.EmteaCode;
+                    });
+
+
+                    return new NIslemSonuc<List<FormDataInputDto>>
+                    {
+                        BasariliMi = false,
+                        Veri = response
+                    };
+                }
+                else
                 {
-                    x.EmteaName = resc.EmteaName;
-                    x.EmteaCode = resc.EmteaCode;
-                });
-                
+                    var model = res.Include(x => x.Sube).Include(x => x.City).Where(x => x.IsActive).AsNoTracking().ToList();
 
-                return new NIslemSonuc<List<FormDataInputDto>>
-                {
-                    BasariliMi = false,
-                    Veri = response
-                };
+                    var resc = _emteaDal.Get(x => x.Id == EmteaId);
+
+
+                    var response = model.Select(x => new FormDataInputDto
+                    {
+                        Id = x.Id,
+                        AddedTime = x.AddedTime,
+                        CityId = x.CityId,
+                        CityName = x.City.Name,
+                        EmteaId = x.EmteaId,
+                        IsActive = x.IsActive,
+                        IsLock = x.IsLock,
+                        SubeId = x.SubeId,
+                        SubeName = x.Sube.SubeName,
+                        SubeCode = x.Sube.SubeKod,
+                        UpdatedTime = x.UpdatedTime,
+
+                    }).ToList();
+
+                    response.ForEach(x =>
+                    {
+                        x.EmteaName = resc.EmteaName;
+                        x.EmteaCode = resc.EmteaCode;
+                    });
+
+
+                    return new NIslemSonuc<List<FormDataInputDto>>
+                    {
+                        BasariliMi = false,
+                        Veri = response
+                    };
+                }
+
+               
 
             }
             catch (Exception hata)

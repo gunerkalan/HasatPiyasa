@@ -126,7 +126,7 @@ namespace HasatPiyasa.Web.UI.Controllers
         {
             DataInputRiceListModel model = new DataInputRiceListModel
             {
-                DataInput = new DataInputs()
+                FormDataInput = new FormDataInput()
             };
 
             return View(model);
@@ -135,9 +135,24 @@ namespace HasatPiyasa.Web.UI.Controllers
         [HttpGet]
         public async Task<object> DataInputRiceListData()
         {
-            var res = await _emteaService.GetEmteaGTable();
+            var user = GetCurrentUser();
+            if(user.Roles=="Admin")
+            {
+                var res = await _formDataInputService.GetFormDataInputGTable(null,null);
 
-            return JsonConvert.SerializeObject(res.Veri);
+                return JsonConvert.SerializeObject(res.Veri);
+            }                                                                                                                
+            else
+            {
+                int ChoseeSubeId = user.SubeId;
+                int ChooseEmteaId = (int) Core.Utilities.Enums.DataInput.Data.Rice;
+
+                var res = await _formDataInputService.GetFormDataInputGTable(ChoseeSubeId,ChooseEmteaId);
+
+                return JsonConvert.SerializeObject(res.Veri);
+            }
+
+           
         }
 
         [HttpGet]//Hububat Get
