@@ -7,6 +7,7 @@ var GlobalTuikUserId;
 var GlobalSubeId;
 var GlobalAddedTime;
 var GlobalTuikCityId;
+var GlobalCityId;
 
 $(function () {
     $("#GridContainer").dxDataGrid({
@@ -1389,7 +1390,7 @@ function SoftDeleteTuikSubeData(id, EmteaId, EmteaGroupId, EmteaTypeId, SubeId, 
                 EmteaTypeId: GlobalEmteaTypeId,
                 EmteaId: GlobalEmteaId,
                 EmteaGroupId: GlobalEmteaGroupId,
-                AddUserId: SubeId,
+                AddUserId: UserId,
                 SubeId: SubeId
             }
 
@@ -1574,6 +1575,54 @@ function EditTuikCityData(id, EmteaId, EmteaGroupId, SubeName, TuikYear, UserId,
             swal("Hata !", model.ErrorMessage, "error");
         }
     })
+}
+function SoftDeleteTuikCityData(id, EmteaId, EmteaGroupId, EmteaTypeId, CityId, UserId) {
+    GlobalEmteaTypeId = EmteaTypeId,
+    GlobalEmteaGroupId = EmteaGroupId
+    GlobalEmteaId = EmteaId
+    GlobalTuikCityId = id
+    GlobalCityId = CityId
+    GlobalTuikUserId = UserId
+    swal({
+        title: "Sil ?",
+        text: `Tüik İl Verisi Silinsin mi ?`,
+        type: "info",
+        showCancelButton: true,
+        closeOnConfirm: false,
+        showLoaderOnConfirm: true,
+        confirmButtonText: "Tamam",
+        cancelButtonText: "İptal",
+
+    },
+        function () {
+
+            var tuik = {
+                Id: GlobalTuikCityId,
+                IsActive: false,
+                IsCity: true,
+                EmteaTypeId: GlobalEmteaTypeId,
+                EmteaId: GlobalEmteaId,
+                EmteaGroupId: GlobalEmteaGroupId,
+                AddUserId: UserId,
+                CityId: GlobalCityId
+            }
+
+            $.post("/Admin/DeleteTuikData", { tuik: tuik, }, (res) => {
+
+                var model = JSON.parse(res)
+
+                if (model.success) {
+                    SweetAlertMesaj("Silme", "Tüik İl Verisi Silinmiştir !", "success", "Kapat", "btn-success")
+                    $("#GridContainer").dxDataGrid("instance").refresh();
+                    this.showLoaderOnConfirm = false
+                }
+                else {
+                    swal("Hata !", model.ErrorMessage, "error");
+                    this.showLoaderOnConfirm = false
+                }
+            })
+        }
+    );
 }
 
 
