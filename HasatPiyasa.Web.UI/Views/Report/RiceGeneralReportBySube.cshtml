@@ -103,15 +103,15 @@
             <label><input type="checkbox" id="allcities" class="font-weight-bolder" /><span class="title text-primary font-weight-bolder">Tüm Türkiye</span></label><br />
             <label for="cities" class="text-primary font-weight-bolder">Şubeler</label><br />
             <select class="js-example-basic-multiple form-control" name="cities[]" multiple="multiple" id="cities">
-                @foreach (var cty in Model.CitiesRapor.Distinct())
+                @foreach (var cty in Model.SubesRapor.Distinct())
                 {
-                    if (Model.SelectedCityId == cty.SubeId)
+                    if (Model.SelectedCityId == cty.Id)
                     {
-                        <option value="@cty.SubeId" selected>@cty.SubeName</option>
+                        <option value="@cty.Id" selected>@cty.SubeName</option>
                     }
                     else
                     {
-                        <option value="@cty.SubeId">@cty.SubeName</option>
+                        <option value="@cty.Id">@cty.SubeName</option>
                     }
 
                 }

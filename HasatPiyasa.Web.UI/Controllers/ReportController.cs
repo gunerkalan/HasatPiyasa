@@ -19,10 +19,11 @@ namespace HasatPiyasa.Web.UI.Controllers
         private IEmteaService _emteaService;
         private ICityService _cityService;
         private ISubeCityService _subeCityService;
+        private ISubeService _subeService;
         private IBolgeService _bolgeService;
         private readonly IFormDataInputService _formDataInputService;
 
-        public ReportController(IDataInputService dataInputService, IEmteaService emteaService, ICityService cityService, ISubeCityService subeCityService, IBolgeService bolgeService, IFormDataInputService formDataInputService)
+        public ReportController(IDataInputService dataInputService, IEmteaService emteaService, ICityService cityService, ISubeCityService subeCityService, IBolgeService bolgeService, IFormDataInputService formDataInputService, ISubeService subeService)
         {
             _dataInputService = dataInputService;
             _emteaService = emteaService;
@@ -30,14 +31,15 @@ namespace HasatPiyasa.Web.UI.Controllers
             _subeCityService = subeCityService;
             _bolgeService = bolgeService;
             _formDataInputService = formDataInputService;
+            _subeService = subeService;
         }
 
         [HttpGet]
        public async Task<ActionResult> RiceGeneralReportBySube()
         {
             var model = new  HasaInputViewModel();
-            var _cities = await _subeCityService.GetSbCityGTable();            
-            model.CitiesRapor = _cities.Veri.Distinct().ToList();
+            var _cities = await _subeService.GetSubeGTable();            
+            model.SubesRapor = _cities.Veri.ToList();
            var _dates =await  _formDataInputService.GetTable();
             model.DateInputs=_dates.Select(x => x.AddedTime.Date).Distinct().ToList();
             var emtea = await _emteaService.GetEmteaTable(1,0);
@@ -194,7 +196,7 @@ namespace HasatPiyasa.Web.UI.Controllers
         public async Task<ActionResult> RiceGeneralReportByCity()
         {
             var model = new HasaInputViewModel();
-            var _cities = await _subeCityService.GetSbCityGTable();
+            var _cities = await _cityService.GetCityGTable();
             model.CitiesRapor = _cities.Veri.ToList();
             var _dates = await _formDataInputService.GetTable();
             model.DateInputs = _dates.Select(x => x.AddedTime.Date).Distinct().ToList();
