@@ -144,12 +144,12 @@ namespace HasatPiyasa.Web.UI.Controllers
 
                         if (cities.Count() > 0)
                         {
-                            emteaTypes.DataInputs = dataInputs.Where(x => cities.Contains(x.BolgeId.ToString()) && x.EmteaTypeId == emteaTypes.Id).ToList();
+                            emteaTypes.DataInputs = dataInputs.Where(x => cities.Contains(x.SubeId.ToString()) && x.EmteaTypeId == emteaTypes.Id).ToList();
                         }
 
                         if (cities.Count() > 0 && dates.Count() > 0)
                         {
-                            emteaTypes.DataInputs = dataInputs.Where(x => cities.Contains(x.BolgeId.ToString()) && dates.Contains(x.AddedTime.ToShortDateString()) && x.EmteaTypeId == emteaTypes.Id).ToList();
+                            emteaTypes.DataInputs = dataInputs.Where(x => cities.Contains(x.SubeId.ToString()) && dates.Contains(x.AddedTime.ToShortDateString()) && x.EmteaTypeId == emteaTypes.Id).ToList();
                         }
                     }
                     else
@@ -170,7 +170,7 @@ namespace HasatPiyasa.Web.UI.Controllers
                         {
                             if (cities.Count() > 0)
                             {
-                                emteaTypes.DataInputs = dataInputs.Where(x => cities.Contains(x.BolgeId.ToString()) && x.EmteaTypeId == emteaTypes.Id).ToList();
+                                emteaTypes.DataInputs = dataInputs.Where(x => cities.Contains(x.SubeId.ToString()) && x.EmteaTypeId == emteaTypes.Id).ToList();
                             }
                             else
                             {
