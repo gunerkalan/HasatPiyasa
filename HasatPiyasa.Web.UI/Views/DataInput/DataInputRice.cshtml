@@ -186,7 +186,7 @@
                     emteaType.Tuiks.FirstOrDefault(x =>x.CityId==Model.SelectedCityId &&x.EmteaGroupId==grup.Id && x.GuessYear == DateTime.Now.Year).GuessValue : 0:0 )" />
                             </td>
 
-                            <td><input type="number" id="@("HasatYuzde_"+count.ToString())" onkeyup="YuzdeHesapla(this);" name="percent" value="@(DataInputModelCount>=dataInputCount ? Model.HaveTodayInputData==true ? Model.DataInputs[dataInputCount-1].HasatOran:0:0)" /></td>
+                            <td><input type="number" id="@("HasatYuzde_"+count.ToString())" onkeyup="YuzdeHesapla(this); CalculateToptan();" name="percent" value="@(DataInputModelCount>=dataInputCount ? Model.HaveTodayInputData==true ? Model.DataInputs[dataInputCount-1].HasatOran:0:0)" /></td>
                             <td><input type="number" id="@("HasatEdilen_"+count.ToString())" name="hasatedilen" readonly value="@(DataInputModelCount>=dataInputCount ? Model.HaveTodayInputData==true ? Model.DataInputs[dataInputCount-1].HasatMiktar:0:0)" /></td>
                             <td><input type="number" name="bekleyenton" onkeyup="CalculateColumn('bekleyenton','bekleyentonTotal','topla')" value="@(DataInputModelCount>=dataInputCount ? Model.HaveTodayInputData==true ? Model.DataInputs[dataInputCount-1].UreticiKalanMiktar:0:0)" /></td>
 
@@ -202,11 +202,11 @@
 
 
 
-                            <td><input type="number" name="toptan0" onchange="CalculateColumn('toptan0', 'toptan0', 'topla');" value="@(DataInputModelCount>=dataInputCount ? Model.HaveTodayInputData==true ? Model.DataInputs[dataInputCount-1].ToptanPiyasa1:0:0)" /></td>
-                            <td><input type="number" name="toptan1" onchange="CalculateColumn('toptan1', 'toptan1', 'topla');" value="@(DataInputModelCount>=dataInputCount ? Model.HaveTodayInputData==true ? Model.DataInputs[dataInputCount-1].ToptanPiyasa2:0:0)" /></td>
-                            <td><input type="number"  name="toptan2" onchange="CalculateColumn('toptan2', 'toptan2', 'topla');" value="@(DataInputModelCount>=dataInputCount ? Model.HaveTodayInputData==true ? Model.DataInputs[dataInputCount-1].ToptanPiyasa3:0:0)" /></td>
-                            <td><input type="number"  name="toptan3" onchange="CalculateColumn('toptan3', 'toptan3', 'topla');" value="@(DataInputModelCount>=dataInputCount ? Model.HaveTodayInputData==true ? Model.DataInputs[dataInputCount-1].ToptanPiyasa4:0:0)" /></td>
-                            <td><input type="number"  name="toptan4" onchange="CalculateColumn('toptan4', 'toptan4', 'topla');" value="@(DataInputModelCount>=dataInputCount ? Model.HaveTodayInputData==true ? Model.DataInputs[dataInputCount-1].ToptanPiyasa5:0:0)" /></td>
+                            <td><input type="number" name="toptan0" onchange="CalculateToptan()" value="@(DataInputModelCount>=dataInputCount ? Model.HaveTodayInputData==true ? Model.DataInputs[dataInputCount-1].ToptanPiyasa1:0:0)" /></td>
+                            <td><input type="number" name="toptan1" onchange="CalculateToptan()" value="@(DataInputModelCount>=dataInputCount ? Model.HaveTodayInputData==true ? Model.DataInputs[dataInputCount-1].ToptanPiyasa2:0:0)" /></td>
+                            <td><input type="number"  name="toptan2" onchange="CalculateToptan()" value="@(DataInputModelCount>=dataInputCount ? Model.HaveTodayInputData==true ? Model.DataInputs[dataInputCount-1].ToptanPiyasa3:0:0)" /></td>
+                            <td><input type="number"  name="toptan3" onchange="CalculateToptan()" value="@(DataInputModelCount>=dataInputCount ? Model.HaveTodayInputData==true ? Model.DataInputs[dataInputCount-1].ToptanPiyasa4:0:0)" /></td>
+                            <td><input type="number"  name="toptan4" onchange="CalculateToptan()" value="@(DataInputModelCount>=dataInputCount ? Model.HaveTodayInputData==true ? Model.DataInputs[dataInputCount-1].ToptanPiyasa5:0:0)" /></td>
 
 
                             <td><input type="number" name="dfiyat" id="@("d_1_"+count.ToString())" onkeyup="Avarage(this);" value="@(DataInputModelCount>=dataInputCount ? Model.HaveTodayInputData==true ? Model.DataInputs[dataInputCount-1].Perakende1:0:0)" /></td>
