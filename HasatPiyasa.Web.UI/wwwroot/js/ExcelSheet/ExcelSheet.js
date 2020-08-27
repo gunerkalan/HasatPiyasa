@@ -64,6 +64,15 @@ function LoadProcess() {
     
     console.clear()
 }
+function CalculateToptan() {
+
+    CalculateColumnByCumulative("percent", "tmo", "percentTotal", "ağırlıklı");
+    CalculateColumnByCumulative('toptan0', 'piyasaton', 'toptan0', 'ağırlıklı');
+    CalculateColumnByCumulative('toptan1', 'piyasaton', 'toptan1', 'ağırlıklı');
+    CalculateColumnByCumulative('toptan2', 'piyasaton', 'toptan2', 'ağırlıklı');
+    CalculateColumnByCumulative('toptan3', 'piyasaton', 'toptan3', 'ağırlıklı');
+    CalculateColumnByCumulative('toptan4', 'piyasaton', 'toptan4', 'ağırlıklı');
+}
 
 function YuzdeHesapla(e) {
     var value = Number(e.value);
@@ -194,18 +203,18 @@ function Avarage(e) {
         var number2 = Number($("#y_1_" + rowId).val())
         var numberAvarage = (number1 + number2) / 2
         $("#o_1_" + rowId).val(numberAvarage)
-        CalculateColumn("dfiyat", "dfiyatTotal", "topla")
-        CalculateColumn("yfiyat", "yfiyatTotal", "topla")
-        CalculateColumn("ofiyat", "ofiyatTotal", "topla")
+        CalculateColumn("dfiyat", "dfiyatTotal", "ortalama")
+        CalculateColumn("yfiyat", "yfiyatTotal", "ortalama")
+        CalculateColumn("ofiyat", "ofiyatTotal", "ortalama")
     }
     else {
         var number1 = Number($("#d_2_" + rowId).val())
         var number2 = Number($("#y_2_" + rowId).val())
         var numberAvarage = (number1 + number2) / 2
         $("#o_2_" + rowId).val(numberAvarage)
-        CalculateColumn("dfiyat2", "dfiyat2Total", "topla")
-        CalculateColumn("yfiyat2", "yfiyat2Total", "topla")
-        CalculateColumn("ofiyat2", "ofiyat2Total", "topla")
+        CalculateColumn("dfiyat2", "dfiyat2Total", "ortalama")
+        CalculateColumn("yfiyat2", "yfiyat2Total", "ortalama")
+        CalculateColumn("ofiyat2", "ofiyat2Total", "ortalama")
     }
 
 
