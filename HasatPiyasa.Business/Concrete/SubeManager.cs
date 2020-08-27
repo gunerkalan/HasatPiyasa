@@ -100,7 +100,27 @@ namespace HasatPiyasa.Business.Concrete
                 };
             }
         }
+        public NIslemSonuc<List<Subes>> GetSubesByBolges(string[] bolges)
+        {
 
+            try
+            {
+                var res = _subeDal.GetList().ToList();
+                return new NIslemSonuc<List<Subes>>
+                {
+                    BasariliMi = true,
+                    Veri = res.Where(x => bolges.Contains(x.BolgeId.ToString())).ToList()
+                };
+            }
+            catch (Exception hata)
+            {
+                return new NIslemSonuc<List<Subes>>
+                {
+                    BasariliMi = false,
+                    Mesaj = hata.InnerException.Message
+                };
+            }
+        }
         public async Task<NIslemSonuc<Subes>> GetSubeTable(int value)
         {
             try

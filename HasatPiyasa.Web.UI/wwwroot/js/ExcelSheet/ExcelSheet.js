@@ -331,8 +331,8 @@ function LoadTable(pathh) {
     Dates = $('#dates').select2('val')
     Cities = $('#cities').select2('val')
     $('.rapor').css("border","none")
-    AllCities = document.getElementById("alldate").checked
-    AllDate = document.getElementById("allcities").checked
+    AllCities = document.getElementById("allcities").checked
+    AllDate = document.getElementById("alldate").checked
     getLoadPanelInstance().show()
     $.post("/report/" + pathh, { dates: Dates, cities: Cities, allDate: AllDate, allcities: AllCities }, (res) => {
         $(".rapor").html(res)

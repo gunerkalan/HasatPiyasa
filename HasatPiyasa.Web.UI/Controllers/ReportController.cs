@@ -20,16 +20,19 @@ namespace HasatPiyasa.Web.UI.Controllers
         private ICityService _cityService;
         private ISubeCityService _subeCityService;
         private IBolgeService _bolgeService;
+        private ISubeService _subeService;
         private readonly IFormDataInputService _formDataInputService;
 
-        public ReportController(IDataInputService dataInputService, IEmteaService emteaService, ICityService cityService, ISubeCityService subeCityService, IBolgeService bolgeService, IFormDataInputService formDataInputService)
+        public ReportController(IDataInputService dataInputService, IEmteaService emteaService, ICityService cityService, ISubeCityService subeCityService, IBolgeService bolgeService, ISubeService subeService, IFormDataInputService formDataInputService)
         {
             _dataInputService = dataInputService;
             _emteaService = emteaService;
             _cityService = cityService;
             _subeCityService = subeCityService;
             _bolgeService = bolgeService;
+            _subeService = subeService;
             _formDataInputService = formDataInputService;
+
         }
 
         [HttpGet]
@@ -129,7 +132,8 @@ namespace HasatPiyasa.Web.UI.Controllers
         {
             var model = new HasaInputViewModel();
             var emtea = await _emteaService.GetEmteaTable(1, 1);           
-            var dataInputs = _dataInputService.ListAllDataInputs().Veri;         
+            var dataInputs = _dataInputService.ListAllDataInputs().Veri;
+            var bolges = _subeService.GetSubesByBolges(cities).Veri;
             model.Emteas = emtea.Veri;
             foreach (var item in model.Emteas.EmteaGroups)
             {
@@ -144,12 +148,12 @@ namespace HasatPiyasa.Web.UI.Controllers
 
                         if (cities.Count() > 0)
                         {
-                            emteaTypes.DataInputs = dataInputs.Where(x => cities.Contains(x.BolgeId.ToString()) && x.EmteaTypeId == emteaTypes.Id).ToList();
+                            emteaTypes.DataInputs = dataInputs.Where(x=>  bolges.Where(b => b.Id == x.SubeId).Count() > 0 ).Where(x =>  x.EmteaTypeId == emteaTypes.Id).ToList();
                         }
 
                         if (cities.Count() > 0 && dates.Count() > 0)
                         {
-                            emteaTypes.DataInputs = dataInputs.Where(x => cities.Contains(x.BolgeId.ToString()) && dates.Contains(x.AddedTime.ToShortDateString()) && x.EmteaTypeId == emteaTypes.Id).ToList();
+                            emteaTypes.DataInputs = dataInputs.Where(x => bolges.Where(b => b.Id == x.SubeId).Count() > 0 && dates.Contains(x.AddedTime.ToShortDateString()) && x.EmteaTypeId == emteaTypes.Id).ToList();
                         }
                     }
                     else
@@ -170,7 +174,7 @@ namespace HasatPiyasa.Web.UI.Controllers
                         {
                             if (cities.Count() > 0)
                             {
-                                emteaTypes.DataInputs = dataInputs.Where(x => cities.Contains(x.BolgeId.ToString()) && x.EmteaTypeId == emteaTypes.Id).ToList();
+                                emteaTypes.DataInputs = dataInputs.Where(x => bolges.Where(b => b.Id == x.SubeId).Count() > 0 && x.EmteaTypeId == emteaTypes.Id).ToList();
                             }
                             else
                             {
