@@ -35,8 +35,6 @@ namespace HasatPiyasa.Web.UI.Controllers
         public async Task<ActionResult> DataInputRice(int cityId=0)
         { 
             
-
-            
             var model = new HasaInputViewModel();
             int em = (int)Core.Utilities.Enums.DataInput.Data.Rice;
             var emtea = await _emteaService.GetEmteaTable(em,cityId);
