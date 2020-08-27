@@ -7,8 +7,10 @@ using HasatPiyasa.Business;
 using HasatPiyasa.Business.Abstract;
 using HasatPiyasa.Entity.Entity;
 using HasatPiyasa.Web.UI.FilterAttributes;
+using HasatPiyasa.Web.UI.Models;
 using HasatPiyasa_Web_UI.Models;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace HasatPiyasa.Web.UI.Controllers
 {
@@ -32,8 +34,6 @@ namespace HasatPiyasa.Web.UI.Controllers
         [HttpGet]      
         public async Task<ActionResult> DataInputRice(int cityId=0)
         { 
-            
-
             
             var model = new HasaInputViewModel();
             int em = (int)Core.Utilities.Enums.DataInput.Data.Rice;
@@ -119,74 +119,109 @@ namespace HasatPiyasa.Web.UI.Controllers
 
         }
 
+        [HttpGet]
+        public ActionResult DataInputRiceList()
+        {
+            DataInputRiceListModel model = new DataInputRiceListModel
+            {
+                FormDataInput = new FormDataInput()
+            };
+
+            return View(model);
+        }
+
+        [HttpGet]
+        public async Task<object> DataInputRiceListData()
+        {
+            var user = GetCurrentUser();
+            int ChooseEmteaId = (int)Core.Utilities.Enums.DataInput.Data.Rice;
+            if (user.Roles=="Admin")
+            {
+                var res = await _formDataInputService.GetFormDataInputGTable(null,ChooseEmteaId);
+
+                return JsonConvert.SerializeObject(res.Veri);
+            }                                                                                                                
+            else
+            {
+                int ChoseeSubeId = user.SubeId;
+                
+
+                var res = await _formDataInputService.GetFormDataInputGTable(ChoseeSubeId,ChooseEmteaId);
+
+                return JsonConvert.SerializeObject(res.Veri);
+            }
+
+           
+        }
+
         [HttpGet]//Hububat Get
-        public async Task<ActionResult> DataImputCereal()
+        public ActionResult DataImputCereal()
         {
             return View();
         }
 
         [HttpPost] //Hububat Post
-        public async Task<ActionResult> DataInputCereal(List<DataInputs> dataInputs)
+        public ActionResult DataInputCereal(List<DataInputs> dataInputs)
         {
             return View();
         }
 
         [HttpGet]//Mısır Get
-        public async Task<ActionResult> DataImputCorn(int cityId = 0)
+        public ActionResult DataImputCorn(int cityId = 0)
         {
             return View();
         }
 
         [HttpPost] //Mısır Post
-        public async Task<ActionResult> DataInputCorn(List<DataInputs> dataInputs)
+        public ActionResult DataInputCorn(List<DataInputs> dataInputs)
         {
             return View();
         }
 
         [HttpGet]//Kırmızı Mercimek Get
-        public async Task<ActionResult> DataImputRedLentil(int cityId = 0)
+        public ActionResult DataImputRedLentil(int cityId = 0)
         {
             return View();
         }
 
         [HttpPost] //Kırmızı Mercimek Post
-        public async Task<ActionResult> DataInputRedLentil(List<DataInputs> dataInputs)
+        public ActionResult DataInputRedLentil(List<DataInputs> dataInputs)
         {
             return View();
         }
 
         [HttpGet]//Yeşil Mercimek Get
-        public async Task<ActionResult> DataImputGreenLentil(int cityId = 0)
+        public ActionResult DataImputGreenLentil(int cityId = 0)
         {
             return View();
         }
 
         [HttpPost] //Yeşil Mercimek Post
-        public async Task<ActionResult> DataInputGreenLentil(List<DataInputs> dataInputs)
+        public ActionResult DataInputGreenLentil(List<DataInputs> dataInputs)
         {
             return View();
         }
 
         [HttpGet]//Kuru Fasulye Get
-        public async Task<ActionResult> DataImputBean(int cityId = 0)
+        public ActionResult DataImputBean(int cityId = 0)
         {
             return View();
         }
 
         [HttpPost] //Kuru Fasulye Post
-        public async Task<ActionResult> DataInputBean(List<DataInputs> dataInputs)
+        public ActionResult DataInputBean(List<DataInputs> dataInputs)
         {
             return View();
         }
 
         [HttpGet]//Nohut Get
-        public async Task<ActionResult> DataImputChickPea(int cityId = 0)
+        public ActionResult DataImputChickPea(int cityId = 0)
         {
             return View();
         }
 
         [HttpPost] //Nohut Post
-        public async Task<ActionResult> DataInputChickPea(List<DataInputs> dataInputs)
+        public ActionResult DataInputChickPea(List<DataInputs> dataInputs)
         {
             return View();
         }

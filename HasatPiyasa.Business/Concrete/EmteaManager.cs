@@ -106,7 +106,7 @@ namespace HasatPiyasa.Business.Concrete
                 return new NIslemSonuc<Emteas>
                 {
                     BasariliMi = true,
-                    Veri = res.AsQueryable().Include(x => x.EmteaGroups).ThenInclude(x => x.EmteaTypes).ThenInclude(x=>x.EmteaTypeGroups).ThenInclude(x=>x.EmteaType.Tuiks).ThenInclude(x=>x.EmteaType.DataInputs).Include(x=>x.EmteaGroups).Where(x => x.Id == value).ToList().FirstOrDefault()
+                    Veri = res.AsQueryable().Include(x => x.EmteaGroups).ThenInclude(x => x.EmteaTypes).ThenInclude(x=>x.EmteaTypeGroups).ThenInclude(x=>x.EmteaType.Tuiks).ThenInclude(x=>x.EmteaType.DataInputs).Where(x => x.Id == value).ToList().FirstOrDefault()
                 };
             }
             catch (Exception hata)

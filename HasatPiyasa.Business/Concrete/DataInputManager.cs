@@ -2,6 +2,7 @@
 using HasastPiyasa.DataAccess.Abstract;
 using HasatPiyasa.Business.Abstract;
 using HasatPiyasa.Business.Constants;
+using HasatPiyasa.Core.Entities;
 using HasatPiyasa.Core.Utilities.Business;
 using HasatPiyasa.Core.Utilities.Results;
 using HasatPiyasa.Entity.Entity;
@@ -236,6 +237,11 @@ namespace HasatPiyasa.Business.Concrete
                     ErrorMessage = hata.Message
                 };
             }
+        }
+
+        public Task<NIslemSonuc<List<DataInputDto>>> GetDataInputGTable()
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -103,7 +103,7 @@ namespace HasatPiyasa.Business.Concrete
             try
             {
                 var res = await _tuikDal.GetTable();
-                var model = res.Include(x => x.City).Include(x => x.Sube).Include(x => x.AddUser).Include(x => x.EmteaType).ThenInclude(x => x.EmteaGroup).ThenInclude(x => x.Emtea).Where(x => x.IsActive && x.IsCity).ToList();
+                var model = res.Include(x => x.City).Include(x => x.Sube).Include(x => x.AddUser).Include(x => x.EmteaType).ThenInclude(x => x.EmteaGroup).ThenInclude(x => x.Emtea).Where(x => x.IsActive && x.IsCity).AsNoTracking().ToList();
 
                 var response = model.Select(x => new TuikCityDto
                 {
@@ -118,7 +118,12 @@ namespace HasatPiyasa.Business.Concrete
                     TuikValue = x.TuikValue,
                     TuikYear = x.TuikYear,
                     GuessValue = x.GuessValue,
-                    GuessYear = x.GuessYear
+                    GuessYear = x.GuessYear,
+                    CityId = x.CityId,
+                    EmteaId = x.EmteaId,
+                    EmteaGroupId = x.EmteaGroupId,
+                    EmteaTypeId = x.EmteaTypeId,
+                    UserId = x.AddUserId
                 }).ToList();
 
                 return new NIslemSonuc<List<TuikCityDto>>
@@ -256,6 +261,7 @@ namespace HasatPiyasa.Business.Concrete
                 {
                     BasariliMi = true,
                     Veri = updatedtuikdata,
+                    Mesaj = Messages.TuikCityUpdate
 
                 };
             }
@@ -284,7 +290,7 @@ namespace HasatPiyasa.Business.Concrete
                     {
                         BasariliMi = true,
                         Veri = addedtuikdata,
-
+                        Mesaj = Messages.TuikCityAdd
                     };
                 }
                 else
@@ -480,6 +486,50 @@ namespace HasatPiyasa.Business.Concrete
                 return new NIslemSonuc<TuikSubeDto>
                 {
                     BasariliMi = false,
+                    Mesaj = hata.InnerException.Message
+                };
+            }
+        }
+
+        public async Task<NIslemSonuc<TuikSubeEditDto>> GetTuikCityAsync(int id)
+        {
+            try
+            {
+                var res = await _tuikDal.GetTable();
+                var model = res.Include(x => x.City).Include(x => x.Sube).Include(x => x.EmteaType).ThenInclude(x => x.EmteaGroup).ThenInclude(x => x.Emtea).AsNoTracking().FirstOrDefault(x => x.Id == id && x.IsActive);
+
+                var response = (new TuikSubeEditDto
+                {
+                    Id = model.Id,
+                    EmteaGroupName = model.EmteaType.EmteaGroup.GroupName,
+                    EmteaName = model.EmteaType.EmteaGroup.Emtea.EmteaName,
+                    EmteaTypeName = model.EmteaType.EmteaTypeName,
+                    CityName = model.City.Name,
+                    EmteaCode = model.EmteaType.EmteaGroup.Emtea.EmteaCode,
+                    TuikValue = model.TuikValue,
+                    TuikYear = model.TuikYear,
+                    GuessValue = model.GuessValue,
+                    GuessYear = model.GuessYear,
+                    IsCity = model.IsCity,
+                    EmteaId = model.EmteaId,
+                    EmteaGroupId = model.EmteaGroupId,
+                    CityId = model.CityId,
+                    EmteaTypeId = model.EmteaTypeId,
+                    UserId = model.AddUserId
+
+                });
+
+                return new NIslemSonuc<TuikSubeEditDto>
+                {
+                    BasariliMi = true,
+                    Veri = response
+                };
+            }
+            catch (Exception hata)
+            {
+                return new NIslemSonuc<TuikSubeEditDto>
+                {
+                    BasariliMi = true,
                     Mesaj = hata.InnerException.Message
                 };
             }

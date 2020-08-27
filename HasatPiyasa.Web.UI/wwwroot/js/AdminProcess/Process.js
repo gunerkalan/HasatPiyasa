@@ -6,6 +6,8 @@ var GlobalTuikSubeId;
 var GlobalTuikUserId;
 var GlobalSubeId;
 var GlobalAddedTime;
+var GlobalTuikCityId;
+var GlobalCityId;
 
 $(function () {
     $("#GridContainer").dxDataGrid({
@@ -307,7 +309,6 @@ function SaveTuikCity() {
     }, function () {
 
         var citytuik = {
-            SubeId: $("#drpsubes :selected").val(),
             CityId: $("#drpcities :selected").val(),
             EmteaTypeId: $("#drpemtiatypes :selected").val(),
             EmteaGroupId: $("#drpemtiagroups :selected").val(),
@@ -330,7 +331,6 @@ function SaveTuikCity() {
                     $('#tuikvalue').val('')
                     $('#drpemtiagroups').val('')
                     $('#drpemtiatypes').val('')
-                    $('#drpsubes').val('')
                     $('#drpcities').val('')
 
                 }
@@ -553,6 +553,29 @@ function CheckValidateFormCityTuik() {
         ChangeColor(CityId, "drpcities")
         ChangeColor(TuikValue, "tuikvalue")
         ChangeColor(GuessValue, "guessvalue")
+        return false
+
+    }
+}
+function CheckValidateFormCityTuik2() {
+
+    var EmteaId = $("#drpemtias2 :selected").val()
+    var EmteaGroupId = $("#drpemtiagroups2 :selected").val()
+    var EmteaTypeId = $("#drpemtiatypes2 :selected").val()
+    var CityId = $("#drpcities2 :selected").val()
+    var TuikValue = $("#tuikvalue2").val()
+    var GuessValue = $("#guessvalue2").val()
+
+    if (EmteaId != "-1" && EmteaGroupId != "-1" && EmteaTypeId != "-1" &&  TuikValue != "" && GuessValue != "" && CityId != "") {
+        return true
+    }
+    else {
+        ChangeColor(EmteaId, "drpemtias2")
+        ChangeColor(EmteaGroupId, "drpemtiagroups2")
+        ChangeColor(EmteaTypeId, "drpemtiatypes2")
+        ChangeColor(CityId, "drpcities2")
+        ChangeColor(TuikValue, "tuikvalue2")
+        ChangeColor(GuessValue, "guessvalue2")
         return false
 
     }
@@ -1309,7 +1332,7 @@ function UpdateTuikSubeData() {
                 var model = JSON.parse(res);
 
                 if (model.success) {
-                    SweetAlertMesaj("Tük Verisini Güncelle", model.Mesaj, "success", "Kapat", "btn-success")
+                    SweetAlertMesaj("Tük Verisini Güncelle", model.messages, "success", "Kapat", "btn-success")
                     $("#GridContainer").dxDataGrid("instance").refresh();
                     $("#EditModal").modal("hide")
                     loadpanel.hide()
@@ -1367,7 +1390,7 @@ function SoftDeleteTuikSubeData(id, EmteaId, EmteaGroupId, EmteaTypeId, SubeId, 
                 EmteaTypeId: GlobalEmteaTypeId,
                 EmteaId: GlobalEmteaId,
                 EmteaGroupId: GlobalEmteaGroupId,
-                AddUserId: SubeId,
+                AddUserId: UserId,
                 SubeId: SubeId
             }
 
@@ -1377,6 +1400,219 @@ function SoftDeleteTuikSubeData(id, EmteaId, EmteaGroupId, EmteaTypeId, SubeId, 
 
                 if (model.success) {
                     SweetAlertMesaj("Silme", "Tüik Verisi Silinmiştir !", "success", "Kapat", "btn-success")
+                    $("#GridContainer").dxDataGrid("instance").refresh();
+                    this.showLoaderOnConfirm = false
+                }
+                else {
+                    swal("Hata !", model.ErrorMessage, "error");
+                    this.showLoaderOnConfirm = false
+                }
+            })
+        }
+    );
+}
+function TuikCityDetail(id) {
+
+    $.post("/Admin/GetDetailTuikCity", { id: id }, (res) => {
+        $("#loadPanel").dxLoadPanel("instance").show();
+        var model = JSON.parse(res)
+
+        if (model.BasariliMi) {
+            var table = CreatDetailTableCity(model)
+            $("#list").empty()
+            $("#list").append(table)
+            $("#orderid").html(`Emtea Tipi :${model.Veri.EmteaTypeName}`)
+            $("#loadPanel").dxLoadPanel("instance").hide();
+            $("#detailModal").modal("show")
+        }
+        else {
+            $("#loadPanel").dxLoadPanel("instance").hide();
+            swal("Hata !", model.ErrorMessage, "error");
+        }
+    })
+}
+function CreatDetailTableCity(model) {
+    var table = "";
+
+    table = `<table class="table table-striped" id="detailTable">
+                            <tbody>
+                               <tr>
+                                   
+                                     <td colspan="2"><span class="detailname">Eklenme Tarihi</span> :<span class="detailvalue ">${model.Veri.AddedTime}</span> </td>
+                                      <td><span class="detailname">Şube Adı</span> :</td><td><span class="detailvalue">${model.Veri.CitiName}</span> </td>                          
+                                </tr>
+
+                                <tr>
+                                    <td><span class="detailname">Emtea Kodu</span> :</td><td><span class="detailvalue">${model.Veri.EmteaCode}</span> </td>
+                                    <td><span class="detailname">Emtea Adı</span> :</td><td><span class="detailvalue">${model.Veri.EmteaName}</span> </td>
+                                                                       
+                                </tr>
+                                <tr>
+                                    <td><span class="detailname">Emtea Gurup Adı</span> :</td><td><span class="detailvalue">${model.Veri.EmteaGroupName}</span> </td>
+                                    <td><span class="detailname">Emtea Tip Adı</span> :</td><td><span class="detailvalue">${model.Veri.EmteaTypeName}</span> </td>
+                                                                       
+                                </tr>
+                                <tr>
+                                    <td><span class="detailname">Tüik Yılı</span> :</td><td><span class="detailvalue">${model.Veri.TuikYear}</span> </td>
+                                     <td><span class="detailname">Tüik Verisi</span> :</td><td><span class="detailvalue">${model.Veri.TuikValue}</span> </td>
+                                                                       
+                                </tr>
+                                 <tr>
+                                    <td><span class="detailname">TMO Tahmin Yılı</span> :</td><td><span class="detailvalue">${model.Veri.GuessYear}</span> </td>
+                                     <td><span class="detailname">TMO Tahmin Verisi</span> :</td><td><span class="detailvalue">${model.Veri.GuessValue}</span> </td>
+                                                                       
+                                </tr>
+                                 <tr>
+                                    <td><span class="detailname">Ek. Kullanıcı</span> :</td><td><span class="detailvalue">${model.Veri.AddedUser}</span> </td>
+                                     <td><span class="detailname">Ek. Kullanıcı</span> :</td><td><span class="detailvalue">${model.Veri.AddSicil}</span> </td>
+                                                                       
+                                </tr>
+                                  
+                                 <tr>
+                                    <td><span class="detailname">Güncellenme Tarihi</span> :</td><td><span class="detailvalue">${model.Veri.UpdatedTime == null ? '' : model.Veri.UpdatedTime}</span> </td>
+                                    <td><span class="detailname">Güncel. Kullanıcı</span> :</td><td><span class="detailvalue">${model.Veri.UpdatedUser == null ? '' : model.Veri.UpdatedUser}</span> </td>
+                                </tr>
+                               
+                              
+                            </tbody>
+                        </table>`
+
+
+
+    return table;
+}
+function UpdateTuikCityData() {
+
+
+    swal({
+        title: "Tüik İl Verisi Güncelle",
+        text: "Tüik İl Verisi Güncellensin Mi ?",
+        type: "info",
+        showCancelButton: true,
+        closeOnConfirm: false,
+        showLoaderOnConfirm: true,
+        confirmButtonText: "Tamam",
+        cancelButtonText: "İptal",
+    }, function () {
+
+            var tuik = {
+            Id: GlobalTuikCityId,
+            AddUserId: GlobalTuikUserId,
+            EmteaId: $("#drpemtias2").val(),
+            EmteaGroupId: $("#drpemtiagroups2").val(),
+            EmteaTypeId: $("#drpemtiatypes2").val(),
+            CityId: $("#drpcities2").val(),
+            TuikValue: $("#tuikvalue2").val(),
+            GuessValue: $("#guessvalue2").val(),
+            AddedTime: GlobalAddedTime
+        }
+
+        if (CheckValidateFormCityTuik2()) {
+            $.post("/Admin/UpdateTuikCity", { tuik: tuik }, function (res) {
+                var model = JSON.parse(res);
+
+                if (model.success) {
+                    SweetAlertMesaj("Tüik İl Verisini Güncelle", model.messages, "success", "Kapat", "btn-success")
+                    $("#GridContainer").dxDataGrid("instance").refresh();
+                    $("#EditModal").modal("hide")
+                    loadpanel.hide()
+
+                    $('#drpemtias2').val('')
+                    $('#drpemtiagroups2').val('')
+                    $('#drpemtiatypes2').val('')
+                    $('#drpcities2').val('')
+                    $('#tuikvalue2').val('')
+                    $('#guessvalue2').val('')
+                }
+                else {
+
+                    SweetAlertMesaj("Tüik İl Verisi Güncelle", model.messages, "error", "Kapat", "btn-danger")
+
+                }
+
+            })
+        }
+        else {
+            swal("Hata : Lütfen gerekli alanları doldurunuz !");
+            this.showLoaderOnConfirm = false
+            return false
+
+        }
+
+
+    });
+
+}
+function EditTuikCityData(id, EmteaId, EmteaGroupId, SubeName, TuikYear, UserId, AddedTime) {
+    GlobalTuikCityId = id
+    GlobalTuikUserId = UserId
+    GlobalAddedTime = AddedTime
+    EmteaChange2(EmteaId)
+    EmteaGroupChange2(EmteaGroupId)
+    $.post("/Admin/GetTuikCity", { id: id }, (res) => {
+        $("#loadPanel").dxLoadPanel("instance").show();
+        var model = JSON.parse(res)
+
+        if (model.BasariliMi) {
+
+            $("#drpemtias2").val(model.Veri.EmteaId)
+            $("#drpemtiagroups2").val(model.Veri.EmteaGroupId)
+            $("#drpemtiatypes2").val(model.Veri.EmteaTypeId)
+            $("#drpcities2").val(model.Veri.CityId)
+
+            $("#tuikvalue2").val(model.Veri.TuikValue)
+            $("#guessvalue2").val(model.Veri.GuessValue)
+
+            $("#usermodeltitleEditSiparis").html(`${model.Veri.CityName + " " + model.Veri.TuikYear}  Tüik İl Verisini Düzenle `)
+            $("#loadPanel").dxLoadPanel("instance").hide();
+            $("#EditModal").modal("show")
+
+
+
+        }
+        else {
+            $("#loadPanel").dxLoadPanel("instance").hide();
+            swal("Hata !", model.ErrorMessage, "error");
+        }
+    })
+}
+function SoftDeleteTuikCityData(id, EmteaId, EmteaGroupId, EmteaTypeId, CityId, UserId) {
+    GlobalEmteaTypeId = EmteaTypeId,
+    GlobalEmteaGroupId = EmteaGroupId
+    GlobalEmteaId = EmteaId
+    GlobalTuikCityId = id
+    GlobalCityId = CityId
+    GlobalTuikUserId = UserId
+    swal({
+        title: "Sil ?",
+        text: `Tüik İl Verisi Silinsin mi ?`,
+        type: "info",
+        showCancelButton: true,
+        closeOnConfirm: false,
+        showLoaderOnConfirm: true,
+        confirmButtonText: "Tamam",
+        cancelButtonText: "İptal",
+
+    },
+        function () {
+
+            var tuik = {
+                Id: GlobalTuikCityId,
+                IsActive: false,
+                IsCity: true,
+                EmteaTypeId: GlobalEmteaTypeId,
+                EmteaId: GlobalEmteaId,
+                EmteaGroupId: GlobalEmteaGroupId,
+                AddUserId: UserId,
+                CityId: GlobalCityId
+            }
+
+            $.post("/Admin/DeleteTuikData", { tuik: tuik, }, (res) => {
+
+                var model = JSON.parse(res)
+
+                if (model.success) {
+                    SweetAlertMesaj("Silme", "Tüik İl Verisi Silinmiştir !", "success", "Kapat", "btn-success")
                     $("#GridContainer").dxDataGrid("instance").refresh();
                     this.showLoaderOnConfirm = false
                 }

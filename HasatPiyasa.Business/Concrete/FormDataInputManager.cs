@@ -19,10 +19,12 @@ namespace HasatPiyasa.Business.Concrete
     public class FormDataInputManager : EfFormDataInputDal,IFormDataInputService
     {
         private IFormDataInputDal _formDataInputDal;
+        private IEmteaService _emteaservice;
 
-        public FormDataInputManager(IFormDataInputDal formDataInputDal)
+        public FormDataInputManager(IFormDataInputDal formDataInputDal, IEmteaService emteaService)
         {
             _formDataInputDal = formDataInputDal;
+            _emteaservice = emteaService;
         }
 
         public async Task<NIslemSonuc<FormDataInput>> CreateFormDataInput(FormDataInput formDataInput)
@@ -45,6 +47,94 @@ namespace HasatPiyasa.Business.Concrete
                     BasariliMi = false,
                     Mesaj = Messages.ErrorAdd,
                     ErrorMessage = hata.Message
+                };
+            }
+        }
+
+        public async Task<NIslemSonuc<List<FormDataInputDto>>> GetFormDataInputGTable(int? SubeId, int EmteaId)
+        {
+            try
+            {
+                var res = await _formDataInputDal.GetTable();
+
+                var resc = _emteaservice.GetEmteaAsync(EmteaId);
+
+                if (SubeId!=null)
+                {
+                    var model = res.Include(x => x.Sube).Include(x => x.City).Where(x => x.IsActive && x.SubeId == SubeId && x.EmteaId == EmteaId).AsNoTracking().ToList();
+
+                    var response = model.Select(x => new FormDataInputDto
+                    {
+                        Id = x.Id,
+                        AddedTime = x.AddedTime,
+                        CityId = x.CityId,
+                        CityName = x.City.Name,
+                        EmteaId = x.EmteaId,
+                        IsActive = x.IsActive,
+                        IsLock = x.IsLock,
+                        SubeId = x.SubeId,
+                        SubeName = x.Sube.SubeName,
+                        SubeCode = x.Sube.SubeKod,
+                        UpdatedTime = x.UpdatedTime,
+
+                    }).OrderByDescending(u => u.Id).ToList();
+
+                    response.ForEach(x =>
+                    {
+                        x.EmteaName = resc.Result.Veri.EmteaName;
+                        x.EmteaCode = resc.Result.Veri.EmteaCode;
+                    });
+
+
+                    return new NIslemSonuc<List<FormDataInputDto>>
+                    {
+                        BasariliMi = false,
+                        Veri = response
+                    };
+                }
+                else
+                {
+                    var model = res.Include(x => x.Sube).Include(x => x.City).Where(x => x.IsActive).AsNoTracking().ToList();
+
+                    var response = model.Select(x => new FormDataInputDto
+                    {
+                        Id = x.Id,
+                        AddedTime = x.AddedTime,
+                        CityId = x.CityId,
+                        CityName = x.City.Name,
+                        EmteaId = x.EmteaId,
+                        IsActive = x.IsActive,
+                        IsLock = x.IsLock,
+                        SubeId = x.SubeId,
+                        SubeName = x.Sube.SubeName,
+                        SubeCode = x.Sube.SubeKod,
+                        UpdatedTime = x.UpdatedTime,
+
+                    }).OrderByDescending(u=>u.Id).ToList();
+
+                    response.ForEach(x =>
+                    {
+                        x.EmteaName = resc.Result.Veri.EmteaName;
+                        x.EmteaCode = resc.Result.Veri.EmteaCode;
+                    });
+
+
+                    return new NIslemSonuc<List<FormDataInputDto>>
+                    {
+                        BasariliMi = false,
+                        Veri = response
+                    };
+                }
+
+               
+
+            }
+            catch (Exception hata)
+            {
+                return new NIslemSonuc<List<FormDataInputDto>>
+                {
+                    BasariliMi = false,
+                    Mesaj = hata.InnerException.Message
                 };
             }
         }
