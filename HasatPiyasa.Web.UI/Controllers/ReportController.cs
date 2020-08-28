@@ -21,10 +21,9 @@ namespace HasatPiyasa.Web.UI.Controllers
         private ISubeCityService _subeCityService;
         private ISubeService _subeService;
         private IBolgeService _bolgeService;
-        private ISubeService _subeService;
-        private readonly IFormDataInputService _formDataInputService;
+      private readonly IFormDataInputService _formDataInputService;
 
-        public ReportController(IDataInputService dataInputService, IEmteaService emteaService, ICityService cityService, ISubeCityService subeCityService, IBolgeService bolgeService, IFormDataInputService formDataInputService)
+        public ReportController(IDataInputService dataInputService, IEmteaService emteaService, ICityService cityService, ISubeCityService subeCityService, IBolgeService bolgeService, IFormDataInputService formDataInputService, ISubeService subeService)
         {
             _dataInputService = dataInputService;
             _emteaService = emteaService;

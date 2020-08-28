@@ -782,25 +782,27 @@ namespace HasatPiyasa.Web.UI.Controllers
             IsLockModel model = new IsLockModel
             {
                 Emteas = _emteaService.ListAllEmteas().Veri,
-                Subes = _subeService.ListAllSubes().Veri
+               
             };
 
             return View(model);
         }
 
-        public async Task<object> GetFormData(int emteaid, int subeid)
+        public async Task<object> GetFormData(int emteaid)
         {
             if (emteaid > 0)
             {
                 var formDatas = await _formDataInputService.GetFormDataGTable();
 
-                var fm = formDatas.Veri.Where(x => x.EmteaId == emteaid && x.SubeId == subeid).Select(s => new SetFormDataState
+                var fm = formDatas.Veri.Where(x => x.EmteaId == emteaid).Select(s => new SetFormDataState
                 {
                     FormId = s.Id,
                     CityName = s.City.Name,
-                    FormDataDate = s.AddedTime,
+                    FormDataDate = s.AddedTime.ToLongDateString(),
                     State = s.IsLock,
-                    CityId = s.CityId
+                    CityId = s.CityId,
+                    SubeId = s.SubeId,
+                    SubeName = s.Sube.SubeName
 
                 }).ToList();
 
