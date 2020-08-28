@@ -57,36 +57,30 @@ namespace HasatPiyasa.Business.Concrete
             {
                 if (dataInputs.Where(x => x.Id == 0).Count() != dataInputs.Count())
                 {
-                    
                     var formId = 0;
                     dataInputs.ForEach(f =>
                     {
-
-                       
-                        if (f.Id>0)
+                        if (f.Id > 0)
                         {
-                            formId = _dataInputDal.Get(x=>x.Id==f.Id).FormDataInputId;
+                            formId = _dataInputDal.Get(x => x.Id == f.Id).FormDataInputId;
+
                             using (var dbcontext = new HasatPiyasaContext())
                             {
                                 var update = dbcontext.Entry(f);
                                 update.Entity.FormDataInputId = formId;
+                                update.Entity.UpdatedTime = DateTime.Now;
                                 update.State = EntityState.Modified;
                                 var count = dbcontext.SaveChanges();
-
                             }
-                             
 
                         }
                         else
                         {
                             f.FormDataInputId = formId;
                             var addedDataInputItem = _dataInputDal.Add(f);
-
                         }
 
-
                     });
-
 
                     return new NIslemSonuc<DataInputs>
                     {
@@ -104,7 +98,7 @@ namespace HasatPiyasa.Business.Concrete
                         IsLock = false,
                         CityId = cityid,
                         SubeId = subeid,
-                        EmteaId= dataInputs.FirstOrDefault().EmteaId
+                        EmteaId = dataInputs.FirstOrDefault().EmteaId
                     };
 
                     var addedformdt = await _formDataInputDal.AddAsync(formDataInput);
@@ -191,7 +185,7 @@ namespace HasatPiyasa.Business.Concrete
             }
         }
 
-     
+
 
         public NIslemSonuc<List<DataInputs>> ListAllDataInputs()
         {

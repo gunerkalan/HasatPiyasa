@@ -22,7 +22,7 @@ namespace HasatPiyasa.Web.UI.Controllers
         private ISubeCityService _subeCityService;
         private readonly IFormDataInputService _formDataInputService;
 
-        public DataInputController(IDataInputService dataInputService, IEmteaService emteaService ,ICityService cityService, ISubeCityService subeCityService ,IFormDataInputService formDataInputService)
+        public DataInputController(IDataInputService dataInputService, IEmteaService emteaService, ICityService cityService, ISubeCityService subeCityService, IFormDataInputService formDataInputService)
         {
             _dataInputService = dataInputService;
             _emteaService = emteaService;
@@ -30,33 +30,42 @@ namespace HasatPiyasa.Web.UI.Controllers
             _subeCityService = subeCityService;
             _formDataInputService = formDataInputService;
         }
-      
-        [HttpGet]      
-        public async Task<ActionResult> DataInputRice(int cityId=0)
-        { 
-            
+
+        [HttpGet]
+        public async Task<ActionResult> DataInputRice(int cityId = 0)
+        {
+
             var model = new HasaInputViewModel();
             int em = (int)Core.Utilities.Enums.DataInput.Data.Rice;
-            var emtea = await _emteaService.GetEmteaTable(em,cityId);
+            var emtea = await _emteaService.GetEmteaTable(em, cityId);
             var user = GetCurrentUser();
-            if(user!=null)
+            if (user != null)
             {
                 var cities = await _subeCityService.GetSubeCityGTable(user.SubeId);
-                model.Cities = cities.Veri.Where(x=>x.SubeId ==user.SubeId).OrderBy(x=>x.Id).ToList();
-            }            
+                model.Cities = cities.Veri.Where(x => x.SubeId == user.SubeId).OrderBy(x => x.Id).ToList();
+            }
             model.Emteas = emtea.Veri;
 
             if (cityId == 0)
             {
-                
+
                 cityId = GetCurrentUser().Sube.SubeCities.FirstOrDefault().CityId;
                 model.SelectedCityId = cityId;
                 var Inputs = await _formDataInputService.GetFormDataInputTable(DateTime.Today, cityId);
-                model.DataInputs = Inputs.Veri!=null ? _dataInputService.ListAllDataInputs().Veri.Where(x=>x.FormDataInputId==Inputs.Veri.Id).ToList():null;
+
+                if (Inputs.Veri != null)
+                {
+                    if ((Inputs.Veri.AddedTime.Date == DateTime.Today || Inputs.Veri.UpdatedTime == DateTime.Today) && Inputs.Veri.IsLock)
+                    {
+                        return RedirectToAction("Index", "Home");
+                    }
+                }
+
+                model.DataInputs = Inputs.Veri != null ? _dataInputService.ListAllDataInputs().Veri.Where(x => x.FormDataInputId == Inputs.Veri.Id).ToList() : null;
                 model.HaveTodayInputData = model.DataInputs != null ? true : false;
 
-                
-                if(Inputs.Veri!=null)
+
+                if (Inputs.Veri != null)
                 {
                     if (Inputs.Veri.AddedTime.Date != DateTime.Today)
                     {
@@ -67,12 +76,23 @@ namespace HasatPiyasa.Web.UI.Controllers
 
                     }
                 }
-                
+
+
             }
             else
             {
                 model.SelectedCityId = cityId;
-               var Inputs = await _formDataInputService.GetFormDataInputTable(DateTime.Today, cityId);
+
+                var Inputs = await _formDataInputService.GetFormDataInputTable(DateTime.Today, cityId);
+
+                if (Inputs.Veri != null)
+                {
+                    if ((Inputs.Veri.AddedTime.Date == DateTime.Today || Inputs.Veri.UpdatedTime == DateTime.Today) && Inputs.Veri.IsLock)
+                    {
+                        return RedirectToAction("Index", "Home");
+                    }
+                }
+
                 model.DataInputs = Inputs.Veri != null ? _dataInputService.ListAllDataInputs().Veri.Where(x => x.FormDataInputId == Inputs.Veri.Id).ToList() : null;
                 model.HaveTodayInputData = model.DataInputs != null ? true : false;
 
@@ -87,7 +107,7 @@ namespace HasatPiyasa.Web.UI.Controllers
 
                     }
                 }
-            }            
+            }
 
             return View(model);
         }
@@ -106,7 +126,7 @@ namespace HasatPiyasa.Web.UI.Controllers
                 x.AddedTime = DateTime.Now;
             });
 
-            if(dataInputs.Count>0)
+            if (dataInputs.Count > 0)
             {
                 var cityId = dataInputs.FirstOrDefault().CityId;
                 var response = await _dataInputService.CreateDataInputRange(dataInputs, cityId, user.SubeId);
@@ -123,7 +143,7 @@ namespace HasatPiyasa.Web.UI.Controllers
             {
                 return Json(new { success = false, messages = "Lütfen formu doldudurun !" });
             }
-           
+
 
         }
 
@@ -143,23 +163,23 @@ namespace HasatPiyasa.Web.UI.Controllers
         {
             var user = GetCurrentUser();
             int ChooseEmteaId = (int)Core.Utilities.Enums.DataInput.Data.Rice;
-            if (user.Roles=="Admin")
+            if (user.Roles == "Admin")
             {
-                var res = await _formDataInputService.GetFormDataInputGTable(null,ChooseEmteaId);
+                var res = await _formDataInputService.GetFormDataInputGTable(null, ChooseEmteaId);
 
                 return JsonConvert.SerializeObject(res.Veri);
-            }                                                                                                                
+            }
             else
             {
                 int ChoseeSubeId = user.SubeId;
-                
 
-                var res = await _formDataInputService.GetFormDataInputGTable(ChoseeSubeId,ChooseEmteaId);
+
+                var res = await _formDataInputService.GetFormDataInputGTable(ChoseeSubeId, ChooseEmteaId);
 
                 return JsonConvert.SerializeObject(res.Veri);
             }
 
-           
+
         }
 
         [HttpGet]//Hububat Get

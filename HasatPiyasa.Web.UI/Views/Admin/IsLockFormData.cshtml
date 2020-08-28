@@ -62,7 +62,7 @@
     c.Add().DataField("SubeName").Caption("Şube Adı");    
     c.Add().DataField("CityName").Caption("Şehir Adı");
         c.Add().DataField("FormDataDate").Caption("Veri Giriş Zamanı");
-        c.Add().DataField("State").Caption("Durumu").Width(100).CellTemplate(@<text>
+        c.Add().DataField("State").Caption("Durumu").Width(150).CellTemplate(@<text>
                             <% if (value) { %>
                             @(Html.DevExtreme().Switch().OnValueChanged("switch_valueChanged").Value(true) )
                             <% } else { %>
@@ -107,11 +107,11 @@
 
             $.post("/Admin/UpdateFormDataState", { emteaid: emteaid, subeid: SubeId, cityid: Cityid, state: data.value, formid: formid }, (res) => {
 
-                if (res.BasariliMi) {
-                    toastr.success("Bilgilendirme","Güncellendi" );
+                if (res.success) {
+                    toastr.success("Bilgilendirme", res.messages );
                 }
                 else {
-                    toastr.error("Bilgilendirme","Hata Oluştu !");
+                    toastr.error("Bilgilendirme", res.messages);
                 }
 
 

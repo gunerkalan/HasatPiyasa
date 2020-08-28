@@ -10,7 +10,7 @@ namespace HasatPiyasa.Web.UI.Models
     public class IsLockModel
     {
         public List<Emteas> Emteas { get; set; }
-        
+
     }
 
     public class SetFormDataState

@@ -245,7 +245,7 @@ namespace HasatPiyasa.Business.Concrete
                     return new NIslemSonuc<FormDataInput>
                     {
                         BasariliMi = false,
-                        Mesaj = Messages.IsLockSuccess
+                        Mesaj = Messages.IsLockFailt
                     };
                 }
             }
