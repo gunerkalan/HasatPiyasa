@@ -34,7 +34,7 @@
          .Width("auto")
                 )
                
-                )
+               
                 <hr />
             </div>
 
@@ -61,7 +61,7 @@
     .Columns(c => {
     c.Add().DataField("SubeName").Caption("Şube Adı");    
     c.Add().DataField("CityName").Caption("Şehir Adı");
-        c.Add().DataField("FormDataDate").Caption("Veri Giriş Tarihi");
+        c.Add().DataField("FormDataDate").Caption("Veri Giriş Zamanı");
         c.Add().DataField("State").Caption("Durumu").Width(100).CellTemplate(@<text>
                             <% if (value) { %>
                             @(Html.DevExtreme().Switch().OnValueChanged("switch_valueChanged").Value(true) )
@@ -105,7 +105,7 @@
 
         function switch_valueChanged(data) {
 
-            $.post("/Admin/UpdateFormDataState", { emteaid: emteaid, subeid: subeid, cityid: Cityid, state: data.value , formid: formid}, (res) => {
+            $.post("/Admin/UpdateFormDataState", { emteaid: emteaid, subeid: SubeId, cityid: Cityid, state: data.value, formid: formid }, (res) => {
 
                 if (res.BasariliMi) {
                     toastr.success("Bilgilendirme","Güncellendi" );

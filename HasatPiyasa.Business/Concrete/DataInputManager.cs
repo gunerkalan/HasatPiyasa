@@ -99,7 +99,7 @@ namespace HasatPiyasa.Business.Concrete
                 {
                     FormDataInput formDataInput = new FormDataInput
                     {
-                        AddedTime = DateTime.Today,
+                        AddedTime = DateTime.Now,
                         IsActive = true,
                         IsLock = false,
                         CityId = cityid,

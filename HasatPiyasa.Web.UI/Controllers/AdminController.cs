@@ -794,11 +794,11 @@ namespace HasatPiyasa.Web.UI.Controllers
             {
                 var formDatas = await _formDataInputService.GetFormDataGTable();
 
-                var fm = formDatas.Veri.Where(x => x.EmteaId == emteaid).Select(s => new SetFormDataState
+                var fm = formDatas.Veri.Where(x => x.EmteaId == emteaid && x.AddedTime.Date ==DateTime.Today).Select(s => new SetFormDataState
                 {
                     FormId = s.Id,
                     CityName = s.City.Name,
-                    FormDataDate = s.AddedTime.ToLongDateString(),
+                    FormDataDate = s.AddedTime.ToLongDateString() + " " + s.AddedTime.ToShortTimeString(),
                     State = s.IsLock,
                     CityId = s.CityId,
                     SubeId = s.SubeId,

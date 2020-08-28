@@ -25,6 +25,8 @@ namespace HasatPiyasa.Business.Constants
         public static string EmteaTypeDelete = " Emtea Tip Silme işlemi gerçekleştirilmiştir ";
         public static string EmteaDeleteError = " Emtea Silme işlemi sırasında bir hata oluştu ! ";
         public static string DataInputAdd = "Veri girişleriniz veritabanına eklendi !";
+        public static string IsLockSuccess = "Şube - İl için veri güncellemesi bugün için kilitlendi !";
+        public static string IsLockFailt = "Veri kilitleme başarısız !";
         public static string TuikSubeAdd = "Tuik Şube verisi veritabanına  kaydedildi !";
         public static string TuikCityAdd = "Tuik İl verisi veritabanına  kaydedildi !";
         public static string TuikCityUpdate = "Tuik verisi güncellendi !";

@@ -55,14 +55,19 @@ namespace HasatPiyasa.Web.UI.Controllers
                 model.DataInputs = Inputs.Veri!=null ? _dataInputService.ListAllDataInputs().Veri.Where(x=>x.FormDataInputId==Inputs.Veri.Id).ToList():null;
                 model.HaveTodayInputData = model.DataInputs != null ? true : false;
 
-                if(Inputs.Veri.AddedTime!=DateTime.Today)
+                
+                if(Inputs.Veri!=null)
                 {
-                    model.DataInputs.ForEach(x =>
+                    if (Inputs.Veri.AddedTime.Date != DateTime.Today)
                     {
-                        x.Id = 0;
-                    });
-                    
+                        model.DataInputs.ForEach(x =>
+                        {
+                            x.Id = 0;
+                        });
+
+                    }
                 }
+                
             }
             else
             {
@@ -71,13 +76,16 @@ namespace HasatPiyasa.Web.UI.Controllers
                 model.DataInputs = Inputs.Veri != null ? _dataInputService.ListAllDataInputs().Veri.Where(x => x.FormDataInputId == Inputs.Veri.Id).ToList() : null;
                 model.HaveTodayInputData = model.DataInputs != null ? true : false;
 
-                if (Inputs.Veri.AddedTime != DateTime.Today)
+                if (Inputs.Veri != null)
                 {
-                    model.DataInputs.ForEach(x =>
+                    if (Inputs.Veri.AddedTime.Date != DateTime.Today)
                     {
-                        x.Id = 0;
-                    });
+                        model.DataInputs.ForEach(x =>
+                        {
+                            x.Id = 0;
+                        });
 
+                    }
                 }
             }            
 
@@ -95,7 +103,7 @@ namespace HasatPiyasa.Web.UI.Controllers
                 x.AddUserId = user.UserId;
                 x.AlimYear = DateTime.Now.Year;
                 x.EmteaId = (int)Core.Utilities.Enums.DataInput.Data.Rice;
-                x.AddedTime = DateTime.Today;
+                x.AddedTime = DateTime.Now;
             });
 
             if(dataInputs.Count>0)
