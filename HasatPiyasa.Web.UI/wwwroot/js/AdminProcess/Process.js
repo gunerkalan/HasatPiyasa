@@ -8,6 +8,7 @@ var GlobalSubeId;
 var GlobalAddedTime;
 var GlobalTuikCityId;
 var GlobalCityId;
+var GlobalUserId;
 
 $(function () {
     $("#GridContainer").dxDataGrid({
@@ -354,6 +355,69 @@ function SaveTuikCity() {
 
 
 }
+function SaveUser() {
+
+
+    swal({
+        title: "Kullanıcı Kaydet",
+        text: "Kullanıcı Kaydedilsin Mi ?",
+        type: "info",
+        showCancelButton: true,
+        closeOnConfirm: false,
+        showLoaderOnConfirm: true,
+        confirmButtonText: "Tamam",
+        cancelButtonText: "İptal",
+    }, function () {
+
+        var user = {
+            Name: $("#username").val(),
+            Surname: $("#surname").val(),
+            SicilNumber: $("#sicilnumber").val(),
+            DomainUserName: $("#domainusername").val(),
+            SubeId: $("#drpsubes :selected").val(),
+            Title: $("#title").val(),
+            Email: $("#email").val(),
+            UserRoleId: $("#drproles :selected").val(),
+        }
+
+        if (CheckValidateFormUser()) {
+            $.post("/Admin/CreateUser", { user: user }, function (res) {
+                var model = JSON.parse(JSON.stringify(res));
+
+                if (model.success) {
+                    SweetAlertMesaj("Kullanıcı Kaydet", model.messages, "success", "Kapat", "btn-success")
+                    $("#GridContainer").dxDataGrid("instance").refresh();
+                    $("#user-adding-modal").modal("hide")
+
+                    $('#username').val('')
+                    $('#surname').val('')
+                    $('#sicilnumber').val('')
+                    $('#domainusername').val('')
+                    $('#drpsubes').val('')
+                    $('#title').val('')
+                    $('#email').val('')
+                    $('#drproles').val('')
+                }
+                else {
+
+                    SweetAlertMesaj("Kullanıcı Kaydet", model.messages, "error", "Kapat", "btn-danger")
+
+                }
+
+            })
+        }
+        else {
+            swal("Hata : Lütfen gerekli alanları doldurunuz !");
+            this.showLoaderOnConfirm = false
+            return false
+
+        }
+
+
+    });
+
+
+}
 function CheckValidateForm() {
 
     var EmteaCode = $("#emteacode").val()
@@ -395,6 +459,60 @@ function CheckValidateFormEg() {
     else {
         ChangeColor(EmteaId, "drpemtias")
         ChangeColor(GroupName, "emteagroupname")
+        return false
+
+    }
+}
+function CheckValidateFormUser() {
+
+    var Name = $("#username").val()
+    var Surname = $("#surname").val()
+    var SicilNumber = $("#sicilnumber").val()
+    var DomainUserName = $("#domainusername").val()
+    var SubeId = $("#drpsubes :selected").val()
+    var UserRoleId = $("#drproles :selected").val()
+    var Title = $("#title").val()
+    var Email = $("#email").val()
+
+    if (SubeId != "" && SubeId != "-1" && UserRoleId != "" && UserRoleId != "-1" && Name != "" && Surname != "" && SicilNumber != "" && DomainUserName != "" && Title != "" && Email != "") {
+        return true
+    }
+    else {
+        ChangeColor(Name, "username")
+        ChangeColor(Surname, "surname")
+        ChangeColor(SicilNumber, "sicilnumber")
+        ChangeColor(DomainUserName, "domainusername")
+        ChangeColor(SubeId, "drpsubes")
+        ChangeColor(UserRoleId, "drproles")
+        ChangeColor(Title, "title")
+        ChangeColor(Email, "email")
+        return false
+
+    }
+}
+function CheckValidateFormUser2() {
+
+    var Name = $("#username2").val()
+    var Surname = $("#surname2").val()
+    var SicilNumber = $("#sicilnumber2").val()
+    var DomainUserName = $("#domainusername2").val()
+    var SubeId = $("#drpsubes2 :selected").val()
+    var UserRoleId = $("#drproles2 :selected").val()
+    var Title = $("#title2").val()
+    var Email = $("#email2").val()
+
+    if (SubeId != "" && SubeId != "-1" && UserRoleId != "" && UserRoleId != "-1" && Name != "" && Surname != "" && SicilNumber != "" && DomainUserName != "" && Title != "" && Email != "") {
+        return true
+    }
+    else {
+        ChangeColor(Name, "username2")
+        ChangeColor(Surname, "surname2")
+        ChangeColor(SicilNumber, "sicilnumber2")
+        ChangeColor(DomainUserName, "domainusername2")
+        ChangeColor(SubeId, "drpsubes2")
+        ChangeColor(UserRoleId, "drproles2")
+        ChangeColor(Title, "title2")
+        ChangeColor(Email, "email2")
         return false
 
     }
@@ -566,7 +684,7 @@ function CheckValidateFormCityTuik2() {
     var TuikValue = $("#tuikvalue2").val()
     var GuessValue = $("#guessvalue2").val()
 
-    if (EmteaId != "-1" && EmteaGroupId != "-1" && EmteaTypeId != "-1" &&  TuikValue != "" && GuessValue != "" && CityId != "") {
+    if (EmteaId != "-1" && EmteaGroupId != "-1" && EmteaTypeId != "-1" && TuikValue != "" && GuessValue != "" && CityId != "") {
         return true
     }
     else {
@@ -638,7 +756,7 @@ function EmteaChange2(id) {
 
     })
 
-   
+
 }
 function EmteaChange3() {
     $("#drpemtiagroups2").empty()
@@ -1221,7 +1339,7 @@ function TuikDetail(id) {
 function CreatDetailTable(model) {
     var table = "";
 
-        table = `<table class="table table-striped" id="detailTable">
+    table = `<table class="table table-striped" id="detailTable">
                             <tbody>
                                <tr>
                                    
@@ -1263,8 +1381,8 @@ function CreatDetailTable(model) {
                               
                             </tbody>
                         </table>`
-   
-    
+
+
 
     return table;
 }
@@ -1327,8 +1445,8 @@ function UpdateTuikSubeData() {
             AddedTime: GlobalAddedTime
         }
 
-            if (CheckValidateFormSubeTuik2()) {
-                $.post("/Admin/UpdateTuikSube", { tuik: tuik }, function (res) {
+        if (CheckValidateFormSubeTuik2()) {
+            $.post("/Admin/UpdateTuikSube", { tuik: tuik }, function (res) {
                 var model = JSON.parse(res);
 
                 if (model.success) {
@@ -1365,7 +1483,7 @@ function UpdateTuikSubeData() {
 }
 function SoftDeleteTuikSubeData(id, EmteaId, EmteaGroupId, EmteaTypeId, SubeId, UserId) {
     GlobalEmteaTypeId = EmteaTypeId,
-    GlobalEmteaGroupId = EmteaGroupId
+        GlobalEmteaGroupId = EmteaGroupId
     GlobalEmteaId = EmteaId
     GlobalTuikSubeId = id
     GlobalSubeId = SubeId
@@ -1386,7 +1504,7 @@ function SoftDeleteTuikSubeData(id, EmteaId, EmteaGroupId, EmteaTypeId, SubeId, 
             var tuik = {
                 Id: GlobalTuikSubeId,
                 IsActive: false,
-                IsCity:false,
+                IsCity: false,
                 EmteaTypeId: GlobalEmteaTypeId,
                 EmteaId: GlobalEmteaId,
                 EmteaGroupId: GlobalEmteaGroupId,
@@ -1495,7 +1613,7 @@ function UpdateTuikCityData() {
         cancelButtonText: "İptal",
     }, function () {
 
-            var tuik = {
+        var tuik = {
             Id: GlobalTuikCityId,
             AddUserId: GlobalTuikUserId,
             EmteaId: $("#drpemtias2").val(),
@@ -1576,9 +1694,152 @@ function EditTuikCityData(id, EmteaId, EmteaGroupId, SubeName, TuikYear, UserId,
         }
     })
 }
+function EditUser(UserId, SubeId, UserRoleId, Name, Surname, AddedTime) {
+    GlobalUserId = UserId
+    GlobalAddedTime = AddedTime
+
+    $.post("/Admin/GetUser", { id: UserId }, (res) => {
+        $("#loadPanel").dxLoadPanel("instance").show();
+        var model = JSON.parse(res)
+
+        if (model.BasariliMi) {
+
+            $("#username2").val(model.Veri.Name)
+            $("#surname2").val(model.Veri.Surname)
+            $("#drpemtiatypes2").val(model.Veri.EmteaTypeId)
+            $("#sicilnumber2").val(model.Veri.SicilNumber)
+
+            $("#domainusername2").val(model.Veri.DomainUserName)
+            $("#drpsubes2").val(model.Veri.SubeId)
+            $("#drproles2").val(model.Veri.UserRoleId)
+            $("#title2").val(model.Veri.Title)
+            $("#email2").val(model.Veri.Email)
+
+            $("#usermodeltitleEditSiparis").html(`${model.Veri.Name + " " + model.Veri.Surname}  Kullanıcısını Düzenle `)
+            $("#loadPanel").dxLoadPanel("instance").hide();
+            $("#EditModal").modal("show")
+
+
+
+        }
+        else {
+            $("#loadPanel").dxLoadPanel("instance").hide();
+            swal("Hata !", model.ErrorMessage, "error");
+        }
+    })
+}
+function UpdateUser() {
+
+
+    swal({
+        title: "Kullanıcı Güncelle",
+        text: "Kullanıcı Güncellensin Mi ?",
+        type: "info",
+        showCancelButton: true,
+        closeOnConfirm: false,
+        showLoaderOnConfirm: true,
+        confirmButtonText: "Tamam",
+        cancelButtonText: "İptal",
+    }, function () {
+
+        var user = {
+            UserId: GlobalUserId,
+            Name: $("#username2").val(),
+            Surname: $("#surname2").val(),
+            SicilNumber: $("#sicilnumber2").val(),
+            DomainUserName: $("#domainusername2").val(),
+            SubeId: $("#drpsubes2").val(),
+            Title: $("#title2").val(),
+            Email: $("#email2").val(),
+            UserRoleId: $("#drproles2").val(),
+            AddedTime: GlobalAddedTime
+        }
+
+        if (CheckValidateFormUser2()) {
+            $.post("/Admin/UpdateHpUser", { user: user }, function (res) {
+                var model = JSON.parse(res);
+
+                if (model.success) {
+                    SweetAlertMesaj("Kullanıcı Güncelle", model.messages, "success", "Kapat", "btn-success")
+                    $("#GridContainer").dxDataGrid("instance").refresh();
+                    $("#EditModal").modal("hide")
+                    loadpanel.hide()
+
+                    $('#username2').val('')
+                    $('#surname2').val('')
+                    $('#sicilnumber2').val('')
+                    $('#domainusername2').val('')
+                    $('#drpsubes2').val('')
+                    $('#title2').val('')
+                    $('#email2').val('')
+                    $('#drproles2').val('')
+                }
+                else {
+
+                    SweetAlertMesaj("Kullanıcı Güncelle", model.messages, "error", "Kapat", "btn-danger")
+
+                }
+
+            })
+        }
+        else {
+            swal("Hata : Lütfen gerekli alanları doldurunuz !");
+            this.showLoaderOnConfirm = false
+            return false
+
+        }
+
+
+    });
+
+}
+function SoftDeleteUser(UserId, SubeId, UserRoleId, Name, Surname, AddedTime) {
+    GlobalUserId = UserId,
+
+    swal({
+        title: "Sil ?",
+        text: `Kullanıcı Silinsin mi ?`,
+        type: "info",
+        showCancelButton: true,
+        closeOnConfirm: false,
+        showLoaderOnConfirm: true,
+        confirmButtonText: "Tamam",
+        cancelButtonText: "İptal",
+
+    },
+        function () {
+
+            var user = {
+                UserId: GlobalUserId,
+                IsActive: false,
+                IsDomain: true,
+                UserRoleId: UserRoleId,
+                Name: Name,
+                Surname: Surname,
+                AddedTime: AddedTime,
+                SubeId: SubeId
+            }
+
+            $.post("/Admin/DeleteUser", { user: user, }, (res) => {
+
+                var model = JSON.parse(res)
+
+                if (model.success) {
+                    SweetAlertMesaj("Silme", "Kullanıcı Silinmiştir !", "success", "Kapat", "btn-success")
+                    $("#GridContainer").dxDataGrid("instance").refresh();
+                    this.showLoaderOnConfirm = false
+                }
+                else {
+                    swal("Hata !", model.ErrorMessage, "error");
+                    this.showLoaderOnConfirm = false
+                }
+            })
+        }
+    );
+}
 function SoftDeleteTuikCityData(id, EmteaId, EmteaGroupId, EmteaTypeId, CityId, UserId) {
     GlobalEmteaTypeId = EmteaTypeId,
-    GlobalEmteaGroupId = EmteaGroupId
+        GlobalEmteaGroupId = EmteaGroupId
     GlobalEmteaId = EmteaId
     GlobalTuikCityId = id
     GlobalCityId = CityId

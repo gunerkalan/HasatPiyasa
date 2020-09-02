@@ -25,8 +25,10 @@ namespace HasatPiyasa.Entity.Entity
         public string Title { get; set; }
         public string Email { get; set; }
         public string Roles { get; set; }
+        public int? UserRoleId { get; set; }
 
         public virtual Subes Sube { get; set; }
+        public virtual UserRoles UserRole { get; set; }
         public virtual ICollection<DataInputs> DataInputsAddUser { get; set; }
         public virtual ICollection<DataInputs> DataInputsUpdateUser { get; set; }
         public virtual ICollection<Tuiks> TuiksAddUser { get; set; }

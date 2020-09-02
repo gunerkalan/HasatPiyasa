@@ -10,9 +10,6 @@ namespace HasatPiyasa.Web.UI.Models
     public class IsLockModel
     {
         public List<Emteas> Emteas { get; set; }
-        public List<Subes> Subes { get; set; }
-
-        
 
     }
 
@@ -21,7 +18,9 @@ namespace HasatPiyasa.Web.UI.Models
         public string CityName { get; set; }
         public int FormId { get; set; }
         public int CityId { get; set; }
-        public DateTime FormDataDate { get; set; }
+        public string FormDataDate { get; set; }
         public bool State { get; set; }
+        public int SubeId { get; set; }
+        public string SubeName { get; set; }
     }
 }

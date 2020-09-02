@@ -3,6 +3,7 @@ using HasastPiyasa.DataAccess.Abstract;
 using HasatPiyasa.Business.Abstract;
 using HasatPiyasa.Business.Constants;
 using HasatPiyasa.Core.Entities;
+using HasatPiyasa.Core.Utilities.Business;
 using HasatPiyasa.Core.Utilities.Results;
 using HasatPiyasa.Entity.Dtos;
 using HasatPiyasa.Entity.Entity;
@@ -68,7 +69,7 @@ namespace HasatPiyasa.Business.Concrete
                 return new NIslemSonuc<Users>
                 {
                     BasariliMi = true,
-                    Veri = res.AsQueryable().Include(x => x.UserClaims).Include(x=>x.Sube).ThenInclude(x=>x.SubeCities).ThenInclude(x=>x.City).Where(x => x.IsActive && x.DomainUserName==username).ToList().FirstOrDefault()
+                    Veri = res.AsQueryable().Include(x => x.UserClaims).Include(x=>x.UserRole).Include(x=>x.Sube).ThenInclude(x=>x.SubeCities).ThenInclude(x=>x.City).Where(x => x.IsActive && x.DomainUserName==username).ToList().FirstOrDefault()
                 };
             }
             catch (Exception hata)
@@ -128,7 +129,7 @@ namespace HasatPiyasa.Business.Concrete
             try
             {
                 var res = await _userDal.GetTable();
-                var model = res.Include(x => x.Sube).Where(x => x.IsActive).ToList();
+                var model = res.Include(x => x.Sube).Include(x=>x.UserRole).Where(x => x.IsActive).ToList();
 
 
                 var response = model.Select(x => new UserDto
@@ -141,7 +142,9 @@ namespace HasatPiyasa.Business.Concrete
                     Surname = x.Surname,
                     Title = x.Title,
                     UserId = x.UserId,
-                    
+                    UserRole = x.UserRole.Role,
+                    SubeId = x.SubeId,
+                    UserRoleId = x.UserRoleId
 
                 }).ToList();
 
@@ -158,6 +161,148 @@ namespace HasatPiyasa.Business.Concrete
                 {
                     BasariliMi = false,
                     Mesaj = hata.InnerException.Message
+                };
+            }
+        }
+
+        public async Task<NIslemSonuc<Users>> CreateUser(Users user)
+        {
+            try
+            {
+                NIslemSonuc sonuc = BusinessRules.Run(CheckDomainUserExists(user.DomainUserName));
+                if (sonuc.BasariliMi)
+                {
+                    var addeduser = await _userDal.AddAsync(user);
+
+                    return new NIslemSonuc<Users>
+                    {
+                        BasariliMi = true,
+                        Veri = addeduser,
+                        Mesaj = Messages.SuccessfulyAddUser
+                    };
+                }
+                else
+                {
+                    return new NIslemSonuc<Users>
+                    {
+                        BasariliMi = false,
+                        Mesaj = sonuc.Mesaj
+                    };
+                }
+
+
+            }
+            catch (Exception hata)
+            {
+                return new NIslemSonuc<Users>
+                {
+                    BasariliMi = false,
+                    Mesaj = Messages.ErrorAdd,
+                    ErrorMessage = hata.Message
+                };
+            }
+        }
+
+        private NIslemSonuc<bool> CheckDomainUserExists(string domainname)
+        {
+            if (_userDal.Get(p => p.DomainUserName == domainname) != null)
+            {
+                return new NIslemSonuc<bool>
+                {
+                    BasariliMi = false,
+                    Mesaj = Messages.ErrorDomainUser
+                };
+            }
+            return new NIslemSonuc<bool>
+            {
+                BasariliMi = true
+            };
+        }
+
+        public async Task<NIslemSonuc<UserDto>> GetUserAsync(int id)
+        {
+            try
+            {
+                var res = await _userDal.GetTable();
+                var model = res.Include(x => x.UserRole).Include(x => x.Sube).AsNoTracking().FirstOrDefault(x => x.UserId == id && x.IsActive);
+
+                var response = (new UserDto
+                {
+                    UserId= model.UserId,
+                    AddedTime = model.AddedTime,
+                    DomainUserName = model.DomainUserName,
+                    Name = model.Name,
+                    Surname = model.Surname,
+                    SicilNumber = model.SicilNumber,
+                    SubeName = model.Sube.SubeName,
+                    Title = model.Title,
+                    UserRole = model.UserRole.Role,
+                    SubeId = model.SubeId,
+                    UserRoleId = model.UserRoleId,
+                    Email = model.Email
+                });
+
+                return new NIslemSonuc<UserDto>
+                {
+                    BasariliMi = true,
+                    Veri = response
+                };
+            }
+            catch (Exception hata)
+            {
+                return new NIslemSonuc<UserDto>
+                {
+                    BasariliMi = true,
+                    Mesaj = hata.InnerException.Message
+                };
+            }
+        }
+
+        public async Task<NIslemSonuc<Users>> UpdateUser(Users user)
+        {
+            try
+            {
+                var updateduser = await _userDal.UpdateAsync(user);
+
+                return new NIslemSonuc<Users>
+                {
+                    BasariliMi = true,
+                    Veri = updateduser,
+                    Mesaj = Messages.UserUpdate
+                };
+            }
+            catch (Exception hata)
+            {
+                return new NIslemSonuc<Users>
+                {
+                    BasariliMi = false,
+                    Mesaj = Messages.ErrorAdd,
+                    ErrorMessage = hata.Message
+                };
+            }
+        }
+
+        public async Task<NIslemSonuc<bool>> DeleteUser(Users user)
+        {
+            try
+            {
+                var deleteduser = await _userDal.DeleteSoftAsync(user);
+
+                return new NIslemSonuc<bool>
+                {
+                    BasariliMi = true,
+                    Veri = deleteduser,
+                    Mesaj = Messages.UserDelete
+
+                };
+            }
+            catch (Exception hata)
+            {
+                return new NIslemSonuc<bool>
+                {
+                    BasariliMi = false,
+                    Mesaj = Messages.ErrorAdd,
+                    ErrorMessage = hata.InnerException.Message
                 };
             }
         }

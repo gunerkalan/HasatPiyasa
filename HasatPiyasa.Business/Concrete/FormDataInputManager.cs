@@ -150,7 +150,7 @@ namespace HasatPiyasa.Business.Concrete
 
                 return new NIslemSonuc<List<FormDataInput>>
                 {
-                    BasariliMi = false,
+                    BasariliMi = true,
                     Veri = response
                 };
 
@@ -171,7 +171,7 @@ namespace HasatPiyasa.Business.Concrete
             {
                 var res = await _formDataInputDal.GetTable();
                 var result = res.AsNoTracking().Include(x => x.DataInputs).ThenInclude(x => x.EmteaType).ThenInclude(x => x.EmteaGroup).ThenInclude(x => x.Emtea).
-                    Where(x => x.IsActive && x.IsLock == false && x.CityId == cityId).OrderByDescending(x => x.Id).FirstOrDefault();
+                    Where(x => x.IsActive && x.CityId == cityId).OrderByDescending(x => x.Id).FirstOrDefault();
 
 
                 return new NIslemSonuc<FormDataInput>
@@ -236,6 +236,7 @@ namespace HasatPiyasa.Business.Concrete
                     {
                         BasariliMi = true,
                         Veri = updatedemteatype,
+                        Mesaj = Messages.IsLockSuccess
 
                     };
                 }
@@ -243,8 +244,8 @@ namespace HasatPiyasa.Business.Concrete
                 {
                     return new NIslemSonuc<FormDataInput>
                     {
-                        BasariliMi = false
-
+                        BasariliMi = false,
+                        Mesaj = Messages.IsLockFailt
                     };
                 }
             }

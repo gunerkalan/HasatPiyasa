@@ -18,7 +18,7 @@
         <div class="card-title">
             <h3 class="card-label">
                
-                <span class="d-block text-muted pt-2 font-size-sm">Ver Giriş Ayarlarını Değiştir</span>
+                <span class="d-block text-muted pt-2 font-size-sm">Veri Giriş Ayarlarını Değiştir</span>
             </h3>
         </div>
         <div class="card-toolbar">
@@ -33,17 +33,8 @@
         .SearchEnabled(true)
          .Width("auto")
                 )
-                @(Html.DevExtreme().SelectBox()
-                    .DataSource(Model.Subes)
-                    .DisplayExpr("SubeName")
-                    .ValueExpr("Id")
-                    .Placeholder("Şube Seçiniz")
-                    .ShowClearButton(true)
-        .OnValueChanged("sube_selectBox_valueChanged")
-    .Width("auto")
-        .SearchEnabled(true)
-
-                )
+               
+               
                 <hr />
             </div>
 
@@ -68,9 +59,10 @@
         pager.ShowInfo(true);
     })
     .Columns(c => {
-        c.Add().DataField("CityName").Caption("Şehir Adı");
-        c.Add().DataField("FormDataDate").Caption("Oluşturma Tarihi");
-        c.Add().DataField("State").Caption("Durumu").Width(100).CellTemplate(@<text>
+    c.Add().DataField("SubeName").Caption("Şube Adı");    
+    c.Add().DataField("CityName").Caption("Şehir Adı");
+        c.Add().DataField("FormDataDate").Caption("Veri Giriş Zamanı");
+        c.Add().DataField("State").Caption("Durumu").Width(150).CellTemplate(@<text>
                             <% if (value) { %>
                             @(Html.DevExtreme().Switch().OnValueChanged("switch_valueChanged").Value(true) )
                             <% } else { %>
@@ -93,33 +85,33 @@
 
     <script>
         var emteaid = null;
-        var subeid = null;
+        var subeid;
         var Cityid;
         var formid;
 
         function emtea_selectBox_valueChanged(data) {
             emteaid = data.value
-            if (emteaid != null && subeid != null) {
+            if (emteaid != null) {
                 GetDataSource()
             }
         }
 
         function sube_selectBox_valueChanged(data) {
             subeid = data.value
-            if (emteaid != null && subeid != null) {
+            if (emteaid != null) {
                 GetDataSource()
             }
         }
 
         function switch_valueChanged(data) {
 
-            $.post("/Admin/UpdateFormDataState", { emteaid: emteaid, subeid: subeid, cityid: Cityid, state: data.value , formid: formid}, (res) => {
+            $.post("/Admin/UpdateFormDataState", { emteaid: emteaid, subeid: SubeId, cityid: Cityid, state: data.value, formid: formid }, (res) => {
 
-                if (res.BasariliMi) {
-                    toastr.success("Bilgilendirme","Güncellendi" );
+                if (res.success) {
+                    toastr.success("Bilgilendirme", res.messages );
                 }
                 else {
-                    toastr.error("Bilgilendirme","Hata Oluştu !");
+                    toastr.error("Bilgilendirme", res.messages);
                 }
 
 
@@ -129,13 +121,14 @@
         function selection_changed(selectedItems) {
             var data = selectedItems.selectedRowsData[0];
             Cityid = data.CityId
+            SubeId = data.SubeId
             formid = data.FormId
             console.log(data)
            
         }
 
         function GetDataSource() {
-            $.post("/Admin/GetFormData", { emteaid: emteaid, subeid: subeid }, (res) => {
+            $.post("/Admin/GetFormData", { emteaid: emteaid }, (res) => {
 
                 $("#gridContainer").dxDataGrid({
                     dataSource: res,

@@ -6,7 +6,15 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+
 @Html.AntiForgeryToken()
+
+@section scripts{
+
+
+    <script src="~/js/AdminProcess/Process.js"></script>
+
+}
 
 <div class="row">
 
@@ -29,7 +37,7 @@
                             <!--begin::Dropdown-->
                             <!--end::Dropdown-->
                             <!--begin::Button-->
-                            <a href="#" class="btn btn-primary font-weight-bolder" data-toggle="modal" data-target="#emtea-adding-modal">
+                            <a href="#" class="btn btn-primary font-weight-bolder" data-toggle="modal" data-target="#user-adding-modal">
                                 <span class="svg-icon svg-icon-md">
                                     <!--begin::Svg Icon | path:assets/media/svg/icons/Design/Flatten.svg-->
                                     <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
@@ -59,26 +67,27 @@
     columns.AddFor(m => m.Surname).Caption("Soyadı");
     columns.AddFor(m => m.SubeName).Caption("Şubesi");
     columns.AddFor(m => m.DomainUserName).Caption("Domain");
+    columns.AddFor(m => m.UserRole).Caption("Rolü");
     columns.AddFor(m => m.Title).Caption("Ünvanı");
     columns.AddFor(m => m.AddedTime).Caption("Ek. Tarihi");
     columns.Add().Caption("Düzenle").Width(60)
-               .Type(GridCommandColumnType.Buttons)
-               .Buttons(btns =>
-               {
-                   btns.Add().Name(GridColumnButtonName.Edit).Text("Düzenle");
-               }).CellTemplate(@<text>
-                <button title="Düzenle" onclick="Edit('<%= data.Id %>','<%= data.IsSale %>');"><i class="fa fa-pen-square" aria-hidden="true" style="color:#1b70cc"></i></button>
+                   .Type(GridCommandColumnType.Buttons)
+                   .Buttons(btns =>
+                   {
+                       btns.Add().Name(GridColumnButtonName.Edit).Text("Düzenle");
+                   }).CellTemplate(@<text>
+                <button title="Düzenle" onclick="EditUser('<%= data.UserId %>','<%= data.SubeId %>','<%= data.UserRoleId %>','<%= data.Name %>','<%= data.Surname %>','<%= data.AddedTime %>');"><i class="fa fa-pen-square" aria-hidden="true" style="color:#1b70cc"></i></button>
 
             </text>);
 
 
-    columns.Add().Caption("Sil").Width(50)
+             columns.Add().Caption("Sil").Width(50)
              .Type(GridCommandColumnType.Buttons)
              .Buttons(btns =>
              {
                  btns.Add().Name(GridColumnButtonName.Delete).Text("Sil");
              }).CellTemplate(@<text>
-                <button title="Silme" onclick="Delete('<%= data.Id %>','<%= data.OrderNumber %>');"><i class="fa fa-trash" aria-hidden="true" style="color:red"></i></button>
+                <button title="Silme" onclick="SoftDeleteUser('<%= data.UserId %>','<%= data.SubeId %>','<%= data.UserRoleId %>','<%= data.Name %>','<%= data.Surname %>','<%= data.AddedTime %>');"><i class="fa fa-trash" aria-hidden="true" style="color:red"></i></button>
 
             </text>);
 
@@ -137,4 +146,130 @@
 
 
 </div>
+
+<div id="user-adding-modal" class="modal fade updatemodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog">
+
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title"><i class="fa fa-plus-circle"></i> Kullanıcı Ekle</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="username" class="control-label">Ad</label>
+                            <input type="text" name="username" id="username" class="form-control" placeholder="Ad" />
+                        </div>
+                        <div class="form-group">
+                            <label for="surname" class="control-label">Soyad</label>
+                            <input type="text" name="surname" id="surname" class="form-control" placeholder="Soyadı" />
+                        </div>
+                        <div class="form-group">
+                            <label for="sicilnumber" class="control-label">Sicil No</label>
+                            <input type="text" name="sicilnumber" id="sicilnumber" class="form-control" placeholder="Sicil No" />
+                        </div>
+                        <div class="form-group">
+                            <label for="domainusername" class="control-label">Domain</label>
+                            <input type="text" name="domainusername" id="domainusername" class="form-control" placeholder="isim.soyisim" />
+                        </div>
+                        <div class="form-group">
+                            <label for="drpsubes" class="control-label">Şube</label>
+                            <select class="form-control" id="drpsubes" asp-for="@Model.User.SubeId" asp-items="@Model.Subes">
+                                <option disabled selected value="-1">--Seçiniz--</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="drproles" class="control-label">Rol</label>
+                            <select class="form-control" id="drproles" asp-for="@Model.User.UserRoleId" asp-items="@Model.UserRoles">
+                                <option disabled selected value="-1">--Seçiniz--</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="title" class="control-label">Ünvan</label>
+                            <input type="text" name="title" id="title" class="form-control" placeholder="Ünvanı" />
+                        </div>
+                        <div class="form-group">
+                            <label for="title" class="control-label">E-Mail</label>
+                            <input type="email" name="email" id="email" class="form-control" placeholder="E-Mail" />
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-bg-light" data-dismiss="modal">Kapat</button>
+                <button type="submit" class="btn btn-bg-danger" onclick="SaveUser();" id="submit">Kaydet</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+<div class="modal fade updatemodal" id="EditModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span class="closeModal" aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title usermodaltitle" id="usermodeltitleEditSiparis"></h4>
+
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="username" class="control-label">Ad</label>
+                            <input type="text" name="username" id="username2" class="form-control" placeholder="Ad" />
+                        </div>
+                        <div class="form-group">
+                            <label for="surname" class="control-label">Soyad</label>
+                            <input type="text" name="surname" id="surname2" class="form-control" placeholder="Soyadı" />
+                        </div>
+                        <div class="form-group">
+                            <label for="sicilnumber" class="control-label">Sicil No</label>
+                            <input type="text" name="sicilnumber" id="sicilnumber2" class="form-control" placeholder="Sicil No" />
+                        </div>
+                        <div class="form-group">
+                            <label for="domainusername" class="control-label">Domain</label>
+                            <input type="text" name="domainusername" id="domainusername2" class="form-control" placeholder="isim.soyisim" />
+                        </div>
+                        <div class="form-group">
+                            <label for="drpsubes" class="control-label">Şube</label>
+                            <select class="form-control" id="drpsubes2" asp-for="@Model.User.SubeId" asp-items="@Model.Subes">
+                                <option disabled selected value="-1">--Seçiniz--</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="drproles" class="control-label">Rol</label>
+                            <select class="form-control" id="drproles2" asp-for="@Model.User.UserRoleId" asp-items="@Model.UserRoles">
+                                <option disabled selected value="-1">--Seçiniz--</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="title" class="control-label">Ünvan</label>
+                            <input type="text" name="title" id="title2" class="form-control" placeholder="Ünvanı" />
+                        </div>
+                        <div class="form-group">
+                            <label for="title" class="control-label">E-Mail</label>
+                            <input type="email" name="email" id="email2" class="form-control" placeholder="E-Mail" />
+                        </div>
+
+                    </div>
+                </div>
+
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-bg-light" data-dismiss="modal">Kapat</button>
+                <button type="submit" class="btn btn-bg-danger" onclick="UpdateUser();" id="submit">Kaydet</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 

@@ -25,9 +25,10 @@ namespace HasatPiyasa.Web.UI.Controllers
         private IUserService _userService;
         private ICityService _cityService;
         private ISubeCityService _subeCityService;
+        private IUserRoleService _userRoleService;
         private IFormDataInputService _formDataInputService;
 
-        public AdminController(IEmteaService emteaService, IEmteaGroupService emteaGroupService, IEmteaTypeService emteaTypeService, IEmteaTypeGroupService emteaTypeGroupService, ITuikService tuikService, ISubeService subeService, IUserService userService, ICityService cityService, ISubeCityService subeCityService, IFormDataInputService formDataInputService)
+        public AdminController(IEmteaService emteaService, IEmteaGroupService emteaGroupService, IEmteaTypeService emteaTypeService, IEmteaTypeGroupService emteaTypeGroupService, ITuikService tuikService, ISubeService subeService, IUserService userService, ICityService cityService, ISubeCityService subeCityService, IFormDataInputService formDataInputService, IUserRoleService userRoleService)
         {
             _emteaService = emteaService;
             _emteaGroupService = emteaGroupService;
@@ -39,6 +40,7 @@ namespace HasatPiyasa.Web.UI.Controllers
             _subeCityService = subeCityService;
             _formDataInputService = formDataInputService;
             _cityService = cityService;
+            _userRoleService = userRoleService;
         }
 
         #region Emtea işlemleri
@@ -759,17 +761,125 @@ namespace HasatPiyasa.Web.UI.Controllers
         {
             UserAddModel model = new UserAddModel
             {
-                User = new Users()
+                User = new Users(),
+                Subes = LoadSubes(),
+                UserRoles = LoadUserRoles()
             };
 
             return View(model);
         }
+
+        private List<SelectListItem> LoadUserRoles()
+        {
+            var userroles = _userRoleService.GetUserRoleGTable().Result;
+
+            List<SelectListItem> roles = (from role in userroles.Veri
+                                          select new SelectListItem
+                                          {
+                                              Value = role.Id.ToString(),
+                                              Text = role.Role
+                                          }
+                        ).ToList();
+            return roles;
+        }
+
+        private static string GetUserRole(int id)
+        {
+            if(id==(int)Core.Utilities.Enums.UserRoles.UserRole.SubeKullanicisi)
+            {
+                return "SubeUser";
+            }
+            else if(id == (int)Core.Utilities.Enums.UserRoles.UserRole.RaporKullanicisi)
+            {
+                return "ReportUser";
+            }
+            else if(id == (int)Core.Utilities.Enums.UserRoles.UserRole.SubeKullanicisi)
+            {
+                return "Admin";
+            }
+            else
+            {
+                return "SubeUser";
+            }
+        }
+
 
         [HttpGet]
         public async Task<object> UserListData()
         {
             var res = await _userService.GetUserGTable();
             return JsonConvert.SerializeObject(res.Veri);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> CreateUser(Users user)
+        {
+            user.IsActive = true;
+            user.AddedTime = DateTime.Now;
+            user.IsDomain = true;
+            user.Password = user.SicilNumber;
+            user.UserRoleId = user.UserRoleId;
+            user.Roles = GetUserRole((int)user.UserRoleId);
+            
+
+            var sonuc = await _userService.CreateUser(user);
+            if (sonuc.BasariliMi)
+            {
+                return Json(new { success = true, messages = sonuc.Mesaj });
+            }
+            else
+            {
+                return Json(new { success = false, messages = sonuc.Mesaj });
+            }
+        }
+
+        [HttpPost]
+        public async Task<object> GetUser(int id)
+        {
+            var res = await _userService.GetUserAsync(id);
+            return JsonConvert.SerializeObject(res);
+        }
+
+
+        [HttpPost]
+        public async Task<object> UpdateHpUser(Users user)
+        {
+
+            user.UpdatedTime = DateTime.Now;
+            user.IsActive = true;
+            user.AddedTime = DateTime.Now;
+            user.IsDomain = true;
+            user.Password = user.SicilNumber;
+            user.UserRoleId = user.UserRoleId;
+            user.Roles = GetUserRole((int)user.UserRoleId);
+
+
+            var sonuc = await _userService.UpdateUser(user);
+            if (sonuc.BasariliMi)
+            {
+                return JsonConvert.SerializeObject(new { success = true, messages = sonuc.Mesaj });
+            }
+            else
+            {
+                return JsonConvert.SerializeObject(new { success = false, messages = sonuc.Mesaj });
+            }
+
+        }
+
+        [HttpPost]
+        public async Task<object> DeleteUser(Users user)
+        {
+            var sonuc = await _userService.DeleteUser(user);
+
+            if (sonuc.BasariliMi)
+            {
+                return JsonConvert.SerializeObject(new { success = true, messages = sonuc.Mesaj });
+            }
+            else
+            {
+                return JsonConvert.SerializeObject(new { success = false, messages = sonuc.Mesaj });
+            }
+
         }
 
         #endregion
@@ -782,25 +892,27 @@ namespace HasatPiyasa.Web.UI.Controllers
             IsLockModel model = new IsLockModel
             {
                 Emteas = _emteaService.ListAllEmteas().Veri,
-                Subes = _subeService.ListAllSubes().Veri
+               
             };
 
             return View(model);
         }
 
-        public async Task<object> GetFormData(int emteaid, int subeid)
+        public async Task<object> GetFormData(int emteaid)
         {
             if (emteaid > 0)
             {
                 var formDatas = await _formDataInputService.GetFormDataGTable();
 
-                var fm = formDatas.Veri.Where(x => x.EmteaId == emteaid && x.SubeId == subeid).Select(s => new SetFormDataState
+                var fm = formDatas.Veri.Where(x => x.EmteaId == emteaid && x.AddedTime.Date ==DateTime.Today).Select(s => new SetFormDataState
                 {
                     FormId = s.Id,
                     CityName = s.City.Name,
-                    FormDataDate = s.AddedTime,
+                    FormDataDate = s.AddedTime.ToLongDateString() + " " + s.AddedTime.ToShortTimeString(),
                     State = s.IsLock,
-                    CityId = s.CityId
+                    CityId = s.CityId,
+                    SubeId = s.SubeId,
+                    SubeName = s.Sube.SubeName
 
                 }).ToList();
 

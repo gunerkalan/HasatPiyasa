@@ -17,5 +17,9 @@ namespace HasatPiyasa.Business.Abstract
         NIslemSonuc<bool> UserExitsDomain(UserForLoginDto userForLoginDto);
         Task<NIslemSonuc<Users>> GetUserTable(string username);
         Task<NIslemSonuc<List<UserDto>>> GetUserGTable();
+        Task<NIslemSonuc<Users>> CreateUser(Users user);
+        Task<NIslemSonuc<UserDto>> GetUserAsync(int id);
+        Task<NIslemSonuc<Users>> UpdateUser(Users user);
+        Task<NIslemSonuc<bool>> DeleteUser(Users user);
     }
 }
