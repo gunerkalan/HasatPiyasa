@@ -190,6 +190,7 @@ namespace HasatPiyasa.Business.Concrete
                 {
                     BasariliMi = true,
                     Veri = updatedemteatypegroup,
+                    Mesaj = Messages.EmteaTypeGroupUpdated
 
                 };
             }

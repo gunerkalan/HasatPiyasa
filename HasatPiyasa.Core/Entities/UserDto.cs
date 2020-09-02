@@ -14,5 +14,9 @@ namespace HasatPiyasa.Core.Entities
         public string SubeName { get; set; }
         public string SicilNumber { get; set; }
         public string Title { get; set; }
+        public string  UserRole { get; set; }
+        public int SubeId { get; set; }
+        public int? UserRoleId { get; set; }
+        public string Email { get; set; }
     }
 }

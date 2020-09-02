@@ -40,6 +40,8 @@ namespace HasatPiyasa_Web_UI
             services.AddScoped<IClaimDal, EfClaimDal>();
             services.AddScoped<IDataInputDal, EfDataInputDal>();
             services.AddScoped<IDataInputService, DataInputManager>();
+            services.AddScoped<IUserRoleDal, EfUserRoleDal>();
+            services.AddScoped<IUserRoleService, UserRoleManager>();
             services.AddScoped<IEmteaDal, EfEmteaDal>();
             services.AddScoped<IEmteaGroupDal, EfEmteaGroupDal>();
             services.AddScoped<IEmteaTypeDal, EfEmteaTypeDal>();
