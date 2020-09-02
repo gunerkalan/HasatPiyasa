@@ -1,0 +1,118 @@
+﻿@model HasaInputViewModel
+@using DevExtreme.AspNet.Mvc
+@{
+    ViewData["Title"] = "DataInputRice";
+    Layout = null;
+    var count = 0;
+    var groupCount = 0;
+    var dataInputCount = 0;
+    var DataInputModelCount = Model.DataInputs != null ? Model.DataInputs.Count : 0;
+}
+<div style="display:block">
+    <div class="row">
+
+        <div class="col-sm-12">
+            <div class="d-flex flex-column-fluid">
+                <!--begin::Container-->
+                <div style="width:2000px!important">
+
+                    <!--begin::Notice-->
+                    <!--end::Notice-->
+                    <!--begin::Card-->
+                    <div style="width:2000!important">
+                        <div class="card-header flex-wrap py-3">
+                            <div class="card-title">
+                                <h3 class="card-label">
+                                    Şehir Listesi
+                                    <span class="d-block text-muted pt-2 font-size-sm">Şehir Listesi</span>
+                                </h3>
+                            </div>
+
+                        </div>
+                        <div class="card-body" id="table">
+                            <!--begin: Datatable-->
+                            @(Html.DevExtreme().DataGrid<HasatPiyasa.Core.Entities.ReportDto>().ID("GridContainer")
+.SearchPanel(src => src.Visible(true).Width(250).Placeholder("Ara.."))
+.ShowBorders(true)
+.DataSource(d => d.Mvc().Controller("Report").LoadAction("RiceMarketReportByCityData").LoadParams(new { dates = new JS("getDate"), emteatypes = new JS("getEmtea") }))
+.Selection(s => s.Mode(SelectionMode.Single))
+.HoverStateEnabled(true)
+.Columns(columns => {
+    columns.AddFor(x => x.CityAdi).Caption("Şehir").Width(100).HeaderCellTemplate(new JS("myDataGridColumn_headerCellTemplate"));
+    columns.AddFor(x => x.TuikValue).Caption("TÜİK");
+    columns.AddFor(x => x.GuessValue).Caption("TMO Tahmini Üretim (Ton)");
+    columns.AddFor(x => x.HasatOran).Caption("Hasat Oranı");
+    columns.AddFor(x => x.HasatMiktar).Caption("Hasat Miktarı(Ton)");
+    columns.AddFor(x => x.UreticiKalanMiktar).Caption("Üreticide Bekleyen (Ton)").HeaderCellTemplate(new JS("myDataGridColumn_headerCellTemplate"));
+    columns.AddFor(x => x.Natural1).Caption("49 ve Altı");
+    columns.AddFor(x => x.Natural2).Caption("50-54");
+    columns.AddFor(x => x.Natural3).Caption("55-59");
+    columns.AddFor(x => x.Natural4).Caption("60");
+    columns.AddFor(x => x.Natural5).Caption("61 ve Üzeri");
+    columns.AddFor(x => x.NaturalToplam).Caption("Piyasada İşl.Gören (Ton)").HeaderCellTemplate(new JS("myDataGridColumn_headerCellTemplate"));
+    columns.AddFor(x => x.ToptanPiyasa1).Caption("49 ve Altı Fiyat").Format("###,###.##");
+    columns.AddFor(x => x.ToptanPiyasa2).Caption("50-54 Fiyat").Format("###,###.##"); ;
+    columns.AddFor(x => x.ToptanPiyasa3).Caption("55-59 Fiyat").Format("###,###.##"); ;
+    columns.AddFor(x => x.ToptanPiyasa4).Caption("60 Fiyat").Format("###,###.##"); ;
+    columns.AddFor(x => x.ToptanPiyasa5).Caption("61 ve Üzeri Fiyat").Format("###,###.##"); ;
+    columns.AddFor(x => x.Perakende1).Caption("Toptan Düşük Fiyat Ort.").HeaderCellTemplate(new JS("myDataGridColumn_headerCellTemplate"));
+    columns.AddFor(x => x.Perakende2).Caption("Toptan Yüksek Fiyat Ort.").HeaderCellTemplate(new JS("myDataGridColumn_headerCellTemplate"));
+    columns.AddFor(x => x.Perakende3).Caption("Toptan Ağır. Fiyat Ort.");
+    columns.AddFor(x => x.Perakende4).Caption("Perakende Düşük Fiyat Ort.");
+    columns.AddFor(x => x.Perakende5).Caption("Perakende Yüksek Fiyat Ort.").Format("###,###.##");
+    columns.AddFor(x => x.Perakende6).Caption("Perakende Ağır. Fiyat Ort.").Format("###,###.##");
+
+}).WordWrapEnabled(false).Width(2000)
+.RemoteOperations(false)
+                        .AllowColumnReordering(true)
+                        .RowAlternationEnabled(true)
+                        .Paging(p => p.PageSize(10))
+                        .Pager(p => p
+                        .ShowPageSizeSelector(true)
+                        .AllowedPageSizes(new[] { 10, 25, 50, 100 })
+                        )
+                        .SearchPanel(s => s
+                        .Visible(true)
+                        .HighlightCaseSensitive(true)
+                        )
+                        .GroupPanel(g => g.Visible(true))
+                        .Grouping(g => g.AutoExpandAll(false))
+                        .FilterRow(f => f.Visible(true).ApplyFilter(GridApplyFilterMode.Auto))
+
+                        .Summary(s => s.TotalItems(items => {
+                            items.AddFor(m => m.CityId)
+                            .SummaryType(SummaryType.Count)
+
+                            .SummaryType(SummaryType.Count).ValueFormat(Format.FixedPoint)
+                            ;
+                        }))
+
+
+                        )
+                            <!--end: Datatable-->
+                        </div>
+                    </div>
+                    <!--end::Card-->
+                    <!--begin::Card-->
+                    <!--end::Card-->
+                </div>
+                <!--end::Container-->
+            </div>
+
+
+        </div>
+
+
+    </div>
+</div>
+<button class="btn btn-success float-left excel xlsx" onclick="exportFirstTableToExcel('card-cody', 'PirinçRaporu')">Excel</button>
+<script type="text/javascript" src="~/tableexport.jquery.plugin/libs/FileSaver/FileSaver.min.js"></script>
+<script type="text/javascript" src="~/tableexport.jquery.plugin/libs/js-xlsx/xlsx.core.min.js"></script>
+<script type="text/javascript" src="~/tableexport.jquery.plugin/libs/jsPDF/jspdf.min.js"></script>
+<script type="text/javascript" src="~/tableexport.jquery.plugin/libs/jsPDF-AutoTable/jspdf.plugin.autotable.js"></script>
+<script type="text/javascript" src="~/tableexport.jquery.plugin/libs/pdfmake/pdfmake.min.js"></script>
+<script type="text/javascript" src="~/tableexport.jquery.plugin/libs/pdfmake/vfs_fonts.js"></script>
+<script type="text/javascript" src="~/tableexport.jquery.plugin/libs/es6-promise/es6-promise.auto.min.js"></script>
+<script type="text/javascript" src="~/tableexport.jquery.plugin/libs/html2canvas/html2canvas.min.js"></script>
+<script src="~/tableexport.jquery.plugin/tableExport.min.js"></script>
+<link href="~/TableExport/css/tableexport.css" rel="stylesheet" />

@@ -1,14 +1,47 @@
 ﻿@model HasaInputViewModel
 @using DevExtreme.AspNet.Mvc
+
 @{
-    ViewData["Title"] = "DataInputRice";
+    ViewData["Title"] = "EmteaGroupList";
     Layout = "~/Views/Shared/_Layout.cshtml";
-    var count = 0;
-    var groupCount = 0;
-    var dataInputCount = 0;
-    var DataInputModelCount = Model.DataInputs != null ? Model.DataInputs.Count : 0;
 }
 
+@Html.AntiForgeryToken()
+
+
+@section scripts{
+
+
+    <script src="~/js/AdminProcess/Process.js"></script>
+    <script src="~/js/ExcelSheet/ExcelSheet.js"></script>
+    <script>
+
+        $("td input").on('keyup', function (e) {
+            if (e.keyCode === 13) {
+                $(this).closest('td').nextAll().eq(0).find('input').focus();
+            }
+        });
+        function getEmtea() {
+            var str = $('#emteatypes').select2('val')+ "";
+            str = str.split(",");
+            return str;
+        }
+        function getDate() {
+            var str = $('#dates').select2('val')+ "";
+            str = str.split(",");
+            return str;
+        }
+        function myDataGridColumn_headerCellTemplate(header,info) {
+
+            $('<div>')
+                .html(info.column.caption)
+                    .css('height', '36px')
+                    .appendTo(header);
+
+        }
+    </script>
+
+}
 @section styles {
 
     <link rel="stylesheet" href="~/css/Site.css" />
@@ -35,7 +68,7 @@
             margin: 0.1rem 0.4rem 0.1rem 0;
             position: relative;
             float: left /*rtl:right*/;
-            color: #3699ff!important ;
+            color: #3699ff !important;
             background: #F3F6F9;
             border: 0;
             border-radius: 0.42rem;
@@ -59,6 +92,7 @@
                 color: #f64e60;
                 font-weight: bolder;
             }
+
         .title {
             position: relative;
             left: 10px;
@@ -75,9 +109,14 @@
         }
 
         .rapor {
-            width: 143%;
+            width: 3000px;
             border: 1px solid lightgrey;
             font-weight: 800;
+        }
+
+        .dx-header-row > td[role="columnheader"] > div.dx-datagrid-text-content {
+            height: 36px;
+            white-space: normal !important;
         }
     </style>
 }
@@ -87,7 +126,7 @@
 
     <div class="row rowstyle">
         <div class="col-md-6">
-            <label><input type="checkbox" id="alldate" /><span class="title text-primary font-weight-bolder">Tüm Tarihler</span></label><br />
+           
             <label for="dates" class="text-primary font-weight-bolder"> Tarihler</label><br />
             <select class="js-example-basic-multiple form-control" name="dates[]" multiple="multiple" id="dates">
                 @foreach (var cty in Model.DateInputs)
@@ -100,18 +139,18 @@
 
         <div class="col-md-6">
 
-            <label><input type="checkbox" id="allcities" class="font-weight-bolder" /><span class="title text-primary font-weight-bolder">Tüm Türkiye</span></label><br />
+            
             <label for="cities" class="text-primary font-weight-bolder">Şubeler</label><br />
-            <select class="js-example-basic-multiple form-control" name="cities[]" multiple="multiple" id="cities">
-                @foreach (var cty in Model.CitiesRapor.Distinct())
+            <select class="js-example-basic-multiple form-control" name="emteatypes[]" multiple="multiple" id="emteatypes">
+                @foreach (var cty in Model.EmteaTypesRapor)
                 {
-                    if (Model.SelectedCityId == cty.SubeId)
+                    if (Model.SelectedCityId == cty.Id)
                     {
-                        <option value="@cty.SubeId" selected>@cty.SubeName</option>
+                        <option value="@cty.Id" selected>@cty.EmteaTypeName</option>
                     }
                     else
                     {
-                        <option value="@cty.SubeId">@cty.SubeName</option>
+                        <option value="@cty.Id">@cty.EmteaTypeName</option>
                     }
 
                 }
@@ -119,16 +158,14 @@
         </div>
 
         <div style="float:left;margin-bottom:10px;position: relative; margin-top: 10px;" class="col-3">
-            <button onclick="LoadTable('RiceGeneralReportBySubePartial')" class="btn btn-primary btn-block" style="width: 150px;">Rapor Oluştur</button>
+            <button onclick="LoadMarketTable('RiceMarketReportByCityPartial')" class="btn btn-primary btn-block" style="width: 150px;">Rapor Oluştur</button>
         </div>
+
     </div>
- 
+
     <div class="rapor text-center">
         <span class="text-muted">Filtre Seçiniz</span>
     </div>
-    
-
- 
 
     @(Html.DevExtreme().LoadPanel()
         .ID("loadPanel")
@@ -143,27 +180,10 @@
 
     )
 
+
+
+
 </div>
-
-
-@section scripts {
-
-    <script src="~/js/ExcelSheet/ExcelSheet.js"></script>
-    <script>
-         
-        $("td input").on('keyup', function (e) {
-            if (e.keyCode === 13) {
-                $(this).closest('td').nextAll().eq(0).find('input').focus();
-            }
-        });
-        
-         
-    </script>
-}
-
-
-
-
 
 
 
