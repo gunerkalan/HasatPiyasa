@@ -793,7 +793,7 @@ namespace HasatPiyasa.Web.UI.Controllers
             {
                 return "ReportUser";
             }
-            else if(id == (int)Core.Utilities.Enums.UserRoles.UserRole.SubeKullanicisi)
+            else if(id == (int)Core.Utilities.Enums.UserRoles.UserRole.YetkiliKullanici)
             {
                 return "Admin";
             }
