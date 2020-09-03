@@ -28,8 +28,8 @@
                     <div class="card-header flex-wrap py-3">
                         <div class="card-title">
                             <h3 class="card-label">
-                                Emtea Tip Listesi
-                                <span class="d-block text-muted pt-2 font-size-sm">Emtea &amp; Tip Listesi</span>
+                                Emtia Tip Listesi
+                                <span class="d-block text-muted pt-2 font-size-sm">Emtia &amp; Tip Listesi</span>
                             </h3>
                         </div>
                         <div class="card-toolbar">
@@ -47,7 +47,7 @@
                                         </g>
                                     </svg>
                                     <!--end::Svg Icon-->
-                                </span>Yeni Emtea Tipi Ekle
+                                </span>Yeni Emtia Tipi Ekle
                             </a>
                             <!--end::Button-->
                         </div>
@@ -55,24 +55,25 @@
                     <div class="card-body">
                         <!--begin: Datatable-->
                         @(Html.DevExtreme().DataGrid<HasatPiyasa.Core.Entities.EmteaTypeDto>().ID("GridContainer")
-        .SearchPanel(src => src.Visible(true).Width(250).Placeholder("Ara.."))
-        .ShowBorders(true)
-        .DataSource(d => d.Mvc().Controller("Admin").LoadAction("EmteaTypeListData").Key("EmteaTypeId"))
-        .Selection(s => s.Mode(SelectionMode.Single))
-        .HoverStateEnabled(true)
-        .Columns(columns => {
-            columns.AddFor(m => m.EmteaCode).Caption("Emtea Kodu").Width(100);
-            columns.AddFor(m => m.EmteaName).Caption("Emtea Adı");
-            columns.AddFor(m => m.GroupName).Caption("Emtea Grup Adı");
-            columns.AddFor(m => m.EmteaTypeName).Caption("Emtea Tip Adı");
-            columns.AddFor(m => m.AddedTime).Caption("Eklenme Tarihi");
-            columns.Add().Caption("Düzenle").Width(60)
-                   .Type(GridCommandColumnType.Buttons)
-                   .Buttons(btns =>
-                   {
-                       btns.Add().Name(GridColumnButtonName.Edit).Text("Düzenle");
-                   }).CellTemplate(@<text>
-                <button title="Düzenle" onclick="EditEmteaType('<%= data.EmteaTypeId %>','<%= data.EmteaId %>');"><i class="fa fa-pen-square" aria-hidden="true" style="color:#1b70cc"></i></button>
+    .SearchPanel(src => src.Visible(true).Width(250).Placeholder("Ara.."))
+    .ShowBorders(true)
+    .DataSource(d => d.Mvc().Controller("Admin").LoadAction("EmteaTypeListData").Key("EmteaTypeId"))
+    .Selection(s => s.Mode(SelectionMode.Single))
+    .HoverStateEnabled(true)
+    .Columns(columns => {
+    columns.AddFor(m => m.EmteaCode).Caption("Emtia Kodu").Width(100);
+    columns.AddFor(m => m.EmteaName).Caption("Emtia Adı");
+    columns.AddFor(m => m.GroupName).Caption("Emtia Grup Adı");
+    columns.AddFor(m => m.EmteaTypeCode).Caption("Emtia Tip Kodu");
+    columns.AddFor(m => m.EmteaTypeName).Caption("Emtia Tip Adı");
+    columns.AddFor(m => m.AddedTime).Caption("Eklenme Tarihi");
+    columns.Add().Caption("Düzenle").Width(60)
+               .Type(GridCommandColumnType.Buttons)
+               .Buttons(btns =>
+               {
+                   btns.Add().Name(GridColumnButtonName.Edit).Text("Düzenle");
+               }).CellTemplate(@<text>
+                <button title="Düzenle" onclick="EditEmteaType('<%= data.EmteaTypeId %>','<%= data.EmteaId %>', '<%= data.AddedTime %>');"><i class="fa fa-pen-square" aria-hidden="true" style="color:#1b70cc"></i></button>
 
             </text>);
 
@@ -83,7 +84,7 @@
              {
                  btns.Add().Name(GridColumnButtonName.Delete).Text("Sil");
              }).CellTemplate(@<text>
-                <button title="Silme" onclick="SoftDeleteEmteaType('<%= data.EmteaTypeId %>','<%= data.EmteaGroupId %>','<%= data.EmteaTypeName %>');"><i class="fa fa-trash" aria-hidden="true" style="color:red"></i></button>
+                <button title="Silme" onclick="SoftDeleteEmteaType('<%= data.EmteaTypeId %>','<%= data.EmteaGroupId %>','<%= data.EmteaTypeName %>', '<%= data.AddedTime %>');"><i class="fa fa-trash" aria-hidden="true" style="color:red"></i></button>
 
             </text>);
 
@@ -169,6 +170,10 @@
                             </select>
                         </div>
                         <div class="form-group">
+                            <label for="emteatypecode" class="control-label">Emtia Tip Kodu</label>
+                            <input type="text" name="Emteatypecode" id="emteatypecode" class="form-control" placeholder="Emtia Tip Kodu" />
+                        </div>
+                        <div class="form-group">
                             <label for="emteatypename" class="control-label">Emtia Tip Adı</label>
                             <input type="text" name="EmteaTypeName" id="emteatypename" class="form-control" placeholder="Emtia Tip Adı" />
                         </div>
@@ -212,6 +217,10 @@
                             <select class="form-control" id="drpemtiagroups2" asp-for="@Model.EmteaTypes.EmteaGroupId" asp-items="@Model.EmteaGroups">
                                 <option disabled selected value="-1">--Seçiniz--</option>
                             </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="emteatypecode" class="control-label">Emtia Tip Kodu</label>
+                            <input type="text" name="Emteatypecode" id="emteatypecode2" class="form-control" placeholder="Emtia Tip Kodu" />
                         </div>
                         <div class="form-group">
                             <label for="emteatypename" class="control-label">Emtia Tip Adı</label>

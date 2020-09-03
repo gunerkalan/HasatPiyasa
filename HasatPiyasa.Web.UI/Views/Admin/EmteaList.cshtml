@@ -32,8 +32,8 @@
                     <div class="card-header flex-wrap py-3">
                         <div class="card-title">
                             <h3 class="card-label">
-                                Emtea Listesi
-                                <span class="d-block text-muted pt-2 font-size-sm">Emtea &amp; Listesi</span>
+                                Emtia Listesi
+                                <span class="d-block text-muted pt-2 font-size-sm">Emtia &amp; Listesi</span>
                             </h3>
                         </div>
                         <div class="card-toolbar">
@@ -51,7 +51,7 @@
                                         </g>
                                     </svg>
                                     <!--end::Svg Icon-->
-                                </span>Yemi Emtea Ekle
+                                </span>Yemi Emtia Ekle
                             </a>
                             <!--end::Button-->
                         </div>
@@ -74,7 +74,7 @@
                {
                    btns.Add().Name(GridColumnButtonName.Edit).Text("Düzenle");
                }).CellTemplate(@<text>
-                <button title="Düzenle" onclick="EditEmtea('<%= data.Id %>');"><i class="fa fa-pen-square" aria-hidden="true" style="color:#1b70cc"></i></button>
+                <button title="Düzenle" onclick="EditEmtea('<%= data.Id %>','<%= data.AddedTime %>');"><i class="fa fa-pen-square" aria-hidden="true" style="color:#1b70cc"></i></button>
 
             </text>);
 
@@ -85,7 +85,7 @@
              {
                  btns.Add().Name(GridColumnButtonName.Delete).Text("Sil");
              }).CellTemplate(@<text>
-                <button title="Silme" onclick="SoftDeleteEmtea('<%= data.Id %>','<%= data.EmteaCode %>','<%= data.EmteaName %>');"><i class="fa fa-trash" aria-hidden="true" style="color:red"></i></button>
+                <button title="Silme" onclick="SoftDeleteEmtea('<%= data.Id %>','<%= data.EmteaCode %>','<%= data.EmteaName %>','<%= data.AddedTime %>');"><i class="fa fa-trash" aria-hidden="true" style="color:red"></i></button>
 
             </text>);
 
