@@ -342,6 +342,20 @@ function LoadTable(pathh) {
     })
 }
 
+function LoadMarketTable(pathh) {
+
+    Dates = $('#dates').select2('val')
+    Emteatypes = $('#emteatypes').select2('val')
+    $('.rapor').css("border", "none")
+    AllCities = document.getElementById("allcities").checked
+    AllDate = document.getElementById("alldate").checked
+    getLoadPanelInstance().show()
+    $.post("/report/" + pathh, { dates: Dates, emteatypes: Emteatypes }, (res) => {
+        $(".rapor").html(res)      
+        getLoadPanelInstance().hide()
+    })
+}
+
 
 function numberWithCommas(x) {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
@@ -354,5 +368,13 @@ function exportTableToExcel(tableID, filename = '') {
     
    
  
+}
+function exportFirstTableToExcel(tableID, filename = '') {
+
+    $("table:first-child").tableExport({ type: 'xls', fileName: filename, bootstrap: true });
+    $.fn.tableExport.defaultButton = "button-default";
+
+
+
 }
  

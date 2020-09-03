@@ -13,6 +13,8 @@ namespace HasatPiyasa.Business.Abstract
         Task<NIslemSonuc<DataInputs>> CreateDataInput(DataInputs dataInput);
         Task<NIslemSonuc<DataInputs>> CreateDataInputRange(List<DataInputs> dataInputs,int cityid, int subeid);
         NIslemSonuc<List<DataInputs>> ListAllDataInputs();
+        NIslemSonuc<List<ReportDto>> ListDataInputsForCityMarket(string[] dates, string[] emteatypes);
+        NIslemSonuc<List<ReportDto>> ListDataInputsForSubeMarket(string[] dates, string[] emteatypes);
         NIslemSonuc<DataInputs> GetDataInput(int id);
         Task<NIslemSonuc<DataInputs>> UpdateDataInput(DataInputs dataInput);
         Task<NIslemSonuc<DataInputs>> GetDataInputTable(int value);

@@ -15,8 +15,8 @@ namespace HasatPiyasa_Web_UI.Models
         public EmteaTypeGroups EmteaTypeGroups { get; set; }
         public EmteaTypes EmteaTypes { get; set; }
         public List<SubeCities>  Cities { get; set; }
-        public List<SubeDto>  SubesRapor { get; set; }
-        public List<CityDto> CitiesRapor { get; set; }
+        public List<SubeCityDto>  CitiesRapor { get; set; }
+        public List<EmteaTypes> EmteaTypesRapor { get; set; }
         public List<Bolges> Bolges { get; set; }
         public List<DataInputs>  DataInputs { get; set; }
         public List<DateTime>  DateInputs { get; set; }

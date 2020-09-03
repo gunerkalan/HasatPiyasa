@@ -1,15 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using HasatPiyasa.Business.Abstract;
+﻿using HasatPiyasa.Business.Abstract;
 using HasatPiyasa.Core.Utilities.Enums;
-using HasatPiyasa.Entity.Entity;
-using HasatPiyasa.Web.UI.Models;
 using HasatPiyasa_Web_UI.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Internal;
 using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace HasatPiyasa.Web.UI.Controllers
 {
@@ -19,11 +17,12 @@ namespace HasatPiyasa.Web.UI.Controllers
         private IEmteaService _emteaService;
         private ICityService _cityService;
         private ISubeCityService _subeCityService;
-        private ISubeService _subeService;
         private IBolgeService _bolgeService;
-      private readonly IFormDataInputService _formDataInputService;
+        private ISubeService _subeService;
+        private readonly IFormDataInputService _formDataInputService;
+        private IEmteaTypeService _emteaTypeService;
 
-        public ReportController(IDataInputService dataInputService, IEmteaService emteaService, ICityService cityService, ISubeCityService subeCityService, IBolgeService bolgeService, IFormDataInputService formDataInputService, ISubeService subeService)
+        public ReportController(IDataInputService dataInputService, IEmteaService emteaService, IEmteaTypeService emteaTypeService, ICityService cityService, ISubeCityService subeCityService, IBolgeService bolgeService, ISubeService subeService, IFormDataInputService formDataInputService)
         {
             _dataInputService = dataInputService;
             _emteaService = emteaService;
@@ -32,14 +31,16 @@ namespace HasatPiyasa.Web.UI.Controllers
             _bolgeService = bolgeService;
             _subeService = subeService;
             _formDataInputService = formDataInputService;
+            _emteaTypeService = emteaTypeService;
+
         }
 
         [HttpGet]
        public async Task<ActionResult> RiceGeneralReportBySube()
         {
             var model = new  HasaInputViewModel();
-            var _cities = await _subeService.GetSubeGTable();            
-            model.SubesRapor = _cities.Veri.ToList();
+            var _cities = await _subeCityService.GetSbCityGTable();            
+            model.CitiesRapor = _cities.Veri.Distinct().ToList();
            var _dates =await  _formDataInputService.GetTable();
             model.DateInputs=_dates.Select(x => x.AddedTime.Date).Distinct().ToList();
             var emtea = await _emteaService.GetEmteaTable(1,0);
@@ -197,7 +198,7 @@ namespace HasatPiyasa.Web.UI.Controllers
         public async Task<ActionResult> RiceGeneralReportByCity()
         {
             var model = new HasaInputViewModel();
-            var _cities = await _cityService.GetCityGTable();
+            var _cities = await _subeCityService.GetSbCityGTable();
             model.CitiesRapor = _cities.Veri.ToList();
             var _dates = await _formDataInputService.GetTable();
             model.DateInputs = _dates.Select(x => x.AddedTime.Date).Distinct().ToList();
@@ -272,7 +273,89 @@ namespace HasatPiyasa.Web.UI.Controllers
             return PartialView(model);
         }
 
+        [HttpGet]
+        public async Task<ActionResult> RiceMarketReportByCity()
+        {
+            var model = new HasaInputViewModel();
+            var _cities = await _subeCityService.GetSbCityGTable();
+            model.CitiesRapor = _cities.Veri.ToList();
+            var _dates = await _formDataInputService.GetTable();
+            model.DateInputs = _dates.Select(x => x.AddedTime.Date).Distinct().ToList();
+            var emtea = await _emteaService.GetEmteaTable(1, 0);
+            model.Emteas = emtea.Veri;
+            model.EmteaTypesRapor = _emteaTypeService.ListAllEmteType().Veri;
+            ViewBag.dates = 2;
+            ViewBag.emteatypes = 3;
+            return View(model);
+        }
+        [HttpPost]
+        public async Task<ActionResult> RiceMarketReportByCityPartial(string[] dates, string[] emteatypes)
+        {
+            var model = new HasaInputViewModel();
+            var emtea = await _emteaService.GetEmteaTable(1, 1);
+            var dataInputs = _dataInputService.ListAllDataInputs().Veri;
+            // model.Emteas = emtea.Veri;
+            ViewData["dates"] = dates;
+            ViewData["emteatypes"] = emteatypes;
+            return PartialView(model);
+        }
 
+
+
+        public async  Task<object> RiceMarketReportByCityData(string[] dates, string[] emteatypes)
+        {
+            //var model = new HasaInputViewModel();
+            //var emtea = await _emteaService.GetEmteaTable(1, 1);
+            dates = dates[0].Split(",");
+            emteatypes = emteatypes[0].Split(",");       
+            var dataInputtask =_dataInputService.ListDataInputsForCityMarket(dates, emteatypes);
+            var dataInputs = dataInputtask.Veri;
+            var _cities = await _subeCityService.GetSbCityGTable();
+            //model.Emteas = emtea.Veri;
+
+            return JsonConvert.SerializeObject(dataInputs);
+        }
+        public async Task<ActionResult> RiceMarketReportBySube()
+        {
+            var model = new HasaInputViewModel();
+            var _cities = await _subeCityService.GetSbCityGTable();
+            model.CitiesRapor = _cities.Veri.ToList();
+            var _dates = await _formDataInputService.GetTable();
+            model.DateInputs = _dates.Select(x => x.AddedTime.Date).Distinct().ToList();
+            var emtea = await _emteaService.GetEmteaTable(1, 0);
+            model.Emteas = emtea.Veri;
+            model.EmteaTypesRapor = _emteaTypeService.ListAllEmteType().Veri;
+            ViewBag.dates = 2;
+            ViewBag.emteatypes = 3;
+            return View(model);
+        }
+        [HttpPost]
+        public async Task<ActionResult> RiceMarketReportBySubePartial(string[] dates, string[] emteatypes)
+        {
+            var model = new HasaInputViewModel();
+            var emtea = await _emteaService.GetEmteaTable(1, 1);
+            var dataInputs = _dataInputService.ListAllDataInputs().Veri;
+            // model.Emteas = emtea.Veri;
+            ViewData["dates"] = dates;
+            ViewData["emteatypes"] = emteatypes;
+            return PartialView(model);
+        }
+
+
+
+        public async Task<object> RiceMarketReportBySubeData(string[] dates, string[] emteatypes)
+        {
+            //var model = new HasaInputViewModel();
+            //var emtea = await _emteaService.GetEmteaTable(1, 1);
+            dates = dates[0].Split(",");
+            emteatypes = emteatypes[0].Split(",");
+            var dataInputtask = _dataInputService.ListDataInputsForSubeMarket(dates, emteatypes);
+            var dataInputs = dataInputtask.Veri;
+            var _cities = await _subeCityService.GetSbCityGTable();
+            //model.Emteas = emtea.Veri;
+
+            return JsonConvert.SerializeObject(dataInputs);
+        }
         [HttpGet]
         public async Task<object> ChooseFormDataInput()
         {

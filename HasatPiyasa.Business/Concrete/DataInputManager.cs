@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 using System.Transactions;
@@ -20,11 +21,15 @@ namespace HasatPiyasa.Business.Concrete
     {
         private IDataInputDal _dataInputDal;
         private IFormDataInputDal _formDataInputDal;
+        private ICityDal _cityDal;
+        private ISubeDal _subeDal;
 
-        public DataInputManager(IDataInputDal dataInputDal, IFormDataInputDal formDataInputDal)
+        public DataInputManager(IDataInputDal dataInputDal, IFormDataInputDal formDataInputDal, ICityDal cityDal, ISubeDal subeDal)
         {
             _dataInputDal = dataInputDal;
             _formDataInputDal = formDataInputDal;
+            _cityDal = cityDal;
+            _subeDal = subeDal;
         }
 
         public async Task<NIslemSonuc<DataInputs>> CreateDataInput(DataInputs dataInput)
@@ -209,6 +214,151 @@ namespace HasatPiyasa.Business.Concrete
             }
         }
 
+        public NIslemSonuc<List<ReportDto>> ListDataInputsForCityMarket(string[] dates, string[] emteatypes)
+        {
+            List<ReportDto> res = new List<ReportDto>();
+            List<DataInputs> resp = new List<DataInputs>();
+            var cities = _cityDal.GetList().ToList();
+            for (int j = 0; j < emteatypes.Length; j++)
+                for (int i = 0; i < dates.Length; i++)
+                {
+                    var all = _dataInputDal.GetList(x => x.AddedTime.Date == Convert.ToDateTime(dates[i]) && x.EmteaTypeId == Convert.ToInt32(emteatypes[j])).ToList();
+                    resp.AddRange(all);
+                }
+            var response = resp.Select(a => new ReportDto
+            {
+
+                CityId = a.CityId,
+                CityAdi = cities.Where(x => x.Id == a.CityId).First().Name,
+                TuikValue = resp.Where(x => x.CityId == a.CityId).Sum(x => x.TuikValue),
+                GuessValue = resp.Where(x => x.CityId == a.CityId).Sum(x => x.GuessValue),
+                HasatMiktar = resp.Where(x => x.CityId == a.CityId).Sum(x => x.HasatMiktar),
+                Natural1 = resp.Where(x => x.CityId == a.CityId).Sum(x => x.Natural1),
+                Natural2 = resp.Where(x => x.CityId == a.CityId).Sum(x => x.Natural2),
+                Natural3 = resp.Where(x => x.CityId == a.CityId).Sum(x => x.Natural3),
+                Natural4 = resp.Where(x => x.CityId == a.CityId).Sum(x => x.Natural4),
+                Natural5 = resp.Where(x => x.CityId == a.CityId).Sum(x => x.Natural5),
+                NaturalToplam = resp.Where(x => x.CityId == a.CityId).Sum(x => x.NaturalToplam),
+                ToptanPiyasa1 = resp.Where(x => x.CityId == a.CityId).Sum(x => x.ToptanPiyasa1 * x.Natural1) / resp.Where(x => x.CityId == a.CityId).Sum(x => x.Natural1),
+                ToptanPiyasa2 = resp.Where(x => x.CityId == a.CityId).Sum(x => x.ToptanPiyasa2 * x.Natural2) / resp.Where(x => x.CityId == a.CityId).Sum(x => x.Natural2),
+                ToptanPiyasa3 = resp.Where(x => x.CityId == a.CityId).Sum(x => x.ToptanPiyasa3 * x.Natural3) / resp.Where(x => x.CityId == a.CityId).Sum(x => x.Natural3),
+                ToptanPiyasa4 = resp.Where(x => x.CityId == a.CityId).Sum(x => x.ToptanPiyasa4 * x.Natural4) / resp.Where(x => x.CityId == a.CityId).Sum(x => x.Natural4),
+                ToptanPiyasa5 = resp.Where(x => x.CityId == a.CityId).Sum(x => x.ToptanPiyasa5 * x.Natural5) / resp.Where(x => x.CityId == a.CityId).Sum(x => x.Natural5),
+                Perakende1 = resp.Where(x => x.CityId == a.CityId).Average(x => x.Perakende1),
+                Perakende2 = resp.Where(x => x.CityId == a.CityId).Average(x => x.Perakende2),
+                Perakende3 = resp.Where(x => x.CityId == a.CityId).Average(x => x.Perakende3),
+                Perakende4 = resp.Where(x => x.CityId == a.CityId).Average(x => x.Perakende4),
+                Perakende5 = resp.Where(x => x.CityId == a.CityId).Average(x => x.Perakende5),
+                Perakende6 = resp.Where(x => x.CityId == a.CityId).Average(x => x.Perakende6),
+
+
+                //HasatOran = res.Where(x => x.CityId == a.CityId).Sum(x => x.TuikValue),
+                //HasatMiktar = res.Where(x => x.CityId == a.CityId).Sum(x => x.HasatMiktar),
+
+
+
+
+            }).ToList();
+            //var resp = await _dataInputDal.GetWhere(x => x.AddedTime.ToShortDateString() == dates[i] && emtealar.Contains(x.EmteaTypeId.ToString()));
+            // var res = _dataInputDal.GetList().ToList();
+            // var resp = res.Where(x => dates.Contains(x.AddedTime.ToShortDateString()) && emteatypes.Contains(x.EmteaTypeId.ToString())).ToList();
+
+
+            try
+            {
+                return new NIslemSonuc<List<ReportDto>>
+                {
+                    BasariliMi = true,
+                    //Veri = _dataInputDal.GetList().Where(x => dates.Contains(x.AddedTime.ToShortDateString())).ToList()
+                    //Veri = _dataInputDal.GetList(x => dates.Contains(x.AddedTime.ToShortDateString()) && emteatypes.Contains(x.EmteaTypeId.ToString())).ToList()
+                    Veri = response.GroupBy(c => c.CityId).Select(g => g.First()).ToList()
+                };
+
+            }
+            catch (Exception hata)
+            {
+
+                return new NIslemSonuc<List<ReportDto>>
+                {
+                    BasariliMi = false,
+                    Mesaj = hata.InnerException.Message
+                };
+            }
+        }
+
+        public NIslemSonuc<List<ReportDto>> ListDataInputsForSubeMarket(string[] dates, string[] emteatypes)
+        {
+            List<ReportDto> res = new List<ReportDto>();
+            List<DataInputs> resp = new List<DataInputs>();
+            var subeler = _subeDal.GetList().ToList();
+            for (int j = 0; j < emteatypes.Length; j++)
+                for (int i = 0; i < dates.Length; i++)
+                {
+                    var all = _dataInputDal.GetList(x => x.AddedTime.Date == Convert.ToDateTime(dates[i]) && x.EmteaTypeId == Convert.ToInt32(emteatypes[j])).ToList();
+                    resp.AddRange(all);
+                }
+            var response = resp.Select(a => new ReportDto
+            {
+
+                SubeId = a.SubeId,
+                SubeAdi = subeler.Where(x => x.Id == a.SubeId).First().SubeName,
+                TuikValue = resp.Where(x => x.SubeId == a.SubeId).Sum(x => x.TuikValue),
+                GuessValue = resp.Where(x => x.SubeId == a.SubeId).Sum(x => x.GuessValue),
+                HasatMiktar = resp.Where(x => x.SubeId == a.SubeId).Sum(x => x.HasatMiktar),
+                HasatOran = resp.Where(x => x.SubeId == a.SubeId).Sum(x => x.HasatOran * x.GuessValue) / resp.Where(x => x.SubeId == a.SubeId).Sum(x => x.GuessValue),
+                Natural1 = resp.Where(x => x.SubeId == a.SubeId).Sum(x => x.Natural1),
+                Natural2 = resp.Where(x => x.SubeId == a.SubeId).Sum(x => x.Natural2),
+                Natural3 = resp.Where(x => x.SubeId == a.SubeId).Sum(x => x.Natural3),
+                Natural4 = resp.Where(x => x.SubeId == a.SubeId).Sum(x => x.Natural4),
+                Natural5 = resp.Where(x => x.SubeId == a.SubeId).Sum(x => x.Natural5),
+                NaturalToplam = resp.Where(x => x.SubeId == a.SubeId).Sum(x => x.NaturalToplam),
+                ToptanPiyasa1 = resp.Where(x => x.SubeId == a.SubeId).Sum(x => x.ToptanPiyasa1 * x.Natural1) / resp.Where(x => x.SubeId == a.SubeId).Sum(x => x.Natural1),
+                ToptanPiyasa2 = resp.Where(x => x.SubeId == a.SubeId).Sum(x => x.ToptanPiyasa2 * x.Natural2) / resp.Where(x => x.SubeId == a.SubeId).Sum(x => x.Natural2),
+                ToptanPiyasa3 = resp.Where(x => x.SubeId == a.SubeId).Sum(x => x.ToptanPiyasa3 * x.Natural3) / resp.Where(x => x.SubeId == a.SubeId).Sum(x => x.Natural3),
+                ToptanPiyasa4 = resp.Where(x => x.SubeId == a.SubeId).Sum(x => x.ToptanPiyasa4 * x.Natural4) / resp.Where(x => x.SubeId == a.SubeId).Sum(x => x.Natural4),
+                ToptanPiyasa5 = resp.Where(x => x.SubeId == a.SubeId).Sum(x => x.ToptanPiyasa5 * x.Natural5) / resp.Where(x => x.SubeId == a.SubeId).Sum(x => x.Natural5),
+                Perakende1 = resp.Where(x => x.SubeId == a.SubeId).Average(x => x.Perakende1),
+                Perakende2 = resp.Where(x => x.SubeId == a.SubeId).Average(x => x.Perakende2),
+                Perakende3 = resp.Where(x => x.SubeId == a.SubeId).Average(x => x.Perakende3),
+                Perakende4 = resp.Where(x => x.SubeId == a.SubeId).Average(x => x.Perakende4),
+                Perakende5 = resp.Where(x => x.SubeId == a.SubeId).Average(x => x.Perakende5),
+                Perakende6 = resp.Where(x => x.SubeId == a.SubeId).Average(x => x.Perakende6),
+
+
+                //HasatOran = res.Where(x => x.CityId == a.CityId).Sum(x => x.TuikValue),
+                //HasatMiktar = res.Where(x => x.CityId == a.CityId).Sum(x => x.HasatMiktar),
+
+
+
+
+            }).ToList();
+            //var resp = await _dataInputDal.GetWhere(x => x.AddedTime.ToShortDateString() == dates[i] && emtealar.Contains(x.EmteaTypeId.ToString()));
+            // var res = _dataInputDal.GetList().ToList();
+            // var resp = res.Where(x => dates.Contains(x.AddedTime.ToShortDateString()) && emteatypes.Contains(x.EmteaTypeId.ToString())).ToList();
+
+
+            try
+            {
+                return new NIslemSonuc<List<ReportDto>>
+                {
+                    BasariliMi = true,
+                    //Veri = _dataInputDal.GetList().Where(x => dates.Contains(x.AddedTime.ToShortDateString())).ToList()
+                    //Veri = _dataInputDal.GetList(x => dates.Contains(x.AddedTime.ToShortDateString()) && emteatypes.Contains(x.EmteaTypeId.ToString())).ToList()
+                    Veri = response.GroupBy(c => c.SubeId).Select(g => g.First()).ToList()
+                };
+
+            }
+            catch (Exception hata)
+            {
+
+                return new NIslemSonuc<List<ReportDto>>
+                {
+                    BasariliMi = false,
+                    Mesaj = hata.InnerException.Message
+                };
+            }
+        }
+
         public async Task<NIslemSonuc<DataInputs>> UpdateDataInput(DataInputs dataInput)
         {
             try
@@ -237,5 +387,7 @@ namespace HasatPiyasa.Business.Concrete
         {
             throw new NotImplementedException();
         }
+
+        
     }
 }

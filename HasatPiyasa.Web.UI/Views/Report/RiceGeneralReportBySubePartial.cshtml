@@ -154,7 +154,7 @@ else
         <input type="number" readonly name="tmo" value="@emteaType.DataInputs.Sum(x=>x.GuessValue)" />
     </td>
 
-    <td><input type="number" readonly id="@("HasatYuzde_"+count.ToString())" name="percent" value="@emteaType.DataInputs.Sum(x=>x.HasatOran)" /></td>
+    <td><input type="number" readonly id="@("HasatYuzde_"+count.ToString())" name="percent" value="@emteaType.DataInputs.Sum(x => x.HasatOran * x.GuessValue) /@emteaType.DataInputs.Sum(x => x.GuessValue)" /></td>
     <td><input type="number" readonly id="@("HasatEdilen_"+count.ToString())" name="hasatedilen" value="@emteaType.DataInputs.Sum(x=>x.HasatMiktar)" /></td>
     <td><input type="number" readonly name="bekleyenton" value="@emteaType.DataInputs.Sum(x=>x.UreticiKalanMiktar)" /></td>
 
