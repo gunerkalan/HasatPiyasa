@@ -11,22 +11,22 @@ setTimeout(() => {
 }, 1000)
 
 $(document).ready(() => {
-   LoadProcess()      
-   
+    LoadProcess()
+
 })
 
 $("body").on("load", () => {
-    LoadProcess()      
+    LoadProcess()
 })
 
 function LoadProcess() {
     CalculateColumn("tuik", "tuikTotal", "topla");
     CalculateColumn("tmo", "tmoTotal", "topla");
     //CalculateColumn("percent", "percentTotal", "ortalama");
-    CalculateColumn("hasatedilen", "hasatedilenTotal", "topla");  
+    CalculateColumn("hasatedilen", "hasatedilenTotal", "topla");
     CalculateColumn("bekleyenton", "bekleyentonTotal", "topla");
     CalculateColumn("piyasaton", "piyasatonTotal", "topla");
-    CalculateColumnByCumulative("percent", "tmo", "percentTotal", "ağırlıklı"); 
+    CalculateColumnByCumulative("percent", "tmo", "percentTotal", "ağırlıklı");
     CalculateColumnByCumulative('toptan0', 'piyasaton', 'toptan0', 'ağırlıklı');
     CalculateColumnByCumulative('toptan1', 'piyasaton', 'toptan1', 'ağırlıklı');
     CalculateColumnByCumulative('toptan2', 'piyasaton', 'toptan2', 'ağırlıklı');
@@ -51,7 +51,7 @@ function LoadProcess() {
         });
     });
 
-    $("table input").trigger('keyup')   
+    $("table input").trigger('keyup')
     $("table input").trigger('change')
     $("input").focus((e) => {
 
@@ -60,8 +60,8 @@ function LoadProcess() {
 
     })
 
-   
-    
+
+
     console.clear()
 }
 function CalculateToptan() {
@@ -155,15 +155,15 @@ function CalculateColumnByCumulative(name, relatedcolumnname, totalid, calculate
             $.each(tuiks, (i, v) => {
                 if (v.value != "0" & a == i) {
                     total += Number(v.value) * Number(b.value)
-            }
-        })
+                }
+            })
         })
 
         $("#" + totalid).val(parseInt(total / miktartotal))
 
     }
 
-  
+
 
 
 }
@@ -233,16 +233,16 @@ function getLoadPanelInstance() {
 
 function Save() {
     var AddInput = [];
-    var dataInput= [];
-
+    var dataInput = [];
+    var error = 0;
     var inputs = Number($("input").length) / 22
 
     for (var i = 1; i < inputs; i++) {
         var item = {
-           
+
             CityId: "",
             EmteaTypeId: "",
-            EmteaGroupId:"",
+            EmteaGroupId: "",
             TuikValue: "",
             GuessValue: "",
             HasatOran: "",
@@ -265,12 +265,12 @@ function Save() {
             Perakende4: "",
             Perakende5: "",
             Perakende6: "",
-             id: "",
+            id: "",
         }
-      
+
 
         var keys = Object.keys(item);
-        var input = $(`.datainput${i} input`)       
+        var input = $(`.datainput${i} input`)
         item.CityId = $("#cityId :selected").val()
         item.EmteaTypeId = $(`.datainput${i}`).attr("emteatype")
         item.EmteaGroupId = $(`.datainput${i}`).attr("emteagroup")
@@ -281,18 +281,54 @@ function Save() {
 
         })
 
-        if (i != inputs-1)
-        AddInput.push(item)
+        if (i != inputs - 1)
+            AddInput.push(item)
     }
 
     $.each(AddInput, (i, v) => {
 
-        if (v.HasatMiktar != "" && v.HasatMiktar != "0") {
-            dataInput.push(v)
-        }
+        if (v.GuessValue > 0) {
+            if (v.HasatOran == 0 ||
+                v.HasatMiktar == 0 ||
+                v.UreticiKalanMiktar == 0 ||
+                v.Natural1 == 0 ||
+                v.Natural2 == 0 ||
+                v.Natural3 == 0 ||
+                v.Natural4 == 0 ||
+                v.Natural5 == 0 ||
+                v.NaturalToplam == 0 ||
+                v.ToptanPiyasa1 == 0 ||
+                v.ToptanPiyasa2 == 0 ||
+                v.ToptanPiyasa3 == 0 ||
+                v.ToptanPiyasa4 == 0 ||
+                v.ToptanPiyasa5 == 0 ||
+                v.Perakende1 == 0 ||
+                v.Perakende2 == 0 ||
+                v.Perakende3 == 0 ||
+                v.Perakende4 == 0 ||
+                v.Perakende5 == 0 ||
+                v.Perakende6 == 0
+                   )
+    {
+        ++error
+    }
+}
+
+if (error == 0) {
+    if (v.HasatMiktar != "" && v.HasatMiktar != "0") {
+        dataInput.push(v)
+    }
+
+    if (v.HasatMiktar == "0" && v.Perakende1 > 0 && v.Perakende2 > 0 && v.Perakende3 > 0 && v.Perakende4 > 0 && v.Perakende5 > 0 && v.Perakende6 > 0) {
+        dataInput.push(v)
+    }
+}
+
+         
 
     })
 
+if (error == 0) {
     $.post("/DataInput/DataInputRice", { dataInputs: dataInput }, (res) => {
 
         var model = JSON.parse(JSON.stringify(res))
@@ -300,17 +336,25 @@ function Save() {
             SweetAlertMesaj("Hasat Piyasa  Kaydet", model.messages, "success", "Kapat", "btn-success")
             setTimeout(() => {
 
-                window.location.href="/"
-                
+                window.location.href = "/"
 
-            },2000)
+
+            }, 2000)
         }
         else {
             SweetAlertMesaj("Hasat Piyasa  Kaydet", model.messages, "error", "Kapat", "btn-danger")
         }
 
     })
+}
+else {
+    SweetAlertMesaj("Hasat Piyasa  Kaydet", "Tüik verisi gelen alanları lütfen doldurunuz !", "error", "Kapat", "btn-danger")
+    dataInput = [];
+    AddInput = [];
+
+}
     
+
 
 }
 
@@ -324,13 +368,13 @@ function GetTodayDataInput() {
 }
 
 
-    
+
 
 function LoadTable(pathh) {
 
     Dates = $('#dates').select2('val')
     Cities = $('#cities').select2('val')
-    $('.rapor').css("border","none")
+    $('.rapor').css("border", "none")
     AllCities = document.getElementById("allcities").checked
     AllDate = document.getElementById("alldate").checked
     getLoadPanelInstance().show()
@@ -351,7 +395,7 @@ function LoadMarketTable(pathh) {
     AllDate = document.getElementById("alldate").checked
     getLoadPanelInstance().show()
     $.post("/report/" + pathh, { dates: Dates, emteatypes: Emteatypes }, (res) => {
-        $(".rapor").html(res)      
+        $(".rapor").html(res)
         getLoadPanelInstance().hide()
     })
 }
@@ -365,9 +409,9 @@ function exportTableToExcel(tableID, filename = '') {
 
     $('#table').tableExport({ type: 'xls', fileName: filename, bootstrap: true });
     $.fn.tableExport.defaultButton = "button-default";
-    
-   
- 
+
+
+
 }
 function exportFirstTableToExcel(tableID, filename = '') {
 
@@ -377,4 +421,3 @@ function exportFirstTableToExcel(tableID, filename = '') {
 
 
 }
- 
