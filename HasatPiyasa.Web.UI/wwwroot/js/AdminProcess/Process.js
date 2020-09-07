@@ -29,8 +29,8 @@ function SaveEmtea() {
 
 
     swal({
-        title: "Emtea Kaydet",
-        text: "Emtea Kaydedilsin Mi ?",
+        title: "Emtia Kaydet",
+        text: "Emtia Kaydedilsin Mi ?",
         type: "info",
         showCancelButton: true,
         closeOnConfirm: false,
@@ -82,8 +82,8 @@ function SaveEmteaGroup() {
 
 
     swal({
-        title: "Emtea Grup Kaydet",
-        text: "Emtea Grup Kaydedilsin Mi ?",
+        title: "Emtia Grup Kaydet",
+        text: "Emtia Grup Kaydedilsin Mi ?",
         type: "info",
         showCancelButton: true,
         closeOnConfirm: false,
@@ -189,8 +189,8 @@ function SaveEmteaTypeGroup() {
 
 
     swal({
-        title: "Emtea Tip Gurup Kaydet",
-        text: "Emtea Tip Gurup Kaydedilsin Mi ?",
+        title: "Emtia Tip Gurup Kaydet",
+        text: "Emtia Tip Gurup Kaydedilsin Mi ?",
         type: "info",
         showCancelButton: true,
         closeOnConfirm: false,
@@ -341,7 +341,7 @@ function SaveTuikCity() {
                 }
                 else {
 
-                    SweetAlertMesaj("İl Tüik Veri Güner Kaydet", model.messages, "error", "Kapat", "btn-danger")
+                    SweetAlertMesaj("İl Tüik Veri Kaydet", model.messages, "error", "Kapat", "btn-danger")
 
                 }
 
@@ -867,8 +867,8 @@ function UpdateEmtea() {
 
 
     swal({
-        title: "Emtea Güncelle",
-        text: "Emtea Güncellensin Mi ?",
+        title: "Emtia Güncelle",
+        text: "Emtia Güncellensin Mi ?",
         type: "info",
         showCancelButton: true,
         closeOnConfirm: false,
@@ -890,13 +890,16 @@ function UpdateEmtea() {
                 var model = JSON.parse(res);
 
                 if (model.success) {
-                    SweetAlertMesaj("Emtea Güncelle", model.Mesaj, "success", "Kapat", "btn-success")
+                    SweetAlertMesaj("Emtia Güncelle", model.Mesaj, "success", "Kapat", "btn-success")
                     $("#GridContainer").dxDataGrid("instance").refresh();
                     $("#EditModal").modal("hide")
                     loadpanel.hide()
 
                     $('#emteacode2').val('')
                     $('#emteaname2').val('')
+                    GlobalEmteaId = null
+                    GlobalEmteaAddedTime = null
+
 
                 }
                 else {
@@ -948,9 +951,11 @@ function SoftDeleteEmtea(Id, EmteaCode, EmteaName, AddedTime) {
                 var model = JSON.parse(res)
 
                 if (model.success) {
-                    SweetAlertMesaj("Silme", "Emtea Silinmiştir !", "success", "Kapat", "btn-success")
+                    SweetAlertMesaj("Silme", "Emtia Silinmiştir !", "success", "Kapat", "btn-success")
                     $("#GridContainer").dxDataGrid("instance").refresh();
                     this.showLoaderOnConfirm = false
+                    GlobalEmteaId = null
+                    GlobalEmteaAddedTime = null
                 }
                 else {
                     swal("Hata !", model.ErrorMessage, "error");
@@ -987,8 +992,8 @@ function UpdateEmteaGroup() {
 
 
     swal({
-        title: "Emtea Gurup Güncelle",
-        text: "Emtea Gurup Güncellensin Mi ?",
+        title: "Emtia Gurup Güncelle",
+        text: "Emtia Gurup Güncellensin Mi ?",
         type: "info",
         showCancelButton: true,
         closeOnConfirm: false,
@@ -1016,6 +1021,8 @@ function UpdateEmteaGroup() {
 
                     $('#drpemtias2').val('')
                     $('#emteagroupname2').val('')
+                    GlobalEmteaGroupId = null
+                    GlobalEmteaGroupAddedTime = null
 
                 }
                 else {
@@ -1071,6 +1078,8 @@ function SoftDeleteEmteaGroup(Id, GroupName, EmteaId, AddedTime) {
                     SweetAlertMesaj("Silme", "Emtia Gurup Silinmiştir !", "success", "Kapat", "btn-success")
                     $("#GridContainer").dxDataGrid("instance").refresh();
                     this.showLoaderOnConfirm = false
+                    GlobalEmteaGroupId = null
+                    GlobalEmteaGroupAddedTime = null
                 }
                 else {
                     swal("Hata !", model.ErrorMessage, "error");
@@ -1143,6 +1152,9 @@ function SoftDeleteEmteaType(Id, EmteaGroupId, EmteaTypeName, AddedTime) {
                     SweetAlertMesaj("Silme", "Emtia Tipi Silinmiştir !", "success", "Kapat", "btn-success")
                     $("#GridContainer").dxDataGrid("instance").refresh();
                     this.showLoaderOnConfirm = false
+                    GlobalEmteaTypeId = null
+                    GlobalEmteaGroupId = null
+                    GlobalEmteaTypeAddedTime = null
                 }
                 else {
                     swal("Hata !", model.ErrorMessage, "error");
@@ -1189,7 +1201,8 @@ function UpdateEmteaType() {
                     $('#drpemtiagroups2').val('')
                     $('#emteatypename2').val('')
                     $('#emteatypcode2').val('')
-
+                    GlobalEmteaTypeId = null
+                    GlobalEmteaTypeAddedTime = null
                 }
                 else {
 
@@ -1228,7 +1241,7 @@ function EditEmteaTypeGroup(id, EmteaId, EmteaGroupId, AddedTime) {
 
             $("#emteatypegroupname2").val(model.Veri.EmteaTypeGroupName)
 
-            $("#usermodeltitleEditSiparis").html(`${model.Veri.EmteaTypeGroupName}  isimli Emtea Tip Gurubu Düzenle `)
+            $("#usermodeltitleEditSiparis").html(`${model.Veri.EmteaTypeGroupName}  isimli Emtia Tip Gurubu Düzenle `)
             $("#loadPanel").dxLoadPanel("instance").hide();
             $("#EditModal").modal("show")
 
@@ -1245,8 +1258,8 @@ function UpdateEmteaTypeGroup() {
 
 
     swal({
-        title: "Emtea Tip Gurubu Güncelle",
-        text: "Emtea Gurubu Güncellensin Mi ?",
+        title: "Emtia Tip Gurubu Güncelle",
+        text: "Emtia Gurubu Güncellensin Mi ?",
         type: "info",
         showCancelButton: true,
         closeOnConfirm: false,
@@ -1267,7 +1280,7 @@ function UpdateEmteaTypeGroup() {
                 var model = JSON.parse(res);
 
                 if (model.success) {
-                    SweetAlertMesaj("Emtea Tip Gurubu Güncelle", model.Mesaj, "success", "Kapat", "btn-success")
+                    SweetAlertMesaj("Emtia Tip Gurubu Güncelle", model.Mesaj, "success", "Kapat", "btn-success")
                     $("#GridContainer").dxDataGrid("instance").refresh();
                     $("#EditModal").modal("hide")
                     loadpanel.hide()
@@ -1276,7 +1289,8 @@ function UpdateEmteaTypeGroup() {
                     $('#drpemtiagroups2').val('')
                     $('#drpemtiatypes2').val('')
                     $('#emteatypegroupname2').val('')
-
+                    GlobalEmteaTypeGroupId = null
+                    GlobalAddedTime = null
                 }
                 else {
 
@@ -1303,7 +1317,7 @@ function SoftDeleteEmteaTypeGroup(Id, EmteaTypeId, EmteaTypeGroupName, AddedTime
     GlobalAddedTime = AddedTime
     swal({
         title: "Sil ?",
-        text: `${EmteaTypeGroupName} isimli Emtea Tip Gurubu Silinsin mi ?`,
+        text: `${EmteaTypeGroupName} isimli Emtia Tip Gurubu Silinsin mi ?`,
         type: "info",
         showCancelButton: true,
         closeOnConfirm: false,
@@ -1328,9 +1342,12 @@ function SoftDeleteEmteaTypeGroup(Id, EmteaTypeId, EmteaTypeGroupName, AddedTime
                 var model = JSON.parse(res)
 
                 if (model.success) {
-                    SweetAlertMesaj("Silme", "Emtea Tip Gurubu Silinmiştir !", "success", "Kapat", "btn-success")
+                    SweetAlertMesaj("Silme", "Emtia Tip Gurubu Silinmiştir !", "success", "Kapat", "btn-success")
                     $("#GridContainer").dxDataGrid("instance").refresh();
                     this.showLoaderOnConfirm = false
+                    GlobalEmteaTypeId = null
+                    GlobalEmteaTypeGroupId = null
+                    GlobalAddedTime = null
                 }
                 else {
                     swal("Hata !", model.ErrorMessage, "error");
@@ -1372,13 +1389,13 @@ function CreatDetailTable(model) {
                                 </tr>
 
                                 <tr>
-                                    <td><span class="detailname">Emtea Kodu</span> :</td><td><span class="detailvalue">${model.Veri.EmteaCode}</span> </td>
-                                    <td><span class="detailname">Emtea Adı</span> :</td><td><span class="detailvalue">${model.Veri.EmteaName}</span> </td>
+                                    <td><span class="detailname">Emtia Kodu</span> :</td><td><span class="detailvalue">${model.Veri.EmteaCode}</span> </td>
+                                    <td><span class="detailname">Emtia Adı</span> :</td><td><span class="detailvalue">${model.Veri.EmteaName}</span> </td>
                                                                        
                                 </tr>
                                 <tr>
-                                    <td><span class="detailname">Emtea Gurup Adı</span> :</td><td><span class="detailvalue">${model.Veri.EmteaGroupName}</span> </td>
-                                    <td><span class="detailname">Emtea Tip Adı</span> :</td><td><span class="detailvalue">${model.Veri.EmteaTypeName}</span> </td>
+                                    <td><span class="detailname">Emtia Gurup Adı</span> :</td><td><span class="detailvalue">${model.Veri.EmteaGroupName}</span> </td>
+                                    <td><span class="detailname">Emtia Tip Adı</span> :</td><td><span class="detailvalue">${model.Veri.EmteaTypeName}</span> </td>
                                                                        
                                 </tr>
                                 <tr>
@@ -1474,7 +1491,7 @@ function UpdateTuikSubeData() {
                 var model = JSON.parse(res);
 
                 if (model.success) {
-                    SweetAlertMesaj("Tük Verisini Güncelle", model.messages, "success", "Kapat", "btn-success")
+                    SweetAlertMesaj("Tüik Verisini Güncelle", model.messages, "success", "Kapat", "btn-success")
                     $("#GridContainer").dxDataGrid("instance").refresh();
                     $("#EditModal").modal("hide")
                     loadpanel.hide()
@@ -1485,6 +1502,9 @@ function UpdateTuikSubeData() {
                     $('#drpsubes2').val('')
                     $('#tuikvalue2').val('')
                     $('#guessvalue2').val('')
+                    GlobalTuikSubeId = null
+                    GlobalTuikUserId = null
+                    GlobalAddedTime = null
                 }
                 else {
 
@@ -1544,6 +1564,12 @@ function SoftDeleteTuikSubeData(id, EmteaId, EmteaGroupId, EmteaTypeId, SubeId, 
                     SweetAlertMesaj("Silme", "Tüik Verisi Silinmiştir !", "success", "Kapat", "btn-success")
                     $("#GridContainer").dxDataGrid("instance").refresh();
                     this.showLoaderOnConfirm = false
+                    GlobalEmteaTypeId = null
+                    GlobalEmteaGroupId = null
+                    GlobalEmteaId = null
+                    GlobalTuikSubeId = null
+                    GlobalSubeId = null
+                    GlobalTuikUserId = null
                 }
                 else {
                     swal("Hata !", model.ErrorMessage, "error");
@@ -1585,13 +1611,13 @@ function CreatDetailTableCity(model) {
                                 </tr>
 
                                 <tr>
-                                    <td><span class="detailname">Emtea Kodu</span> :</td><td><span class="detailvalue">${model.Veri.EmteaCode}</span> </td>
-                                    <td><span class="detailname">Emtea Adı</span> :</td><td><span class="detailvalue">${model.Veri.EmteaName}</span> </td>
+                                    <td><span class="detailname">Emtia Kodu</span> :</td><td><span class="detailvalue">${model.Veri.EmteaCode}</span> </td>
+                                    <td><span class="detailname">Emtia Adı</span> :</td><td><span class="detailvalue">${model.Veri.EmteaName}</span> </td>
                                                                        
                                 </tr>
                                 <tr>
-                                    <td><span class="detailname">Emtea Gurup Adı</span> :</td><td><span class="detailvalue">${model.Veri.EmteaGroupName}</span> </td>
-                                    <td><span class="detailname">Emtea Tip Adı</span> :</td><td><span class="detailvalue">${model.Veri.EmteaTypeName}</span> </td>
+                                    <td><span class="detailname">Emtia Gurup Adı</span> :</td><td><span class="detailvalue">${model.Veri.EmteaGroupName}</span> </td>
+                                    <td><span class="detailname">Emtia Tip Adı</span> :</td><td><span class="detailvalue">${model.Veri.EmteaTypeName}</span> </td>
                                                                        
                                 </tr>
                                 <tr>
@@ -1665,6 +1691,9 @@ function UpdateTuikCityData() {
                     $('#drpcities2').val('')
                     $('#tuikvalue2').val('')
                     $('#guessvalue2').val('')
+                    GlobalTuikCityId = null
+                    GlobalTuikUserId = null
+                    GlobalAddedTime = null
                 }
                 else {
 
@@ -1797,6 +1826,8 @@ function UpdateUser() {
                     $('#title2').val('')
                     $('#email2').val('')
                     $('#drproles2').val('')
+                    GlobalUserId = null
+                    GlobalAddedTime = null
                 }
                 else {
 
@@ -1852,6 +1883,7 @@ function SoftDeleteUser(UserId, SubeId, UserRoleId, Name, Surname, AddedTime) {
                         SweetAlertMesaj("Silme", "Kullanıcı Silinmiştir !", "success", "Kapat", "btn-success")
                         $("#GridContainer").dxDataGrid("instance").refresh();
                         this.showLoaderOnConfirm = false
+                        GlobalUserId = null
                     }
                     else {
                         swal("Hata !", model.ErrorMessage, "error");
@@ -1900,6 +1932,10 @@ function SoftDeleteTuikCityData(id, EmteaId, EmteaGroupId, EmteaTypeId, CityId, 
                     SweetAlertMesaj("Silme", "Tüik İl Verisi Silinmiştir !", "success", "Kapat", "btn-success")
                     $("#GridContainer").dxDataGrid("instance").refresh();
                     this.showLoaderOnConfirm = false
+                    GlobalTuikCityId = null
+                    GlobalEmteaTypeId = null
+                    GlobalEmteaGroupId = null
+                    GlobalCityId = null
                 }
                 else {
                     swal("Hata !", model.ErrorMessage, "error");

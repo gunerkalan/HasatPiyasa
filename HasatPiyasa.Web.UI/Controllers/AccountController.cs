@@ -8,6 +8,7 @@ using HasatPiyasa.Entity.Entity;
 using Microsoft.AspNetCore.Mvc;
 using HasatPiyasa.Business;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authentication;
 
 namespace HasatPiyasa.Web.UI.Controllers
 {
@@ -46,10 +47,12 @@ namespace HasatPiyasa.Web.UI.Controllers
              
         }
 
-        public ActionResult Logout()
+      
+        [HttpGet]
+        public async  Task<ActionResult> Logout()
         {
-            //FormsAuthentication.SignOut();
-            //Session["User"] = null;
+            
+            HttpContext.Session.Clear();
             return RedirectToAction("Login", "Account");
         }
     }

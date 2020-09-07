@@ -288,26 +288,26 @@ function Save() {
     $.each(AddInput, (i, v) => {
 
         if (v.GuessValue > 0) {
-            if (v.HasatOran == 0 ||
-                v.HasatMiktar == 0 ||
-                v.UreticiKalanMiktar == 0 ||
-                v.Natural1 == 0 ||
-                v.Natural2 == 0 ||
-                v.Natural3 == 0 ||
-                v.Natural4 == 0 ||
-                v.Natural5 == 0 ||
-                v.NaturalToplam == 0 ||
-                v.ToptanPiyasa1 == 0 ||
-                v.ToptanPiyasa2 == 0 ||
-                v.ToptanPiyasa3 == 0 ||
-                v.ToptanPiyasa4 == 0 ||
-                v.ToptanPiyasa5 == 0 ||
-                v.Perakende1 == 0 ||
-                v.Perakende2 == 0 ||
-                v.Perakende3 == 0 ||
-                v.Perakende4 == 0 ||
-                v.Perakende5 == 0 ||
-                v.Perakende6 == 0
+            if (v.HasatOran == null ||
+                v.HasatMiktar == null ||
+                v.UreticiKalanMiktar == null ||
+                v.Natural1 == null ||
+                v.Natural2 == null ||
+                v.Natural3 == null ||
+                v.Natural4 == null ||
+                v.Natural5 == null ||
+                v.NaturalToplam == null ||
+                v.ToptanPiyasa1 == null ||
+                v.ToptanPiyasa2 == null ||
+                v.ToptanPiyasa3 == null ||
+                v.ToptanPiyasa4 == null ||
+                v.ToptanPiyasa5 == null ||
+                v.Perakende1 == null ||
+                v.Perakende2 == null ||
+                v.Perakende3 == null ||
+                v.Perakende4 == null ||
+                v.Perakende5 == null ||
+                v.Perakende6 == null
                    )
     {
         ++error

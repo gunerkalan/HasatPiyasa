@@ -29,11 +29,13 @@
             width:1590px !important;
         }
         .disabledInput:read-only {
-            background-color:#F5F5F5!important
+            background-color:#F5F5F5!important;
+            color:#F5F5F5!important;    
         }
 
         .disabledInput {
-            background-color: #F5F5F5 !important
+            background-color: #F5F5F5 !important;
+            color: #F5F5F5 !important;
         }
 
     </style>
@@ -120,7 +122,7 @@
                 count = 0;
 
                 @foreach (var emteaType in grup.EmteaTypes)
-                { var data =emteaType.DataInputs.FirstOrDefault();
+                { var data =emteaType.DataInputs.Where(x=>x.EmteaTypeId==emteaType.Id && x.CityId==Model.SelectedCityId).LastOrDefault();
                     count++;
                     dataInputCount++;
                     var tuikCheck =
