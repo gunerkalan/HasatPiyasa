@@ -194,13 +194,12 @@ namespace HasatPiyasa.Business.Concrete
             try
             {
                 var res = await _subeDal.GetTable();
-                var model = res.Where(x => x.IsActive).ToList();
+                var model = res.Include(x=>x.SubeCities).ThenInclude(x=>x.City).Where(x => x.IsActive).ToList();
 
                 var response = model.Select(x => new SubeCityDto
                 {
                     SubeId = x.Id,
                     SubeName = x.SubeName
-
                 }).ToList();
 
                 return new NIslemSonuc<List<SubeCityDto>>

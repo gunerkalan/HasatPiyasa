@@ -39,7 +39,7 @@ namespace HasatPiyasa.Web.UI.Controllers
        public async Task<ActionResult> RiceGeneralReportBySube()
         {
             var model = new  HasaInputViewModel();
-            var _cities = await _subeCityService.GetSbCityGTable();            
+            var _cities = await _subeService.GetSbGTable();            
             model.CitiesRapor = _cities.Veri.Distinct().ToList();
            var _dates =await  _formDataInputService.GetTable();
             model.DateInputs=_dates.Select(x => x.AddedTime.Date).Distinct().ToList();

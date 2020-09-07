@@ -105,7 +105,7 @@
             <select class="js-example-basic-multiple form-control" name="cities[]" multiple="multiple" id="cities">
                 @foreach (var cty in Model.CitiesRapor.Distinct())
                 {
-                    if (Model.SelectedCityId == cty.CityId)
+                    if (Model.SelectedCityId == cty.SubeId)
                     {
                         <option value="@cty.SubeId" selected>@cty.SubeName</option>
                     }
