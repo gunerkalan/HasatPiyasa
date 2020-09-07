@@ -14,6 +14,7 @@ namespace HasatPiyasa.Entity.Entity
 
         public int Id { get; set; }
         public string EmteaTypeName { get; set; }
+        public string EmteaTypeCode { get; set; }
         public int EmteaGroupId { get; set; }
 
         public virtual EmteaGroups EmteaGroup { get; set; }

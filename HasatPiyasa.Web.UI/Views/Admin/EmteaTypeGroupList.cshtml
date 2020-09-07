@@ -72,7 +72,7 @@
                    {
                        btns.Add().Name(GridColumnButtonName.Edit).Text("Düzenle");
                    }).CellTemplate(@<text>
-                <button title="Düzenle" onclick="EditEmteaTypeGroup('<%= data.Id %>','<%= data.EmteaId %>','<%= data.EmteaGroupId %>');"><i class="fa fa-pen-square" aria-hidden="true" style="color:#1b70cc"></i></button>
+                <button title="Düzenle" onclick="EditEmteaTypeGroup('<%= data.Id %>','<%= data.EmteaId %>','<%= data.EmteaGroupId %>','<%= data.AddedTime %>');"><i class="fa fa-pen-square" aria-hidden="true" style="color:#1b70cc"></i></button>
 
             </text>);
 
@@ -83,7 +83,7 @@
              {
                  btns.Add().Name(GridColumnButtonName.Delete).Text("Sil");
              }).CellTemplate(@<text>
-                <button title="Silme" onclick="SoftDeleteEmteaTypeGroup('<%= data.Id %>','<%= data.EmteaTypeId %>','<%= data.EmteaTypeGroupName %>');"><i class="fa fa-trash" aria-hidden="true" style="color:red"></i></button>
+                <button title="Silme" onclick="SoftDeleteEmteaTypeGroup('<%= data.Id %>','<%= data.EmteaTypeId %>','<%= data.EmteaTypeGroupName %>','<%= data.AddedTime %>');"><i class="fa fa-trash" aria-hidden="true" style="color:red"></i></button>
 
             </text>);
 

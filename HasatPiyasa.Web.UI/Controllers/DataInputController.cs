@@ -62,6 +62,7 @@ namespace HasatPiyasa.Web.UI.Controllers
                 }
 
                 model.DataInputs = Inputs.Veri != null ? _dataInputService.ListAllDataInputs().Veri.Where(x => x.FormDataInputId == Inputs.Veri.Id).ToList() : null;
+               
                 model.HaveTodayInputData = model.DataInputs != null ? true : false;
 
 

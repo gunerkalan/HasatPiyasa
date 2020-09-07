@@ -28,6 +28,16 @@
             position:relative;
             width:1590px !important;
         }
+        .disabledInput:read-only {
+            background-color:#F5F5F5!important;
+            color:#F5F5F5!important;    
+        }
+
+        .disabledInput {
+            background-color: #F5F5F5 !important;
+            color: #F5F5F5 !important;
+        }
+
     </style>
 }
 
@@ -112,7 +122,7 @@
                 count = 0;
 
                 @foreach (var emteaType in grup.EmteaTypes)
-                {
+                { var data =emteaType.DataInputs.Where(x=>x.EmteaTypeId==emteaType.Id && x.CityId==Model.SelectedCityId).LastOrDefault();
                     count++;
                     dataInputCount++;
                     var tuikCheck =
@@ -120,36 +130,8 @@
                     emteaType.Tuiks.FirstOrDefault(x => x.EmteaGroupId == grup.Id && x.CityId == Model.SelectedCityId) != null ?
                     emteaType.Tuiks.FirstOrDefault(x => x.CityId == Model.SelectedCityId && x.EmteaGroupId == grup.Id && x.TuikYear == DateTime.Now.Year - 1).TuikValue : 0 : 0;
 
-                    if (tuikCheck == 0)
-                    {
-                        dataInputCount--;
-                        <tr>
-                            @if (count < 2)
-                            {
-                                <td class="tdstyle" rowspan="@grup.EmteaTypes.Count" height="395" align="left" valign="middle" bgcolor="#F0F0F0" sdnum="1033;1055;Standard"><b><font face="Verdana" color="#C00000">@grup.GroupName</font></b></td>
-                            }
 
-                            <td class="tdstyle">
-
-                                <font face="Verdana" color="#C00000">
-                                    <b>
-                                        @emteaType.EmteaTypeName
-                                    </b>
-                                    <br>
-                                    <span style="text-transform:capitalize;font-style:italic">(@string.Join(',', emteaType.EmteaTypeGroups.Select(s => s.EmteaTypeGroupName)))</span>
-                                </font>
-
-                            </td>
-                            @for (int i = 0; i < 22; i++)
-                            {
-                                <td style="background-color:lightgray"><input type="number" disabled /></td>
-                            }
-
-                        </tr>
-                    }
-                    else
-                    {
-                        <tr class="@("datainput"+dataInputCount)" emteatype="@emteaType.Id" emteagroup="@grup.Id" dataInputId="@(DataInputModelCount>=dataInputCount ? Model.HaveTodayInputData==true ? Model.DataInputs[dataInputCount-1].Id:0:0)">
+                        <tr class="@("datainput"+dataInputCount)" emteatype="@emteaType.Id" emteagroup="@grup.Id" dataInputId="@(Model.HaveTodayInputData==true ? data!=null?data.Id:0:0)">
 
                             @if (count < 2)
                             {
@@ -186,39 +168,39 @@
                     emteaType.Tuiks.FirstOrDefault(x =>x.CityId==Model.SelectedCityId &&x.EmteaGroupId==grup.Id && x.GuessYear == DateTime.Now.Year).GuessValue : 0:0 )" />
                             </td>
 
-                            <td><input type="number" id="@("HasatYuzde_"+count.ToString())" onkeyup="YuzdeHesapla(this); CalculateToptan();" name="percent" value="@(DataInputModelCount>=dataInputCount ? Model.HaveTodayInputData==true ? Model.DataInputs[dataInputCount-1].HasatOran:0:0)" /></td>
-                            <td><input type="number" id="@("HasatEdilen_"+count.ToString())" name="hasatedilen" readonly value="@(DataInputModelCount>=dataInputCount ? Model.HaveTodayInputData==true ? Model.DataInputs[dataInputCount-1].HasatMiktar:0:0)" /></td>
-                            <td><input type="number" name="bekleyenton" onkeyup="CalculateColumn('bekleyenton','bekleyentonTotal','topla')" value="@(DataInputModelCount>=dataInputCount ? Model.HaveTodayInputData==true ? Model.DataInputs[dataInputCount-1].UreticiKalanMiktar:0:0)" /></td>
+                            <td><input type="number" id="@("HasatYuzde_"+count.ToString())" onkeyup="YuzdeHesapla(this); CalculateToptan();" name="percent" value="@(Model.HaveTodayInputData==true ? data!=null?data.HasatOran:0:0 )" @(tuikCheck<1? "class=disabledInput":"") /></td>
+                            <td><input type="number" @(tuikCheck<1? "class=disabledInput":"") id="@("HasatEdilen_"+count.ToString())" name="hasatedilen" readonly value="@(Model.HaveTodayInputData==true ? data!=null?data.HasatMiktar:0:0 )" /></td>
+                            <td><input type="number" @(tuikCheck<1? "class=disabledInput":"") name="bekleyenton" onkeyup="CalculateColumn('bekleyenton','bekleyentonTotal','topla')" value="@(Model.HaveTodayInputData==true ? data!=null?data.UreticiKalanMiktar:0:0 )" /></td>
 
 
-                            <td><input type="number" data-bind="0" name="@("naturel"+count.ToString())" id="@("naturel_"+count.ToString())" onkeyup="CalculateNaturel(this);" value="@(DataInputModelCount>=dataInputCount ? Model.HaveTodayInputData==true ? Model.DataInputs[dataInputCount-1].Natural1:0:0)" /></td>
-                            <td><input type="number" data-bind="1" name="@("naturel"+count.ToString())" id="@("naturel_"+count.ToString())" onkeyup="CalculateNaturel(this);" value="@(DataInputModelCount>=dataInputCount ? Model.HaveTodayInputData==true ? Model.DataInputs[dataInputCount-1].Natural2:0:0)" /></td>
-                            <td><input type="number" data-bind="2" name="@("naturel"+count.ToString())" id="@("naturel_"+count.ToString())" onkeyup="CalculateNaturel(this);" value="@(DataInputModelCount>=dataInputCount ? Model.HaveTodayInputData==true ? Model.DataInputs[dataInputCount-1].Natural3:0:0)" /></td>
-                            <td><input type="number" data-bind="3" name="@("naturel"+count.ToString())" id="@("naturel_"+count.ToString())" onkeyup="CalculateNaturel(this);" value="@(DataInputModelCount>=dataInputCount ? Model.HaveTodayInputData==true ? Model.DataInputs[dataInputCount-1].Natural4:0:0)" /></td>
-                            <td><input type="number" data-bind="4" name="@("naturel"+count.ToString())" id="@("naturel_"+count.ToString())" onkeyup="CalculateNaturel(this);" value="@(DataInputModelCount>=dataInputCount ? Model.HaveTodayInputData==true ? Model.DataInputs[dataInputCount-1].Natural5:0:0)" /></td>
+                            <td><input type="number" @(tuikCheck<1? "class=disabledInput":"") data-bind="0" name="@("naturel"+count.ToString())" id="@("naturel_"+count.ToString())" onkeyup="CalculateNaturel(this);"value="@(Model.HaveTodayInputData==true ? data!=null?data.Natural1:0:0 )"/></td>
+                            <td><input type="number" @(tuikCheck<1? "class=disabledInput":"") data-bind="1" name="@("naturel"+count.ToString())" id="@("naturel_"+count.ToString())" onkeyup="CalculateNaturel(this);" value="@(Model.HaveTodayInputData==true ? data!=null?data.Natural2:0:0)" /></td>
+                            <td><input type="number" @(tuikCheck<1? "class=disabledInput":"") data-bind="2" name="@("naturel"+count.ToString())" id="@("naturel_"+count.ToString())" onkeyup="CalculateNaturel(this);" value="@(Model.HaveTodayInputData==true ? data!=null?data.Natural3:0:0)" /></td>
+                            <td><input type="number" @(tuikCheck<1? "class=disabledInput":"") data-bind="3" name="@("naturel"+count.ToString())" id="@("naturel_"+count.ToString())" onkeyup="CalculateNaturel(this);" value="@(Model.HaveTodayInputData==true ? data!=null?data.Natural4:0:0)" /></td>
+                            <td><input type="number" @(tuikCheck<1? "class=disabledInput":"") data-bind="4" name="@("naturel"+count.ToString())" id="@("naturel_"+count.ToString())" onkeyup="CalculateNaturel(this);" value="@(Model.HaveTodayInputData==true ? data!=null?data.Natural5:0:0)" /></td>
 
 
-                            <td><input type="number" name="piyasaton" readonly id="@("piyasaton"+count.ToString())" value="@(DataInputModelCount>=dataInputCount ? Model.HaveTodayInputData==true ? Model.DataInputs[dataInputCount-1].NaturalToplam:0:0)" /></td>
+                            <td><input type="number" @(tuikCheck<1? "class=disabledInput":"") name="piyasaton" readonly id="@("piyasaton"+count.ToString())" value="@(Model.HaveTodayInputData==true ? data!=null?data.NaturalToplam:0:0)" /></td>
 
 
 
-                            <td><input type="number" name="toptan0" onchange="CalculateToptan()" value="@(DataInputModelCount>=dataInputCount ? Model.HaveTodayInputData==true ? Model.DataInputs[dataInputCount-1].ToptanPiyasa1:0:0)" /></td>
-                            <td><input type="number" name="toptan1" onchange="CalculateToptan()" value="@(DataInputModelCount>=dataInputCount ? Model.HaveTodayInputData==true ? Model.DataInputs[dataInputCount-1].ToptanPiyasa2:0:0)" /></td>
-                            <td><input type="number"  name="toptan2" onchange="CalculateToptan()" value="@(DataInputModelCount>=dataInputCount ? Model.HaveTodayInputData==true ? Model.DataInputs[dataInputCount-1].ToptanPiyasa3:0:0)" /></td>
-                            <td><input type="number"  name="toptan3" onchange="CalculateToptan()" value="@(DataInputModelCount>=dataInputCount ? Model.HaveTodayInputData==true ? Model.DataInputs[dataInputCount-1].ToptanPiyasa4:0:0)" /></td>
-                            <td><input type="number"  name="toptan4" onchange="CalculateToptan()" value="@(DataInputModelCount>=dataInputCount ? Model.HaveTodayInputData==true ? Model.DataInputs[dataInputCount-1].ToptanPiyasa5:0:0)" /></td>
+                            <td><input type="number" @(tuikCheck<1? "class=disabledInput":"") name="toptan0" onchange="CalculateToptan()" value="@(Model.HaveTodayInputData==true ? data!=null?data.ToptanPiyasa1:0:0)" /></td>
+                            <td><input type="number" @(tuikCheck<1? "class=disabledInput":"") name="toptan1" onchange="CalculateToptan()" value="@(Model.HaveTodayInputData==true ? data!=null?data.ToptanPiyasa2:0:0)" /></td>
+                            <td><input type="number" @(tuikCheck<1? "class=disabledInput":"")  name="toptan2" onchange="CalculateToptan()" value="@(Model.HaveTodayInputData==true ? data!=null?data.ToptanPiyasa3:0:0)" /></td>
+                            <td><input type="number" @(tuikCheck<1? "class=disabledInput":"")  name="toptan3" onchange="CalculateToptan()" value="@(Model.HaveTodayInputData==true ? data!=null?data.ToptanPiyasa4:0:0)" /></td>
+                            <td><input type="number" @(tuikCheck<1? "class=disabledInput":"")  name="toptan4" onchange="CalculateToptan()" value="@(Model.HaveTodayInputData==true ? data!=null?data.ToptanPiyasa5:0:0)" /></td>
 
 
-                            <td><input type="number" name="dfiyat" id="@("d_1_"+count.ToString())" onkeyup="Avarage(this);" value="@(DataInputModelCount>=dataInputCount ? Model.HaveTodayInputData==true ? Model.DataInputs[dataInputCount-1].Perakende1:0:0)" /></td>
-                            <td><input type="number" name="yfiyat" id="@("y_1_"+count.ToString())" onkeyup="Avarage(this);" value="@(DataInputModelCount>=dataInputCount ? Model.HaveTodayInputData==true ? Model.DataInputs[dataInputCount-1].Perakende2:0:0)" /></td>
-                            <td><input type="number" name="ofiyat" id="@("o_1_"+count.ToString())" readonly value="@(DataInputModelCount>=dataInputCount ? Model.HaveTodayInputData==true ? Model.DataInputs[dataInputCount-1].Perakende3:0:0)" /></td>
+                            <td><input type="number" name="dfiyat" id="@("d_1_"+count.ToString())" onkeyup="Avarage(this);" value="@(Model.HaveTodayInputData==true ? data!=null?data.Perakende1:0:0)" /></td>
+                            <td><input type="number" name="yfiyat" id="@("y_1_"+count.ToString())" onkeyup="Avarage(this);" value="@(Model.HaveTodayInputData==true ? data!=null?data.Perakende2:0:0)" /></td>
+                            <td><input type="number" name="ofiyat" id="@("o_1_"+count.ToString())" readonly value="@(Model.HaveTodayInputData==true ? data!=null?data.Perakende3:0:0)" /></td>
 
-                            <td><input type="number" name="dfiyat2" id="@("d_2_"+count.ToString())" onkeyup="Avarage(this);" value="@(DataInputModelCount>=dataInputCount ? Model.HaveTodayInputData==true ? Model.DataInputs[dataInputCount-1].Perakende4:0:0)" /></td>
-                            <td><input type="number" name="yfiyat2" id="@("y_2_"+count.ToString())" onkeyup="Avarage(this);" value="@(DataInputModelCount>=dataInputCount ? Model.HaveTodayInputData==true ? Model.DataInputs[dataInputCount-1].Perakende5:0:0)" /></td>
-                            <td><input type="number" name="ofiyat2" id="@("o_2_"+count.ToString())" readonly value="@(DataInputModelCount>=dataInputCount ? Model.HaveTodayInputData==true ? Model.DataInputs[dataInputCount-1].Perakende6:0:0)" /></td>
+                            <td><input type="number" name="dfiyat2" id="@("d_2_"+count.ToString())" onkeyup="Avarage(this);" value="@(Model.HaveTodayInputData==true ? data!=null?data.Perakende4:0:0)" /></td>
+                            <td><input type="number" name="yfiyat2" id="@("y_2_"+count.ToString())" onkeyup="Avarage(this);" value="@(Model.HaveTodayInputData==true ? data!=null?data.Perakende5:0:0)" /></td>
+                            <td><input type="number" name="ofiyat2" id="@("o_2_"+count.ToString())" readonly value="@(Model.HaveTodayInputData==true ? data!=null?data.Perakende6:0:0)" /></td>
 
                         </tr>
-                    }
+                    
 
 
 
@@ -300,7 +282,8 @@
 
         $(document).ready(() => {
             LoadProcess()
-
+            $(".disabledInput").parent().css("background-color","#F5F5F5")
+            $(".disabledInput").prop("readonly", true)
         })
     </script>
 }

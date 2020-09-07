@@ -188,5 +188,36 @@ namespace HasatPiyasa.Business.Concrete
                 };
             }
         }
+
+        public async Task<NIslemSonuc<List<SubeCityDto>>> GetSbGTable()
+        {
+            try
+            {
+                var res = await _subeDal.GetTable();
+                var model = res.Include(x=>x.SubeCities).ThenInclude(x=>x.City).Where(x => x.IsActive).ToList();
+
+                var response = model.Select(x => new SubeCityDto
+                {
+                    SubeId = x.Id,
+                    SubeName = x.SubeName
+                }).ToList();
+
+                return new NIslemSonuc<List<SubeCityDto>>
+                {
+                    BasariliMi = false,
+                    Veri = response
+                };
+
+            }
+            catch (Exception hata)
+            {
+                return new NIslemSonuc<List<SubeCityDto>>
+                {
+                    BasariliMi = false,
+                    Mesaj = hata.InnerException.Message
+                };
+            }
+
+        }
     }
 }

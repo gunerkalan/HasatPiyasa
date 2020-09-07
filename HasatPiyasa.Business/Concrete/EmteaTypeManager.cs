@@ -29,7 +29,7 @@ namespace HasatPiyasa.Business.Concrete
            
             try
             {
-                NIslemSonuc sonuc = BusinessRules.Run(CheckEmteaTypeNameExists(emteatype.EmteaTypeName));
+                NIslemSonuc sonuc = BusinessRules.Run(CheckEmteaTypeNameExists(emteatype.EmteaTypeCode));
                 if (sonuc.BasariliMi)
                 {
                     var addedemteatype = await _emteaTypeDal.AddAsync(emteatype);
@@ -66,12 +66,12 @@ namespace HasatPiyasa.Business.Concrete
 
         private NIslemSonuc<bool> CheckEmteaTypeNameExists(string emteatypename)
         {
-            if (_emteaTypeDal.Get(p => p.EmteaTypeName == emteatypename) != null)
+            if (_emteaTypeDal.Get(p => p.EmteaTypeCode == emteatypename) != null)
             {
                 return new NIslemSonuc<bool>
                 {
                     BasariliMi = false,
-                    Mesaj = Messages.ErrorEmteaGroupName
+                    Mesaj = Messages.ErrorEmteaTypeName
                 };
             }
             return new NIslemSonuc<bool>
@@ -97,7 +97,8 @@ namespace HasatPiyasa.Business.Concrete
                     GroupName = x.EmteaGroup.GroupName,
                     AddedTime = x.AddedTime,
                     EmteaId = x.EmteaGroup.Emtea.Id,
-                    EmteaGroupId = x.EmteaGroupId
+                    EmteaGroupId = x.EmteaGroupId,
+                    EmteaTypeCode = x.EmteaTypeCode
 
                 }).ToList();
                 
@@ -218,7 +219,8 @@ namespace HasatPiyasa.Business.Concrete
                 {
                     EmteaId = model.EmteaGroup.Emtea.Id,
                     EmteaGroupId = model.EmteaGroupId,
-                    EmteaTypeName = model.EmteaTypeName
+                    EmteaTypeName = model.EmteaTypeName,
+                    EmteaTypeCode = model.EmteaTypeCode
                 });
 
                 return new NIslemSonuc<EmteaTypeEditDto>

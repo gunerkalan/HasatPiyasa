@@ -8,7 +8,8 @@ namespace HasatPiyasa.Core.Utilities.Enums
     {
         public enum Data
         {
-            Rice =30,
+            //Rice =1,
+            Rice=30
         }
     }
 }
