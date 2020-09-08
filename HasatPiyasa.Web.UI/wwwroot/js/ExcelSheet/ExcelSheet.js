@@ -3,8 +3,8 @@ var Cities = [];
 var AllDate = false;
 var AllCities = false;
 
-LoadTable();
-LoadTableCity();
+//LoadTable();
+//LoadTableCity();
 
 setTimeout(() => {
     LoadProcess()
@@ -62,7 +62,7 @@ function LoadProcess() {
 
 
 
-    console.clear()
+   // console.clear()
 }
 function CalculateToptan() {
 
@@ -116,7 +116,7 @@ function CalculateColumn(name, totalid, calculateType) {
         var total = 0;
         $.each(tuiks, (i, v) => {
             if (v.value != "0") {
-                total += Number(v.value)
+                total += Number(v.value.toString().replace(',', '.'))
             }
         })
 
@@ -129,10 +129,11 @@ function CalculateColumn(name, totalid, calculateType) {
         var _count = 0
         $.each(tuiks, (i, v) => {
             if (v.value != "0") {
-                total += Number(v.value)
+                total += Number(v.value.replace(',','.'))
                 _count++
             }
         })
+
         $("#" + totalid).val(total / _count)
 
     }
@@ -147,19 +148,22 @@ function CalculateColumnByCumulative(name, relatedcolumnname, totalid, calculate
         var miktartotal = 0;
         var total = 0;
         $.each(miktars, (i, v) => {
-            if (v.value != "0") {
-                miktartotal += Number(v.value)
+            if (Number(v.value.toString().replace(',', '.')) != 0) {
+                miktartotal += Number(v.value.toString().replace(',', '.'))
             }
         })
         $.each(miktars, (a, b) => {
             $.each(tuiks, (i, v) => {
-                if (v.value != "0" & a == i) {
-                    total += Number(v.value) * Number(b.value)
+                if (Number(v.value.toString().replace(',', '.')) != 0 & a == i) {
+                    total += Number(v.value.toString().replace(',', '.')) * Number(b.value.toString().replace(',', '.'))
+                   
                 }
+                
             })
         })
 
-        $("#" + totalid).val(parseInt(total / miktartotal))
+        if (total>0)
+        $("#" + totalid).val(Number(total / miktartotal))
 
     }
 
@@ -202,7 +206,7 @@ function Avarage(e) {
         var number1 = Number($("#d_1_" + rowId).val())
         var number2 = Number($("#y_1_" + rowId).val())
         var numberAvarage = (number1 + number2) / 2
-        $("#o_1_" + rowId).val(numberAvarage)
+        $("#o_1_" + rowId).val(numberAvarage.toFixed(2))
         CalculateColumn("dfiyat", "dfiyatTotal", "ortalama")
         CalculateColumn("yfiyat", "yfiyatTotal", "ortalama")
         CalculateColumn("ofiyat", "ofiyatTotal", "ortalama")
@@ -211,7 +215,7 @@ function Avarage(e) {
         var number1 = Number($("#d_2_" + rowId).val())
         var number2 = Number($("#y_2_" + rowId).val())
         var numberAvarage = (number1 + number2) / 2
-        $("#o_2_" + rowId).val(numberAvarage)
+        $("#o_2_" + rowId).val(numberAvarage.toFixed(2))
         CalculateColumn("dfiyat2", "dfiyat2Total", "ortalama")
         CalculateColumn("yfiyat2", "yfiyat2Total", "ortalama")
         CalculateColumn("ofiyat2", "ofiyat2Total", "ortalama")
@@ -271,6 +275,7 @@ function Save() {
 
         var keys = Object.keys(item);
         var input = $(`.datainput${i} input`)
+      
         item.CityId = $("#cityId :selected").val()
         item.EmteaTypeId = $(`.datainput${i}`).attr("emteatype")
         item.EmteaGroupId = $(`.datainput${i}`).attr("emteagroup")
@@ -278,36 +283,38 @@ function Save() {
         $.each(input, (n, v) => {
 
             item[keys[n + 3]] = v.value
-
+            
         })
 
-        if (i != inputs - 1)
+        if (i != inputs - 1) {
             AddInput.push(item)
+        }
+          
     }
-
+    console.log(AddInput)
     $.each(AddInput, (i, v) => {
 
-        if (v.GuessValue > 0) {
-            if (v.HasatOran == null ||
-                v.HasatMiktar == null ||
-                v.UreticiKalanMiktar == null ||
-                v.Natural1 == null ||
-                v.Natural2 == null ||
-                v.Natural3 == null ||
-                v.Natural4 == null ||
-                v.Natural5 == null ||
-                v.NaturalToplam == null ||
-                v.ToptanPiyasa1 == null ||
-                v.ToptanPiyasa2 == null ||
-                v.ToptanPiyasa3 == null ||
-                v.ToptanPiyasa4 == null ||
-                v.ToptanPiyasa5 == null ||
-                v.Perakende1 == null ||
-                v.Perakende2 == null ||
-                v.Perakende3 == null ||
-                v.Perakende4 == null ||
-                v.Perakende5 == null ||
-                v.Perakende6 == null
+        if (Number(v.GuessValue) > 0) {
+            if (v.HasatOran == "" ||
+                v.HasatMiktar == "" ||
+                v.UreticiKalanMiktar == "" ||
+                v.Natural1 == "" ||
+                v.Natural2 == "" ||
+                v.Natural3 == "" ||
+                v.Natural4 == "" ||
+                v.Natural5 == "" ||
+                v.NaturalToplam == "" ||
+                v.ToptanPiyasa1 == "" ||
+                v.ToptanPiyasa2 == "" ||
+                v.ToptanPiyasa3 == "" ||
+                v.ToptanPiyasa4 == "" ||
+                v.ToptanPiyasa5 == "" ||
+                v.Perakende1 == "" ||
+                v.Perakende2 == "" ||
+                v.Perakende3 == "" ||
+                v.Perakende4 == "" ||
+                v.Perakende5 == "" ||
+                v.Perakende6 == ""
                    )
     {
         ++error
@@ -315,20 +322,43 @@ function Save() {
 }
 
 if (error == 0) {
-    if (v.HasatMiktar != "" && v.HasatMiktar != "0") {
+    //if (v.HasatMiktar != "" && v.HasatMiktar != "0") {
+    //    dataInput.push(v)
+    //}
+
+    if ((Number(v.HasatMiktar) == 0 || Number(v.HasatMiktar) > 0)
+        && Number(v.Perakende1) > 0
+        && Number(v.Perakende2) > 0
+        && Number(v.Perakende3) > 0
+        && Number(v.Perakende4) > 0
+        && Number(v.Perakende5) > 0
+        && Number(v.Perakende6) > 0) {
+         
         dataInput.push(v)
     }
-
-    if (v.HasatMiktar == "0" && v.Perakende1 > 0 && v.Perakende2 > 0 && v.Perakende3 > 0 && v.Perakende4 > 0 && v.Perakende5 > 0 && v.Perakende6 > 0) {
-        dataInput.push(v)
+    else {
+         
     }
 }
+
 
          
 
     })
 
-if (error == 0) {
+    if (error == 0) {
+
+        $.each(dataInput, (i, v) => {
+
+            v.Perakende1 = v.Perakende1.toString().replace('.',',') 
+            v.Perakende2 = v.Perakende2.toString().replace('.', ',') 
+            v.Perakende3 = v.Perakende3.toString().replace('.', ',') 
+            v.Perakende4 = v.Perakende4.toString().replace('.', ',') 
+            v.Perakende5 = v.Perakende5.toString().replace('.', ',') 
+            v.Perakende6 = v.Perakende6.toString().replace('.', ',') 
+            console.log(v.Perakende1)
+        })
+
     $.post("/DataInput/DataInputRice", { dataInputs: dataInput }, (res) => {
 
         var model = JSON.parse(JSON.stringify(res))
@@ -375,9 +405,9 @@ function LoadTable(pathh) {
     Dates = $('#dates').select2('val')
     Cities = $('#cities').select2('val')
     $('.rapor').css("border", "none")
-    AllCities = document.getElementById("allcities").checked
-    AllDate = document.getElementById("alldate").checked
-    getLoadPanelInstance().show()
+    //AllCities = document.getElementById("allcities").checked
+    //AllDate = document.getElementById("alldate").checked
+   // getLoadPanelInstance().show()
     $.post("/report/" + pathh, { dates: Dates, cities: Cities, allDate: AllDate, allcities: AllCities }, (res) => {
         $(".rapor").html(res)
         LoadProcess()

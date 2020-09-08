@@ -145,7 +145,6 @@ namespace HasatPiyasa.Web.UI.Controllers
                 return Json(new { success = false, messages = "Lütfen formu doldudurun !" });
             }
 
-
         }
 
         [HttpGet]
