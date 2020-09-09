@@ -116,11 +116,11 @@ function CalculateColumn(name, totalid, calculateType) {
         var total = 0;
         $.each(tuiks, (i, v) => {
             if (v.value != "0") {
-                total += Number(v.value)
+                total += Number(v.value.replace(/\./g, ''))
             }
         })
 
-        $("#" + totalid).val(total)
+        $("#" + totalid).val(total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "."))
     }
 
     if (calculateType == "ortalama") {
@@ -129,11 +129,11 @@ function CalculateColumn(name, totalid, calculateType) {
         var _count = 0
         $.each(tuiks, (i, v) => {
             if (v.value != "0") {
-                total += Number(v.value)
+                total += Number(v.value.replace(/\./g, ''))
                 _count++
             }
         })
-        $("#" + totalid).val(total / _count)
+        $("#" + totalid).val(parseInt(total / _count).toString().replace(/\B(?=(\d{3})+(?!\d))/g, "."))
 
     }
 
@@ -148,18 +148,18 @@ function CalculateColumnByCumulative(name, relatedcolumnname, totalid, calculate
         var total = 0;
         $.each(miktars, (i, v) => {
             if (v.value != "0") {
-                miktartotal += Number(v.value)
+                miktartotal += Number(v.value.replace(/\./g, ''))
             }
         })
         $.each(miktars, (a, b) => {
             $.each(tuiks, (i, v) => {
                 if (v.value != "0" & a == i) {
-                    total += Number(v.value) * Number(b.value)
+                    total += Number(v.value.replace(/\./g, '')) * Number(b.value.replace(/\./g, ''))
                 }
             })
         })
 
-        $("#" + totalid).val(parseInt(total / miktartotal))
+        $("#" + totalid).val(parseInt(total / miktartotal).toString().replace(/\B(?=(\d{3})+(?!\d))/g, "."))
 
     }
 
@@ -391,8 +391,6 @@ function LoadMarketTable(pathh) {
     Dates = $('#dates').select2('val')
     Emteatypes = $('#emteatypes').select2('val')
     $('.rapor').css("border", "none")
-    AllCities = document.getElementById("allcities").checked
-    AllDate = document.getElementById("alldate").checked
     getLoadPanelInstance().show()
     $.post("/report/" + pathh, { dates: Dates, emteatypes: Emteatypes }, (res) => {
         $(".rapor").html(res)

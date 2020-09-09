@@ -1,43 +1,44 @@
 ﻿@@model HasaInputViewModel
-    @using DevExtreme.AspNet.Mvc
-    @{
-        ViewData["Title"] = "DataInputRice";
-        Layout = null;
-        var count = 0;
-        var groupCount = 0;
-        var dataInputCount = 0;
-        var DataInputModelCount = Model.DataInputs != null ? Model.DataInputs.Count : 0;
-    }
-    <div style="display:block">
-        <div class="row">
+@using DevExtreme.AspNet.Mvc
+@{
+    ViewData["Title"] = "DataInputRice";
+    Layout = null;
+    var count = 0;
+    var groupCount = 0;
+    var dataInputCount = 0;
+    var DataInputModelCount = Model.DataInputs != null ? Model.DataInputs.Count : 0;
+}
+<div style="display:block">
+    <div class="row">
 
-            <div class="col-sm-12">
-                <div class="d-flex flex-column-fluid">
-                    <!--begin::Container-->
-                    <div style="width:2000px!important">
+        <div class="col-sm-12">
+            <div class="d-flex flex-column-fluid">
+                <!--begin::Container-->
+                <div style="width:2000px!important">
 
-                        <!--begin::Notice-->
-                        <!--end::Notice-->
-                        <!--begin::Card-->
-                        <div style="width:2000!important">
-                            <div class="card-header flex-wrap py-3">
-                                <div class="card-title">
-                                    <h3 class="card-label">
-                                        Şube Listesi
-                                        <span class="d-block text-muted pt-2 font-size-sm">Şube Listesi</span>
-                                    </h3>
-                                </div>
-
+                    <!--begin::Notice-->
+                    <!--end::Notice-->
+                    <!--begin::Card-->
+                    <div style="width:2000!important">
+                        <div class="card-header flex-wrap py-3">
+                            <div class="card-title">
+                                <h3 class="card-label">
+                                    Şube Listesi
+                                    <span class="d-block text-muted pt-2 font-size-sm">Şube Listesi</span>
+                                </h3>
                             </div>
-                            <div class="card-body" id="table">
-                                <!--begin: Datatable-->
-                                @(Html.DevExtreme().DataGrid<HasatPiyasa.Core.Entities.ReportDto>().ID("GridContainer")
+
+                        </div>
+                        <div class="card-body" id="table">
+                            <!--begin: Datatable-->
+                            @(Html.DevExtreme().DataGrid<HasatPiyasa.Core.Entities.ReportDto>().ID("GridContainer")
     .SearchPanel(src => src.Visible(true).Width(250).Placeholder("Ara.."))
     .ShowBorders(true)
     .DataSource(d => d.Mvc().Controller("Report").LoadAction("RiceMarketReportBySubeData").LoadParams(new { dates = new JS("getDate"), emteatypes = new JS("getEmtea") }))
     .Selection(s => s.Mode(SelectionMode.Single))
     .HoverStateEnabled(true)
     .Columns(columns => {
+        columns.AddFor(x => x.BolgeAdi).Caption("Bölge").Width(100);
         columns.AddFor(x => x.SubeAdi).Caption("Şube").Width(100).HeaderCellTemplate(new JS("myDataGridColumn_headerCellTemplate"));
         columns.AddFor(x => x.TuikValue).Caption("TÜİK");
         columns.AddFor(x => x.GuessValue).Caption("TMO Tahmini Üretim (Ton)");
@@ -89,30 +90,30 @@
 
 
                             )
-                                <!--end: Datatable-->
-                            </div>
+                            <!--end: Datatable-->
                         </div>
-                        <!--end::Card-->
-                        <!--begin::Card-->
-                        <!--end::Card-->
                     </div>
-                    <!--end::Container-->
+                    <!--end::Card-->
+                    <!--begin::Card-->
+                    <!--end::Card-->
                 </div>
-
-
+                <!--end::Container-->
             </div>
 
 
         </div>
+
+
     </div>
-    <button class="btn btn-success float-left excel xlsx" onclick="exportFirstTableToExcel('card-cody', 'PirinçRaporu')">Excel</button>
-    <script type="text/javascript" src="~/tableexport.jquery.plugin/libs/FileSaver/FileSaver.min.js"></script>
-    <script type="text/javascript" src="~/tableexport.jquery.plugin/libs/js-xlsx/xlsx.core.min.js"></script>
-    <script type="text/javascript" src="~/tableexport.jquery.plugin/libs/jsPDF/jspdf.min.js"></script>
-    <script type="text/javascript" src="~/tableexport.jquery.plugin/libs/jsPDF-AutoTable/jspdf.plugin.autotable.js"></script>
-    <script type="text/javascript" src="~/tableexport.jquery.plugin/libs/pdfmake/pdfmake.min.js"></script>
-    <script type="text/javascript" src="~/tableexport.jquery.plugin/libs/pdfmake/vfs_fonts.js"></script>
-    <script type="text/javascript" src="~/tableexport.jquery.plugin/libs/es6-promise/es6-promise.auto.min.js"></script>
-    <script type="text/javascript" src="~/tableexport.jquery.plugin/libs/html2canvas/html2canvas.min.js"></script>
-    <script src="~/tableexport.jquery.plugin/tableExport.min.js"></script>
-    <link href="~/TableExport/css/tableexport.css" rel="stylesheet" />
+</div>
+<button class="btn btn-success float-left excel xlsx" onclick="exportFirstTableToExcel('card-cody', 'PirinçRaporu')">Excel</button>
+<script type="text/javascript" src="~/tableexport.jquery.plugin/libs/FileSaver/FileSaver.min.js"></script>
+<script type="text/javascript" src="~/tableexport.jquery.plugin/libs/js-xlsx/xlsx.core.min.js"></script>
+<script type="text/javascript" src="~/tableexport.jquery.plugin/libs/jsPDF/jspdf.min.js"></script>
+<script type="text/javascript" src="~/tableexport.jquery.plugin/libs/jsPDF-AutoTable/jspdf.plugin.autotable.js"></script>
+<script type="text/javascript" src="~/tableexport.jquery.plugin/libs/pdfmake/pdfmake.min.js"></script>
+<script type="text/javascript" src="~/tableexport.jquery.plugin/libs/pdfmake/vfs_fonts.js"></script>
+<script type="text/javascript" src="~/tableexport.jquery.plugin/libs/es6-promise/es6-promise.auto.min.js"></script>
+<script type="text/javascript" src="~/tableexport.jquery.plugin/libs/html2canvas/html2canvas.min.js"></script>
+<script src="~/tableexport.jquery.plugin/tableExport.min.js"></script>
+<link href="~/TableExport/css/tableexport.css" rel="stylesheet" />

@@ -23,13 +23,15 @@ namespace HasatPiyasa.Business.Concrete
         private IFormDataInputDal _formDataInputDal;
         private ICityDal _cityDal;
         private ISubeDal _subeDal;
+        private IBolgeDal _bolgeDal;
 
-        public DataInputManager(IDataInputDal dataInputDal, IFormDataInputDal formDataInputDal, ICityDal cityDal, ISubeDal subeDal)
+        public DataInputManager(IDataInputDal dataInputDal, IFormDataInputDal formDataInputDal, ICityDal cityDal, ISubeDal subeDal,IBolgeDal bolgeDal)
         {
             _dataInputDal = dataInputDal;
             _formDataInputDal = formDataInputDal;
             _cityDal = cityDal;
             _subeDal = subeDal;
+            _bolgeDal = bolgeDal;
         }
 
         public async Task<NIslemSonuc<DataInputs>> CreateDataInput(DataInputs dataInput)
@@ -291,6 +293,7 @@ namespace HasatPiyasa.Business.Concrete
             List<ReportDto> res = new List<ReportDto>();
             List<DataInputs> resp = new List<DataInputs>();
             var subeler = _subeDal.GetList().ToList();
+            var bolgeler = _bolgeDal.GetList().ToList();
             for (int j = 0; j < emteatypes.Length; j++)
                 for (int i = 0; i < dates.Length; i++)
                 {
@@ -302,6 +305,7 @@ namespace HasatPiyasa.Business.Concrete
 
                 SubeId = a.SubeId,
                 SubeAdi = subeler.Where(x => x.Id == a.SubeId).First().SubeName,
+                BolgeAdi = bolgeler.Where(x => x.Id == subeler.Where(x => x.Id == a.SubeId).First().BolgeId).First().Name,
                 TuikValue = resp.Where(x => x.SubeId == a.SubeId).Sum(x => x.TuikValue),
                 GuessValue = resp.Where(x => x.SubeId == a.SubeId).Sum(x => x.GuessValue),
                 HasatMiktar = resp.Where(x => x.SubeId == a.SubeId).Sum(x => x.HasatMiktar),
@@ -344,7 +348,7 @@ namespace HasatPiyasa.Business.Concrete
                     BasariliMi = true,
                     //Veri = _dataInputDal.GetList().Where(x => dates.Contains(x.AddedTime.ToShortDateString())).ToList()
                     //Veri = _dataInputDal.GetList(x => dates.Contains(x.AddedTime.ToShortDateString()) && emteatypes.Contains(x.EmteaTypeId.ToString())).ToList()
-                    Veri = response.GroupBy(c => c.SubeId).Select(g => g.First()).ToList()
+                    Veri = response.GroupBy(c => c.SubeId).Select(g => g.First()).OrderBy(b=> b.BolgeAdi).ToList()
                 };
 
             }

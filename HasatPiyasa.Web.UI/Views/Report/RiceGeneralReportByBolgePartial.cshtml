@@ -147,26 +147,26 @@ else
 
         }
         <td>
-            <input type="number" readonly name="tuik" value="@emteaType.DataInputs.Sum(x=>x.TuikValue)" />
+            <input type="number" readonly name="tuik" value="@String.Format(new System.Globalization.CultureInfo("tr-TR").NumberFormat,"{0:###,###}",(@emteaType.DataInputs.Sum(x=>x.TuikValue)))" />
         </td>
 
         <td>
-            <input type="number" readonly name="tmo" value="@emteaType.DataInputs.Sum(x=>x.GuessValue)" />
+            <input type="number" readonly name="tmo" value="@String.Format(new System.Globalization.CultureInfo("tr-TR").NumberFormat,"{0:###,###}",(@emteaType.DataInputs.Sum(x=>x.GuessValue)))" />
         </td>
 
-        <td><input type="number" readonly id="@("HasatYuzde_"+count.ToString())" name="percent" value="@emteaType.DataInputs.Sum(x => x.HasatOran * x.GuessValue) /@emteaType.DataInputs.Sum(x => x.GuessValue)" /></td>
-        <td><input type="number" readonly id="@("HasatEdilen_"+count.ToString())" name="hasatedilen" value="@emteaType.DataInputs.Sum(x=>x.HasatMiktar)" /></td>
-        <td><input type="number" readonly name="bekleyenton" value="@emteaType.DataInputs.Sum(x=>x.UreticiKalanMiktar)" /></td>
+        <td><input type="number" readonly id="@("HasatYuzde_"+count.ToString())" name="percent" value="@String.Format(new System.Globalization.CultureInfo("tr-TR").NumberFormat,"{0:###,###}",(@emteaType.DataInputs.Sum(x => x.HasatOran * x.GuessValue) /@emteaType.DataInputs.Sum(x => x.GuessValue)))" /></td>
+        <td><input type="number" readonly id="@("HasatEdilen_"+count.ToString())" name="hasatedilen" value="@String.Format(new System.Globalization.CultureInfo("tr-TR").NumberFormat,"{0:###,###}",(@emteaType.DataInputs.Sum(x=>x.HasatMiktar)))" /></td>
+        <td><input type="number" readonly name="bekleyenton" value="@String.Format(new System.Globalization.CultureInfo("tr-TR").NumberFormat,"{0:###,###}",(@emteaType.DataInputs.Sum(x=>x.UreticiKalanMiktar)))" /></td>
 
 
-        <td><input type="number" readonly data-bind="0" name="naturel0" id="@("naturel_"+count.ToString())" value="@emteaType.DataInputs.Sum(x=>x.Natural1)" /></td>
-        <td><input type="number" readonly data-bind="1" name="naturel1" id="@("naturel_"+count.ToString())" value="@emteaType.DataInputs.Sum(x=>x.Natural2)" /></td>
-        <td><input type="number" readonly data-bind="2" name="naturel2" id="@("naturel_"+count.ToString())" value="@emteaType.DataInputs.Sum(x=>x.Natural3)" /></td>
-        <td><input type="number" readonly data-bind="3" name="naturel3" id="@("naturel_"+count.ToString())" value="@emteaType.DataInputs.Sum(x=>x.Natural4)" /></td>
-        <td><input type="number" readonly data-bind="4" name="naturel4" id="@("naturel_"+count.ToString())" value="@emteaType.DataInputs.Sum(x=>x.Natural5)" /></td>
+        <td><input type="number" readonly data-bind="0" name="naturel0" id="@("naturel_"+count.ToString())" value="@String.Format(new System.Globalization.CultureInfo("tr-TR").NumberFormat,"{0:###,###}",(@emteaType.DataInputs.Sum(x=>x.Natural1)))" /></td>
+        <td><input type="number" readonly data-bind="1" name="naturel1" id="@("naturel_"+count.ToString())" value="@String.Format(new System.Globalization.CultureInfo("tr-TR").NumberFormat,"{0:###,###}",(@emteaType.DataInputs.Sum(x=>x.Natural2)))" /></td>
+        <td><input type="number" readonly data-bind="2" name="naturel2" id="@("naturel_"+count.ToString())" value="@String.Format(new System.Globalization.CultureInfo("tr-TR").NumberFormat,"{0:###,###}",(@emteaType.DataInputs.Sum(x=>x.Natural3)))" /></td>
+        <td><input type="number" readonly data-bind="3" name="naturel3" id="@("naturel_"+count.ToString())" value="@String.Format(new System.Globalization.CultureInfo("tr-TR").NumberFormat,"{0:###,###}",(@emteaType.DataInputs.Sum(x=>x.Natural4)))" /></td>
+        <td><input type="number" readonly data-bind="4" name="naturel4" id="@("naturel_"+count.ToString())" value="@String.Format(new System.Globalization.CultureInfo("tr-TR").NumberFormat,"{0:###,###}",(@emteaType.DataInputs.Sum(x=>x.Natural5)))" /></td>
 
 
-        <td><input type="number" readonly name="piyasaton" id="@("piyasaton"+count.ToString())" value="@emteaType.DataInputs.Sum(x=>x.NaturalToplam)" /></td>
+        <td><input type="number" readonly name="piyasaton" id="@("piyasaton"+count.ToString())" value="@String.Format(new System.Globalization.CultureInfo("tr-TR").NumberFormat,"{0:###,###}",(@emteaType.DataInputs.Sum(x=>x.NaturalToplam)))" /></td>
 
         <td><input type="number" readonly name="toptan0" value="@String.Format(new System.Globalization.CultureInfo("tr-TR").NumberFormat,"{0:###,###}",(@emteaType.DataInputs.Sum(x=>x.ToptanPiyasa1*x.Natural1)/@emteaType.DataInputs.Sum(x=>x.Natural1)))" /></td>
         <td><input type="number" readonly name="toptan1" value="@String.Format(new System.Globalization.CultureInfo("tr-TR").NumberFormat,"{0:###,###}",(@emteaType.DataInputs.Sum(x=>x.ToptanPiyasa2*x.Natural2)/@emteaType.DataInputs.Sum(x=>x.Natural2)))" /></td>
@@ -175,13 +175,13 @@ else
         <td><input type="number" readonly name="toptan4" value="@String.Format(new System.Globalization.CultureInfo("tr-TR").NumberFormat,"{0:###,###}",(@emteaType.DataInputs.Sum(x=>x.ToptanPiyasa5*x.Natural5)/@emteaType.DataInputs.Sum(x=>x.Natural5)))" /></td>
 
 
-        <td><input type="number" readonly name="dfiyat" id="@("d_1_"+count.ToString())" value="@emteaType.DataInputs.Average(x=>x.Perakende1)" /></td>
-        <td><input type="number" readonly name="yfiyat" id="@("y_1_"+count.ToString())" value="@emteaType.DataInputs.Average(x=>x.Perakende2)" /></td>
-        <td><input type="number" readonly name="ofiyat" id="@("o_1_"+count.ToString())" value="@emteaType.DataInputs.Average(x=>x.Perakende3)" /></td>
+        <td><input type="number" readonly name="dfiyat" id="@("d_1_"+count.ToString())" value="@String.Format(new System.Globalization.CultureInfo("tr-TR").NumberFormat,"{0:###,###}",(@emteaType.DataInputs.Average(x=>x.Perakende1)))" /></td>
+        <td><input type="number" readonly name="yfiyat" id="@("y_1_"+count.ToString())" value="@String.Format(new System.Globalization.CultureInfo("tr-TR").NumberFormat,"{0:###,###}",(@emteaType.DataInputs.Average(x=>x.Perakende2)))" /></td>
+        <td><input type="number" readonly name="ofiyat" id="@("o_1_"+count.ToString())" value="@String.Format(new System.Globalization.CultureInfo("tr-TR").NumberFormat,"{0:###,###}",(@emteaType.DataInputs.Average(x=>x.Perakende3)))" /></td>
 
-        <td><input type="number" readonly name="dfiyat2" id="@("d_2_"+count.ToString())" value="@emteaType.DataInputs.Average(x=>x.Perakende4)" /></td>
-        <td><input type="number" readonly name="yfiyat2" id="@("y_2_"+count.ToString())" value="@emteaType.DataInputs.Average(x=>x.Perakende5)" /></td>
-        <td><input type="number" readonly name="ofiyat2" id="@("o_2_"+count.ToString())" value="@emteaType.DataInputs.Average(x=>x.Perakende6)" /></td>
+        <td><input type="number" readonly name="dfiyat2" id="@("d_2_"+count.ToString())" value="@String.Format(new System.Globalization.CultureInfo("tr-TR").NumberFormat,"{0:###,###}",(@emteaType.DataInputs.Average(x=>x.Perakende4)))" /></td>
+        <td><input type="number" readonly name="yfiyat2" id="@("y_2_"+count.ToString())" value="@String.Format(new System.Globalization.CultureInfo("tr-TR").NumberFormat,"{0:###,###}",(@emteaType.DataInputs.Average(x=>x.Perakende5)))" /></td>
+        <td><input type="number" readonly name="ofiyat2" id="@("o_2_"+count.ToString())" value="@String.Format(new System.Globalization.CultureInfo("tr-TR").NumberFormat,"{0:###,###}",(@emteaType.DataInputs.Average(x=>x.Perakende6)))" /></td>
 
     </tr>
 }
@@ -446,11 +446,11 @@ else
         var inputs = $("input")
         $("input").attr("readonly", true)
 
-        setTimeout(() => {
-            $.each(inputs, (i, v) => {
-                v.value = numberWithCommas(v.value)
-            })
-        }, 1000)
+        //setTimeout(() => {
+        //    $.each(inputs, (i, v) => {
+        //        v.value = numberWithCommas(v.value)
+        //    })
+        //}, 1000)
     }
 
     $(document).ready(() => {

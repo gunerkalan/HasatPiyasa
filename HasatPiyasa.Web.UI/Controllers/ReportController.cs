@@ -356,6 +356,32 @@ namespace HasatPiyasa.Web.UI.Controllers
 
             return JsonConvert.SerializeObject(dataInputs);
         }
+        public async Task<ActionResult> RiceMarketReportBySubeBolge()
+        {
+            var model = new HasaInputViewModel();
+            var _cities = await _subeCityService.GetSbCityGTable();
+            model.CitiesRapor = _cities.Veri.ToList();
+            var _dates = await _formDataInputService.GetTable();
+            model.DateInputs = _dates.Select(x => x.AddedTime.Date).Distinct().ToList();
+            var emtea = await _emteaService.GetEmteaTable((int)Core.Utilities.Enums.DataInput.Data.Rice, 0);
+            model.Emteas = emtea.Veri;
+            model.EmteaTypesRapor = _emteaTypeService.ListAllEmteType().Veri;
+            ViewBag.dates = 2;
+            ViewBag.emteatypes = 3;
+            return View(model);
+        }
+        [HttpPost]
+        public async Task<ActionResult> RiceMarketReportBySubeBolgePartial(string[] dates, string[] emteatypes)
+        {
+            var model = new HasaInputViewModel();
+            var emtea = await _emteaService.GetEmteaTable((int)Core.Utilities.Enums.DataInput.Data.Rice, 1);
+            var dataInputs = _dataInputService.ListAllDataInputs().Veri;
+            // model.Emteas = emtea.Veri;
+            ViewData["dates"] = dates;
+            ViewData["emteatypes"] = emteatypes;
+            return PartialView(model);
+        }
+
         [HttpGet]
         public async Task<object> ChooseFormDataInput()
         {

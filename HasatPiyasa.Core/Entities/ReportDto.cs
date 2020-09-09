@@ -11,6 +11,8 @@ namespace HasatPiyasa.Core.Entities
         public string SubeAdi { get; set; }
         public int CityId { get; set; }
         public string CityAdi { get; set; }
+        public int BolgeId { get; set; }
+        public string BolgeAdi { get; set; }
         public int EmteaId { get; set; }
         public int EmteaGroupId { get; set; }
         public int EmteaTypeId { get; set; }
@@ -43,6 +45,6 @@ namespace HasatPiyasa.Core.Entities
         public double? PerakendeToplam { get; set; }
         public DateTime AddedTime { get; set; }
         public DateTime? UpdatedTime { get; set; }
-
+       
     }
 }
