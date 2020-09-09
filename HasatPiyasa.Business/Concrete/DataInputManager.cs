@@ -60,7 +60,7 @@ namespace HasatPiyasa.Business.Concrete
         {
             try
             {
-                if (dataInputs.Where(x => x.Id == 0).Count() != dataInputs.Count())
+                if (dataInputs.Where(x => x.Id == 0).Count() != dataInputs.Count() && dataInputs.FirstOrDefault().AddedTime.Date == DateTime.Now.Date )
                 {
                     var formId = 0;
                     dataInputs.ForEach(f =>

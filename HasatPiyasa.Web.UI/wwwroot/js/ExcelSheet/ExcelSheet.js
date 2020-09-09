@@ -3,8 +3,8 @@ var Cities = [];
 var AllDate = false;
 var AllCities = false;
 
-//LoadTable();
-//LoadTableCity();
+LoadTable();
+LoadTableCity();
 
 setTimeout(() => {
     LoadProcess()
@@ -62,7 +62,7 @@ function LoadProcess() {
 
 
 
-   // console.clear()
+  
 }
 function CalculateToptan() {
 
@@ -291,7 +291,6 @@ function Save() {
         }
           
     }
-    console.log(AddInput)
     $.each(AddInput, (i, v) => {
 
         if (Number(v.GuessValue) > 0) {
@@ -322,9 +321,7 @@ function Save() {
 }
 
 if (error == 0) {
-    //if (v.HasatMiktar != "" && v.HasatMiktar != "0") {
-    //    dataInput.push(v)
-    //}
+  
 
     if ((Number(v.HasatMiktar) == 0 || Number(v.HasatMiktar) > 0)
         && Number(v.Perakende1) > 0
@@ -356,7 +353,7 @@ if (error == 0) {
             v.Perakende4 = v.Perakende4.toString().replace('.', ',') 
             v.Perakende5 = v.Perakende5.toString().replace('.', ',') 
             v.Perakende6 = v.Perakende6.toString().replace('.', ',') 
-            console.log(v.Perakende1)
+           
         })
 
     $.post("/DataInput/DataInputRice", { dataInputs: dataInput }, (res) => {
@@ -405,9 +402,9 @@ function LoadTable(pathh) {
     Dates = $('#dates').select2('val')
     Cities = $('#cities').select2('val')
     $('.rapor').css("border", "none")
-    //AllCities = document.getElementById("allcities").checked
-    //AllDate = document.getElementById("alldate").checked
-   // getLoadPanelInstance().show()
+    AllCities = document.getElementById("allcities").checked
+    AllDate = document.getElementById("alldate").checked
+    getLoadPanelInstance().show()
     $.post("/report/" + pathh, { dates: Dates, cities: Cities, allDate: AllDate, allcities: AllCities }, (res) => {
         $(".rapor").html(res)
         LoadProcess()

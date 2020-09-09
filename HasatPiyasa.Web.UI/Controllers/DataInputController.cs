@@ -62,22 +62,8 @@ namespace HasatPiyasa.Web.UI.Controllers
                 }
 
                 model.DataInputs = Inputs.Veri != null ? _dataInputService.ListAllDataInputs().Veri.Where(x => x.FormDataInputId == Inputs.Veri.Id).ToList() : null;
-               
+
                 model.HaveTodayInputData = model.DataInputs != null ? true : false;
-
-
-                if (Inputs.Veri != null)
-                {
-                    if (Inputs.Veri.AddedTime.Date != DateTime.Today)
-                    {
-                        model.DataInputs.ForEach(x =>
-                        {
-                            x.Id = 0;
-                        });
-
-                    }
-                }
-
 
             }
             else
@@ -97,17 +83,6 @@ namespace HasatPiyasa.Web.UI.Controllers
                 model.DataInputs = Inputs.Veri != null ? _dataInputService.ListAllDataInputs().Veri.Where(x => x.FormDataInputId == Inputs.Veri.Id).ToList() : null;
                 model.HaveTodayInputData = model.DataInputs != null ? true : false;
 
-                if (Inputs.Veri != null)
-                {
-                    if (Inputs.Veri.AddedTime.Date != DateTime.Today)
-                    {
-                        model.DataInputs.ForEach(x =>
-                        {
-                            x.Id = 0;
-                        });
-
-                    }
-                }
             }
 
             return View(model);
@@ -117,6 +92,14 @@ namespace HasatPiyasa.Web.UI.Controllers
         public async Task<ActionResult> DataInputRice(List<DataInputs> dataInputs)
         {
             var user = GetCurrentUser();
+            DateTime AddTime = DateTime.Now;
+
+            var Inputs = await _formDataInputService.GetFormDataInputTable(DateTime.Today, dataInputs.FirstOrDefault().CityId);
+
+            if (Inputs.Veri != null)
+            {
+                AddTime = Inputs.Veri.AddedTime;
+            }
 
             dataInputs.ForEach(x =>
             {
@@ -124,7 +107,7 @@ namespace HasatPiyasa.Web.UI.Controllers
                 x.AddUserId = user.UserId;
                 x.AlimYear = DateTime.Now.Year;
                 x.EmteaId = (int)Core.Utilities.Enums.DataInput.Data.Rice;
-                x.AddedTime = DateTime.Now;
+                x.AddedTime = AddTime;
             });
 
             if (dataInputs.Count > 0)
