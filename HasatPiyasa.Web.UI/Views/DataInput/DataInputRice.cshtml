@@ -67,7 +67,8 @@
                 </select>
 
             </div>
-            <span style="font-weight:bolder; float:right; margin-top:-23px; margin-right:50px;">@DateTime.Today.ToShortDateString()</span>
+            <span style="font-weight:bolder; float:right; margin-top:-30px; margin-right:50px;">Gelen Veri Tarihi :@ViewBag.AddTimeValue</span>
+            <span style="font-weight:bolder; float:right; margin-top:-10px; margin-right:50px;">Veri Giriş Tarihi :@DateTime.Today.ToShortDateString()</span>
         </div>
         
 
@@ -191,13 +192,13 @@
                             <td><input type="number" @(tuikCheck<1? "class=disabledInput":"")  name="toptan4" onchange="CalculateToptan()" value="@(Model.HaveTodayInputData==true ? data!=null?data.ToptanPiyasa5:0:0)" /></td>
 
 
-                            <td><input type="number" name="dfiyat" id="@("d_1_"+count.ToString())" onkeyup="Avarage(this);" value="@(Model.HaveTodayInputData==true ? data!=null?data.Perakende1:0:0)" /></td>
-                            <td><input type="number" name="yfiyat" id="@("y_1_"+count.ToString())" onkeyup="Avarage(this);" value="@(Model.HaveTodayInputData==true ? data!=null?data.Perakende2:0:0)" /></td>
-                            <td><input type="number" name="ofiyat" id="@("o_1_"+count.ToString())" readonly value="@(Model.HaveTodayInputData==true ? data!=null?data.Perakende3:0:0)" /></td>
+                            <td><input type="number" name="dfiyat" id="@("d_1_"+count.ToString())" onkeyup="Avarage(this);" value="@(Model.HaveTodayInputData==true ? data!=null?data.Perakende1.Value.ToString().Replace(',','.'):"0":"0")" /></td>
+                            <td><input type="number" name="yfiyat" id="@("y_1_"+count.ToString())" onkeyup="Avarage(this);" value="@(Model.HaveTodayInputData==true ? data!=null? data.Perakende2.Value.ToString().Replace(',','.'):"0":"0")" /></td>
+                            <td><input type="number" name="ofiyat" id="@("o_1_"+count.ToString())" readonly value="@(Model.HaveTodayInputData==true ? data!=null?data.Perakende3.Value.ToString().Replace(',','.'):"0":"0")" /></td>
 
-                            <td><input type="number" name="dfiyat2" id="@("d_2_"+count.ToString())" onkeyup="Avarage(this);" value="@(Model.HaveTodayInputData==true ? data!=null?data.Perakende4:0:0)" /></td>
-                            <td><input type="number" name="yfiyat2" id="@("y_2_"+count.ToString())" onkeyup="Avarage(this);" value="@(Model.HaveTodayInputData==true ? data!=null?data.Perakende5:0:0)" /></td>
-                            <td><input type="number" name="ofiyat2" id="@("o_2_"+count.ToString())" readonly value="@(Model.HaveTodayInputData==true ? data!=null?data.Perakende6:0:0)" /></td>
+                            <td><input type="number" name="dfiyat2" id="@("d_2_"+count.ToString())" onkeyup="Avarage(this);" value="@(Model.HaveTodayInputData==true ? data!=null?data.Perakende4.Value.ToString().Replace(',','.'):"0":"0")" /></td>
+                            <td><input type="number" name="yfiyat2" id="@("y_2_"+count.ToString())" onkeyup="Avarage(this);" value="@(Model.HaveTodayInputData==true ? data!=null?data.Perakende5.Value.ToString().Replace(',','.'):"0":"0")" /></td>
+                            <td><input type="number" name="ofiyat2" id="@("o_2_"+count.ToString())" readonly value="@(Model.HaveTodayInputData==true ? data!=null?data.Perakende6.Value.ToString().Replace(',','.'):"0":"0")" /></td>
 
                         </tr>
                     
@@ -250,6 +251,7 @@
 
     <div style="float:left;margin-bottom:10px" class="col-3">
         <button onclick="Save()" class="btn btn-danger btn-block">Kaydet</button>
+        
     </div>
 
     @(Html.DevExtreme().LoadPanel()
@@ -270,7 +272,7 @@
 
 @section scripts {
 
-    <script src="~/js/ExcelSheet/ExcelSheet.js"></script>
+    <script src="~/js/ExcelSheet/DataInput.js"></script>
     <script>
 
 
