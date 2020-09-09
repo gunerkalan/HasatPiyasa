@@ -109,6 +109,7 @@ namespace HasatPiyasa.Business.Concrete
                     var addedformdt = await _formDataInputDal.AddAsync(formDataInput);
 
                     dataInputs.ForEach(x => x.FormDataInputId = formDataInput.Id);
+                    dataInputs.ForEach(x => x.Id = 0);
 
                     await _dataInputDal.AddRange(dataInputs);
 
