@@ -128,7 +128,7 @@ function CalculateColumn(name, totalid, calculateType) {
         var total = 0;
         var _count = 0
         $.each(tuiks, (i, v) => {
-            if (v.value != "0") {
+            if (v.value != "0" && v.value != "0.00" && v.value != "0,00") {
                 total += Number(v.value.replace(',','.'))
                 _count++
             }
@@ -206,7 +206,7 @@ function Avarage(e) {
         var number1 = Number($("#d_1_" + rowId).val())
         var number2 = Number($("#y_1_" + rowId).val())
         var numberAvarage = (number1 + number2) / 2
-        $("#o_1_" + rowId).val(numberAvarage.toFixed(2))
+        $("#o_1_" + rowId).val(numberAvarage.toFixed(0))
         CalculateColumn("dfiyat", "dfiyatTotal", "ortalama")
         CalculateColumn("yfiyat", "yfiyatTotal", "ortalama")
         CalculateColumn("ofiyat", "ofiyatTotal", "ortalama")

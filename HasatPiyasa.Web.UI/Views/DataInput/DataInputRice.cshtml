@@ -194,7 +194,7 @@
 
                             <td><input type="number" name="dfiyat" id="@("d_1_"+count.ToString())" onkeyup="Avarage(this);" value="@(Model.HaveTodayInputData==true ? data!=null?data.Perakende1.Value.ToString().Replace(',','.'):"0":"0")" /></td>
                             <td><input type="number" name="yfiyat" id="@("y_1_"+count.ToString())" onkeyup="Avarage(this);" value="@(Model.HaveTodayInputData==true ? data!=null? data.Perakende2.Value.ToString().Replace(',','.'):"0":"0")" /></td>
-                            <td><input type="number" name="ofiyat" id="@("o_1_"+count.ToString())" readonly value="@(Model.HaveTodayInputData==true ? data!=null?data.Perakende3.Value.ToString().Replace(',','.'):"0":"0")" /></td>
+                            <td><input type="number" name="ofiyat" id="@("o_1_"+count.ToString())" readonly value="@(Model.HaveTodayInputData==true ? data!=null?data.Perakende3:0:0)" /></td>
 
                             <td><input type="number" name="dfiyat2" id="@("d_2_"+count.ToString())" onkeyup="Avarage(this);" value="@(Model.HaveTodayInputData==true ? data!=null?data.Perakende4.Value.ToString().Replace(',','.'):"0":"0")" /></td>
                             <td><input type="number" name="yfiyat2" id="@("y_2_"+count.ToString())" onkeyup="Avarage(this);" value="@(Model.HaveTodayInputData==true ? data!=null?data.Perakende5.Value.ToString().Replace(',','.'):"0":"0")" /></td>
