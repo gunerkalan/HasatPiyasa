@@ -363,7 +363,7 @@ if (error == 0) {
             SweetAlertMesaj("Hasat Piyasa  Kaydet", model.messages, "success", "Kapat", "btn-success")
             setTimeout(() => {
 
-                window.location.href = "/"
+                //window.location.href = "/DataInput/DataInputRice"
 
 
             }, 2000)

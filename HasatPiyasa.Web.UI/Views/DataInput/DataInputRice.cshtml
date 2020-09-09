@@ -67,7 +67,8 @@
                 </select>
 
             </div>
-            <span style="font-weight:bolder; float:right; margin-top:-23px; margin-right:50px;">@DateTime.Today.ToShortDateString()</span>
+            <span style="font-weight:bolder; float:right; margin-top:-30px; margin-right:50px;">Gelen Veri Tarihi :@ViewBag.AddTimeValue</span>
+            <span style="font-weight:bolder; float:right; margin-top:-10px; margin-right:50px;">Veri Giriş Tarihi :@DateTime.Today.ToShortDateString()</span>
         </div>
         
 
@@ -250,6 +251,7 @@
 
     <div style="float:left;margin-bottom:10px" class="col-3">
         <button onclick="Save()" class="btn btn-danger btn-block">Kaydet</button>
+        
     </div>
 
     @(Html.DevExtreme().LoadPanel()
