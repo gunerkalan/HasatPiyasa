@@ -40,7 +40,7 @@ namespace HasatPiyasa.Web.UI.Controllers
         {
             var model = new  HasaInputViewModel();
             var _cities = await _subeService.GetSbGTable();            
-            model.CitiesRapor = _cities.Veri.Distinct().ToList();
+            model.CitiesRapor = _cities.Veri.Distinct().OrderBy(u=>u.SubeName).ToList();
            var _dates =await  _formDataInputService.GetTable();
             model.DateInputs=_dates.Select(x => x.AddedTime.Date).Distinct().ToList();
             var emtea = await _emteaService.GetEmteaTable((int)Core.Utilities.Enums.DataInput.Data.Rice,0);
