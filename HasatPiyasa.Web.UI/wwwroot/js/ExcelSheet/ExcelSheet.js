@@ -3,8 +3,8 @@ var Cities = [];
 var AllDate = false;
 var AllCities = false;
 
-LoadTable();
-LoadTableCity();
+//LoadTable();
+//LoadTableCity();
 
 setTimeout(() => {
     LoadProcess()
@@ -60,12 +60,12 @@ function LoadProcess() {
 
     })
 
-    $("table input").each(function () {
-        var element = $(this);
-        if (isNaN(element[0].value) | (element[0].value ) {
-            element.value = 0;
-        }
-    });
+    //$("table input").each(function () {
+    //    var element = $(this);
+    //    if (isNaN(element[0].value) | (element[0].value ) {
+    //        element.value = 0;
+    //    }
+    //});
 
     console.clear()
 }
