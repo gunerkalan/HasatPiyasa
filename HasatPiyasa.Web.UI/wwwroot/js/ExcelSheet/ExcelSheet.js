@@ -134,11 +134,11 @@ function CalculateColumn(name, totalid, calculateType) {
         var _count = 0
         $.each(tuiks, (i, v) => {
             if (v.value != "0") {
-                total += Number(v.value.replace(/\./g, ''))
+                total += parseFloat(v.value.replace(/\./g, ''))
                 _count++
             }
         })
-        $("#" + totalid).val(parseInt(total / _count).toString())
+        $("#" + totalid).val((total / _count).toFixed(2).replace(/\./g, ',').toString())
 
     }
 
