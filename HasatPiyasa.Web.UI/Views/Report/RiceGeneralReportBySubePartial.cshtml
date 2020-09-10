@@ -175,13 +175,13 @@ else
     <td><input type="number" readonly name="toptan4" value="@String.Format(new System.Globalization.CultureInfo("tr-TR").NumberFormat,"{0:###,###}",(@emteaType.DataInputs.Sum(x=>x.ToptanPiyasa5*x.Natural5)/@emteaType.DataInputs.Sum(x=>x.Natural5)))" /></td>
 
 
-    <td><input  readonly name="dfiyat" id="@("d_1_"+count.ToString())" value="@String.Format(new System.Globalization.CultureInfo("tr-TR").NumberFormat,"{0:###,###.##}",(@emteaType.DataInputs.Average(x=>x.Perakende1)))" /></td>
-    <td><input readonly name="yfiyat" id="@("y_1_"+count.ToString())" value="@String.Format(new System.Globalization.CultureInfo("tr-TR").NumberFormat,"{0:###,###.##}",(@emteaType.DataInputs.Average(x=>x.Perakende2)))" /></td>
-    <td><input  readonly name="ofiyat" id="@("o_1_"+count.ToString())" value="@String.Format(new System.Globalization.CultureInfo("tr-TR").NumberFormat,"{0:###,###.##}",(@emteaType.DataInputs.Average(x=>x.Perakende3)))" /></td>
+    <td><input style="border:none" readonly name="dfiyat" id="@("d_1_"+count.ToString())" value="@String.Format(new System.Globalization.CultureInfo("tr-TR").NumberFormat,"{0:###,###.##}",(@emteaType.DataInputs.Average(x=>x.Perakende1)))" /></td>
+    <td><input style="border:none" readonly name="yfiyat" id="@("y_1_"+count.ToString())" value="@String.Format(new System.Globalization.CultureInfo("tr-TR").NumberFormat,"{0:###,###.##}",(@emteaType.DataInputs.Average(x=>x.Perakende2)))" /></td>
+    <td><input style="border:none"  readonly name="ofiyat" id="@("o_1_"+count.ToString())" value="@String.Format(new System.Globalization.CultureInfo("tr-TR").NumberFormat,"{0:###,###.##}",(@emteaType.DataInputs.Average(x=>x.Perakende3)))" /></td>
 
-    <td><input  readonly name="dfiyat2" id="@("d_2_"+count.ToString())" value="@String.Format(new System.Globalization.CultureInfo("tr-TR").NumberFormat,"{0:###,###.##}",(@emteaType.DataInputs.Average(x=>x.Perakende4)))" /></td>
-    <td><input   readonly name="yfiyat2" id="@("y_2_"+count.ToString())" value="@String.Format(new System.Globalization.CultureInfo("tr-TR").NumberFormat,"{0:###,###.##}",(@emteaType.DataInputs.Average(x=>x.Perakende5)))" /></td>
-    <td><input  readonly name="ofiyat2" id="@("o_2_"+count.ToString())" value="@String.Format(new System.Globalization.CultureInfo("tr-TR").NumberFormat,"{0:###,###.##}",(@emteaType.DataInputs.Average(x=>x.Perakende6)))" /></td>
+    <td><input style="border:none"  readonly name="dfiyat2" id="@("d_2_"+count.ToString())" value="@String.Format(new System.Globalization.CultureInfo("tr-TR").NumberFormat,"{0:###,###.##}",(@emteaType.DataInputs.Average(x=>x.Perakende4)))" /></td>
+    <td><input style="border:none"  readonly name="yfiyat2" id="@("y_2_"+count.ToString())" value="@String.Format(new System.Globalization.CultureInfo("tr-TR").NumberFormat,"{0:###,###.##}",(@emteaType.DataInputs.Average(x=>x.Perakende5)))" /></td>
+    <td><input style="border:none"  readonly name="ofiyat2" id="@("o_2_"+count.ToString())" value="@String.Format(new System.Globalization.CultureInfo("tr-TR").NumberFormat,"{0:###,###.##}",(@emteaType.DataInputs.Average(x=>x.Perakende6)))" /></td>
 
 </tr>
 }
@@ -208,21 +208,21 @@ else
                 <td><input type="number" readonly id="@("toplanaturel_"+i.ToString())" text="0" /></td>
             }
 
-            <td><input type="number" readonly id="piyasatonTotal" text="0" /></td>
+            <td><input type="number"  readonly id="piyasatonTotal" text="0" /></td>
 
             @for (int i = 0; i < 5; i++)
             {
-                <td><input type="number" readonly text="0" id="@("toptan"+i)" /></td>
+                <td><input type="number"  readonly text="0" id="@("toptan"+i)" /></td>
             }
 
 
-            <td><input  readonly id="dfiyatTotal" text="0" class="inputtop" /></td>
-            <td><input  readonly id="yfiyatTotal" text="0" class="inputtop" /></td>
-            <td><input  readonly id="ofiyatTotal" text="0" /></td>
+            <td><input style="border:none" readonly id="dfiyatTotal" text="0" class="inputtop" /></td>
+            <td><input style="border:none" readonly id="yfiyatTotal" text="0" class="inputtop" /></td>
+            <td><input style="border:none" readonly id="ofiyatTotal" text="0" /></td>
 
-            <td><input  readonly id="dfiyat2Total" text="0" class="inputtop" /></td>
-            <td><input  readonly id="yfiyat2Total" text="0" class="inputtop" /></td>
-            <td><input  readonly id="ofiyat2Total" text="0" /></td>
+            <td><input style="border:none" readonly id="dfiyat2Total" text="0" class="inputtop" /></td>
+            <td><input style="border:none" readonly id="yfiyat2Total" text="0" class="inputtop" /></td>
+            <td><input style="border:none" readonly id="ofiyat2Total" text="0" /></td>
 
         </tr>
 

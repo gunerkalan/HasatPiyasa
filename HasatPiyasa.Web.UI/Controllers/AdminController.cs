@@ -503,7 +503,7 @@ namespace HasatPiyasa.Web.UI.Controllers
                                               Value = sube.Id.ToString(),
                                               Text = sube.SubeName
                                           }
-                        ).ToList();
+                        ).OrderBy(u=>u.Text).ToList();
             return subes;
         }
 
