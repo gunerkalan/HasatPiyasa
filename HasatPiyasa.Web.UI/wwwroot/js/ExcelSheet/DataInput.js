@@ -3,9 +3,6 @@ var Cities = [];
 var AllDate = false;
 var AllCities = false;
 
-LoadTable();
-LoadTableCity();
-
 setTimeout(() => {
     LoadProcess()
 }, 1000)
@@ -394,38 +391,6 @@ function GetTodayDataInput() {
     })
 }
 
-
-
-
-function LoadTable(pathh) {
-
-    Dates = $('#dates').select2('val')
-    Cities = $('#cities').select2('val')
-    $('.rapor').css("border", "none")
-    AllCities = document.getElementById("allcities").checked
-    AllDate = document.getElementById("alldate").checked
-    getLoadPanelInstance().show()
-    $.post("/report/" + pathh, { dates: Dates, cities: Cities, allDate: AllDate, allcities: AllCities }, (res) => {
-        $(".rapor").html(res)
-        LoadProcess()
-        LoadProcess2();
-        getLoadPanelInstance().hide()
-    })
-}
-
-function LoadMarketTable(pathh) {
-
-    Dates = $('#dates').select2('val')
-    Emteatypes = $('#emteatypes').select2('val')
-    $('.rapor').css("border", "none")
-    AllCities = document.getElementById("allcities").checked
-    AllDate = document.getElementById("alldate").checked
-    getLoadPanelInstance().show()
-    $.post("/report/" + pathh, { dates: Dates, emteatypes: Emteatypes }, (res) => {
-        $(".rapor").html(res)
-        getLoadPanelInstance().hide()
-    })
-}
 
 
 function numberWithCommas(x) {
