@@ -60,7 +60,7 @@ namespace HasatPiyasa.Business.Concrete
         {
             try
             {
-                if (dataInputs.Where(x => x.Id == 0).Count() != dataInputs.Count() && dataInputs.FirstOrDefault().AddedTime.Date == DateTime.Now.Date )
+                if (dataInputs.Where(x => x.Id == 0).Count() != dataInputs.Count() && dataInputs.FirstOrDefault().AddedTime.Date == DateTime.Now.Date)
                 {
                     var formId = 0;
                     dataInputs.ForEach(f =>
@@ -108,8 +108,11 @@ namespace HasatPiyasa.Business.Concrete
 
                     var addedformdt = await _formDataInputDal.AddAsync(formDataInput);
 
-                    dataInputs.ForEach(x => x.FormDataInputId = formDataInput.Id);
-                    dataInputs.ForEach(x => x.Id = 0);
+                    dataInputs.ForEach(x =>
+                    {
+                        x.FormDataInputId = formDataInput.Id;
+                        x.Id = 0;
+                    });
 
                     await _dataInputDal.AddRange(dataInputs);
 
@@ -389,6 +392,6 @@ namespace HasatPiyasa.Business.Concrete
             throw new NotImplementedException();
         }
 
-        
+
     }
 }
