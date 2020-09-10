@@ -112,6 +112,7 @@ namespace HasatPiyasa.Business.Concrete
                     {
                         x.FormDataInputId = formDataInput.Id;
                         x.Id = 0;
+                        x.AddedTime = DateTime.Now;
                     });
 
                     await _dataInputDal.AddRange(dataInputs);
