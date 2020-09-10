@@ -60,7 +60,12 @@ function LoadProcess() {
 
     })
 
-
+    $("table input").each(function () {
+        var element = $(this);
+        if (isNaN(element[0].value) | (element[0].value ) {
+            element.value = 0;
+        }
+    });
 
     console.clear()
 }
@@ -133,7 +138,7 @@ function CalculateColumn(name, totalid, calculateType) {
                 _count++
             }
         })
-        $("#" + totalid).val(parseInt(total / _count).toString().replace(/\B(?=(\d{3})+(?!\d))/g, "."))
+        $("#" + totalid).val(parseInt(total / _count).toString())
 
     }
 
