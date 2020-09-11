@@ -53,7 +53,7 @@ function LoadProcess() {
     $("input").focus((e) => {
 
         if (e.target.value == "0")
-            e.target.value = null;
+            e.target.value = 0;
 
     })
 
@@ -131,7 +131,8 @@ function CalculateColumn(name, totalid, calculateType) {
             }
         })
 
-        $("#" + totalid).val(total / _count)
+        var totalp = (total / _count)
+        $("#" + totalid).val(totalp.toFixed(2))
 
     }
 
