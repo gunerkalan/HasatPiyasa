@@ -98,7 +98,7 @@ function YuzdeHesapla(e) {
             percent = (_amount * value) / 100;
         }
 
-        $("#HasatEdilen_" + rowId).val(percent)
+        $("#HasatEdilen_" + rowId).val(percent.toFixed(0))
         CalculateColumn("tmo", "tmoTotal", "topla");
         CalculateColumn("percent", "percentTotal", "ortalama");
         CalculateColumn("hasatedilen", "hasatedilenTotal", "topla");
@@ -117,7 +117,7 @@ function CalculateColumn(name, totalid, calculateType) {
             }
         })
 
-        $("#" + totalid).val(total)
+        $("#" + totalid).val(total.toFixed(0))
     }
 
     if (calculateType == "ortalama") {
@@ -132,7 +132,7 @@ function CalculateColumn(name, totalid, calculateType) {
         })
 
         var totalp = (total / _count)
-        $("#" + totalid).val(totalp.toFixed(2))
+        $("#" + totalid).val(totalp.toFixed(0))
 
     }
 
@@ -160,8 +160,8 @@ function CalculateColumnByCumulative(name, relatedcolumnname, totalid, calculate
             })
         })
 
-        if (total>0)
-        $("#" + totalid).val(Number(total / miktartotal))
+        if (total > 0)
+            $("#" + totalid).val(Number(total / miktartotal).toFixed(0))
 
     }
 
@@ -190,7 +190,7 @@ function CalculateNaturel(totalid) {
     })
 
     $("#" + totalid).val(total)
-    $("#toplanaturel_" + index).val(columntotal)
+    $("#toplanaturel_" + index).val(columntotal.toFixed(0))
 
     CalculateColumn('piyasaton', 'piyasatonTotal', 'topla')
 
@@ -335,9 +335,6 @@ if (error == 0) {
          
     }
 }
-
-
-         
 
     })
 

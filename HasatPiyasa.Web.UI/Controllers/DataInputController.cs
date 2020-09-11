@@ -113,6 +113,7 @@ namespace HasatPiyasa.Web.UI.Controllers
                 x.AlimYear = DateTime.Now.Year;
                 x.EmteaId = (int)Core.Utilities.Enums.DataInput.Data.Rice;
                 x.AddedTime = AddTime;
+                x.IsActive = true;
             });
 
             if (dataInputs.Count > 0)
