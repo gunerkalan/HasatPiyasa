@@ -132,11 +132,10 @@ function CalculateColumn(name, totalid, calculateType) {
         })
 
         var totalp = (total / _count)
-        $("#" + totalid).val(totalp.toFixed(0))
-
+       
+         $("#" + totalid).val(totalp.toFixed(2))
+       
     }
-
-
 }
 function CalculateColumnByCumulative(name, relatedcolumnname, totalid, calculateType) {
 
