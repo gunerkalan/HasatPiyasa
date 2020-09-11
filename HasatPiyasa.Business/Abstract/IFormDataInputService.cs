@@ -12,7 +12,7 @@ namespace HasatPiyasa.Business.Abstract
     public interface IFormDataInputService:IFormDataInputDal
     {
         Task<NIslemSonuc<FormDataInput>> CreateFormDataInput(FormDataInput formDataInput);
-        Task<NIslemSonuc<FormDataInput>> GetFormDataInputTable(DateTime date , int cityId);
+        Task<NIslemSonuc<FormDataInput>> GetFormDataInputTable(DateTime date , int cityId, int SubeId, int UserId);
         Task<NIslemSonuc<List<FormDataInput>>> GetFormDataGTable();
         Task<NIslemSonuc<List<DateTime>>> GetReporFormDataGTable(int id);
         Task<NIslemSonuc<FormDataInput>> UpdateFormData(int emteaid, int subeid, int cityid, bool state, int formid);

@@ -58,7 +58,7 @@ namespace HasatPiyasa.Business.Concrete
             }
         }
 
-        public async Task<NIslemSonuc<DataInputs>> CreateDataInputRange(List<DataInputs> dataInputs, int cityid, int subeid)
+        public async Task<NIslemSonuc<DataInputs>> CreateDataInputRange(List<DataInputs> dataInputs, int cityid, int subeid, int userid)
         {
             try
             {
@@ -76,6 +76,7 @@ namespace HasatPiyasa.Business.Concrete
                                 var update = dbcontext.Entry(f);
                                 update.Entity.FormDataInputId = formId;
                                 update.Entity.UpdatedTime = DateTime.Now;
+                                update.Entity.UpdateUserId = userid;
                                 update.State = EntityState.Modified;
                                 var count = dbcontext.SaveChanges();
                             }

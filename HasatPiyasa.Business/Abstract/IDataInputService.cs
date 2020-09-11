@@ -11,7 +11,7 @@ namespace HasatPiyasa.Business.Abstract
     public interface IDataInputService
     {
         Task<NIslemSonuc<DataInputs>> CreateDataInput(DataInputs dataInput);
-        Task<NIslemSonuc<DataInputs>> CreateDataInputRange(List<DataInputs> dataInputs,int cityid, int subeid);
+        Task<NIslemSonuc<DataInputs>> CreateDataInputRange(List<DataInputs> dataInputs,int cityid, int subeid, int userid);
         NIslemSonuc<List<DataInputs>> ListAllDataInputs();
         NIslemSonuc<List<ReportDto>> ListDataInputsForCityMarket(string[] dates, string[] emteatypes);
         NIslemSonuc<List<ReportDto>> ListDataInputsForSubeMarket(string[] dates, string[] emteatypes); 

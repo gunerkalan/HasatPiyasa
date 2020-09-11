@@ -51,7 +51,7 @@ namespace HasatPiyasa.Web.UI.Controllers
 
                 cityId = GetCurrentUser().Sube.SubeCities.FirstOrDefault().CityId;
                 model.SelectedCityId = cityId;
-                var Inputs = await _formDataInputService.GetFormDataInputTable(DateTime.Today, cityId);
+                var Inputs = await _formDataInputService.GetFormDataInputTable(DateTime.Today, cityId, user.SubeId, user.UserId);
 
                 if (Inputs.Veri != null)
                 {
@@ -75,7 +75,7 @@ namespace HasatPiyasa.Web.UI.Controllers
             {
                 model.SelectedCityId = cityId;
 
-                var Inputs = await _formDataInputService.GetFormDataInputTable(DateTime.Today, cityId);
+                var Inputs = await _formDataInputService.GetFormDataInputTable(DateTime.Today, cityId, user.SubeId, user.UserId);
 
                 if (Inputs.Veri != null)
                 {
@@ -99,7 +99,7 @@ namespace HasatPiyasa.Web.UI.Controllers
             var user = GetCurrentUser();
             DateTime AddTime = DateTime.Now;
 
-            var Inputs = await _formDataInputService.GetFormDataInputTable(DateTime.Today, dataInputs.FirstOrDefault().CityId);
+            var Inputs = await _formDataInputService.GetFormDataInputTable(DateTime.Today, dataInputs.FirstOrDefault().CityId, user.SubeId, user.UserId);
 
             if (Inputs.Veri != null)
             {
@@ -119,7 +119,7 @@ namespace HasatPiyasa.Web.UI.Controllers
             if (dataInputs.Count > 0)
             {
                 var cityId = dataInputs.FirstOrDefault().CityId;
-                var response = await _dataInputService.CreateDataInputRange(dataInputs, cityId, user.SubeId);
+                var response = await _dataInputService.CreateDataInputRange(dataInputs, cityId, user.SubeId, user.UserId);
                 if (response.BasariliMi)
                 {
                     return Json(new { success = true, messages = response.Mesaj });
