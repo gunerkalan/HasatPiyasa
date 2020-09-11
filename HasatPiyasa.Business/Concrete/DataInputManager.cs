@@ -206,7 +206,7 @@ namespace HasatPiyasa.Business.Concrete
                 return new NIslemSonuc<List<DataInputs>>
                 {
                     BasariliMi = true,
-                    Veri = _dataInputDal.GetList().ToList()
+                    Veri = _dataInputDal.GetList(x => x.IsActive == true).ToList()
                 };
 
             }
@@ -229,7 +229,7 @@ namespace HasatPiyasa.Business.Concrete
             for (int j = 0; j < emteatypes.Length; j++)
                 for (int i = 0; i < dates.Length; i++)
                 {
-                    var all = _dataInputDal.GetList(x => x.AddedTime.Date == Convert.ToDateTime(dates[i]) && x.EmteaTypeId == Convert.ToInt32(emteatypes[j])).ToList();
+                    var all = _dataInputDal.GetList(x => x.AddedTime.Date == Convert.ToDateTime(dates[i]) && x.EmteaTypeId == Convert.ToInt32(emteatypes[j]) && x.IsActive == true).ToList();
                     resp.AddRange(all);
                 }
             var response = resp.Select(a => new ReportDto
@@ -302,7 +302,7 @@ namespace HasatPiyasa.Business.Concrete
             for (int j = 0; j < emteatypes.Length; j++)
                 for (int i = 0; i < dates.Length; i++)
                 {
-                    var all = _dataInputDal.GetList(x => x.AddedTime.Date == Convert.ToDateTime(dates[i]) && x.EmteaTypeId == Convert.ToInt32(emteatypes[j])).ToList();
+                    var all = _dataInputDal.GetList(x => x.AddedTime.Date == Convert.ToDateTime(dates[i]) && x.EmteaTypeId == Convert.ToInt32(emteatypes[j]) & x.IsActive == true).ToList();
                     resp.AddRange(all);
                 }
             var response = resp.Select(a => new ReportDto

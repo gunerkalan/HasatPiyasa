@@ -116,7 +116,7 @@
     </td>
     @for (int i = 0; i < 22; i++)
     {
-        <td style="background-color:lightgray"><input type="number" readonly disabled /></td>
+        <td style="background-color:lightgray"><input  readonly disabled /></td>
     }
 
 </tr>
@@ -147,32 +147,32 @@ else
 
     }
     <td>
-        <input type="number" readonly name="tuik" value="@String.Format(new System.Globalization.CultureInfo("tr-TR").NumberFormat,"{0:###,###}",(@emteaType.DataInputs.Sum(x=>x.TuikValue)))" />
+        <input  readonly name="tuik" value="@String.Format(new System.Globalization.CultureInfo("tr-TR").NumberFormat,"{0:###,###}",(@emteaType.DataInputs.Sum(x=>x.TuikValue)))" />
     </td>
 
     <td>
-        <input type="number" readonly name="tmo" value="@String.Format(new System.Globalization.CultureInfo("tr-TR").NumberFormat,"{0:###,###}",(@emteaType.DataInputs.Sum(x=>x.GuessValue)))" />
+        <input  readonly name="tmo" value="@String.Format(new System.Globalization.CultureInfo("tr-TR").NumberFormat,"{0:###,###}",(@emteaType.DataInputs.Sum(x=>x.GuessValue)))" />
     </td>
 
-    <td><input type="number" readonly id="@("HasatYuzde_"+count.ToString())" name="percent" value="@String.Format(new System.Globalization.CultureInfo("tr-TR").NumberFormat,"{0:###,###}",(@emteaType.DataInputs.Sum(x => x.HasatOran * x.GuessValue) /@emteaType.DataInputs.Sum(x => x.GuessValue)))" /></td>
-    <td><input type="number" readonly id="@("HasatEdilen_"+count.ToString())" name="hasatedilen" value="@String.Format(new System.Globalization.CultureInfo("tr-TR").NumberFormat,"{0:###,###}",(@emteaType.DataInputs.Sum(x=>x.HasatMiktar)))" /></td>
-    <td><input type="number" readonly name="bekleyenton" value="@String.Format(new System.Globalization.CultureInfo("tr-TR").NumberFormat,"{0:###,###}",(@emteaType.DataInputs.Sum(x=>x.UreticiKalanMiktar)))" /></td>
+    <td><input  readonly id="@("HasatYuzde_"+count.ToString())" name="percent" value="@String.Format(new System.Globalization.CultureInfo("tr-TR").NumberFormat,"{0:###,###}",(@emteaType.DataInputs.Sum(x => x.HasatOran * x.GuessValue) /@emteaType.DataInputs.Sum(x => x.GuessValue)))" /></td>
+    <td><input  readonly id="@("HasatEdilen_"+count.ToString())" name="hasatedilen" value="@String.Format(new System.Globalization.CultureInfo("tr-TR").NumberFormat,"{0:###,###}",(@emteaType.DataInputs.Sum(x=>x.HasatMiktar)))" /></td>
+    <td><input  readonly name="bekleyenton" value="@String.Format(new System.Globalization.CultureInfo("tr-TR").NumberFormat,"{0:###,###}",(@emteaType.DataInputs.Sum(x=>x.UreticiKalanMiktar)))" /></td>
 
 
-    <td><input type="number" readonly data-bind="0" name="naturel0" id="@("naturel_"+count.ToString())" value="@String.Format(new System.Globalization.CultureInfo("tr-TR").NumberFormat,"{0:###,###}",(@emteaType.DataInputs.Sum(x=>x.Natural1)))" /></td>
-    <td><input type="number" readonly data-bind="1" name="naturel1" id="@("naturel_"+count.ToString())" value="@String.Format(new System.Globalization.CultureInfo("tr-TR").NumberFormat,"{0:###,###}",(@emteaType.DataInputs.Sum(x=>x.Natural2)))" /></td>
-    <td><input type="number" readonly data-bind="2" name="naturel2" id="@("naturel_"+count.ToString())" value="@String.Format(new System.Globalization.CultureInfo("tr-TR").NumberFormat,"{0:###,###}",(@emteaType.DataInputs.Sum(x=>x.Natural3)))" /></td>
-    <td><input type="number" readonly data-bind="3" name="naturel3" id="@("naturel_"+count.ToString())" value="@String.Format(new System.Globalization.CultureInfo("tr-TR").NumberFormat,"{0:###,###}",(@emteaType.DataInputs.Sum(x=>x.Natural4)))" /></td>
-    <td><input type="number" readonly data-bind="4" name="naturel4" id="@("naturel_"+count.ToString())" value="@String.Format(new System.Globalization.CultureInfo("tr-TR").NumberFormat,"{0:###,###}",(@emteaType.DataInputs.Sum(x=>x.Natural5)))" /></td>
+    <td><input  readonly data-bind="0" name="naturel0" id="@("naturel_"+count.ToString())" value="@String.Format(new System.Globalization.CultureInfo("tr-TR").NumberFormat,"{0:###,###}",(@emteaType.DataInputs.Sum(x=>x.Natural1)))" /></td>
+    <td><input  readonly data-bind="1" name="naturel1" id="@("naturel_"+count.ToString())" value="@String.Format(new System.Globalization.CultureInfo("tr-TR").NumberFormat,"{0:###,###}",(@emteaType.DataInputs.Sum(x=>x.Natural2)))" /></td>
+    <td><input  readonly data-bind="2" name="naturel2" id="@("naturel_"+count.ToString())" value="@String.Format(new System.Globalization.CultureInfo("tr-TR").NumberFormat,"{0:###,###}",(@emteaType.DataInputs.Sum(x=>x.Natural3)))" /></td>
+    <td><input  readonly data-bind="3" name="naturel3" id="@("naturel_"+count.ToString())" value="@String.Format(new System.Globalization.CultureInfo("tr-TR").NumberFormat,"{0:###,###}",(@emteaType.DataInputs.Sum(x=>x.Natural4)))" /></td>
+    <td><input  readonly data-bind="4" name="naturel4" id="@("naturel_"+count.ToString())" value="@String.Format(new System.Globalization.CultureInfo("tr-TR").NumberFormat,"{0:###,###}",(@emteaType.DataInputs.Sum(x=>x.Natural5)))" /></td>
 
 
-    <td><input type="number" readonly name="piyasaton" id="@("piyasaton"+count.ToString())" value="@String.Format(new System.Globalization.CultureInfo("tr-TR").NumberFormat,"{0:###,###}",(@emteaType.DataInputs.Sum(x=>x.NaturalToplam)))" /></td>
+    <td><input  readonly name="piyasaton" id="@("piyasaton"+count.ToString())" value="@String.Format(new System.Globalization.CultureInfo("tr-TR").NumberFormat,"{0:###,###}",(@emteaType.DataInputs.Sum(x=>x.NaturalToplam)))" /></td>
 
-    <td><input type="number" readonly name="toptan0" value="@String.Format(new System.Globalization.CultureInfo("tr-TR").NumberFormat,"{0:###,###}",(@emteaType.DataInputs.Sum(x=>x.ToptanPiyasa1*x.Natural1)/@emteaType.DataInputs.Sum(x=>x.Natural1)))" /></td>
-    <td><input type="number" readonly name="toptan1" value="@String.Format(new System.Globalization.CultureInfo("tr-TR").NumberFormat,"{0:###,###}",(@emteaType.DataInputs.Sum(x=>x.ToptanPiyasa2*x.Natural2)/@emteaType.DataInputs.Sum(x=>x.Natural2)))" /></td>
-    <td><input type="number" readonly name="toptan2" value="@String.Format(new System.Globalization.CultureInfo("tr-TR").NumberFormat,"{0:###,###}",(@emteaType.DataInputs.Sum(x=>x.ToptanPiyasa3*x.Natural3)/@emteaType.DataInputs.Sum(x=>x.Natural3)))" /></td>
-    <td><input type="number" readonly name="toptan3" value="@String.Format(new System.Globalization.CultureInfo("tr-TR").NumberFormat,"{0:###,###}",(@emteaType.DataInputs.Sum(x=>x.ToptanPiyasa4*x.Natural4)/@emteaType.DataInputs.Sum(x=>x.Natural4)))" /></td>
-    <td><input type="number" readonly name="toptan4" value="@String.Format(new System.Globalization.CultureInfo("tr-TR").NumberFormat,"{0:###,###}",(@emteaType.DataInputs.Sum(x=>x.ToptanPiyasa5*x.Natural5)/@emteaType.DataInputs.Sum(x=>x.Natural5)))" /></td>
+    <td><input  readonly name="toptan0" value="@String.Format(new System.Globalization.CultureInfo("tr-TR").NumberFormat,"{0:###,###}",(@emteaType.DataInputs.Sum(x=>x.ToptanPiyasa1*x.Natural1)/@emteaType.DataInputs.Sum(x=>x.Natural1)))" /></td>
+    <td><input  readonly name="toptan1" value="@String.Format(new System.Globalization.CultureInfo("tr-TR").NumberFormat,"{0:###,###}",(@emteaType.DataInputs.Sum(x=>x.ToptanPiyasa2*x.Natural2)/@emteaType.DataInputs.Sum(x=>x.Natural2)))" /></td>
+    <td><input  readonly name="toptan2" value="@String.Format(new System.Globalization.CultureInfo("tr-TR").NumberFormat,"{0:###,###}",(@emteaType.DataInputs.Sum(x=>x.ToptanPiyasa3*x.Natural3)/@emteaType.DataInputs.Sum(x=>x.Natural3)))" /></td>
+    <td><input  readonly name="toptan3" value="@String.Format(new System.Globalization.CultureInfo("tr-TR").NumberFormat,"{0:###,###}",(@emteaType.DataInputs.Sum(x=>x.ToptanPiyasa4*x.Natural4)/@emteaType.DataInputs.Sum(x=>x.Natural4)))" /></td>
+    <td><input  readonly name="toptan4" value="@String.Format(new System.Globalization.CultureInfo("tr-TR").NumberFormat,"{0:###,###}",(@emteaType.DataInputs.Sum(x=>x.ToptanPiyasa5*x.Natural5)/@emteaType.DataInputs.Sum(x=>x.Natural5)))" /></td>
 
 
 
@@ -199,22 +199,22 @@ else
                 <b><font face="Verdana" color="#C00000">TOPLAM ÇELTİK</font></b>
             </td>
 
-            <td><input type="number" readonly id="tuikTotal" text="0" /></td>
-            <td><input type="number" readonly id="tmoTotal" text="0" /></td>
-            <td><input type="number" readonly id="percentTotal" text="0" /></td>
-            <td><input type="number" readonly id="hasatedilenTotal" text="0" /></td>
-            <td><input type="number" readonly id="bekleyentonTotal" text="0" /></td>
+            <td><input  readonly id="tuikTotal" text="0" /></td>
+            <td><input  readonly id="tmoTotal" text="0" /></td>
+            <td><input  readonly id="percentTotal" text="0" /></td>
+            <td><input  readonly id="hasatedilenTotal" text="0" /></td>
+            <td><input  readonly id="bekleyentonTotal" text="0" /></td>
 
             @for (int i = 0; i < 5; i++)
             {
-                <td><input type="number" readonly id="@("toplanaturel_"+i.ToString())" text="0" /></td>
+                <td><input  readonly id="@("toplanaturel_"+i.ToString())" text="0" /></td>
             }
 
-            <td><input type="number" readonly id="piyasatonTotal" text="0" /></td>
+            <td><input  readonly id="piyasatonTotal" text="0" /></td>
 
             @for (int i = 0; i < 5; i++)
             {
-                <td><input type="number" readonly text="0" id="@("toptan"+i)" /></td>
+                <td><input  readonly text="0" id="@("toptan"+i)" /></td>
             }
 
 
@@ -314,7 +314,7 @@ else
     </td>
     @for (int i = 0; i < 22; i++)
     {
-        <td style="background-color:lightgray"><input type="number" disabled /></td>
+        <td style="background-color:lightgray"><input  disabled /></td>
     }
 
     </tr>
@@ -352,34 +352,34 @@ else
             <input name="tmo" type="number" readonly value="@emteaType.DataInputs.Sum(x=>x.GuessValue)" />
         </td>
 
-        <td><input type="number" id="@("HasatYuzde_"+count.ToString())" onkeyup="YuzdeHesapla(this);" name="percent" value="@emteaType.DataInputs.Sum(x=>x.HasatOran)" /></td>
-        <td><input type="number" id="@("HasatEdilen_"+count.ToString())" name="hasatedilen" readonly value="@emteaType.DataInputs.Sum(x=>x.HasatMiktar)" /></td>
-        <td><input type="number" name="bekleyenton" onkeyup="CalculateColumn('bekleyenton','bekleyentonTotal','topla')" value="@emteaType.DataInputs.Sum(x=>x.UreticiKalanMiktar)" /></td>
+        <td><input  id="@("HasatYuzde_"+count.ToString())" onkeyup="YuzdeHesapla(this);" name="percent" value="@emteaType.DataInputs.Sum(x=>x.HasatOran)" /></td>
+        <td><input  id="@("HasatEdilen_"+count.ToString())" name="hasatedilen" readonly value="@emteaType.DataInputs.Sum(x=>x.HasatMiktar)" /></td>
+        <td><input  name="bekleyenton" onkeyup="CalculateColumn('bekleyenton','bekleyentonTotal','topla')" value="@emteaType.DataInputs.Sum(x=>x.UreticiKalanMiktar)" /></td>
 
 
-        <td><input type="number" data-bind="0" name="@("naturel"+count.ToString())" id="@("naturel_"+count.ToString())" onkeyup="CalculateNaturel(this);" value="@emteaType.DataInputs.Sum(x=>x.Natural1)" /></td>
-        <td><input type="number" data-bind="1" name="@("naturel"+count.ToString())" id="@("naturel_"+count.ToString())" onkeyup="CalculateNaturel(this);" value="@emteaType.DataInputs.Sum(x=>x.Natural2)" /></td>
-        <td><input type="number" data-bind="2" name="@("naturel"+count.ToString())" id="@("naturel_"+count.ToString())" onkeyup="CalculateNaturel(this);" value="@emteaType.DataInputs.Sum(x=>x.Natural3)" /></td>
-        <td><input type="number" data-bind="3" name="@("naturel"+count.ToString())" id="@("naturel_"+count.ToString())" onkeyup="CalculateNaturel(this);" value="@emteaType.DataInputs.Sum(x=>x.Natural4)" /></td>
-        <td><input type="number" data-bind="4" name="@("naturel"+count.ToString())" id="@("naturel_"+count.ToString())" onkeyup="CalculateNaturel(this);" value="@emteaType.DataInputs.Sum(x=>x.Natural5)" /></td>
+        <td><input  data-bind="0" name="@("naturel"+count.ToString())" id="@("naturel_"+count.ToString())" onkeyup="CalculateNaturel(this);" value="@emteaType.DataInputs.Sum(x=>x.Natural1)" /></td>
+        <td><input  data-bind="1" name="@("naturel"+count.ToString())" id="@("naturel_"+count.ToString())" onkeyup="CalculateNaturel(this);" value="@emteaType.DataInputs.Sum(x=>x.Natural2)" /></td>
+        <td><input  data-bind="2" name="@("naturel"+count.ToString())" id="@("naturel_"+count.ToString())" onkeyup="CalculateNaturel(this);" value="@emteaType.DataInputs.Sum(x=>x.Natural3)" /></td>
+        <td><input  data-bind="3" name="@("naturel"+count.ToString())" id="@("naturel_"+count.ToString())" onkeyup="CalculateNaturel(this);" value="@emteaType.DataInputs.Sum(x=>x.Natural4)" /></td>
+        <td><input  data-bind="4" name="@("naturel"+count.ToString())" id="@("naturel_"+count.ToString())" onkeyup="CalculateNaturel(this);" value="@emteaType.DataInputs.Sum(x=>x.Natural5)" /></td>
 
 
-        <td><input type="number" name="piyasaton" readonly id="@("piyasaton"+count.ToString())" value="@emteaType.DataInputs.Sum(x=>x.NaturalToplam)" /></td>
+        <td><input  name="piyasaton" readonly id="@("piyasaton"+count.ToString())" value="@emteaType.DataInputs.Sum(x=>x.NaturalToplam)" /></td>
 
-        <td><input type="number" name="toptan0" onchange="CalculateColumn('toptan0', 'toptan0', 'topla');" value="@emteaType.DataInputs.Sum(x=>x.ToptanPiyasa1)" /></td>
-        <td><input type="number" name="toptan1" onchange="CalculateColumn('toptan1', 'toptan1', 'topla');" value="@emteaType.DataInputs.Sum(x=>x.ToptanPiyasa2)" /></td>
-        <td><input type="number" name="toptan2" onchange="CalculateColumn('toptan2', 'toptan2', 'topla');" value="@emteaType.DataInputs.Sum(x=>x.ToptanPiyasa3)" /></td>
-        <td><input type="number" name="toptan3" onchange="CalculateColumn('toptan3', 'toptan3', 'topla');" value="@emteaType.DataInputs.Sum(x=>x.ToptanPiyasa4)" /></td>
-        <td><input type="number" name="toptan4" onchange="CalculateColumn('toptan4', 'toptan4', 'topla');" value="@emteaType.DataInputs.Sum(x=>x.ToptanPiyasa5)" /></td>
+        <td><input  name="toptan0" onchange="CalculateColumn('toptan0', 'toptan0', 'topla');" value="@emteaType.DataInputs.Sum(x=>x.ToptanPiyasa1)" /></td>
+        <td><input  name="toptan1" onchange="CalculateColumn('toptan1', 'toptan1', 'topla');" value="@emteaType.DataInputs.Sum(x=>x.ToptanPiyasa2)" /></td>
+        <td><input  name="toptan2" onchange="CalculateColumn('toptan2', 'toptan2', 'topla');" value="@emteaType.DataInputs.Sum(x=>x.ToptanPiyasa3)" /></td>
+        <td><input  name="toptan3" onchange="CalculateColumn('toptan3', 'toptan3', 'topla');" value="@emteaType.DataInputs.Sum(x=>x.ToptanPiyasa4)" /></td>
+        <td><input  name="toptan4" onchange="CalculateColumn('toptan4', 'toptan4', 'topla');" value="@emteaType.DataInputs.Sum(x=>x.ToptanPiyasa5)" /></td>
 
 
-        <td><input type="number" name="dfiyat" id="@("d_1_"+count.ToString())" onkeyup="Avarage(this);" value="@emteaType.DataInputs.Sum(x=>x.Perakende1)" /></td>
-        <td><input type="number" name="yfiyat" id="@("y_1_"+count.ToString())" onkeyup="Avarage(this);" value="@emteaType.DataInputs.Sum(x=>x.Perakende2)" /></td>
-        <td><input type="number" name="ofiyat" id="@("o_1_"+count.ToString())" readonly value="@emteaType.DataInputs.Sum(x=>x.Perakende3)" /></td>
+        <td><input  name="dfiyat" id="@("d_1_"+count.ToString())" onkeyup="Avarage(this);" value="@emteaType.DataInputs.Sum(x=>x.Perakende1)" /></td>
+        <td><input  name="yfiyat" id="@("y_1_"+count.ToString())" onkeyup="Avarage(this);" value="@emteaType.DataInputs.Sum(x=>x.Perakende2)" /></td>
+        <td><input  name="ofiyat" id="@("o_1_"+count.ToString())" readonly value="@emteaType.DataInputs.Sum(x=>x.Perakende3)" /></td>
 
-        <td><input type="number" name="dfiyat2" id="@("d_2_"+count.ToString())" onkeyup="Avarage(this);" value="@emteaType.DataInputs.Sum(x=>x.Perakende4)" /></td>
-        <td><input type="number" name="yfiyat2" id="@("y_2_"+count.ToString())" onkeyup="Avarage(this);" value="@emteaType.DataInputs.Sum(x=>x.Perakende5)" /></td>
-        <td><input type="number" name="ofiyat2" id="@("o_2_"+count.ToString())" readonly value="@emteaType.DataInputs.Sum(x=>x.Perakende6)" /></td>
+        <td><input  name="dfiyat2" id="@("d_2_"+count.ToString())" onkeyup="Avarage(this);" value="@emteaType.DataInputs.Sum(x=>x.Perakende4)" /></td>
+        <td><input  name="yfiyat2" id="@("y_2_"+count.ToString())" onkeyup="Avarage(this);" value="@emteaType.DataInputs.Sum(x=>x.Perakende5)" /></td>
+        <td><input  name="ofiyat2" id="@("o_2_"+count.ToString())" readonly value="@emteaType.DataInputs.Sum(x=>x.Perakende6)" /></td>
 
     </tr>
     }
@@ -395,32 +395,32 @@ else
                     <b><font face="Verdana" color="#C00000">TOPLAM ÇELTİK</font></b>
                 </td>
 
-                <td><input type="number" readonly id="tuikTotal" value="0" /></td>
-                <td><input type="number" readonly id="tmoTotal" value="0" /></td>
-                <td><input type="number" readonly id="percentTotal" value="0" /></td>
-                <td><input type="number" readonly id="hasatedilenTotal" value="0" /></td>
-                <td><input type="number" readonly id="bekleyentonTotal" value="0" /></td>
+                <td><input  readonly id="tuikTotal" value="0" /></td>
+                <td><input  readonly id="tmoTotal" value="0" /></td>
+                <td><input  readonly id="percentTotal" value="0" /></td>
+                <td><input  readonly id="hasatedilenTotal" value="0" /></td>
+                <td><input  readonly id="bekleyentonTotal" value="0" /></td>
 
                 @for (int i = 0; i < 5; i++)
                 {
-                    <td><input type="number" id="@("toplanaturel_"+i.ToString())" readonly value="0" /></td>
+                    <td><input  id="@("toplanaturel_"+i.ToString())" readonly value="0" /></td>
                 }
 
-                <td><input type="number" readonly id="piyasatonTotal" value="0" /></td>
+                <td><input  readonly id="piyasatonTotal" value="0" /></td>
 
                 @for (int i = 0; i < 5; i++)
                 {
-                    <td><input type="number" readonly value="0" id="@("toptan"+i)" /></td>
+                    <td><input  readonly value="0" id="@("toptan"+i)" /></td>
                 }
 
 
-                <td><input type="number" readonly id="dfiyatTotal" value="0" class="inputtop" /></td>
-                <td><input type="number" readonly id="yfiyatTotal" value="0" class="inputtop" /></td>
-                <td><input type="number" readonly id="ofiyatTotal" value="0" /></td>
+                <td><input  readonly id="dfiyatTotal" value="0" class="inputtop" /></td>
+                <td><input  readonly id="yfiyatTotal" value="0" class="inputtop" /></td>
+                <td><input  readonly id="ofiyatTotal" value="0" /></td>
 
-                <td><input type="number" readonly id="dfiyat2Total" value="0" class="inputtop" /></td>
-                <td><input type="number" readonly id="yfiyat2Total" value="0" class="inputtop" /></td>
-                <td><input type="number" readonly id="ofiyat2Total" value="0" /></td>
+                <td><input  readonly id="dfiyat2Total" value="0" class="inputtop" /></td>
+                <td><input  readonly id="yfiyat2Total" value="0" class="inputtop" /></td>
+                <td><input  readonly id="ofiyat2Total" value="0" /></td>
 
             </tr>
 
@@ -448,11 +448,11 @@ else
         var inputs = $("input")
         $("input").attr("readonly", true)
 
-        //setTimeout(() => {
-        //    $.each(inputs, (i, v) => {
-        //        v.value = numberWithCommas(v.value)
-        //    })
-        //}, 1000)
+        setTimeout(() => {
+            $.each(inputs, (i, v) => {
+                v.value = numberWithCommas(v.value)
+            })
+        }, 1000)
     }
 
     $(document).ready(() => {

@@ -26,7 +26,7 @@ function LoadProcess() {
     CalculateColumn("hasatedilen", "hasatedilenTotal", "topla");
     CalculateColumn("bekleyenton", "bekleyentonTotal", "topla");
     CalculateColumn("piyasaton", "piyasatonTotal", "topla");
-    CalculateColumnByCumulative("percent", "tmo", "percentTotal", "ağırlıklı");
+    CalculateColumnByCumulative("percent", "tmo", "percentTotal", "ağırlıklı ondalıklı");
     CalculateColumnByCumulative('toptan0', 'piyasaton', 'toptan0', 'ağırlıklı');
     CalculateColumnByCumulative('toptan1', 'piyasaton', 'toptan1', 'ağırlıklı');
     CalculateColumnByCumulative('toptan2', 'piyasaton', 'toptan2', 'ağırlıklı');
@@ -40,9 +40,9 @@ function LoadProcess() {
     CalculateColumn('dfiyat', 'dfiyatTotal', 'ortalama');
     CalculateColumn('yfiyat', 'yfiyatTotal', 'ortalama');
     CalculateColumn('ofiyat', 'ofiyatTotal', 'ortalama');
-    CalculateColumn('dfiyat2', 'dfiyat2Total', 'ortalama');
-    CalculateColumn('yfiyat2', 'yfiyat2Total', 'ortalama');
-    CalculateColumn('ofiyat2', 'ofiyat2Total', 'ortalama');
+    CalculateColumn('dfiyat2', 'dfiyat2Total', 'ortalama ondalıklı');
+    CalculateColumn('yfiyat2', 'yfiyat2Total', 'ortalama ondalıklı');
+    CalculateColumn('ofiyat2', 'ofiyat2Total', 'ortalama ondalıklı');
     $("input[type=number]").on("focus", function () {
         $(this).on("keydown", function (event) {
             if (event.keyCode === 38 || event.keyCode === 40) {
@@ -60,18 +60,18 @@ function LoadProcess() {
 
     })
 
-    //$("table input").each(function () {
-    //    var element = $(this);
-    //    if (isNaN(element[0].value) | (element[0].value ) {
-    //        element.value = 0;
-    //    }
-    //});
+    $("table input").each(function () {
+        var element = $(this);
+        if (element[0].value.toString()== "NaN") {
+            element[0].value = 0;
+        }
+    });
 
-    console.clear()
+    //console.clear()
 }
 function CalculateToptan() {
 
-    CalculateColumnByCumulative("percent", "tmo", "percentTotal", "ağırlıklı");
+    CalculateColumnByCumulative("percent", "tmo", "percentTotal", "ağırlıklı ondalıklı");
     CalculateColumnByCumulative('toptan0', 'piyasaton', 'toptan0', 'ağırlıklı');
     CalculateColumnByCumulative('toptan1', 'piyasaton', 'toptan1', 'ağırlıklı');
     CalculateColumnByCumulative('toptan2', 'piyasaton', 'toptan2', 'ağırlıklı');
@@ -120,12 +120,12 @@ function CalculateColumn(name, totalid, calculateType) {
         var tuiks = $(`input[name=${name}]`)
         var total = 0;
         $.each(tuiks, (i, v) => {
-            if (v.value != "0") {
-                total += Number(v.value.replace(/\./g, ''))
+            if (v.value != "0" & v.value != "") {
+                total += parseInt(v.value.replace(/\./g, ''))
             }
         })
-
-        $("#" + totalid).val(total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "."))
+      
+        $("#" + totalid).val(total.toString().replace(/\./g, ','))
     }
 
     if (calculateType == "ortalama") {
@@ -133,12 +133,31 @@ function CalculateColumn(name, totalid, calculateType) {
         var total = 0;
         var _count = 0
         $.each(tuiks, (i, v) => {
-            if (v.value != "0") {
+            if (v.value != "0" & v.value != "") {
+                total += parseInt(v.value.replace(/\./g, ''))
+                _count++
+            }
+        })
+
+        $("#" + totalid).val(parseInt(total / _count).toString().replace(/\./g, ','))
+
+    }
+    if (calculateType == "ortalama ondalıklı") {
+        var tuiks = $(`input[name=${name}]`)
+        var total = 0;
+        var _count = 0
+        $.each(tuiks, (i, v) => {
+            if (v.value != "0" & v.value != "") {
                 total += parseFloat(v.value.replace(/\./g, ''))
                 _count++
             }
         })
-        $("#" + totalid).val((total / _count).toFixed(2).replace(/\./g, ',').toString())
+        if ((total / _count).toString().indexOf('.') !== -1) {
+            $("#" + totalid).val((total / _count).toFixed(2).replace(/\./g, ',').toString())
+        }
+        else {
+            $("#" + totalid).val(parseInt(total / _count).toString().replace(/\./g, ','))
+        }
 
     }
 
@@ -152,19 +171,46 @@ function CalculateColumnByCumulative(name, relatedcolumnname, totalid, calculate
         var miktartotal = 0;
         var total = 0;
         $.each(miktars, (i, v) => {
-            if (v.value != "0") {
-                miktartotal += Number(v.value.replace(/\./g, ''))
+            if (v.value != "0" & v.value != "") {
+                miktartotal += parseInt(v.value.replace(/\./g, ''))
             }
         })
         $.each(miktars, (a, b) => {
             $.each(tuiks, (i, v) => {
-                if (v.value != "0" & a == i) {
-                    total += Number(v.value.replace(/\./g, '')) * Number(b.value.replace(/\./g, ''))
+                if ((v.value != "0" & v.value != "") & (b.value != "0" & b.value != "") & a == i) {
+                    total += parseInt(v.value.replace(/\./g, '')) * parseInt(b.value.replace(/\./g, ''))
                 }
             })
         })
+       
+            $("#" + totalid).val((total / miktartotal).toString().replace(/\./g, ','))        }
+        
 
-        $("#" + totalid).val(parseInt(total / miktartotal).toString().replace(/\B(?=(\d{3})+(?!\d))/g, "."))
+    
+    if (calculateType == "ağırlıklı ondalıklı") {
+        var tuiks = $(`input[name=${name}]`);
+        var miktars = $(`input[name=${relatedcolumnname}]`);
+        var miktartotal = 0;
+        var total = 0;
+        $.each(miktars, (i, v) => {
+            if (v.value != "0" & v.value != "") {
+                miktartotal += parseFloat(v.value.replace(/\./g, ''))
+            }
+        })
+        $.each(miktars, (a, b) => {
+            $.each(tuiks, (i, v) => {
+                if ((v.value != "0" & v.value != "") & (b.value != "0" & b.value != "") & a == i) {
+                    total += parseFloat(v.value.replace(/\./g, '')) * parseFloat(b.value.replace(/\./g, ''))
+                }
+            })
+        })
+        if ((total / miktartotal).toString().indexOf('.') !== -1) {
+            $("#" + totalid).val((total / miktartotal).toFixed(2).toString().replace(/\./g, ','))
+        }
+        else {
+            $("#" + totalid).val(parseInt(total / miktartotal).toString())
+        }
+
 
     }
 
@@ -172,6 +218,8 @@ function CalculateColumnByCumulative(name, relatedcolumnname, totalid, calculate
 
 
 }
+
+
 function CalculateNaturel(totalid) {
     var rowId = totalid.attributes["id"].value.split("_")[1]
     var index = totalid.dataset.bind;
