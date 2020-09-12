@@ -165,13 +165,13 @@ namespace HasatPiyasa.Business.Concrete
             }
         }
 
-        public async Task<NIslemSonuc<FormDataInput>> GetFormDataInputTable(DateTime date, int cityId)
+        public async Task<NIslemSonuc<FormDataInput>> GetFormDataInputTable(DateTime date, int cityId, int SubeId, int UserId)
         {
             try
             {
                 var res = await _formDataInputDal.GetTable();
                 var result = res.AsNoTracking().Include(x => x.DataInputs).ThenInclude(x => x.EmteaType).ThenInclude(x => x.EmteaGroup).ThenInclude(x => x.Emtea).
-                    Where(x => x.IsActive && x.CityId == cityId).OrderByDescending(x => x.Id).FirstOrDefault();
+                    Where(x => x.IsActive && x.CityId == cityId && x.SubeId==SubeId ).OrderByDescending(x => x.Id).FirstOrDefault();
 
 
                 return new NIslemSonuc<FormDataInput>

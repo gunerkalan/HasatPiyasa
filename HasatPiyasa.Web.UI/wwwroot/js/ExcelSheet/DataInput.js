@@ -98,7 +98,7 @@ function YuzdeHesapla(e) {
             percent = (_amount * value) / 100;
         }
 
-        $("#HasatEdilen_" + rowId).val(percent)
+        $("#HasatEdilen_" + rowId).val(percent.toFixed(0))
         CalculateColumn("tmo", "tmoTotal", "topla");
         CalculateColumn("percent", "percentTotal", "ortalama");
         CalculateColumn("hasatedilen", "hasatedilenTotal", "topla");
@@ -117,7 +117,7 @@ function CalculateColumn(name, totalid, calculateType) {
             }
         })
 
-        $("#" + totalid).val(total)
+        $("#" + totalid).val(total.toFixed(0))
     }
 
     if (calculateType == "ortalama") {
@@ -132,11 +132,10 @@ function CalculateColumn(name, totalid, calculateType) {
         })
 
         var totalp = (total / _count)
-        $("#" + totalid).val(totalp.toFixed(2))
-
+       
+         $("#" + totalid).val(totalp.toFixed(2))
+       
     }
-
-
 }
 function CalculateColumnByCumulative(name, relatedcolumnname, totalid, calculateType) {
 
@@ -160,8 +159,8 @@ function CalculateColumnByCumulative(name, relatedcolumnname, totalid, calculate
             })
         })
 
-        if (total>0)
-        $("#" + totalid).val(Number(total / miktartotal))
+        if (total > 0)
+            $("#" + totalid).val(Number(total / miktartotal).toFixed(0))
 
     }
 
@@ -190,7 +189,7 @@ function CalculateNaturel(totalid) {
     })
 
     $("#" + totalid).val(total)
-    $("#toplanaturel_" + index).val(columntotal)
+    $("#toplanaturel_" + index).val(columntotal.toFixed(0))
 
     CalculateColumn('piyasaton', 'piyasatonTotal', 'topla')
 
@@ -221,8 +220,33 @@ function Avarage(e) {
 
 
 }
+
+function setCookie(cname, cvalue, exdays) {
+    var d = new Date();
+    d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+    var expires = "expires=" + d.toUTCString();
+    document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+}
+
+function getCookie(cname) {
+    var name = cname + "=";
+    var ca = document.cookie.split(';');
+    for (var i = 0; i < ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == ' ') {
+            c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+        }
+    }
+    return "";
+}
+
+
 function CityChange() {
     var value = $("#cityId :selected").val()
+    setCookie("cityId",value,1)
     window.location.href = `/DataInput/DataInputRice?cityId=${value}`;
     getLoadPanelInstance().show();
     LoadProcess();
@@ -238,7 +262,7 @@ function Save() {
     var dataInput = [];
     var error = 0;
     var inputs = Number($("input").length) / 22
-
+    
     for (var i = 1; i < inputs; i++) {
         var item = {
 
@@ -336,9 +360,6 @@ if (error == 0) {
     }
 }
 
-
-         
-
     })
 
     if (error == 0) {
@@ -361,7 +382,8 @@ if (error == 0) {
             SweetAlertMesaj("Hasat Piyasa  Kaydet", model.messages, "success", "Kapat", "btn-success")
             setTimeout(() => {
 
-                //window.location.href = "/DataInput/DataInputRice"
+                value = getCookie("cityId");
+                window.location.href = `/DataInput/DataInputRice?cityId=${value}`;
 
 
             }, 2000)

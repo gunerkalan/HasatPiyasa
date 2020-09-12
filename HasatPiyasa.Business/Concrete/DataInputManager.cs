@@ -25,7 +25,7 @@ namespace HasatPiyasa.Business.Concrete
         private ISubeDal _subeDal;
         private IBolgeDal _bolgeDal;
 
-        public DataInputManager(IDataInputDal dataInputDal, IFormDataInputDal formDataInputDal, ICityDal cityDal, ISubeDal subeDal,IBolgeDal bolgeDal)
+        public DataInputManager(IDataInputDal dataInputDal, IFormDataInputDal formDataInputDal, ICityDal cityDal, ISubeDal subeDal, IBolgeDal bolgeDal)
         {
             _dataInputDal = dataInputDal;
             _formDataInputDal = formDataInputDal;
@@ -58,66 +58,71 @@ namespace HasatPiyasa.Business.Concrete
             }
         }
 
-        public async Task<NIslemSonuc<DataInputs>> CreateDataInputRange(List<DataInputs> dataInputs, int cityid, int subeid)
+        public async Task<NIslemSonuc<DataInputs>> CreateDataInputRange(List<DataInputs> dataInputs, int cityid, int subeid, int userid)
         {
             try
             {
-                if (dataInputs.Where(x => x.Id == 0).Count() != dataInputs.Count() && dataInputs.FirstOrDefault().AddedTime.Date == DateTime.Now.Date)
-                {
-                    var formId = 0;
-                    dataInputs.ForEach(f =>
-                    {
-                        if (f.Id > 0)
-                        {
-                            formId = _dataInputDal.Get(x => x.Id == f.Id).FormDataInputId;
+                var dataInputCheckId = dataInputs.Where(x => x.Id > 0).FirstOrDefault();
 
-                            using (var dbcontext = new HasatPiyasaContext())
+
+                if (dataInputCheckId != null)
+                {
+                    var DataInputGetAddTime = _dataInputDal.GetTable().Result.FirstOrDefault(x => x.Id == dataInputCheckId.Id);
+
+                    if (DataInputGetAddTime.AddedTime.Date == DateTime.Now.Date)
+                    {
+                        var formId = 0;
+                        dataInputs.ForEach(f =>
+                        {
+                            if (f.Id > 0)
                             {
-                                var update = dbcontext.Entry(f);
-                                update.Entity.FormDataInputId = formId;
-                                update.Entity.UpdatedTime = DateTime.Now;
-                                update.State = EntityState.Modified;
-                                var count = dbcontext.SaveChanges();
+                                formId = _dataInputDal.Get(x => x.Id == f.Id).FormDataInputId;
+
+                                using (var dbcontext = new HasatPiyasaContext())
+                                {
+                                    var update = dbcontext.Entry(f);
+                                    update.Entity.FormDataInputId = formId;
+                                    update.Entity.UpdatedTime = DateTime.Now;
+                                    update.Entity.UpdateUserId = userid;
+                                    update.Entity.AddUserId = DataInputGetAddTime.AddUserId;
+                                    update.Entity.AddedTime = DataInputGetAddTime.AddedTime;
+                                    update.State = EntityState.Modified;
+                                    var count = dbcontext.SaveChanges();
+                                }
+
+                            }
+                            else
+                            {
+                                f.FormDataInputId = formId;
+                                f.AddUserId = userid;
+                                f.AddedTime = DateTime.Now;
+                                var addedDataInputItem = _dataInputDal.Add(f);
                             }
 
-                        }
-                        else
+                        });
+
+                        return new NIslemSonuc<DataInputs>
                         {
-                            f.FormDataInputId = formId;
-                            var addedDataInputItem = _dataInputDal.Add(f);
-                        }
-
-                    });
-
-                    return new NIslemSonuc<DataInputs>
+                            BasariliMi = true,
+                            Mesaj = Messages.DataInputUpdate
+                        };
+                    }
+                    else
                     {
-                        BasariliMi = true,
-                        Mesaj = Messages.DataInputUpdate
-                    };
+                        await AddNewRecord(dataInputs, cityid, subeid, userid);
+                        return new NIslemSonuc<DataInputs>
+                        {
+                            BasariliMi = true,
+                            Mesaj = Messages.DataInputAdd
+                        };
+                    }
+
+
 
                 }
                 else
                 {
-                    FormDataInput formDataInput = new FormDataInput
-                    {
-                        AddedTime = DateTime.Now,
-                        IsActive = true,
-                        IsLock = false,
-                        CityId = cityid,
-                        SubeId = subeid,
-                        EmteaId = dataInputs.FirstOrDefault().EmteaId
-                    };
-
-                    var addedformdt = await _formDataInputDal.AddAsync(formDataInput);
-
-                    dataInputs.ForEach(x =>
-                    {
-                        x.FormDataInputId = formDataInput.Id;
-                        x.Id = 0;
-                        x.AddedTime = DateTime.Now;
-                    });
-
-                    await _dataInputDal.AddRange(dataInputs);
+                    await AddNewRecord(dataInputs, cityid, subeid, userid);
 
                     return new NIslemSonuc<DataInputs>
                     {
@@ -137,6 +142,30 @@ namespace HasatPiyasa.Business.Concrete
                 };
 
             }
+        }
+
+        private async Task AddNewRecord(List<DataInputs> dataInputs, int cityid, int subeid, int userid)
+        {
+            FormDataInput formDataInput = new FormDataInput
+            {
+                AddedTime = DateTime.Now,
+                IsActive = true,
+                IsLock = false,
+                CityId = cityid,
+                SubeId = subeid,
+                EmteaId = dataInputs.FirstOrDefault().EmteaId
+            };
+
+            var addedformdt = await _formDataInputDal.AddAsync(formDataInput);
+
+            dataInputs.ForEach(x =>
+            {
+                x.FormDataInputId = formDataInput.Id;
+                x.Id = 0;
+                x.AddedTime = DateTime.Now;
+                x.AddUserId = userid;
+            });
+            await _dataInputDal.AddRange(dataInputs);
         }
 
         private NIslemSonuc<bool> CheckDataInputForm(int cityId)
@@ -353,7 +382,7 @@ namespace HasatPiyasa.Business.Concrete
                     BasariliMi = true,
                     //Veri = _dataInputDal.GetList().Where(x => dates.Contains(x.AddedTime.ToShortDateString())).ToList()
                     //Veri = _dataInputDal.GetList(x => dates.Contains(x.AddedTime.ToShortDateString()) && emteatypes.Contains(x.EmteaTypeId.ToString())).ToList()
-                    Veri = response.GroupBy(c => c.SubeId).Select(g => g.First()).OrderBy(b=> b.BolgeAdi).ToList()
+                    Veri = response.GroupBy(c => c.SubeId).Select(g => g.First()).OrderBy(b => b.BolgeAdi).ToList()
                 };
 
             }
