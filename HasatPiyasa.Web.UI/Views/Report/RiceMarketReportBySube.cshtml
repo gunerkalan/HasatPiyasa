@@ -130,7 +130,7 @@
            
             <label for="dates" class="text-primary font-weight-bolder"> Tarihler</label><br />
             <select class="js-example-basic-multiple form-control" name="dates[]" multiple="multiple" id="dates">
-                @foreach (var cty in Model.DateInputs)
+                @foreach (var cty in Model.DateInputs.OrderByDescending(u=>u.Date))
                 {
                     <option value="@cty.ToShortDateString()">@cty.ToShortDateString()</option>
 

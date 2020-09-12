@@ -199,7 +199,7 @@ namespace HasatPiyasa.Web.UI.Controllers
         {
             var model = new HasaInputViewModel();
             var _cities = await _subeCityService.GetSbCityGTable();
-            model.CitiesRapor = _cities.Veri.ToList();
+            model.CitiesRapor = _cities.Veri.OrderBy(u=>u.CityName).ToList();
             var _dates = await _formDataInputService.GetTable();
             model.DateInputs = _dates.Select(x => x.AddedTime.Date).Distinct().ToList();
             var emtea = await _emteaService.GetEmteaTable((int)Core.Utilities.Enums.DataInput.Data.Rice, 0);
