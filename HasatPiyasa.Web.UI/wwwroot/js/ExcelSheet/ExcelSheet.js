@@ -69,6 +69,34 @@ function LoadProcess() {
 
     //console.clear()
 }
+function LoadMarketProcess() {
+    
+   
+
+    //$("table input").trigger('keyup')
+    //$("table input").trigger('change')
+    //$("input").focus((e) => {
+
+    //    if (e.target.value == "0")
+    //        e.target.value = null;
+
+    //})
+    setTimeout(() => {
+    $("table td").each(function () {
+        var element = $(this);
+        if (element[0].textContent == "NaN") {
+            element[0].textContent = "";
+        }
+        if (element[0].textContent.indexOf(',') !== -1) {
+            element[0].textContent = parseInt(element[0].textContent);
+        }
+
+    })
+    }, 1000)
+
+
+    //console.clear()
+}
 function CalculateToptan() {
 
     CalculateColumnByCumulative("percent", "tmo", "percentTotal", "ağırlıklı ondalıklı");

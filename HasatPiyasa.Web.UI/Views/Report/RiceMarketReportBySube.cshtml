@@ -21,6 +21,7 @@
                 $(this).closest('td').nextAll().eq(0).find('input').focus();
             }
         });
+        LoadMarketProcess();
         function getEmtea() {
             var str = $('#emteatypes').select2('val')+ "";
             str = str.split(",");

@@ -116,3 +116,24 @@
     <script type="text/javascript" src="~/tableexport.jquery.plugin/libs/html2canvas/html2canvas.min.js"></script>
     <script src="~/tableexport.jquery.plugin/tableExport.min.js"></script>
     <link href="~/TableExport/css/tableexport.css" rel="stylesheet" />
+    <script>
+
+        function numberWithCommas(x) {
+            return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+        }
+
+        function LoadProcess2() {
+            var inputs = $("input")
+            $("input").attr("readonly", true)
+
+            setTimeout(() => {
+                $.each(inputs, (i, v) => {
+                    v.value = numberWithCommas(v.value)
+                })
+            }, 1000)
+        }
+
+        $(document).ready(() => {
+            LoadMarketProcess();
+        })
+    </script>

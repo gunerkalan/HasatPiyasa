@@ -123,69 +123,70 @@
 }
 else
 {
-<tr class="@("datainput"+dataInputCount)" emteatype="@emteaType.Id" emteagroup="@grup.Id" dataInputId="@(DataInputModelCount>=dataInputCount ? Model.HaveTodayInputData==true ? Model.DataInputs[dataInputCount-1].Id:0:0)">
+    <tr class="@("datainput"+dataInputCount)" emteatype="@emteaType.Id" emteagroup="@grup.Id" dataInputId="@(DataInputModelCount>=dataInputCount ? Model.HaveTodayInputData==true ? Model.DataInputs[dataInputCount-1].Id:0:0)">
 
-    @if (count < 2)
-    {
-        <td class="tdstyle" rowspan="@grup.EmteaTypes.Count" height="395" align="left" valign="middle" bgcolor="#F0F0F0" sdnum="1033;1055;Standard"><b><font face="Verdana" color="#C00000">@grup.GroupName</font></b></td>
-    }
+        @if (count < 2)
+        {
+            <td class="tdstyle" rowspan="@grup.EmteaTypes.Count" height="395" align="left" valign="middle" bgcolor="#F0F0F0" sdnum="1033;1055;Standard"><b><font face="Verdana" color="#C00000">@grup.GroupName</font></b></td>
+        }
 
-    <td class="tdstyle">
+        <td class="tdstyle">
 
-        <font face="Verdana" color="#C00000">
-            <b>
-                @emteaType.EmteaTypeName
-            </b>
-            <br />
-            <span style="text-transform:capitalize;font-style:italic">(@string.Join(',', emteaType.EmteaTypeGroups.Select(s => s.EmteaTypeGroupName)))</span>
-        </font>
+            <font face="Verdana" color="#C00000">
+                <b>
+                    @emteaType.EmteaTypeName
+                </b>
+                <br />
+                <span style="text-transform:capitalize;font-style:italic">(@string.Join(',', emteaType.EmteaTypeGroups.Select(s => s.EmteaTypeGroupName)))</span>
+            </font>
 
-    </td>
-    @{ if (groupCount > count)
+        </td>
+        @{ if (groupCount > count)
 
-            count = ++groupCount;
+                count = ++groupCount;
 
-    }
-    <td>
-        <input readonly name="tuik" value="@String.Format(new System.Globalization.CultureInfo("tr-TR").NumberFormat,"{0:###,###}",(@emteaType.DataInputs.Sum(x=>x.TuikValue)))" />
-    </td>
+        }
+        <td>
+            <input readonly name="tuik" value="@String.Format(new System.Globalization.CultureInfo("tr-TR").NumberFormat,"{0:###,###}",(@emteaType.DataInputs.Sum(x=>x.TuikValue)))" />
+        </td>
 
-    <td>
-        <input readonly name="tmo" value="@String.Format(new System.Globalization.CultureInfo("tr-TR").NumberFormat,"{0:###,###}",(@emteaType.DataInputs.Sum(x=>x.GuessValue)))" />
-    </td>
+        <td>
+            <input readonly name="tmo" value="@String.Format(new System.Globalization.CultureInfo("tr-TR").NumberFormat,"{0:###,###}",(@emteaType.DataInputs.Sum(x=>x.GuessValue)))" />
+        </td>
 
-    <td><input readonly id="@("HasatYuzde_"+count.ToString())" name="percent" value="@String.Format(new System.Globalization.CultureInfo("tr-TR").NumberFormat,"{0:###,###}",(@emteaType.DataInputs.Sum(x => x.HasatOran * x.GuessValue) /@emteaType.DataInputs.Sum(x => x.GuessValue)))" /></td>
-    <td><input readonly id="@("HasatEdilen_"+count.ToString())" name="hasatedilen" value="@String.Format(new System.Globalization.CultureInfo("tr-TR").NumberFormat,"{0:###,###}",(@emteaType.DataInputs.Sum(x=>x.HasatMiktar)))" /></td>
-    <td><input readonly name="bekleyenton" value="@String.Format(new System.Globalization.CultureInfo("tr-TR").NumberFormat,"{0:###,###}",(@emteaType.DataInputs.Sum(x=>x.UreticiKalanMiktar)))" /></td>
-
-
-    <td><input readonly data-bind="0" name="naturel0" id="@("naturel_"+count.ToString())" value="@String.Format(new System.Globalization.CultureInfo("tr-TR").NumberFormat,"{0:###,###}",(@emteaType.DataInputs.Sum(x=>x.Natural1)))" /></td>
-    <td><input readonly data-bind="1" name="naturel1" id="@("naturel_"+count.ToString())" value="@String.Format(new System.Globalization.CultureInfo("tr-TR").NumberFormat,"{0:###,###}",(@emteaType.DataInputs.Sum(x=>x.Natural2)))" /></td>
-    <td><input readonly data-bind="2" name="naturel2" id="@("naturel_"+count.ToString())" value="@String.Format(new System.Globalization.CultureInfo("tr-TR").NumberFormat,"{0:###,###}",(@emteaType.DataInputs.Sum(x=>x.Natural3)))" /></td>
-    <td><input readonly data-bind="3" name="naturel3" id="@("naturel_"+count.ToString())" value="@String.Format(new System.Globalization.CultureInfo("tr-TR").NumberFormat,"{0:###,###}",(@emteaType.DataInputs.Sum(x=>x.Natural4)))" /></td>
-    <td><input readonly data-bind="4" name="naturel4" id="@("naturel_"+count.ToString())" value="@String.Format(new System.Globalization.CultureInfo("tr-TR").NumberFormat,"{0:###,###}",(@emteaType.DataInputs.Sum(x=>x.Natural5)))" /></td>
+        <td><input readonly id="@("HasatYuzde_"+count.ToString())" name="percent" value="@String.Format(new System.Globalization.CultureInfo("tr-TR").NumberFormat,"{0:###,###}",(@emteaType.DataInputs.Sum(x => x.HasatOran * x.GuessValue) /@emteaType.DataInputs.Sum(x => x.GuessValue)))" /></td>
+        <td><input readonly id="@("HasatEdilen_"+count.ToString())" name="hasatedilen" value="@String.Format(new System.Globalization.CultureInfo("tr-TR").NumberFormat,"{0:###,###}",(@emteaType.DataInputs.Sum(x=>x.HasatMiktar)))" /></td>
+        <td><input readonly name="bekleyenton" value="@String.Format(new System.Globalization.CultureInfo("tr-TR").NumberFormat,"{0:###,###}",(@emteaType.DataInputs.Sum(x=>x.UreticiKalanMiktar)))" /></td>
 
 
-    <td><input readonly name="piyasaton" id="@("piyasaton"+count.ToString())" value="@String.Format(new System.Globalization.CultureInfo("tr-TR").NumberFormat,"{0:###,###}",(@emteaType.DataInputs.Sum(x=>x.NaturalToplam)))" /></td>
-
-    <td><input readonly name="toptan0" value="@String.Format(new System.Globalization.CultureInfo("tr-TR").NumberFormat,"{0:###,###}",(@emteaType.DataInputs.Sum(x=>x.ToptanPiyasa1*x.Natural1)/@emteaType.DataInputs.Sum(x=>x.Natural1)))" /></td>
-    <td><input readonly name="toptan1" value="@String.Format(new System.Globalization.CultureInfo("tr-TR").NumberFormat,"{0:###,###}",(@emteaType.DataInputs.Sum(x=>x.ToptanPiyasa2*x.Natural2)/@emteaType.DataInputs.Sum(x=>x.Natural2)))" /></td>
-    <td><input readonly name="toptan2" value="@String.Format(new System.Globalization.CultureInfo("tr-TR").NumberFormat,"{0:###,###}",(@emteaType.DataInputs.Sum(x=>x.ToptanPiyasa3*x.Natural3)/@emteaType.DataInputs.Sum(x=>x.Natural3)))" /></td>
-    <td><input readonly name="toptan3" value="@String.Format(new System.Globalization.CultureInfo("tr-TR").NumberFormat,"{0:###,###}",(@emteaType.DataInputs.Sum(x=>x.ToptanPiyasa4*x.Natural4)/@emteaType.DataInputs.Sum(x=>x.Natural4)))" /></td>
-    <td><input readonly name="toptan4" value="@String.Format(new System.Globalization.CultureInfo("tr-TR").NumberFormat,"{0:###,###}",(@emteaType.DataInputs.Sum(x=>x.ToptanPiyasa5*x.Natural5)/@emteaType.DataInputs.Sum(x=>x.Natural5)))" /></td>
+        <td><input readonly data-bind="0" name="naturel0" id="@("naturel_"+count.ToString())" value="@String.Format(new System.Globalization.CultureInfo("tr-TR").NumberFormat,"{0:###,###}",(@emteaType.DataInputs.Sum(x=>x.Natural1)))" /></td>
+        <td><input readonly data-bind="1" name="naturel1" id="@("naturel_"+count.ToString())" value="@String.Format(new System.Globalization.CultureInfo("tr-TR").NumberFormat,"{0:###,###}",(@emteaType.DataInputs.Sum(x=>x.Natural2)))" /></td>
+        <td><input readonly data-bind="2" name="naturel2" id="@("naturel_"+count.ToString())" value="@String.Format(new System.Globalization.CultureInfo("tr-TR").NumberFormat,"{0:###,###}",(@emteaType.DataInputs.Sum(x=>x.Natural3)))" /></td>
+        <td><input readonly data-bind="3" name="naturel3" id="@("naturel_"+count.ToString())" value="@String.Format(new System.Globalization.CultureInfo("tr-TR").NumberFormat,"{0:###,###}",(@emteaType.DataInputs.Sum(x=>x.Natural4)))" /></td>
+        <td><input readonly data-bind="4" name="naturel4" id="@("naturel_"+count.ToString())" value="@String.Format(new System.Globalization.CultureInfo("tr-TR").NumberFormat,"{0:###,###}",(@emteaType.DataInputs.Sum(x=>x.Natural5)))" /></td>
 
 
+        <td><input readonly name="piyasaton" id="@("piyasaton"+count.ToString())" value="@String.Format(new System.Globalization.CultureInfo("tr-TR").NumberFormat,"{0:###,###}",(@emteaType.DataInputs.Sum(x=>x.NaturalToplam)))" /></td>
+
+        <td><input readonly name="toptan0" value="@String.Format(new System.Globalization.CultureInfo("tr-TR").NumberFormat,"{0:###,###}",(@emteaType.DataInputs.Sum(x=>x.ToptanPiyasa1*x.Natural1)/@emteaType.DataInputs.Sum(x=>x.Natural1)))" /></td>
+        <td><input readonly name="toptan1" value="@String.Format(new System.Globalization.CultureInfo("tr-TR").NumberFormat,"{0:###,###}",(@emteaType.DataInputs.Sum(x=>x.ToptanPiyasa2*x.Natural2)/@emteaType.DataInputs.Sum(x=>x.Natural2)))" /></td>
+        <td><input readonly name="toptan2" value="@String.Format(new System.Globalization.CultureInfo("tr-TR").NumberFormat,"{0:###,###}",(@emteaType.DataInputs.Sum(x=>x.ToptanPiyasa3*x.Natural3)/@emteaType.DataInputs.Sum(x=>x.Natural3)))" /></td>
+        <td><input readonly name="toptan3" value="@String.Format(new System.Globalization.CultureInfo("tr-TR").NumberFormat,"{0:###,###}",(@emteaType.DataInputs.Sum(x=>x.ToptanPiyasa4*x.Natural4)/@emteaType.DataInputs.Sum(x=>x.Natural4)))" /></td>
+        <td><input readonly name="toptan4" value="@String.Format(new System.Globalization.CultureInfo("tr-TR").NumberFormat,"{0:###,###}",(@emteaType.DataInputs.Sum(x=>x.ToptanPiyasa5*x.Natural5)/@emteaType.DataInputs.Sum(x=>x.Natural5)))" /></td>
 
 
-    <td><input style="border:none" readonly name="dfiyat" id="@("d_1_"+count.ToString())" value="@String.Format(new System.Globalization.CultureInfo("tr-TR").NumberFormat,"{0:###,###.##}",(@emteaType.DataInputs.Average(x=>x.Perakende1)))" /></td>
-    <td><input style="border:none" readonly name="yfiyat" id="@("y_1_"+count.ToString())" value="@String.Format(new System.Globalization.CultureInfo("tr-TR").NumberFormat,"{0:###,###.##}",(@emteaType.DataInputs.Average(x=>x.Perakende2)))" /></td>
-    <td><input style="border:none" readonly name="ofiyat" id="@("o_1_"+count.ToString())" value="@String.Format(new System.Globalization.CultureInfo("tr-TR").NumberFormat,"{0:###,###.##}",(@emteaType.DataInputs.Average(x=>x.Perakende3)))" /></td>
 
-    <td><input style="border:none" readonly name="dfiyat2" id="@("d_2_"+count.ToString())" value="@String.Format(new System.Globalization.CultureInfo("tr-TR").NumberFormat,"{0:###,###.##}",(@emteaType.DataInputs.Average(x=>x.Perakende4)))" /></td>
-    <td><input style="border:none" readonly name="yfiyat2" id="@("y_2_"+count.ToString())" value="@String.Format(new System.Globalization.CultureInfo("tr-TR").NumberFormat,"{0:###,###.##}",(@emteaType.DataInputs.Average(x=>x.Perakende5)))" /></td>
-    <td><input style="border:none" readonly name="ofiyat2" id="@("o_2_"+count.ToString())" value="@String.Format(new System.Globalization.CultureInfo("tr-TR").NumberFormat,"{0:###,###.##}",(@emteaType.DataInputs.Average(x=>x.Perakende6)))" /></td>
 
-</tr>
+
+        <td><input readonly name="dfiyat" id="@("d_1_"+count.ToString())" value="@String.Format(new System.Globalization.CultureInfo("tr-TR").NumberFormat,"{0:###,###}",(@emteaType.DataInputs.Average(x=>x.Perakende1)))" /></td>
+        <td><input readonly name="yfiyat" id="@("y_1_"+count.ToString())" value="@String.Format(new System.Globalization.CultureInfo("tr-TR").NumberFormat,"{0:###,###}",(@emteaType.DataInputs.Average(x=>x.Perakende2)))" /></td>
+        <td><input readonly name="ofiyat" id="@("o_1_"+count.ToString())" value="@String.Format(new System.Globalization.CultureInfo("tr-TR").NumberFormat,"{0:###,###}",(@emteaType.DataInputs.Average(x=>x.Perakende3)))" /></td>
+
+        <td><input style="border:none" readonly name="dfiyat2" id="@("d_2_"+count.ToString())" value="@String.Format(new System.Globalization.CultureInfo("tr-TR").NumberFormat,"{0:###,###.##}",(@emteaType.DataInputs.Average(x=>x.Perakende4)))" /></td>
+        <td><input style="border:none" readonly name="yfiyat2" id="@("y_2_"+count.ToString())" value="@String.Format(new System.Globalization.CultureInfo("tr-TR").NumberFormat,"{0:###,###.##}",(@emteaType.DataInputs.Average(x=>x.Perakende5)))" /></td>
+        <td><input style="border:none" readonly name="ofiyat2" id="@("o_2_"+count.ToString())" value="@String.Format(new System.Globalization.CultureInfo("tr-TR").NumberFormat,"{0:###,###.##}",(@emteaType.DataInputs.Average(x=>x.Perakende6)))" /></td>
+
+    </tr>
 }
 
 
