@@ -56,7 +56,7 @@ function LoadProcess() {
     $("input").focus((e) => {
 
         if (e.target.value == "0")
-            e.target.value = null;
+            e.target.value = 0;
 
     })
 

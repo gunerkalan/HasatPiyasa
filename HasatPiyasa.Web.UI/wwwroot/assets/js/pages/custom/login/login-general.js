@@ -1,4 +1,4 @@
-"use strict";
+﻿"use strict";
 
 // Class Definition
 var KTLogin = function () {
@@ -28,14 +28,14 @@ var KTLogin = function () {
                     username: {
                         validators: {
                             notEmpty: {
-                                message: 'Username is required'
+                                message: 'Kullanıcı Adı Zorunludur'
                             }
                         }
                     },
                     password: {
                         validators: {
                             notEmpty: {
-                                message: 'Password is required'
+                                message: 'Şifre Zorunludur'
                             }
                         }
                     }
@@ -65,11 +65,16 @@ var KTLogin = function () {
                     var Password = $("input[name =password]").val()
 
                     $.post("/account/login", { UserName: UserName, Password: Password }, (res) => {
-                        if (res) {
+
+                        var model = JSON.parse(res);
+                        if (model.success) {
 
                             window.location.href="/"
                         }
                         else {
+
+                            toastr.error("Bilgilendirme", model.messages);
+                           
 
                         }
 
@@ -78,10 +83,10 @@ var KTLogin = function () {
                 else
                 {
                     swal.fire({
-                        text: "Sorry, looks like there are some errors detected, please try again.",
+                        text: "Üzgünüz, Beklenmedik bir hata meydana geldi!",
                         icon: "error",
                         buttonsStyling: false,
-                        confirmButtonText: "Ok, got it!",
+                        confirmButtonText: "Tamam, Tekrar Dene!",
                         customClass: {
                             confirmButton: "btn font-weight-bold btn-light-primary"
                         }

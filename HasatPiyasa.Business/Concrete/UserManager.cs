@@ -66,11 +66,26 @@ namespace HasatPiyasa.Business.Concrete
             {
                 var res = await _userDal.GetTable();
 
-                return new NIslemSonuc<Users>
+                var response = res.AsQueryable().Include(x => x.UserClaims).Include(x => x.UserRole).Include(x => x.Sube).ThenInclude(x => x.SubeCities).ThenInclude(x => x.City).Where(x => x.IsActive && x.DomainUserName == username).ToList().FirstOrDefault();
+
+                if(response!=null)
                 {
-                    BasariliMi = true,
-                    Veri = res.AsQueryable().Include(x => x.UserClaims).Include(x=>x.UserRole).Include(x=>x.Sube).ThenInclude(x=>x.SubeCities).ThenInclude(x=>x.City).Where(x => x.IsActive && x.DomainUserName==username).ToList().FirstOrDefault()
-                };
+                    return new NIslemSonuc<Users>
+                    {
+                        BasariliMi = true,
+                        Veri = response
+                    };
+                }
+                else
+                {
+                    return new NIslemSonuc<Users>
+                    {
+                        BasariliMi = false,
+                        Mesaj = "Hatalı Giriş, Lütfen tekrar deneyiniz !"
+                    };
+                }
+
+                
             }
             catch (Exception hata)
             {

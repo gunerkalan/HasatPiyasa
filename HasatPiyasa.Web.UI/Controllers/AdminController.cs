@@ -902,9 +902,9 @@ namespace HasatPiyasa.Web.UI.Controllers
         {
             if (emteaid > 0)
             {
-                var formDatas = await _formDataInputService.GetFormDataGTable();
+                var formDatas = await _formDataInputService.GetFormDataGTableForDate((int)Core.Utilities.Enums.DataInput.Data.Rice, DateTime.Today.Date);
 
-                var fm = formDatas.Veri.Where(x => x.EmteaId == emteaid && x.AddedTime.Date ==DateTime.Today).Select(s => new SetFormDataState
+                var fm = formDatas.Veri.Select(s => new SetFormDataState
                 {
                     FormId = s.Id,
                     CityName = s.City.Name,
@@ -939,6 +939,59 @@ namespace HasatPiyasa.Web.UI.Controllers
                 return Json(new { success = false, messages = sonuc.Mesaj });
             }
         }
+
+        #endregion
+
+        #region IsSubeHaveData
+
+        [HttpGet]
+        public ActionResult IsSubeHaveData()
+        {
+            IsLockModel model = new IsLockModel
+            {
+                Emteas = _emteaService.ListAllEmteas().Veri,
+
+            };
+
+            return View(model);
+        }
+
+        public async Task<object> GetIsSubeHaveData(int emteaid)
+        {
+            if (emteaid > 0)
+            {
+
+                var subes =  _subeService.ListAllSubes().Veri;
+
+                var formDatas = await _formDataInputService.GetFormDataGTableForDate((int)Core.Utilities.Enums.DataInput.Data.Rice, DateTime.Today.Date);
+
+                subes.ForEach(x =>
+                {
+
+                });
+
+                var fm = formDatas.Veri.Select(s => new SetFormDataState
+                {
+                    FormId = s.Id,
+                    CityName = s.City.Name,
+                    FormDataDate = s.AddedTime.ToLongDateString() + " " + s.AddedTime.ToShortTimeString(),
+                    State = s.IsLock,
+                    CityId = s.CityId,
+                    SubeId = s.SubeId,
+                    SubeName = s.Sube.SubeName
+
+                }).ToList();
+
+
+                return fm;
+            }
+            else
+            {
+                var formData = new List<SetFormDataState>();
+                return formData;
+            }
+        }
+
 
         #endregion
 

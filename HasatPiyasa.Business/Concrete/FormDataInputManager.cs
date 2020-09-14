@@ -259,5 +259,29 @@ namespace HasatPiyasa.Business.Concrete
                 };
             }
         }
+
+        public async Task<NIslemSonuc<List<FormDataInput>>> GetFormDataGTableForDate(int Emtea, DateTime Date)
+        {
+            try
+            {
+                var res = await _formDataInputDal.GetTable();
+                var response = res.Include(x => x.City).Include(x => x.Sube).Where(x => x.IsActive && x.EmteaId==Emtea && x.AddedTime.Date == Date.Date).ToList();
+
+                return new NIslemSonuc<List<FormDataInput>>
+                {
+                    BasariliMi = true,
+                    Veri = response
+                };
+
+            }
+            catch (Exception hata)
+            {
+                return new NIslemSonuc<List<FormDataInput>>
+                {
+                    BasariliMi = false,
+                    Mesaj = hata.InnerException.Message
+                };
+            }
+        }
     }
 }
