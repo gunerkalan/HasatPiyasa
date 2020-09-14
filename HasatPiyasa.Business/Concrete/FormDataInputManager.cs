@@ -283,5 +283,51 @@ namespace HasatPiyasa.Business.Concrete
                 };
             }
         }
+
+        public async Task<NIslemSonuc<List<FormDataInputDto>>> GetFormDataGTableForOnlyDate(DateTime Date)
+        {
+            try
+            {
+                var res = await _formDataInputDal.GetTable();
+
+                var resc = _emteaservice.GetEmteaGTable();
+
+                var response = res.Include(x => x.City).Include(x => x.Sube).Where(x => x.IsActive && x.AddedTime.Date == Date.Date).ToList();
+
+                var responsex = response.Select(x => new FormDataInputDto
+                {
+                    Id = x.Id,
+                    AddedTime = x.AddedTime,
+                    CityId = x.CityId,
+                    CityName = x.City.Name,
+                    EmteaId = x.EmteaId,
+                    IsActive = x.IsActive,
+                    IsLock = x.IsLock,
+                    SubeId = x.SubeId,
+                    SubeName = x.Sube.SubeName,
+                    SubeCode = x.Sube.SubeKod,
+                    UpdatedTime = x.UpdatedTime,
+                    EmteaCode = resc.Result.Veri.Where(u=>u.Id==x.EmteaId).FirstOrDefault().EmteaCode,
+                    EmteaName = resc.Result.Veri.Where(u=>u.Id==x.EmteaId).FirstOrDefault().EmteaName
+
+                }).OrderByDescending(u => u.Id).ToList();
+
+
+                return new NIslemSonuc<List<FormDataInputDto>>
+                {
+                    BasariliMi = true,
+                    Veri = responsex
+                };
+
+            }
+            catch (Exception hata)
+            {
+                return new NIslemSonuc<List<FormDataInputDto>>
+                {
+                    BasariliMi = false,
+                    Mesaj = hata.InnerException.Message
+                };
+            }
+        }
     }
 }
