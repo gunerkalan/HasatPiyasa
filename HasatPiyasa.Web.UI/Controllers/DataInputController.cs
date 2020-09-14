@@ -97,22 +97,16 @@ namespace HasatPiyasa.Web.UI.Controllers
         public async Task<ActionResult> DataInputRice(List<DataInputs> dataInputs)
         {
             var user = GetCurrentUser();
-            DateTime AddTime = DateTime.Now;
+            
 
-            var Inputs = await _formDataInputService.GetFormDataInputTable(DateTime.Today, dataInputs.FirstOrDefault().CityId, user.SubeId, user.UserId);
-
-            if (Inputs.Veri != null)
-            {
-                AddTime = Inputs.Veri.AddedTime;
-            }
+            //var Inputs = await _formDataInputService.GetFormDataInputTable(DateTime.Today, dataInputs.FirstOrDefault().CityId, user.SubeId, user.UserId);
+                         
 
             dataInputs.ForEach(x =>
             {
-                x.SubeId = user.SubeId;
-                x.AddUserId = user.UserId;
+                x.SubeId = user.SubeId;                
                 x.AlimYear = DateTime.Now.Year;
-                x.EmteaId = (int)Core.Utilities.Enums.DataInput.Data.Rice;
-                x.AddedTime = AddTime;
+                x.EmteaId = (int)Core.Utilities.Enums.DataInput.Data.Rice;                
                 x.IsActive = true;
             });
 

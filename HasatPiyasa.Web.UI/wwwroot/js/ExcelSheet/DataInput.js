@@ -220,8 +220,33 @@ function Avarage(e) {
 
 
 }
+
+function setCookie(cname, cvalue, exdays) {
+    var d = new Date();
+    d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+    var expires = "expires=" + d.toUTCString();
+    document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+}
+
+function getCookie(cname) {
+    var name = cname + "=";
+    var ca = document.cookie.split(';');
+    for (var i = 0; i < ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == ' ') {
+            c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+        }
+    }
+    return "";
+}
+
+
 function CityChange() {
     var value = $("#cityId :selected").val()
+    setCookie("cityId",value,1)
     window.location.href = `/DataInput/DataInputRice?cityId=${value}`;
     getLoadPanelInstance().show();
     LoadProcess();
@@ -237,7 +262,7 @@ function Save() {
     var dataInput = [];
     var error = 0;
     var inputs = Number($("input").length) / 22
-
+    
     for (var i = 1; i < inputs; i++) {
         var item = {
 
@@ -357,7 +382,8 @@ if (error == 0) {
             SweetAlertMesaj("Hasat Piyasa  Kaydet", model.messages, "success", "Kapat", "btn-success")
             setTimeout(() => {
 
-                //window.location.href = "/DataInput/DataInputRice"
+                value = getCookie("cityId");
+                window.location.href = `/DataInput/DataInputRice?cityId=${value}`;
 
 
             }, 2000)
