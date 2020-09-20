@@ -16,6 +16,7 @@ namespace HasatPiyasa.Business.Abstract
         Task<NIslemSonuc<Subes>> UpdateSube(Subes sube);
         Task<NIslemSonuc<Subes>> GetSubeTable(int value);
         Task<NIslemSonuc<List<SubeDto>>> GetSubeGTable();
+        Task<NIslemSonuc<List<SubeFormDataWDataInput>>> GetSubeGTableWithFormDatas(int emteaid);
         NIslemSonuc<List<Subes>> GetSubesByBolges(string[] bolges);
         Task<NIslemSonuc<List<SubeCityDto>>> GetSbGTable();
     }

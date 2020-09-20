@@ -1,0 +1,113 @@
+﻿@model HasatPiyasa.Web.UI.Models.IsSubeHaveDataModel
+@{
+    ViewData["Title"] = "IsSubeHaveData";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .font {
+        color: black !important
+    }
+</style>
+
+<div class="card" style="width:100%;height:100%">
+
+    <div class="card-header flex-wrap py-3">
+        <div class="card-title">
+            <h3 class="card-label">
+
+                <span class="d-block text-muted pt-2 font-size-sm">İşyerleri Günlük Veri Giriş Durumu</span>
+            </h3>
+        </div>
+        <div class="card-toolbar">
+            <div class="form-inline">
+                @(Html.DevExtreme().SelectBox()
+                   .DataSource(Model.Emteas)
+                    .DisplayExpr("EmteaName")
+                    .ValueExpr("Id")
+                    .Placeholder("Emtia Seçiniz")
+                    .ShowClearButton(true)
+        .OnValueChanged("emtea_selectBox_valueChanged")
+        .SearchEnabled(true)
+         .Width("auto")
+                )
+
+
+                <hr />
+            </div>
+
+        </div>
+    </div>
+
+
+
+
+    @(Html.DevExtreme().DataGrid()
+    .ID("gridContainer")
+    .ShowBorders(true).Width("auto")
+    .DataSource(d => d.Mvc().Controller("Admin").LoadAction("GetIsSubeHaveData").Key("Id"))
+    .HoverStateEnabled(true)
+    .ShowBorders(true)
+    .Paging(paging => paging.PageSize(10))
+    .Pager(pager => {
+        pager.ShowPageSizeSelector(true);
+        pager.AllowedPageSizes(new[] { 5, 10, 20,50,100 });
+        pager.ShowInfo(true);
+    })
+    .Columns(c => {
+    c.Add().DataField("BolgeName").Caption("Bölge Adı");
+    c.Add().DataField("SubeCode").Caption("Şube Kodu");
+    c.Add().DataField("SubeName").Caption("Şube Adı");
+    c.Add().DataField("Cities").Caption("Şehirler");
+    c.Add().DataField("HaveDataCities").Caption("Veri Giriş Y. Şehirler");
+    c.Add().DataField("State").Caption("Veri Giriş Durumu").Width(150).CellTemplate(@<text>
+                            <% if (value) { %>
+                            @(Html.DevExtreme().Switch().SwitchedOnText("OK").Width(100).Value(true) )
+                            <% } else { %>
+                             @(Html.DevExtreme().Switch().SwitchedOffText("!!").Width(100).Value(false)  )
+                            <% } %>
+            </text>);
+
+    })
+)
+
+</div>
+
+
+
+
+
+
+
+@section scripts {
+
+    <script>
+        var emteaid = null;
+       
+
+        function emtea_selectBox_valueChanged(data) {
+            emteaid = data.value
+            if (emteaid != null) {
+                GetDataSource()
+            }
+        }
+
+      
+     
+        function GetDataSource() {
+            $.post("/Admin/GetIsSubeHaveData", { emteaid: emteaid }, (res) => {
+
+                $("#gridContainer").dxDataGrid({
+                    dataSource: res,
+                    visible: true
+                });
+
+            })
+
+
+        }
+    </script>
+
+
+}
+

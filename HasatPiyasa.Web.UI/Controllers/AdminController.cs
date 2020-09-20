@@ -5,6 +5,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using DevExpress.DirectX.Common.Direct2D;
 using HasatPiyasa.Business.Abstract;
+using HasatPiyasa.Core.Entities;
 using HasatPiyasa.Entity.Entity;
 using HasatPiyasa.Web.UI.FilterAttributes;
 using HasatPiyasa.Web.UI.Models;
@@ -947,7 +948,7 @@ namespace HasatPiyasa.Web.UI.Controllers
         [HttpGet]
         public ActionResult IsSubeHaveData()
         {
-            IsLockModel model = new IsLockModel
+            IsSubeHaveDataModel model = new IsSubeHaveDataModel
             {
                 Emteas = _emteaService.ListAllEmteas().Veri,
 
@@ -961,24 +962,19 @@ namespace HasatPiyasa.Web.UI.Controllers
             if (emteaid > 0)
             {
 
-                var subes =  _subeService.ListAllSubes().Veri;
+                var subesandformdatas = await _subeService.GetSubeGTableWithFormDatas(emteaid);
 
-                var formDatas = await _formDataInputService.GetFormDataGTableForDate((int)Core.Utilities.Enums.DataInput.Data.Rice, DateTime.Today.Date);
-
-                subes.ForEach(x =>
+                var fm = subesandformdatas.Veri.Select(s => new DataState
                 {
-
-                });
-
-                var fm = formDatas.Veri.Select(s => new SetFormDataState
-                {
-                    FormId = s.Id,
-                    CityName = s.City.Name,
-                    FormDataDate = s.AddedTime.ToLongDateString() + " " + s.AddedTime.ToShortTimeString(),
-                    State = s.IsLock,
-                    CityId = s.CityId,
-                    SubeId = s.SubeId,
-                    SubeName = s.Sube.SubeName
+                   AddedDate = s.AddedDate,
+                   BolgeName = s.BolgeName,
+                   Cities = s.Cities,
+                   HaveDataCities = s.HaveDataCities,
+                   Id = s.Id,
+                   State = s.IsHavaData,
+                   IsHaveDataCount = s.IsHaveDataCount,
+                   SubeCode = s.SubeCode,
+                   SubeName = s.SubeName
 
                 }).ToList();
 
@@ -987,7 +983,7 @@ namespace HasatPiyasa.Web.UI.Controllers
             }
             else
             {
-                var formData = new List<SetFormDataState>();
+                var formData = new List<DataState>();
                 return formData;
             }
         }

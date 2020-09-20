@@ -74,6 +74,7 @@ var KTLogin = function () {
                         else {
 
                             toastr.error("Bilgilendirme", model.messages);
+                            $("#loadPanel").dxLoadPanel("instance").hide();
                            
 
                         }

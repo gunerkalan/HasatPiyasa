@@ -42,17 +42,18 @@ namespace HasatPiyasa_Web_UI.Controllers
         {
             var res = await _formDataInputService.GetFormDataGTableForOnlyDate(DateTime.Today.Date);
 
-            var response = res.Veri.GroupBy(x => x.SubeName).ToList().Select(x => new FormDataInputDto
+            var grp = res.Veri.GroupBy(s => s.SubeName).ToList();
+            var response = grp.Select(s => new FormDataInputDto
             {
-                SubeName = x.Key,
-                //EmteaName = res.Veri.Where(u=>u.EmteaName.Contains(x.Key)).Select(a=>a.EmteaName).ToString(),
-                //EmteaCode = res.Veri.Where(u => u.EmteaCode.Contains(x.Key)).FirstOrDefault().EmteaCode,
-                //SubeCode = res.Veri.Where(u => u.SubeCode.Contains(x.Key)).FirstOrDefault().SubeCode,
-                //CityName = string.Join(',', res.Veri.Where(u=>u.CityName.Contains(x.Key)).Select(u=>u.CityName).ToArray()),
+                SubeName = s.Key,
+                EmteaName =string.Join(',', s.Select(s=>s.EmteaName).Distinct().ToArray()),
+                EmteaCode = string.Join(',', s.Select(s => s.EmteaCode).Distinct().ToArray()),
+                SubeCode = s.FirstOrDefault(u => u.SubeName==s.Key).SubeCode,
+                CityName = string.Join(',', s.Select(u=>u.CityName).Distinct().ToArray()),
                
             }).ToList();
 
-            return JsonConvert.SerializeObject(res.Veri);
+            return JsonConvert.SerializeObject(response);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

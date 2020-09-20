@@ -379,6 +379,9 @@ if (error == 0) {
 
         var model = JSON.parse(JSON.stringify(res))
         if (model.success) {
+            $('#btnsave').prop("disabled", "true")
+            var value = $("#cityId :selected").val()
+            setCookie("cityId", value, 1)
             SweetAlertMesaj("Hasat Piyasa  Kaydet", model.messages, "success", "Kapat", "btn-success")
             setTimeout(() => {
 
