@@ -228,7 +228,7 @@ namespace HasatPiyasa.Business.Concrete
             try
             {
                 var res = await _subeDal.GetTable();
-                var model = res.Include(x => x.Bolge).Include(x => x.SubeCities).ThenInclude(x => x.City).Include(x => x.FormDataInputs).Where(x => x.IsActive).ToList();
+                var model = res.Include(x => x.Bolge).Include(x => x.SubeCities).ThenInclude(x => x.City).Include(x => x.FormDataInputs).Where(x => x.IsActive).OrderBy(x=>x.Bolge.Name).ToList();
 
                 var modelhavedata = model.Where(x => x.FormDataInputs.Where(x=>x.AddedTime.Date == DateTime.Now.Date).Count()>0).ToList();
 

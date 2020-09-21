@@ -77,10 +77,9 @@
                {
                    btns.Add().Name(GridColumnButtonName.Edit).Text("Detay");
                }).CellTemplate(@<text>
-                <button  title="Detay" onclick="TuikDetail('<%= data.Id %>');"><i class="fa fa-list-alt" aria-hidden="true" style="color:#ff6a00"></i></button>
+                <button  title="Detay" onclick="GetDataTableList('<%= data.Id %>');"><i class="fa fa-list-alt" aria-hidden="true" style="color:#ff6a00"></i></button>
 
             </text>);
-
 
 
     })
@@ -138,4 +137,82 @@
 
 </div>
 
+
+<div class="modal fade" id="kuyuinfo" tabindex="-1" role="dialog" aria-labelledby="kuyuinfo-label">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="kuyutinfo-label">Veri Giriş Listesi</h4>
+            </div>
+            <div class="modal-body">
+                <table class="table table-striped table-bordered covid">
+                    <thead>
+                        <tr style="background-color:darkred;color:white">
+                            <td>2020 Tüik Üretim</td>
+                            <td>2020 TMO Tahmini</td>
+                            <td>Hasat Oran</td>
+                            <td>Hasat Ed. Miktar</td>
+                            <td>Üretici Bek.</td>
+                            <td>R-49 ve Altı</td>
+                            <td>R-50-54</td>
+                            <td>R-55-59</td>
+                            <td>R-60</td>
+                            <td>R-61 ve Üzeri</td>
+                            <td>Piy. İş. Gören Ton</td>
+                            <td>B-49 ve Altı</td>
+                            <td>B-50-54</td>
+                            <td>B-55-59</td>
+                            <td>B-60</td>
+                            <td>B-61 ve Üzeri</td>
+                            <td>PT-DFO</td>
+                            <td>PT-YFO</td>
+                            <td>PT-AOF</td>
+                            <td>PF-DFO</td>
+                            <td>PF-YFO</td>
+                            <td>PF-AOF</td>
+                        </tr>
+                    </thead>
+                    <tbody id="isyerilist"></tbody>
+                </table>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Kapat</button>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    function GetDataTableList(Id) {
+        $("#kuyuinfo").modal("show");
+        $.ajax({
+            url: "/DataInput/GetDataInputs",
+            data: {
+                id: Id
+            },
+            method: "GET",
+            dataType:"json",
+            async: true,
+            success: function (data) {
+                $("#isyerilist").empty()
+                $.each(data, (i, v) => {
+
+                    var item = `<tr><td>${v.TuikValue}</td><td>${v.GuessValue}</td><td>${v.HasatOran}</td><td>${v.HasatMiktar}</td><td>${v.UreticiKalanMiktar}</td><td>${v.Natural1}</td><td>${v.Natural2}</td><td>${v.Natural3}</td><td>${v.Natural4}</td><td>${v.Natural5}</td><td>${v.NaturalToplam}</td><td>${v.ToptanPiyasa1}</td><td>${v.ToptanPiyasa2}</td><td>${v.ToptanPiyasa3}</td><td>${v.ToptanPiyasa4}</td><td>${v.ToptanPiyasa5}</td><td>${v.Perakende1}</td><td>${v.Perakende2}</td><td>${v.Perakende3}</td><td>${v.Perakende4}</td><td>${v.Perakende5}<td>${v.Perakende6}</td></td></tr>`
+                    $("#isyerilist").append(item)
+
+                })
+
+
+            },
+            error: function (err) {
+                console.log("GetCovidDes error", err);
+                $("#kuyuinfo").modal("hide");
+            }
+        });
+    }
+</script>
 

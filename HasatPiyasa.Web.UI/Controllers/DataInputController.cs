@@ -142,6 +142,15 @@ namespace HasatPiyasa.Web.UI.Controllers
         }
 
         [HttpGet]
+        public async Task<object> GetDataInputs(int id)
+        {
+            var response = await _dataInputService.GetDataInputsTableForm(id);
+
+            return JsonConvert.SerializeObject(response.Veri);
+           
+        }
+
+        [HttpGet]
         public async Task<object> DataInputRiceListData()
         {
             var user = GetCurrentUser();

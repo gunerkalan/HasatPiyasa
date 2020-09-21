@@ -76,6 +76,7 @@ namespace HasatPiyasa.Business.Concrete
                         SubeName = x.Sube.SubeName,
                         SubeCode = x.Sube.SubeKod,
                         UpdatedTime = x.UpdatedTime,
+                        FormDataInputId = x.Id
 
                     }).OrderByDescending(u => u.Id).ToList();
 
