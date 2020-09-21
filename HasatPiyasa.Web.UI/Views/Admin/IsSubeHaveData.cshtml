@@ -8,6 +8,14 @@
     .font {
         color: black !important
     }
+
+    .dx-switch-on-value .dx-switch-handle:before {
+        background-color: blue !important;
+    }
+
+    .dx-switch-handle:before {
+        background-color: red !important;
+    }  
 </style>
 
 <div class="card" style="width:100%;height:100%">
@@ -55,16 +63,16 @@
         pager.ShowInfo(true);
     })
     .Columns(c => {
-    c.Add().DataField("BolgeName").Caption("Bölge Adı");
-    c.Add().DataField("SubeCode").Caption("Şube Kodu");
+    c.Add().DataField("BolgeName").Caption("Bölge Adı").Width(150);
+    c.Add().DataField("SubeCode").Caption("Şube Kodu").Width(100);
     c.Add().DataField("SubeName").Caption("Şube Adı");
     c.Add().DataField("Cities").Caption("Şehirler");
     c.Add().DataField("HaveDataCities").Caption("Veri Giriş Y. Şehirler");
-    c.Add().DataField("State").Caption("Veri Giriş Durumu").Width(150).CellTemplate(@<text>
+    c.Add().DataField("State").Caption("Durum").Width(100).CellTemplate(@<text>
                             <% if (value) { %>
-                            @(Html.DevExtreme().Switch().SwitchedOnText("OK").Width(100).Value(true) )
+                            @(Html.DevExtreme().Switch().SwitchedOnText("OK").Width(80).Value(true) )
                             <% } else { %>
-                             @(Html.DevExtreme().Switch().SwitchedOffText("!!").Width(100).Value(false)  )
+                             @(Html.DevExtreme().Switch().SwitchedOffText("").Width(80).Value(false)  )
                             <% } %>
             </text>);
 

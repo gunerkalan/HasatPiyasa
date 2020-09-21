@@ -232,7 +232,7 @@ namespace HasatPiyasa.Business.Concrete
 
                 var modelhavedata = model.Where(x => x.FormDataInputs.Where(x=>x.AddedTime.Date == DateTime.Now.Date).Count()>0).ToList();
 
-
+                bool status=false;
 
                 var models = new List<SubeFormDataWDataInput>();
                 modelhavedata.ForEach(x =>
@@ -242,6 +242,16 @@ namespace HasatPiyasa.Business.Concrete
                     {
                         var citiesIds = x.SubeCities.Select(s => s.CityId).ToArray();
                         var _haveDataCities = x.FormDataInputs.Where(x => citiesIds.Contains(x.CityId) && x.AddedTime.Date ==DateTime.Now.Date).Select(s => s.CityId).Distinct().ToList();
+
+                        if(x.SubeCities.Count() == _haveDataCities.Count())
+                        {
+                            status = true;
+                        }
+                        else
+                        {
+                            status= false;
+                        }
+                        
                         var response = new SubeFormDataWDataInput
                         {
                             BolgeName = x.Bolge.Name,
@@ -250,7 +260,7 @@ namespace HasatPiyasa.Business.Concrete
                             Id = x.Id,
                             AddedDate = string.Join(',', x.AddedTime.ToShortTimeString().ToArray()),
                             Cities = string.Join(',', x.SubeCities.Select(x => x.City.Name).ToArray()),
-                            IsHavaData = true,
+                            IsHavaData = status,
                             IsHaveDataCount = _haveDataCities.Count(),
                             HaveDataCities = string.Join(',', x.SubeCities.Where(c => _haveDataCities.Contains(c.CityId)).Select(s => s.City.Name).ToArray())
                         };
