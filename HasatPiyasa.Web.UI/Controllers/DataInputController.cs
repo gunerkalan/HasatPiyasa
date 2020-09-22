@@ -187,9 +187,64 @@ namespace HasatPiyasa.Web.UI.Controllers
         }
 
         [HttpGet]//Mısır Get
-        public ActionResult DataImputCorn(int cityId = 0)
+        public async Task<ActionResult> DataInputCorn(int cityId = 0)
         {
-            return View();
+            var model = new HasaInputViewModel();
+            int em = (int)Core.Utilities.Enums.DataInput.Data.Corn;
+            var emtea = await _emteaService.GetEmteaTable(em, cityId);
+            var user = GetCurrentUser();
+            if (user != null)
+            {
+                var cities = await _subeCityService.GetSubeCityGTable(user.SubeId);
+                model.Cities = cities.Veri.Where(x => x.SubeId == user.SubeId).OrderBy(x => x.Id).ToList();
+            }
+            model.Emteas = emtea.Veri;
+
+            if (cityId == 0)
+            {
+
+                cityId = GetCurrentUser().Sube.SubeCities.FirstOrDefault().CityId;
+                model.SelectedCityId = cityId;
+                var Inputs = await _formDataInputService.GetFormDataInputTable(DateTime.Today, cityId, user.SubeId, user.UserId);
+
+                if (Inputs.Veri != null)
+                {
+                    if ((Inputs.Veri.AddedTime.Date == DateTime.Today || Inputs.Veri.UpdatedTime == DateTime.Today) && Inputs.Veri.IsLock)
+                    {
+                        return RedirectToAction("Index", "Home");
+                    }
+                }
+
+                model.DataInputs = Inputs.Veri != null ? _dataInputService.ListAllDataInputs().Veri.Where(x => x.FormDataInputId == Inputs.Veri.Id).ToList() : null;
+
+                if (Inputs.Veri != null)
+                {
+                    ViewBag.AddTimeValue = Inputs.Veri.AddedTime.ToShortDateString();
+                }
+
+                model.HaveTodayInputData = model.DataInputs != null ? true : false;
+
+            }
+            else
+            {
+                model.SelectedCityId = cityId;
+
+                var Inputs = await _formDataInputService.GetFormDataInputTable(DateTime.Today, cityId, user.SubeId, user.UserId);
+
+                if (Inputs.Veri != null)
+                {
+                    if ((Inputs.Veri.AddedTime.Date == DateTime.Today || Inputs.Veri.UpdatedTime == DateTime.Today) && Inputs.Veri.IsLock)
+                    {
+                        return RedirectToAction("Index", "Home");
+                    }
+                }
+
+                model.DataInputs = Inputs.Veri != null ? _dataInputService.ListAllDataInputs().Veri.Where(x => x.FormDataInputId == Inputs.Veri.Id).ToList() : null;
+                model.HaveTodayInputData = model.DataInputs != null ? true : false;
+
+            }
+
+            return View(model);
         }
 
         [HttpPost] //Mısır Post
@@ -211,9 +266,64 @@ namespace HasatPiyasa.Web.UI.Controllers
         }
 
         [HttpGet]//Yeşil Mercimek Get
-        public ActionResult DataImputGreenLentil(int cityId = 0)
+        public async Task<ActionResult> DataInputGreenLentil(int cityId = 0)
         {
-            return View();
+            var model = new HasaInputViewModel();
+            int em = (int)Core.Utilities.Enums.DataInput.Data.Rice;
+            var emtea = await _emteaService.GetEmteaTable(em, cityId);
+            var user = GetCurrentUser();
+            if (user != null)
+            {
+                var cities = await _subeCityService.GetSubeCityGTable(user.SubeId);
+                model.Cities = cities.Veri.Where(x => x.SubeId == user.SubeId).OrderBy(x => x.Id).ToList();
+            }
+            model.Emteas = emtea.Veri;
+
+            if (cityId == 0)
+            {
+
+                cityId = GetCurrentUser().Sube.SubeCities.FirstOrDefault().CityId;
+                model.SelectedCityId = cityId;
+                var Inputs = await _formDataInputService.GetFormDataInputTable(DateTime.Today, cityId, user.SubeId, user.UserId);
+
+                if (Inputs.Veri != null)
+                {
+                    if ((Inputs.Veri.AddedTime.Date == DateTime.Today || Inputs.Veri.UpdatedTime == DateTime.Today) && Inputs.Veri.IsLock)
+                    {
+                        return RedirectToAction("Index", "Home");
+                    }
+                }
+
+                model.DataInputs = Inputs.Veri != null ? _dataInputService.ListAllDataInputs().Veri.Where(x => x.FormDataInputId == Inputs.Veri.Id).ToList() : null;
+
+                if (Inputs.Veri != null)
+                {
+                    ViewBag.AddTimeValue = Inputs.Veri.AddedTime.ToShortDateString();
+                }
+
+                model.HaveTodayInputData = model.DataInputs != null ? true : false;
+
+            }
+            else
+            {
+                model.SelectedCityId = cityId;
+
+                var Inputs = await _formDataInputService.GetFormDataInputTable(DateTime.Today, cityId, user.SubeId, user.UserId);
+
+                if (Inputs.Veri != null)
+                {
+                    if ((Inputs.Veri.AddedTime.Date == DateTime.Today || Inputs.Veri.UpdatedTime == DateTime.Today) && Inputs.Veri.IsLock)
+                    {
+                        return RedirectToAction("Index", "Home");
+                    }
+                }
+
+                model.DataInputs = Inputs.Veri != null ? _dataInputService.ListAllDataInputs().Veri.Where(x => x.FormDataInputId == Inputs.Veri.Id).ToList() : null;
+                model.HaveTodayInputData = model.DataInputs != null ? true : false;
+
+            }
+
+            return View(model);
         }
 
         [HttpPost] //Yeşil Mercimek Post

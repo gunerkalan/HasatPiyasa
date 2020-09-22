@@ -345,7 +345,7 @@ function Save() {
 if (error == 0) {
   
 
-    if ((Number(v.HasatMiktar) == 0)
+    if ((Number(v.HasatMiktar) == 0 || Number(v.HasatMiktar) > 0)
         && Number(v.Perakende1) > 0
         && Number(v.Perakende2) > 0
         && Number(v.Perakende3) > 0
@@ -353,10 +353,6 @@ if (error == 0) {
         && Number(v.Perakende5) > 0
         && Number(v.Perakende6) > 0) {
          
-        dataInput.push(v)
-    }
-    else if (Number(v.HasatMiktar) > 0) 
-    {
         dataInput.push(v)
     }
     else {
