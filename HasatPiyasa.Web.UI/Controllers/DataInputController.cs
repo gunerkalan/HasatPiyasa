@@ -71,11 +71,6 @@ namespace HasatPiyasa.Web.UI.Controllers
 
                 model.DataInputs = Inputs.Veri != null ? _dataInputService.ListAllDataInputs().Veri.Where(x => x.FormDataInputId == Inputs.Veri.Id).ToList() : null;
 
-                if(Inputs.Veri !=null)
-                {
-                    ViewBag.AddTimeValue = Inputs.Veri.AddedTime.ToShortDateString();
-                }
-
                 model.HaveTodayInputData = model.DataInputs != null ? true : false;
 
             }
