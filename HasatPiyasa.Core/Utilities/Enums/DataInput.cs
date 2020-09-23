@@ -8,9 +8,10 @@ namespace HasatPiyasa.Core.Utilities.Enums
     {
         public enum Data
         {
-            //Rice =1,
             Rice=30,
-            Corn=31
+            Corn=31,
+            GreenLentil=32,
+            RedLentil=33
         }
     }
 }

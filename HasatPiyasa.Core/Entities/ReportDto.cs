@@ -47,4 +47,6 @@ namespace HasatPiyasa.Core.Entities
         public DateTime? UpdatedTime { get; set; }
        
     }
+
+   
 }

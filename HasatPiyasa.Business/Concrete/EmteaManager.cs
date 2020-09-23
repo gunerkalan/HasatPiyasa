@@ -1,13 +1,17 @@
-﻿using HasastPiyasa.DataAccess.Abstract;
+﻿using Dapper;
+using HasastPiyasa.DataAccess.Abstract;
 using HasatPiyasa.Business.Abstract;
 using HasatPiyasa.Business.Constants;
 using HasatPiyasa.Core.Entities;
 using HasatPiyasa.Core.Utilities.Business;
 using HasatPiyasa.Core.Utilities.Results;
 using HasatPiyasa.Entity.Entity;
+using HasatPiyasa.Web.UI.Models;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -97,21 +101,34 @@ namespace HasatPiyasa.Business.Concrete
             }
         }
 
-        public async Task<NIslemSonuc<Emteas>> GetEmteaTable(int value,int cityId)
+        public async Task<NIslemSonuc<EmteaAndDataInputDto>> GetEmteaTable(int value,int cityId)
         {
             try
             {
+                Stopwatch stopwatch = new Stopwatch();
+                stopwatch.Start();                
                 var res = await _emteaDal.GetTable();
+                var model = new EmteaAndDataInputDto();
+                model.Emteas = res.Include(x => x.EmteaGroups).ThenInclude(x => x.EmteaTypes).ThenInclude(x => x.EmteaTypeGroups).ThenInclude(x => x.EmteaType.Tuiks).FirstOrDefault(x => x.Id == value);
 
-                return new NIslemSonuc<Emteas>
+                using(HasatPiyasaContext db = new HasatPiyasaContext())
+                {
+                    SqlConnection conn = (SqlConnection)db.Database.GetDbConnection();
+                    model.DataInputs = conn.Query<DataInputs>($"select * from DataInputs where EmteaId={value}").ToList();
+                }
+
+                stopwatch.Stop();
+                Debug.WriteLine($"Bitiş (For): {stopwatch.Elapsed}");
+
+                return new NIslemSonuc<EmteaAndDataInputDto>
                 {
                     BasariliMi = true,
-                    Veri = res.AsQueryable().Include(x => x.EmteaGroups).ThenInclude(x => x.EmteaTypes).ThenInclude(x=>x.EmteaTypeGroups).ThenInclude(x=>x.EmteaType.Tuiks).ThenInclude(x=>x.EmteaType.DataInputs).Where(x => x.Id == value).ToList().FirstOrDefault()
+                    Veri = model
                 };
             }
             catch (Exception hata)
             {
-                return new NIslemSonuc<Emteas>
+                return new NIslemSonuc<EmteaAndDataInputDto>
                 {
                     BasariliMi = false,
                     Mesaj = hata.InnerException.Message

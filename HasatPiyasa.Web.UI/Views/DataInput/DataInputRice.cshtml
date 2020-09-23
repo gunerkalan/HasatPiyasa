@@ -59,7 +59,7 @@
                         }
                         else
                         {
-                            <option value="@cty.CityId">@cty.City.Name</option>
+                            <option  value="@cty.CityId">@cty.City.Name</option>
                         }
 
                     }
@@ -124,7 +124,7 @@
 
                 @foreach (var emteaType in grup.EmteaTypes)
                 {
-                    var data = emteaType.DataInputs.Where(x => x.EmteaTypeId == emteaType.Id && x.CityId == Model.SelectedCityId).LastOrDefault();
+                    var data = Model.DataInputs.Where(x => x.EmteaTypeId == emteaType.Id && x.CityId == Model.SelectedCityId).LastOrDefault();
                     count++;
                     dataInputCount++;
                     var tuikCheck =

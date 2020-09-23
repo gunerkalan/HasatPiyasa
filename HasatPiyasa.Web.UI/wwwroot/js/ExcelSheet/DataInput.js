@@ -384,6 +384,7 @@ if (error == 0) {
         var model = JSON.parse(JSON.stringify(res))
         if (model.success) {
             $('#btnsave').prop("disabled", "true")
+            $('#cityId').prop("disabled", "true")
             var value = $("#cityId :selected").val()
             setCookie("cityId", value, 1)
             SweetAlertMesaj("Hasat Piyasa  Kaydet", model.messages, "success", "Kapat", "btn-success")
@@ -393,7 +394,7 @@ if (error == 0) {
                 window.location.href = `/DataInput/DataInputRice?cityId=${value}`;
 
 
-            }, 2000)
+            },500)
         }
         else {
             SweetAlertMesaj("Hasat Piyasa  Kaydet", model.messages, "error", "Kapat", "btn-danger")

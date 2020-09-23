@@ -7,6 +7,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 
 namespace HasatPiyasa.Web.UI.Controllers
@@ -44,7 +45,7 @@ namespace HasatPiyasa.Web.UI.Controllers
            var _dates =await  _formDataInputService.GetTable();
             model.DateInputs=_dates.Select(x => x.AddedTime.Date).Distinct().ToList();
             var emtea = await _emteaService.GetEmteaTable((int)Core.Utilities.Enums.DataInput.Data.Rice,0);
-            model.Emteas = emtea.Veri;
+            model.Emteas = emtea.Veri.Emteas;
             return View(model);
         }
 
@@ -54,7 +55,7 @@ namespace HasatPiyasa.Web.UI.Controllers
             var model = new HasaInputViewModel();          
             var emtea = await _emteaService.GetEmteaTable((int)Core.Utilities.Enums.DataInput.Data.Rice, 1);
             var dataInputs = _dataInputService.ListAllDataInputs().Veri;
-            model.Emteas = emtea.Veri;             
+            model.Emteas = emtea.Veri.Emteas;             
             foreach (var item in model.Emteas.EmteaGroups)
             {
                 foreach (var emteaTypes in item.EmteaTypes)
@@ -123,7 +124,7 @@ namespace HasatPiyasa.Web.UI.Controllers
             var _dates = await _formDataInputService.GetTable();
             model.DateInputs = _dates.Select(x => x.AddedTime.Date).Distinct().ToList();
             var emtea = await _emteaService.GetEmteaTable((int)Core.Utilities.Enums.DataInput.Data.Rice, 0);
-            model.Emteas = emtea.Veri;
+            model.Emteas = emtea.Veri.Emteas;
             return View(model);
         }
 
@@ -134,7 +135,7 @@ namespace HasatPiyasa.Web.UI.Controllers
             var emtea = await _emteaService.GetEmteaTable((int)Core.Utilities.Enums.DataInput.Data.Rice, 1);           
             var dataInputs = _dataInputService.ListAllDataInputs().Veri;
             var bolges = _subeService.GetSubesByBolges(cities).Veri;
-            model.Emteas = emtea.Veri;
+            model.Emteas = emtea.Veri.Emteas;
             foreach (var item in model.Emteas.EmteaGroups)
             {
                 foreach (var emteaTypes in item.EmteaTypes)
@@ -203,7 +204,7 @@ namespace HasatPiyasa.Web.UI.Controllers
             var _dates = await _formDataInputService.GetTable();
             model.DateInputs = _dates.Select(x => x.AddedTime.Date).Distinct().ToList();
             var emtea = await _emteaService.GetEmteaTable((int)Core.Utilities.Enums.DataInput.Data.Rice, 0);
-            model.Emteas = emtea.Veri;
+            model.Emteas = emtea.Veri.Emteas;
             return View(model);
         }
 
@@ -213,7 +214,7 @@ namespace HasatPiyasa.Web.UI.Controllers
             var model = new HasaInputViewModel();
             var emtea = await _emteaService.GetEmteaTable((int)Core.Utilities.Enums.DataInput.Data.Rice, 1);
             var dataInputs = _dataInputService.ListAllDataInputs().Veri;
-            model.Emteas = emtea.Veri;
+            model.Emteas = emtea.Veri.Emteas;
             foreach (var item in model.Emteas.EmteaGroups)
             {
                 foreach (var emteaTypes in item.EmteaTypes)
@@ -282,8 +283,8 @@ namespace HasatPiyasa.Web.UI.Controllers
             var _dates = await _formDataInputService.GetTable();
             model.DateInputs = _dates.Select(x => x.AddedTime.Date).Distinct().ToList();
             var emtea = await _emteaService.GetEmteaTable((int)Core.Utilities.Enums.DataInput.Data.Rice, 0);
-            model.Emteas = emtea.Veri;
-            model.EmteaTypesRapor = _emteaTypeService.ListAllEmteType().Veri;
+            model.Emteas = emtea.Veri.Emteas;
+            model.EmteaTypesRapor = _emteaTypeService.GetEmteaTypesForEmtea((int)Core.Utilities.Enums.DataInput.Data.Rice).Result.Veri;
             ViewBag.dates = 2;
             ViewBag.emteatypes = 3;
             return View(model);
@@ -323,8 +324,8 @@ namespace HasatPiyasa.Web.UI.Controllers
             var _dates = await _formDataInputService.GetTable();
             model.DateInputs = _dates.Select(x => x.AddedTime.Date).Distinct().ToList();
             var emtea = await _emteaService.GetEmteaTable((int)Core.Utilities.Enums.DataInput.Data.Rice, 0);
-            model.Emteas = emtea.Veri;
-            model.EmteaTypesRapor = _emteaTypeService.ListAllEmteType().Veri;
+            model.Emteas = emtea.Veri.Emteas;
+            model.EmteaTypesRapor = _emteaTypeService.GetEmteaTypesForEmtea((int)Core.Utilities.Enums.DataInput.Data.Rice).Result.Veri;
             ViewBag.dates = 2;
             ViewBag.emteatypes = 3;
             return View(model);
@@ -364,8 +365,8 @@ namespace HasatPiyasa.Web.UI.Controllers
             var _dates = await _formDataInputService.GetTable();
             model.DateInputs = _dates.Select(x => x.AddedTime.Date).Distinct().ToList();
             var emtea = await _emteaService.GetEmteaTable((int)Core.Utilities.Enums.DataInput.Data.Rice, 0);
-            model.Emteas = emtea.Veri;
-            model.EmteaTypesRapor = _emteaTypeService.ListAllEmteType().Veri;
+            model.Emteas = emtea.Veri.Emteas;
+            model.EmteaTypesRapor = _emteaTypeService.GetEmteaTypesForEmtea((int)Core.Utilities.Enums.DataInput.Data.Rice).Result.Veri;
             ViewBag.dates = 2;
             ViewBag.emteatypes = 3;
             return View(model);
