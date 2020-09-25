@@ -1,14 +1,12 @@
 ﻿@model HasaInputViewModel
 @using DevExtreme.AspNet.Mvc
 @{
-    ViewData["Title"] = "DataInputRice";
+    ViewData["Title"] = "DataImputChickPea";
     Layout = "~/Views/Shared/_Layout.cshtml";
     var count = 0;
     var groupCount = 0;
     var dataInputCount = 0;
     var DataInputModelCount = Model.DataInputs != null ? Model.DataInputs.Count : 0;
-   
-
 }
 
 @section styles {
@@ -18,28 +16,28 @@
         .citie {
             position: relative;
             top: 0px;
-            
-            right:400px;
+            right: 400px;
         }
 
         .total td input {
             font-weight: bolder !important
         }
-        .alert-danger{
-            font-weight:bolder !important;
-            position:relative;
-            width:1730px !important;
+
+        .alert-danger {
+            font-weight: bolder !important;
+            position: relative;
+            width: 1170px !important;
         }
+
         .disabledInput:read-only {
-            background-color:#F5F5F5!important;
-            color:#F5F5F5!important;    
+            background-color: #F5F5F5 !important;
+            color: #F5F5F5 !important;
         }
 
         .disabledInput {
             background-color: #F5F5F5 !important;
             color: #F5F5F5 !important;
         }
-
     </style>
 }
 
@@ -61,7 +59,7 @@
                         }
                         else
                         {
-                            <option  value="@cty.CityId">@cty.City.Name</option>
+                            <option value="@cty.CityId">@cty.City.Name</option>
                         }
 
                     }
@@ -80,8 +78,8 @@
             <tr height="30">
                 <td class="tdstyle" border-right: 1px solid #bfbfbf" rowspan="4" height="166" align="center" valign="middle" bgcolor="#F0F0F0" sdnum="1033;1055;Standard"><b> Grup Adı</b></td>
                 <td class="tdstyle tdwidth" rowspan="4" align="left" valign="middle" bgcolor="#F0F0F0" sdnum="1033;1055;Standard" style="vertical-align:central!important"><b>Çeşit Adı</b></td>
-                <td class="tdstyle" colspan="16" align="center" valign="middle" bgcolor="#F0F0F0" sdnum="1033;1055;Standard"><b>@Model.Emteas.EmteaName</b></td>
-                <td class="tdstyle" colspan="6" align="center" valign="middle" bgcolor="#F0F0F0" sdnum="1033;1055;Standard"><b>PİRİNÇ</b></td>
+                <td class="tdstyle" colspan="11" align="center" valign="middle" bgcolor="#F0F0F0" sdnum="1033;1055;Standard"><b>@Model.Emteas.EmteaName</b></td>
+                <td class="tdstyle" colspan="6" align="center" valign="middle" bgcolor="#F0F0F0" sdnum="1033;1055;Standard"><b>@Model.Emteas.EmteaName Perakende Fiyatı (TL/kg)</b></td>
 
             </tr>
             <tr class="td1">
@@ -90,26 +88,21 @@
                 <td class="tdstyle" rowspan="3" align="center" valign="middle" bgcolor="#F0F0F0" sdnum="1033;1055;Standard"><b><font face="Verdana" color="#C00000">Hasat<br>Oranı<br>( % )</font></b></td>
                 <td class="tdstyle" rowspan="3" align="center" valign="middle" bgcolor="#F0F0F0" sdnum="1033;1055;Standard"><b><font face="Verdana" color="#C00000">Hasat<br>Edilen<br>Miktar<br>( Ton )</font></b></td>
                 <td class="tdstyle" rowspan="3" align="center" valign="middle" bgcolor="#F0F0F0" sdnum="1033;1055;Standard"><b><font face="Verdana" color="#C00000">Üreticide<br>Bekleyen<br>( Ton )</font></b></td>
-                <td class="tdstyle" colspan="5" rowspan="2" align="center" valign="middle" bgcolor="#F0F0F0" sdnum="1033;1055;Standard"><b><font face="Verdana" color="#C00000">Randıman Aralığına Göre<br>Piyasada Alınıp Satılan Miktar ( Ton )</font></b></td>
-                <td class="tdstyle" rowspan="3" align="center" valign="middle" bgcolor="#F0F0F0" sdnum="1033;1055;Standard"><b><font face="Verdana" color="#C00000">Piyasada<br>İşl.Gören<br>( Ton )</font></b></td>
-                <td class="tdstyle" colspan="5" rowspan="2" align="center" valign="middle" bgcolor="#F0F0F0" sdnum="1033;1055;Standard"><b><font face="Verdana" color="#C00000">Brüt Piyasa Fiyatı<br>( TL/Ton )</font></b></td>
-                <td class="tdstyle" colspan="3" rowspan="2" align="center" valign="middle" bgcolor="#F0F0F0" sdnum="1033;1055;Standard"><b><font face="Verdana" color="#C00000">Piyasa Toptan Fiyatı (TL/Ton)</font></b></td>
-                <td class="tdstyle" colspan="3" rowspan="2" align="center" valign="middle" bgcolor="#F0F0F0" sdnum="1033;1055;Standard"><b><font face="Verdana" color="#C00000">Perakende Fiyatı (TL/kg)</font></b></td>
+                <td class="tdstyle" colspan="3" rowspan="2" align="center" valign="middle" bgcolor="#F0F0F0" sdnum="1033;1055;Standard"><b><font face="Verdana" color="#C00000">Naturel Ürün (Üretici)<br>( TL/Ton )</font></b></td>
+                <td class="tdstyle" colspan="3" rowspan="2" align="center" valign="middle" bgcolor="#F0F0F0" sdnum="1033;1055;Standard"><b><font face="Verdana" color="#C00000">Boylanmış Ürün<br>( TL/Ton )</font></b></td>
+                <td class="tdstyle" colspan="3" rowspan="2" align="center" valign="middle" bgcolor="#F0F0F0" sdnum="1033;1055;Standard"><b><font face="Verdana" color="#C00000">Çok İri Boy (9 mm ve Üstü)</font></b></td>
+                <td class="tdstyle" colspan="3" rowspan="2" align="center" valign="middle" bgcolor="#F0F0F0" sdnum="1033;1055;Standard"><b><font face="Verdana" color="#C00000">İri Boy (8 mm)</font></b></td>
 
             </tr>
             <tr>
             </tr>
             <tr class="td2">
-                <td class="td2" align="center" valign="middle" bgcolor="#F0F0F0" sdnum="1033;1055;Standard"><b><font face="Verdana" color="#C00000">49 ve<br>Altı</font></b></td>
-                <td class="tdstyle" align="center" valign="middle" bgcolor="#F0F0F0" sdnum="1033;1055;Standard"><b><font face="Verdana" color="#C00000">50-54</font></b></td>
-                <td class="tdstyle" align="center" valign="middle" bgcolor="#F0F0F0" sdnum="1033;1055;Standard"><b><font face="Verdana" color="#C00000">55-59</font></b></td>
-                <td class="tdstyle" align="center" valign="middle" bgcolor="#F0F0F0" sdnum="1033;0;"><b><font face="Verdana" color="#C00000">60</font></b></td>
-                <td class="tdstyle" align="center" valign="middle" bgcolor="#F0F0F0" sdnum="1033;1055;Standard"><b><font face="Verdana" color="#C00000">61<br>Üzeri</font></b></td>
-                <td class="tdstyle" align="center" valign="middle" bgcolor="#F0F0F0" sdnum="1033;1055;Standard"><b><font face="Verdana" color="#C00000">49 ve Altı</font></b></td>
-                <td class="tdstyle" align="center" valign="middle" bgcolor="#F0F0F0" sdnum="1033;1055;Standard"><b><font face="Verdana" color="#C00000">50-54</font></b></td>
-                <td class="tdstyle" align="center" valign="middle" bgcolor="#F0F0F0" sdnum="1033;1055;Standard"><b><font face="Verdana" color="#C00000">55-59</font></b></td>
-                <td class="tdstyle" align="center" valign="middle" bgcolor="#F0F0F0" sdval="60" sdnum="1033;1055;Standard"><b><font face="Verdana" color="#C00000">60</font></b></td>
-                <td class="tdstyle" align="center" valign="middle" bgcolor="#F0F0F0" sdnum="1033;1055;Standard"><b><font face="Verdana" color="#C00000">61 ve<br>Üzeri</font></b></td>
+                <td class="td2" align="center" valign="middle" bgcolor="#F0F0F0" sdnum="1033;1055;Standard"><b><font face="Verdana" color="#C00000">Düşük Fiyat Ortalaması</font></b></td>
+                <td class="tdstyle" align="center" valign="middle" bgcolor="#F0F0F0" sdnum="1033;1055;Standard"><b><font face="Verdana" color="#C00000">Yüksek Fiyat Ortalaması</font></b></td>
+                <td class="tdstyle" align="center" valign="middle" bgcolor="#F0F0F0" sdnum="1033;1055;Standard"><b><font face="Verdana" color="#C00000">Ağırlıklı Ortalama Fiyat</font></b></td>
+                <td class="tdstyle" align="center" valign="middle" bgcolor="#F0F0F0" sdnum="1033;1055;Standard"><b><font face="Verdana" color="#C00000">9 mm Fiyat <br /> Ortalaması</font></b></td>
+                <td class="tdstyle" align="center" valign="middle" bgcolor="#F0F0F0" sdnum="1033;1055;Standard"><b><font face="Verdana" color="#C00000">8 mm Fiyat <br /> Ortalaması</font></b></td>
+                <td class="tdstyle" align="center" valign="middle" bgcolor="#F0F0F0" sdnum="1033;1055;Standard"><b><font face="Verdana" color="#C00000">7 mm Fiyat <br /> Ortalaması</font></b></td>
                 <td class="tdstyle" align="center" valign="middle" bgcolor="#F0F0F0" sdnum="1033;1055;Standard"><b><font face="Verdana" color="#C00000">Düşük Fiyat Ortalaması</font></b></td>
                 <td class="tdstyle" align="center" valign="middle" bgcolor="#F0F0F0" sdnum="1033;1055;Standard"><b><font face="Verdana" color="#C00000">Yüksek Fiyat Ortalaması</font></b></td>
                 <td class="tdstyle" align="center" valign="middle" bgcolor="#F0F0F0" sdnum="1033;1055;Standard"><b><font face="Verdana" color="#C00000">Ağırlıklı Ort. Fiyat</font></b></td>
@@ -186,15 +179,6 @@
 
                         <td><input type="number" @(tuikCheck < 1 ? "class=disabledInput" : "") name="piyasaton" readonly id="@("piyasaton"+count.ToString())" value="@(Model.HaveTodayInputData==true ? data!=null?data.NaturalToplam:0:0)" /></td>
 
-
-
-                        <td><input type="number" @(tuikCheck < 1 ? "class=disabledInput" : "") name="toptan0" onchange="CalculateToptan()" value="@(Model.HaveTodayInputData==true ? data!=null?data.ToptanPiyasa1:0:0)" /></td>
-                        <td><input type="number" @(tuikCheck < 1 ? "class=disabledInput" : "") name="toptan1" onchange="CalculateToptan()" value="@(Model.HaveTodayInputData==true ? data!=null?data.ToptanPiyasa2:0:0)" /></td>
-                        <td><input type="number" @(tuikCheck < 1 ? "class=disabledInput" : "") name="toptan2" onchange="CalculateToptan()" value="@(Model.HaveTodayInputData==true ? data!=null?data.ToptanPiyasa3:0:0)" /></td>
-                        <td><input type="number" @(tuikCheck < 1 ? "class=disabledInput" : "") name="toptan3" onchange="CalculateToptan()" value="@(Model.HaveTodayInputData==true ? data!=null?data.ToptanPiyasa4:0:0)" /></td>
-                        <td><input type="number" @(tuikCheck < 1 ? "class=disabledInput" : "") name="toptan4" onchange="CalculateToptan()" value="@(Model.HaveTodayInputData==true ? data!=null?data.ToptanPiyasa5:0:0)" /></td>
-
-
                         <td><input type="number" name="dfiyat" id="@("d_1_"+count.ToString())" onkeyup="Avarage(this);" value="@(Model.HaveTodayInputData==true ? data!=null?data.Perakende1.Value.ToString().Replace(',','.'):"0":"0")" /></td>
                         <td><input type="number" name="yfiyat" id="@("y_1_"+count.ToString())" onkeyup="Avarage(this);" value="@(Model.HaveTodayInputData==true ? data!=null? data.Perakende2.Value.ToString().Replace(',','.'):"0":"0")" /></td>
                         <td><input type="number" name="ofiyat" id="@("o_1_"+count.ToString())" readonly value="@(Model.HaveTodayInputData==true ? data!=null?data.Perakende3:0:0)" /></td>
@@ -213,7 +197,7 @@
             }
 
             <tr class="total">
-                <td style="border-top: 1px solid #bfbfbf; border-bottom: 1px solid #bfbfbf; border-left: 1px solid #bfbfbf; border-right: 1px solid #bfbfbf" colspan="2" height="43" align="left" valign="middle" bgcolor="#F0F0F0" sdnum="1033;1055;Standard"><b><font face="Verdana" color="#C00000">TOPLAM ÇELTİK</font></b></td>
+                <td style="border-top: 1px solid #bfbfbf; border-bottom: 1px solid #bfbfbf; border-left: 1px solid #bfbfbf; border-right: 1px solid #bfbfbf" colspan="2" height="43" align="left" valign="middle" bgcolor="#F0F0F0" sdnum="1033;1055;Standard"><b><font face="Verdana" color="#C00000">TOPLAM NOHUT</font></b></td>
 
                 <td><input type="number" readonly id="tuikTotal" value="0" /></td>
                 <td><input type="number" readonly id="tmoTotal" value="0" /></td>
@@ -228,10 +212,6 @@
 
                 <td><input type="number" readonly id="piyasatonTotal" value="0" /></td>
 
-                @for (int i = 0; i < 5; i++)
-                {
-                    <td><input type="number" readonly value="0" id="@("toptan"+i)" /></td>
-                }
 
 
                 <td><input type="number" readonly id="dfiyatTotal" value="0" /></td>
@@ -292,20 +272,14 @@
 
         $(document).ready(() => {
             LoadProcess()
-            $(".disabledInput").parent().css("background-color","#F5F5F5")
+            $(".disabledInput").parent().css("background-color", "#F5F5F5")
             $(".disabledInput").prop("readonly", true)
-
-
         })
 
         var button_my_button = "#btnrecordlist";
         $(button_my_button).click(function () {
             window.location.href = "/DataInput/DataInputRiceList";
         });
-
-
-
     </script>
 }
-
 

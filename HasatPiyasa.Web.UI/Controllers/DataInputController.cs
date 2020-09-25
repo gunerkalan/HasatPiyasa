@@ -35,15 +35,11 @@ namespace HasatPiyasa.Web.UI.Controllers
         [HttpGet]
         public async Task<ActionResult> DataInputRice(int cityId = 0)
         {
-            Stopwatch stopwatch = new Stopwatch();
-            stopwatch.Start();
 
             var model = new HasaInputViewModel();
             int em = (int)Core.Utilities.Enums.DataInput.Data.Rice;
             var emtea = await _emteaService.GetEmteaTable(em, cityId);
-           
-            stopwatch.Reset();
-            stopwatch.Start();
+            var IsLock = false;
 
             var user = GetCurrentUser();
             if (user != null)
@@ -52,7 +48,7 @@ namespace HasatPiyasa.Web.UI.Controllers
                 model.Cities = cities.Veri.Where(x => x.SubeId == user.SubeId).OrderBy(x => x.Id).ToList();
             }
             model.Emteas = emtea.Veri.Emteas;
-            model.DataInputs= emtea.Veri.DataInputs;
+            model.DataInputs = emtea.Veri.DataInputs;
 
             if (cityId == 0)
             {
@@ -85,7 +81,9 @@ namespace HasatPiyasa.Web.UI.Controllers
                     if ((Inputs.Veri.AddedTime.Date == DateTime.Today || Inputs.Veri.UpdatedTime == DateTime.Today) && Inputs.Veri.IsLock)
                     {
                         return RedirectToAction("Index", "Home");
+                      
                     }
+                    
                 }
 
                 //model.DataInputs = Inputs.Veri != null ? _dataInputService.ListAllDataInputs().Veri.Where(x => x.FormDataInputId == Inputs.Veri.Id).ToList() : null;
@@ -93,8 +91,8 @@ namespace HasatPiyasa.Web.UI.Controllers
 
             }
 
-          
-            model.DataInputs= emtea.Veri.DataInputs;
+
+            model.DataInputs = emtea.Veri.DataInputs;
             return View(model);
         }
 
@@ -102,16 +100,16 @@ namespace HasatPiyasa.Web.UI.Controllers
         public async Task<ActionResult> DataInputRice(List<DataInputs> dataInputs)
         {
             var user = GetCurrentUser();
-            
+
 
             //var Inputs = await _formDataInputService.GetFormDataInputTable(DateTime.Today, dataInputs.FirstOrDefault().CityId, user.SubeId, user.UserId);
-                         
+
 
             dataInputs.ForEach(x =>
             {
-                x.SubeId = user.SubeId;                
+                x.SubeId = user.SubeId;
                 x.AlimYear = DateTime.Now.Year;
-                x.EmteaId = (int)Core.Utilities.Enums.DataInput.Data.Rice;                
+                x.EmteaId = (int)Core.Utilities.Enums.DataInput.Data.Rice;
                 x.IsActive = true;
             });
 
@@ -152,7 +150,7 @@ namespace HasatPiyasa.Web.UI.Controllers
             var response = await _dataInputService.GetDataInputsTableForm(id);
 
             return JsonConvert.SerializeObject(response.Veri);
-           
+
         }
 
         [HttpGet]
@@ -393,9 +391,63 @@ namespace HasatPiyasa.Web.UI.Controllers
         }
 
         [HttpGet]//Kuru Fasulye Get
-        public ActionResult DataImputBean(int cityId = 0)
+        public async Task<ActionResult> DataInputBean(int cityId = 0)
         {
-            return View();
+            var model = new HasaInputViewModel();
+            int em = (int)Core.Utilities.Enums.DataInput.Data.Bean;
+            var emtea = await _emteaService.GetEmteaTable(em, cityId);
+
+            var user = GetCurrentUser();
+            if (user != null)
+            {
+                var cities = await _subeCityService.GetSubeCityGTable(user.SubeId);
+                model.Cities = cities.Veri.Where(x => x.SubeId == user.SubeId).OrderBy(x => x.Id).ToList();
+            }
+            model.Emteas = emtea.Veri.Emteas;
+            model.DataInputs = emtea.Veri.DataInputs;
+
+            if (cityId == 0)
+            {
+
+                cityId = GetCurrentUser().Sube.SubeCities.FirstOrDefault().CityId;
+                model.SelectedCityId = cityId;
+                var Inputs = await _formDataInputService.GetFormDataInputTable(DateTime.Today, cityId, user.SubeId, user.UserId);
+
+                if (Inputs.Veri != null)
+                {
+                    if ((Inputs.Veri.AddedTime.Date == DateTime.Today || Inputs.Veri.UpdatedTime == DateTime.Today) && Inputs.Veri.IsLock)
+                    {
+                        return RedirectToAction("Index", "Home");
+                    }
+                }
+
+                model.DataInputs = Inputs.Veri != null ? _dataInputService.ListAllDataInputs().Veri.Where(x => x.FormDataInputId == Inputs.Veri.Id).ToList() : null;
+
+                model.HaveTodayInputData = model.DataInputs != null ? true : false;
+
+            }
+            else
+            {
+                model.SelectedCityId = cityId;
+
+                var Inputs = await _formDataInputService.GetFormDataInputTable(DateTime.Today, cityId, user.SubeId, user.UserId);
+
+                if (Inputs.Veri != null)
+                {
+                    if ((Inputs.Veri.AddedTime.Date == DateTime.Today || Inputs.Veri.UpdatedTime == DateTime.Today) && Inputs.Veri.IsLock)
+                    {
+                        return RedirectToAction("Index", "Home");
+                    }
+                }
+
+                //model.DataInputs = Inputs.Veri != null ? _dataInputService.ListAllDataInputs().Veri.Where(x => x.FormDataInputId == Inputs.Veri.Id).ToList() : null;
+                model.HaveTodayInputData = model.DataInputs != null ? true : false;
+
+            }
+
+
+            model.DataInputs = emtea.Veri.DataInputs;
+            return View(model);
         }
 
         [HttpPost] //Kuru Fasulye Post
@@ -405,9 +457,63 @@ namespace HasatPiyasa.Web.UI.Controllers
         }
 
         [HttpGet]//Nohut Get
-        public ActionResult DataImputChickPea(int cityId = 0)
+        public async Task<ActionResult> DataInputChickPea(int cityId = 0)
         {
-            return View();
+            var model = new HasaInputViewModel();
+            int em = (int)Core.Utilities.Enums.DataInput.Data.ChickPea;
+            var emtea = await _emteaService.GetEmteaTable(em, cityId);
+
+            var user = GetCurrentUser();
+            if (user != null)
+            {
+                var cities = await _subeCityService.GetSubeCityGTable(user.SubeId);
+                model.Cities = cities.Veri.Where(x => x.SubeId == user.SubeId).OrderBy(x => x.Id).ToList();
+            }
+            model.Emteas = emtea.Veri.Emteas;
+            model.DataInputs = emtea.Veri.DataInputs;
+
+            if (cityId == 0)
+            {
+
+                cityId = GetCurrentUser().Sube.SubeCities.FirstOrDefault().CityId;
+                model.SelectedCityId = cityId;
+                var Inputs = await _formDataInputService.GetFormDataInputTable(DateTime.Today, cityId, user.SubeId, user.UserId);
+
+                if (Inputs.Veri != null)
+                {
+                    if ((Inputs.Veri.AddedTime.Date == DateTime.Today || Inputs.Veri.UpdatedTime == DateTime.Today) && Inputs.Veri.IsLock)
+                    {
+                        return RedirectToAction("Index", "Home");
+                    }
+                }
+
+                model.DataInputs = Inputs.Veri != null ? _dataInputService.ListAllDataInputs().Veri.Where(x => x.FormDataInputId == Inputs.Veri.Id).ToList() : null;
+
+                model.HaveTodayInputData = model.DataInputs != null ? true : false;
+
+            }
+            else
+            {
+                model.SelectedCityId = cityId;
+
+                var Inputs = await _formDataInputService.GetFormDataInputTable(DateTime.Today, cityId, user.SubeId, user.UserId);
+
+                if (Inputs.Veri != null)
+                {
+                    if ((Inputs.Veri.AddedTime.Date == DateTime.Today || Inputs.Veri.UpdatedTime == DateTime.Today) && Inputs.Veri.IsLock)
+                    {
+                        return RedirectToAction("Index", "Home");
+                    }
+                }
+
+                //model.DataInputs = Inputs.Veri != null ? _dataInputService.ListAllDataInputs().Veri.Where(x => x.FormDataInputId == Inputs.Veri.Id).ToList() : null;
+                model.HaveTodayInputData = model.DataInputs != null ? true : false;
+
+            }
+
+
+            model.DataInputs = emtea.Veri.DataInputs;
+            return View(model);
         }
 
         [HttpPost] //Nohut Post

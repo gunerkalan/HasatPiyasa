@@ -11,7 +11,9 @@ namespace HasatPiyasa.Core.Utilities.Enums
             Rice=30,
             Corn=31,
             GreenLentil=32,
-            RedLentil=33
+            RedLentil=33,
+            ChickPea=34,
+            Bean=35
         }
     }
 }
