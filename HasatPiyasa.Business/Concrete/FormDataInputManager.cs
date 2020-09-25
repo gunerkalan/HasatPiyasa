@@ -266,7 +266,7 @@ namespace HasatPiyasa.Business.Concrete
             try
             {
                 var res = await _formDataInputDal.GetTable();
-                var response = res.Include(x => x.City).Include(x => x.Sube).Where(x => x.IsActive && x.EmteaId==Emtea && x.AddedTime.Date == Date.Date).ToList();
+                var response = res.Include(x => x.City).Include(x => x.Sube).Where(x => x.IsActive && x.EmteaId==Emtea && x.AddedTime.Date == Date.Date).OrderBy(u=>u.Sube.SubeName).ToList();
 
                 return new NIslemSonuc<List<FormDataInput>>
                 {
