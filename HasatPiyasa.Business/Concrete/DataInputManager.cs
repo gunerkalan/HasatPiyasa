@@ -280,12 +280,12 @@ namespace HasatPiyasa.Business.Concrete
                 ToptanPiyasa3 = resp.Where(x => x.CityId == a.CityId).Sum(x => x.ToptanPiyasa3 * x.Natural3) / resp.Where(x => x.CityId == a.CityId).Sum(x => x.Natural3),
                 ToptanPiyasa4 = resp.Where(x => x.CityId == a.CityId).Sum(x => x.ToptanPiyasa4 * x.Natural4) / resp.Where(x => x.CityId == a.CityId).Sum(x => x.Natural4),
                 ToptanPiyasa5 = resp.Where(x => x.CityId == a.CityId).Sum(x => x.ToptanPiyasa5 * x.Natural5) / resp.Where(x => x.CityId == a.CityId).Sum(x => x.Natural5),
-                Perakende1 = resp.Where(x => x.CityId == a.CityId).Average(x => x.Perakende1),
-                Perakende2 = resp.Where(x => x.CityId == a.CityId).Average(x => x.Perakende2),
-                Perakende3 = resp.Where(x => x.CityId == a.CityId).Average(x => x.Perakende3),
-                Perakende4 = resp.Where(x => x.CityId == a.CityId).Average(x => x.Perakende4),
-                Perakende5 = resp.Where(x => x.CityId == a.CityId).Average(x => x.Perakende5),
-                Perakende6 = resp.Where(x => x.CityId == a.CityId).Average(x => x.Perakende6),
+                Perakende1 = resp.Where(x => x.CityId == a.CityId & x.Perakende1 > 0).Average(x => x.Perakende1),
+                Perakende2 = resp.Where(x => x.CityId == a.CityId & x.Perakende2 > 0).Average(x => x.Perakende2),
+                Perakende3 = resp.Where(x => x.CityId == a.CityId & x.Perakende3 > 0).Average(x => x.Perakende3),
+                Perakende4 = resp.Where(x => x.CityId == a.CityId & x.Perakende4 > 0).Average(x => x.Perakende4),
+                Perakende5 = resp.Where(x => x.CityId == a.CityId & x.Perakende5 > 0).Average(x => x.Perakende5),
+                Perakende6 = resp.Where(x => x.CityId == a.CityId & x.Perakende6 > 0).Average(x => x.Perakende6),
 
 
                 //HasatOran = res.Where(x => x.CityId == a.CityId).Sum(x => x.TuikValue),
@@ -322,6 +322,7 @@ namespace HasatPiyasa.Business.Concrete
             }
         }
 
+
         public NIslemSonuc<List<ReportDto>> ListDataInputsForSubeMarket(string[] dates, string[] emteatypes)
         {
             List<ReportDto> res = new List<ReportDto>();
@@ -355,12 +356,12 @@ namespace HasatPiyasa.Business.Concrete
                 ToptanPiyasa3 = resp.Where(x => x.SubeId == a.SubeId).Sum(x => x.ToptanPiyasa3 * x.Natural3) / resp.Where(x => x.SubeId == a.SubeId).Sum(x => x.Natural3),
                 ToptanPiyasa4 = resp.Where(x => x.SubeId == a.SubeId).Sum(x => x.ToptanPiyasa4 * x.Natural4) / resp.Where(x => x.SubeId == a.SubeId).Sum(x => x.Natural4),
                 ToptanPiyasa5 = resp.Where(x => x.SubeId == a.SubeId).Sum(x => x.ToptanPiyasa5 * x.Natural5) / resp.Where(x => x.SubeId == a.SubeId).Sum(x => x.Natural5),
-                Perakende1 = resp.Where(x => x.SubeId == a.SubeId).Average(x => x.Perakende1),
-                Perakende2 = resp.Where(x => x.SubeId == a.SubeId).Average(x => x.Perakende2),
-                Perakende3 = resp.Where(x => x.SubeId == a.SubeId).Average(x => x.Perakende3),
-                Perakende4 = resp.Where(x => x.SubeId == a.SubeId).Average(x => x.Perakende4),
-                Perakende5 = resp.Where(x => x.SubeId == a.SubeId).Average(x => x.Perakende5),
-                Perakende6 = resp.Where(x => x.SubeId == a.SubeId).Average(x => x.Perakende6),
+                Perakende1 = resp.Where(x => x.SubeId == a.SubeId & x.Perakende1 > 0).Average(x => x.Perakende1),
+                Perakende2 = resp.Where(x => x.SubeId == a.SubeId & x.Perakende2 > 0).Average(x => x.Perakende2),
+                Perakende3 = resp.Where(x => x.SubeId == a.SubeId & x.Perakende3 > 0).Average(x => x.Perakende3),
+                Perakende4 = resp.Where(x => x.SubeId == a.SubeId & x.Perakende4 > 0).Average(x => x.Perakende4),
+                Perakende5 = resp.Where(x => x.SubeId == a.SubeId & x.Perakende5 > 0).Average(x => x.Perakende5),
+                Perakende6 = resp.Where(x => x.SubeId == a.SubeId & x.Perakende6 > 0).Average(x => x.Perakende6),
 
 
                 //HasatOran = res.Where(x => x.CityId == a.CityId).Sum(x => x.TuikValue),
