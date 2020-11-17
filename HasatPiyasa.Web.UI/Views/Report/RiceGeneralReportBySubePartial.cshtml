@@ -177,13 +177,13 @@ else
 
 
 
-    <td><input style="border:none" readonly name="dfiyat" id="@("d_1_"+count.ToString())" value="@String.Format(new System.Globalization.CultureInfo("tr-TR").NumberFormat,"{0:###,###}",(@emteaType.DataInputs.Average(x=>x.Perakende1)))" /></td>
-    <td><input style="border:none" readonly name="yfiyat" id="@("y_1_"+count.ToString())" value="@String.Format(new System.Globalization.CultureInfo("tr-TR").NumberFormat,"{0:###,###}",(@emteaType.DataInputs.Average(x=>x.Perakende2)))" /></td>
-    <td><input style="border:none" readonly name="ofiyat" id="@("o_1_"+count.ToString())" value="@String.Format(new System.Globalization.CultureInfo("tr-TR").NumberFormat,"{0:###,###}",(@emteaType.DataInputs.Average(x=>x.Perakende3)))" /></td>
+    <td><input style="border:none" readonly name="dfiyat" id="@("d_1_"+count.ToString())" value="@String.Format(new System.Globalization.CultureInfo("tr-TR").NumberFormat,"{0:###,###}",(@emteaType.DataInputs.Where(x=> x.Perakende1 > 0).Average(x=>x.Perakende1)))" /></td>
+    <td><input style="border:none" readonly name="yfiyat" id="@("y_1_"+count.ToString())" value="@String.Format(new System.Globalization.CultureInfo("tr-TR").NumberFormat,"{0:###,###}",(@emteaType.DataInputs.Where(x=> x.Perakende2 > 0).Average(x=>x.Perakende2)))" /></td>
+    <td><input style="border:none" readonly name="ofiyat" id="@("o_1_"+count.ToString())" value="@String.Format(new System.Globalization.CultureInfo("tr-TR").NumberFormat,"{0:###,###}",(@emteaType.DataInputs.Where(x=> x.Perakende3 > 0).Average(x=>x.Perakende3)))" /></td>
 
-    <td><input style="border:none" readonly name="dfiyat2" id="@("d_2_"+count.ToString())" value="@String.Format(new System.Globalization.CultureInfo("tr-TR").NumberFormat,"{0:###,###.##}",(@emteaType.DataInputs.Average(x=>x.Perakende4)))" /></td>
-    <td><input style="border:none" readonly name="yfiyat2" id="@("y_2_"+count.ToString())" value="@String.Format(new System.Globalization.CultureInfo("tr-TR").NumberFormat,"{0:###,###.##}",(@emteaType.DataInputs.Average(x=>x.Perakende5)))" /></td>
-    <td><input style="border:none" readonly name="ofiyat2" id="@("o_2_"+count.ToString())" value="@String.Format(new System.Globalization.CultureInfo("tr-TR").NumberFormat,"{0:###,###.##}",(@emteaType.DataInputs.Average(x=>x.Perakende6)))" /></td>
+    <td><input style="border:none" readonly name="dfiyat2" id="@("d_2_"+count.ToString())" value="@String.Format(new System.Globalization.CultureInfo("tr-TR").NumberFormat,"{0:###,###.##}",(@emteaType.DataInputs.Where(x=> x.Perakende4 > 0).Average(x=>x.Perakende4)))" /></td>
+    <td><input style="border:none" readonly name="yfiyat2" id="@("y_2_"+count.ToString())" value="@String.Format(new System.Globalization.CultureInfo("tr-TR").NumberFormat,"{0:###,###.##}",(@emteaType.DataInputs.Where(x=> x.Perakende5 > 0).Average(x=>x.Perakende5)))" /></td>
+    <td><input style="border:none" readonly name="ofiyat2" id="@("o_2_"+count.ToString())" value="@String.Format(new System.Globalization.CultureInfo("tr-TR").NumberFormat,"{0:###,###.##}",(@emteaType.DataInputs.Where(x=> x.Perakende6 > 0).Average(x=>x.Perakende6)))" /></td>
 
 </tr>
 }
