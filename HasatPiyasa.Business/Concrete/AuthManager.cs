@@ -116,7 +116,7 @@ namespace HasatPiyasa.Business.Concrete
                 // Log specific exception
                 return new NIslemSonuc<bool>
                 {
-                    BasariliMi = true,
+                    BasariliMi = false,
                     Mesaj = ex.Message
                 };
             }
