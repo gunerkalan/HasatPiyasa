@@ -39,6 +39,8 @@ namespace HasatPiyasa.Web.UI.Controllers
                 _httpContext.HttpContext.Session.Set("User", sonuc.Veri);
                 return JsonConvert.SerializeObject(new { success = true, messages = sonuc.Mesaj });
 
+
+
             }
             else
             {
