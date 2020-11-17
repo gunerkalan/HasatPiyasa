@@ -79,7 +79,7 @@ namespace HasatPiyasa.Business.Concrete
                 return new NIslemSonuc<Users>
                 {
                     BasariliMi = false,
-                    Mesaj = Messages.ErrorDatabaseLogin
+                    Mesaj = res.Mesaj
 
                 };
             }
@@ -107,6 +107,14 @@ namespace HasatPiyasa.Business.Concrete
                                 BasariliMi = true,                               
                             };
                         }
+                        else
+                        {
+                            return new NIslemSonuc<bool>
+                            {
+                                BasariliMi = false,
+                                Mesaj = "Lütfen Kullanıcı adınızı veya şifrenizi kontrol ediniz !",
+                            };
+                        }
                     }
                 }
             }
@@ -117,10 +125,11 @@ namespace HasatPiyasa.Business.Concrete
                 return new NIslemSonuc<bool>
                 {
                     BasariliMi = false,
-                    Mesaj = ex.Message
+                    Mesaj = "Lütfen Kullanıcı adınızı veya şifrenizi kontrol ediniz !",
+                    //ErrorMessage = ex.InnerException.Message
                 };
             }
-            return null;
+           
         }
         public async Task<NIslemSonuc<Users>> Profil(int id)
         {

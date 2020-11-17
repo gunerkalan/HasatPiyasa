@@ -4,20 +4,16 @@ using System.Text;
 
 namespace HasatPiyasa.Core.Entities
 {
-    public class ReportDto
+    public class DataInputTbaleListModelForRiceDto
     {
         public int Id { get; set; }
-        public int SubeId { get; set; }
-        public string SubeAdi { get; set; }
-        public int CityId { get; set; }
-        public string CityAdi { get; set; }
-        public int BolgeId { get; set; }
-        public string BolgeAdi { get; set; }
-        public int EmteaId { get; set; }
-        public int EmteaGroupId { get; set; }
-        public int EmteaTypeId { get; set; }
-        public int AddUserId { get; set; }
-        public int? UpdateUserId { get; set; }
+        public string SubeName { get; set; }
+        public string Cityname { get; set; }
+        public string EmteaName { get; set; }
+        public string EmteaGroupName { get; set; }
+        public string EmteaTypeName { get; set; }
+        public string AddUser { get; set; }
+        public string UpdateUser { get; set; }
         public int AlimYear { get; set; }
         public double TuikValue { get; set; }
         public double GuessValue { get; set; }
@@ -43,10 +39,6 @@ namespace HasatPiyasa.Core.Entities
         public double? Perakende5 { get; set; }
         public double? Perakende6 { get; set; }
         public double? PerakendeToplam { get; set; }
-        public DateTime AddedTime { get; set; }
-        public DateTime? UpdatedTime { get; set; }
-       
+        public int FormDataInputId { get; set; }
     }
-
-   
 }

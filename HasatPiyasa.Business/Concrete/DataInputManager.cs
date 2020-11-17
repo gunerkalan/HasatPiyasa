@@ -421,11 +421,69 @@ namespace HasatPiyasa.Business.Concrete
             }
         }
 
-        public Task<NIslemSonuc<List<DataInputDto>>> GetDataInputGTable()
+      
+        public async Task<NIslemSonuc<List<DataInputTbaleListModelForRiceDto>>> GetDataInputsTableForm(int id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var res = await _dataInputDal.GetTable();
+                var model = res.AsQueryable().Include(x => x.City).Include(x=>x.AddUser).Include(x=>x.UpdateUser).Include(x => x.Sube).Include(x => x.EmteaType).ThenInclude(x=>x.EmteaGroup).ThenInclude(x=>x.Emtea).Where(x => x.FormDataInputId == id).ToList();
+
+                var response = model.Select(x => new DataInputTbaleListModelForRiceDto
+                {
+                    AddUser = x.AddUser.Name+ " " + x.AddUser.Surname,
+                    AlimYear = x.AlimYear,
+                    Cityname = x.City.Name,
+                    EmteaGroupName = x.EmteaType.EmteaGroup.GroupName,
+                    EmteaName = x.EmteaType.EmteaGroup.Emtea.EmteaName,
+                    EmteaTypeName = x.EmteaType.EmteaTypeName,
+                    FormDataInputId = x.FormDataInputId,
+                    GuessValue = x.GuessValue,
+                    HasatMiktar = x.HasatMiktar,
+                    HasatOran = x.HasatOran,
+                    Id = x.Id,
+                    Natural1 = x.Natural1,
+                    Natural2 = x.Natural2,
+                    Natural3 = x.Natural3,
+                    Natural4 = x.Natural4,
+                    Natural5 = x.Natural5,
+                    NaturalToplam = x.NaturalToplam,
+                    Perakende1 = x.Perakende1,
+                    Perakende2 = x.Perakende2,
+                    Perakende3 = x.Perakende3,
+                    Perakende4 = x.Perakende4,
+                    Perakende5 = x.Perakende5,
+                    Perakende6 = x.Perakende6,
+                    PerakendeToplam = x.PerakendeToplam,
+                    SubeName = x.Sube.SubeName,
+                    ToptanPiyasa1 = x.ToptanPiyasa1,
+                    ToptanPiyasa2 = x.ToptanPiyasa2,
+                    ToptanPiyasa3 = x.ToptanPiyasa3,
+                    ToptanPiyasa4 = x.ToptanPiyasa4,
+                    ToptanPiyasa5 = x.ToptanPiyasa5,
+                    ToptanPiyasaToplam = x.ToptanPiyasaToplam,
+                    TuikValue = x.TuikValue,
+                    //UpdateUser = x.UpdateUser.Name + " " + x.UpdateUser.Surname,
+                    UreticiKalanMiktar = x.UreticiKalanMiktar
+                }).OrderBy(u=>u.Id).ToList();
+
+                
+
+                return new NIslemSonuc<List<DataInputTbaleListModelForRiceDto>>
+                {
+                    BasariliMi = true,
+                    Veri = response
+
+                };
+            }
+            catch (Exception hata)
+            {
+                return new NIslemSonuc<List<DataInputTbaleListModelForRiceDto>>
+                {
+                    BasariliMi = false,
+                    Mesaj = hata.InnerException.Message
+                };
+            }
         }
-
-
     }
 }

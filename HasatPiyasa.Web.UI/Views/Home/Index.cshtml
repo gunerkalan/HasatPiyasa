@@ -1,1 +1,108 @@
-﻿
+﻿@Html.AntiForgeryToken()
+
+<script src="~/js/devextreme/aspnet/dx.aspnet.mvc.js"></script>
+<script src="~/js/devextreme/aspnet/dx.aspnet.data.js"></script>
+
+
+@section scripts{
+
+
+    <script src="~/js/AdminProcess/Process.js"></script>
+
+}
+
+<div class="row">
+
+    <div class="col-sm-12">
+        <div class="d-flex flex-column-fluid">
+            <!--begin::Container-->
+            <div class="container">
+                <!--begin::Notice-->
+                <!--end::Notice-->
+                <!--begin::Card-->
+                <div class="card card-custom gutter-b">
+                    <div class="card-header flex-wrap py-3">
+                        <div class="card-title">
+                            <h3 class="card-label">
+                                Günlük Veri Giriş Listesi
+                                <span class="d-block text-muted pt-2 font-size-sm">Günlük Veri Giriş &amp; Listesi</span>
+                            </h3>
+                        </div>
+                        <div class="card-toolbar">
+                            <!--begin::Dropdown-->
+                            <!--end::Dropdown-->
+                            <!--begin::Button-->
+                           
+                            <!--end::Button-->
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <!--begin: Datatable-->
+                        @(Html.DevExtreme().DataGrid<HasatPiyasa.Core.Entities.FormDataInputDto>().ID("GridContainer")
+   .SearchPanel(src => src.Visible(true).Width(250).Placeholder("Ara.."))
+   .ShowBorders(true)
+   .DataSource(d => d.Mvc().Controller("Home").LoadAction("DataInputListDataForToday").Key("Id"))
+   .Selection(s => s.Mode(SelectionMode.Single))
+   .HoverStateEnabled(true)
+   .Columns(columns => {
+   columns.AddFor(m => m.SubeName).Caption("İşyeri Adı").Width(250);
+   columns.AddFor(m => m.SubeCode).Caption("İşyeri Kodu").Width(100);
+   columns.AddFor(m => m.CityName).Caption("Şehirler");
+   columns.AddFor(m => m.EmteaName).Caption("Emtea Adı").Width(150);
+   columns.AddFor(m => m.EmteaCode).Caption("Emtea Kodu").Width(100);
+  
+
+    })
+        .RemoteOperations(false)
+        .AllowColumnReordering(true)
+        .RowAlternationEnabled(true)
+        .Paging(p => p.PageSize(10))
+        .Pager(p => p
+            .ShowPageSizeSelector(true)
+            .AllowedPageSizes(new[] { 10, 25, 50, 100 })
+        )
+        .SearchPanel(s => s
+            .Visible(true)
+            .HighlightCaseSensitive(true)
+        )
+        .GroupPanel(g => g.Visible(true))
+        .Grouping(g => g.AutoExpandAll(false))
+        .FilterRow(f => f.Visible(true).ApplyFilter(GridApplyFilterMode.Auto))
+        .HeaderFilter(f => f.Visible(true))
+       .Summary(s => s.TotalItems(items => {
+           items.AddFor(m => m.EmteaCode)
+           .SummaryType(SummaryType.Count)
+
+         .SummaryType(SummaryType.Count).ValueFormat(Format.FixedPoint)
+         ;
+       }))
+
+
+    )
+                        @(Html.DevExtreme().LoadPanel()
+        .ID("loadPanel")
+        .ShadingColor("rgba(0,0,0,0.4)")
+        .Position(p => p.Of("body"))
+        .Visible(false)
+        .ShowIndicator(true)
+        .ShowPane(true)
+        .Shading(true)
+        .CloseOnOutsideClick(false)
+        .Message("Lütfen bekleyiniz..")
+
+    )
+                        <!--end: Datatable-->
+                    </div>
+                </div>
+                <!--end::Card-->
+                <!--begin::Card-->
+                <!--end::Card-->
+            </div>
+            <!--end::Container-->
+        </div>
+
+
+    </div>
+
+
+</div>

@@ -263,5 +263,27 @@ namespace HasatPiyasa.Business.Concrete
                 };
             }
         }
+
+        public async Task<NIslemSonuc<List<EmteaTypes>>> GetEmteaTypesForEmtea(int EmteaId)
+        {
+            try
+            {
+                var res = await _emteaTypeDal.GetTable();
+
+                return new NIslemSonuc<List<EmteaTypes>>
+                {
+                    BasariliMi = true,
+                    Veri = res.AsQueryable().Include(x => x.EmteaGroup).ThenInclude(x=>x.Emtea).Where(x => x.EmteaGroup.Emtea.Id == EmteaId).ToList()
+                };
+            }
+            catch (Exception hata)
+            {
+                return new NIslemSonuc<List<EmteaTypes>>
+                {
+                    BasariliMi = false,
+                    Mesaj = hata.InnerException.Message
+                };
+            }
+        }
     }
 }

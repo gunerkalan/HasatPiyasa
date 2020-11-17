@@ -12,9 +12,11 @@ namespace HasatPiyasa.Business.Abstract
     {
         Task<NIslemSonuc<EmteaTypes>> CreateEmteaType(EmteaTypes emteatype);
         NIslemSonuc<List<EmteaTypes>> ListAllEmteType();
+  
         NIslemSonuc<EmteaTypes> GetEmteaType(int id);
         Task<NIslemSonuc<EmteaTypes>> UpdateEmteaType(EmteaTypes emteatype);
         Task<NIslemSonuc<EmteaTypes>> GetEmteaTypeTable(int value);
+        Task<NIslemSonuc<List<EmteaTypes>>> GetEmteaTypesForEmtea(int EmteaId);
         Task<NIslemSonuc<List<EmteaTypeDto>>> GetEmteaTypeGTable();
         Task<NIslemSonuc<EmteaTypeEditDto>> GetEmteaTypesAsync(int id);
         Task<NIslemSonuc<bool>> DeleteEmteaType(EmteaTypes emteatype);

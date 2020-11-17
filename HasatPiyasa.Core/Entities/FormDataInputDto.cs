@@ -19,5 +19,6 @@ namespace HasatPiyasa.Core.Entities
         public int EmteaId { get; set; }
         public string EmteaName { get; set; }
         public string EmteaCode { get; set; }
+        public int FormDataInputId { get; set; }
     }
 }

@@ -5,6 +5,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using DevExpress.DirectX.Common.Direct2D;
 using HasatPiyasa.Business.Abstract;
+using HasatPiyasa.Core.Entities;
 using HasatPiyasa.Entity.Entity;
 using HasatPiyasa.Web.UI.FilterAttributes;
 using HasatPiyasa.Web.UI.Models;
@@ -902,9 +903,9 @@ namespace HasatPiyasa.Web.UI.Controllers
         {
             if (emteaid > 0)
             {
-                var formDatas = await _formDataInputService.GetFormDataGTable();
+                var formDatas = await _formDataInputService.GetFormDataGTableForDate((int)Core.Utilities.Enums.DataInput.Data.Rice, DateTime.Today.Date);
 
-                var fm = formDatas.Veri.Where(x => x.EmteaId == emteaid && x.AddedTime.Date ==DateTime.Today).Select(s => new SetFormDataState
+                var fm = formDatas.Veri.Select(s => new SetFormDataState
                 {
                     FormId = s.Id,
                     CityName = s.City.Name,
@@ -939,6 +940,54 @@ namespace HasatPiyasa.Web.UI.Controllers
                 return Json(new { success = false, messages = sonuc.Mesaj });
             }
         }
+
+        #endregion
+
+        #region IsSubeHaveData
+
+        [HttpGet]
+        public ActionResult IsSubeHaveData()
+        {
+            IsSubeHaveDataModel model = new IsSubeHaveDataModel
+            {
+                Emteas = _emteaService.ListAllEmteas().Veri,
+
+            };
+
+            return View(model);
+        }
+
+        public async Task<object> GetIsSubeHaveData(int emteaid)
+        {
+            if (emteaid > 0)
+            {
+
+                var subesandformdatas = await _subeService.GetSubeGTableWithFormDatas(emteaid);
+
+                var fm = subesandformdatas.Veri.Select(s => new DataState
+                {
+                   AddedDate = s.AddedDate,
+                   BolgeName = s.BolgeName,
+                   Cities = s.Cities,
+                   HaveDataCities = s.HaveDataCities,
+                   Id = s.Id,
+                   State = s.IsHavaData,
+                   IsHaveDataCount = s.IsHaveDataCount,
+                   SubeCode = s.SubeCode,
+                   SubeName = s.SubeName
+
+                }).ToList();
+
+
+                return fm;
+            }
+            else
+            {
+                var formData = new List<DataState>();
+                return formData;
+            }
+        }
+
 
         #endregion
 

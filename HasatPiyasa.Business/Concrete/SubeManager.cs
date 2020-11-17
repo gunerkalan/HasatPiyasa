@@ -1,4 +1,6 @@
-﻿using HasastPiyasa.DataAccess.Abstract;
+﻿using DevExpress.Utils.Filtering.Internal;
+using DevExpress.Utils.Serializing;
+using HasastPiyasa.DataAccess.Abstract;
 using HasatPiyasa.Business.Abstract;
 using HasatPiyasa.Business.Constants;
 using HasatPiyasa.Core.Entities;
@@ -9,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace HasatPiyasa.Business.Concrete
@@ -51,17 +54,17 @@ namespace HasatPiyasa.Business.Concrete
             try
             {
                 var res = await _subeDal.GetTable();
-                var model = res.Include(x => x.Bolge).Include(x=>x.SubeCities).ThenInclude(x=>x.City).Where(x => x.IsActive).ToList();
+                var model = res.Include(x => x.Bolge).Include(x => x.SubeCities).ThenInclude(x => x.City).Where(x => x.IsActive).ToList();
 
                 var response = model.Select(x => new SubeDto
                 {
-                   BolgeName = x.Bolge.Name,
-                   SubeCode = x.SubeKod,
-                   SubeName = x.SubeName,
-                   Id = x.Id,
-                   AddedDate = x.AddedTime,
-                   Cities = string.Join(',',x.SubeCities.Select(x=>x.City.Name).ToArray())
-                    
+                    BolgeName = x.Bolge.Name,
+                    SubeCode = x.SubeKod,
+                    SubeName = x.SubeName,
+                    Id = x.Id,
+                    AddedDate = x.AddedTime,
+                    Cities = string.Join(',', x.SubeCities.Select(x => x.City.Name).ToArray())
+
                 }).ToList();
 
                 return new NIslemSonuc<List<SubeDto>>
@@ -130,7 +133,7 @@ namespace HasatPiyasa.Business.Concrete
                 return new NIslemSonuc<Subes>
                 {
                     BasariliMi = true,
-                    Veri = res.AsQueryable().Include(x=>x.Tuiks).Include(x=>x.Bolge).Include(x=>x.SubeCities).ThenInclude(x=>x.City).Where(x => x.Id == value).ToList().FirstOrDefault()
+                    Veri = res.AsQueryable().Include(x => x.Tuiks).Include(x => x.Bolge).Include(x => x.SubeCities).ThenInclude(x => x.City).Where(x => x.Id == value).ToList().FirstOrDefault()
                 };
             }
             catch (Exception hata)
@@ -194,7 +197,7 @@ namespace HasatPiyasa.Business.Concrete
             try
             {
                 var res = await _subeDal.GetTable();
-                var model = res.Include(x=>x.SubeCities).ThenInclude(x=>x.City).Where(x => x.IsActive).ToList();
+                var model = res.Include(x => x.SubeCities).ThenInclude(x => x.City).Where(x => x.IsActive).ToList();
 
                 var response = model.Select(x => new SubeCityDto
                 {
@@ -218,6 +221,104 @@ namespace HasatPiyasa.Business.Concrete
                 };
             }
 
+        }
+
+        public async Task<NIslemSonuc<List<SubeFormDataWDataInput>>> GetSubeGTableWithFormDatas(int emteaid)
+        {
+            try
+            {
+                var res = await _subeDal.GetTable();
+                var model = res.Include(x => x.Bolge).Include(x => x.SubeCities).ThenInclude(x => x.City).Include(x => x.FormDataInputs).Where(x => x.IsActive).OrderBy(x=>x.Bolge.Name).ToList();
+
+                var modelhavedata = model.Where(x => x.FormDataInputs.Where(x=>x.AddedTime.Date == DateTime.Now.Date).Count()>0).ToList();
+
+                bool status=false;
+
+                var models = new List<SubeFormDataWDataInput>();
+                modelhavedata.ForEach(x =>
+                {
+
+                    if (x.FormDataInputs.Where(y => y.IsActive && y.EmteaId == emteaid).Count() > 0)
+                    {
+                        var citiesIds = x.SubeCities.Select(s => s.CityId).ToArray();
+                        var _haveDataCities = x.FormDataInputs.Where(x => citiesIds.Contains(x.CityId) && x.AddedTime.Date ==DateTime.Now.Date).Select(s => s.CityId).Distinct().ToList();
+
+                        if(x.SubeCities.Count() == _haveDataCities.Count())
+                        {
+                            status = true;
+                        }
+                        else
+                        {
+                            status= false;
+                        }
+                        
+                        var response = new SubeFormDataWDataInput
+                        {
+                            BolgeName = x.Bolge.Name,
+                            SubeCode = x.SubeKod,
+                            SubeName = x.SubeName,
+                            Id = x.Id,
+                            AddedDate = string.Join(',', x.AddedTime.ToShortTimeString().ToArray()),
+                            Cities = string.Join(',', x.SubeCities.Select(x => x.City.Name).ToArray()),
+                            IsHavaData = status,
+                            IsHaveDataCount = _haveDataCities.Count(),
+                            HaveDataCities = string.Join(',', x.SubeCities.Where(c => _haveDataCities.Contains(c.CityId)).Select(s => s.City.Name).ToArray())
+                        };
+
+                        models.Add(response);
+
+                    }
+                   
+
+                });
+
+
+
+                var modelnohavedata = model.Where(x => x.FormDataInputs.Where(x => x.AddedTime.Date == DateTime.Now.Date).Count() == 0).ToList();
+
+                modelnohavedata.ForEach(x =>
+                {
+
+                    if (x.FormDataInputs.Where(y => y.IsActive && y.EmteaId == emteaid).Count() > 0)
+                    {
+                        var citiesIds = x.SubeCities.Select(s => s.CityId).ToArray();
+                       
+                        var response = new SubeFormDataWDataInput
+                        {
+                            BolgeName = x.Bolge.Name,
+                            SubeCode = x.SubeKod,
+                            SubeName = x.SubeName,
+                            Id = x.Id,
+                            AddedDate = string.Join(',', x.AddedTime.ToShortTimeString().ToArray()),
+                            Cities = string.Join(',', x.SubeCities.Select(x => x.City.Name).ToArray()),
+                            IsHavaData = false,
+                            IsHaveDataCount =0,
+                            HaveDataCities = "Veri Girişi Yok"
+                        };
+
+                        models.Add(response);
+
+                    }
+
+
+                });
+
+
+                return new NIslemSonuc<List<SubeFormDataWDataInput>>
+                {
+                    BasariliMi = false,
+                    Veri = models
+                };
+
+            }
+            catch (Exception hata)
+            {
+                return new NIslemSonuc<List<SubeFormDataWDataInput>>
+                {
+                    BasariliMi = true,
+                    Mesaj = hata.InnerException.Message
+                };
+            }
         }
     }
 }

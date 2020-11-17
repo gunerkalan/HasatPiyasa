@@ -1947,8 +1947,6 @@ function SoftDeleteTuikCityData(id, EmteaId, EmteaGroupId, EmteaTypeId, CityId, 
 }
 
 
-
-
 //$("body").on("hide.bs.modal", "#emtea-adding-modal", () => {
 //    $("#GridContainer").dxDataGrid("instance").refresh();
 //})

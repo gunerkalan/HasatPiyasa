@@ -3,9 +3,6 @@ var Cities = [];
 var AllDate = false;
 var AllCities = false;
 
-//LoadTable();
-//LoadTableCity();
-
 setTimeout(() => {
     LoadProcess()
 }, 1000)
@@ -26,7 +23,7 @@ function LoadProcess() {
     CalculateColumn("hasatedilen", "hasatedilenTotal", "topla");
     CalculateColumn("bekleyenton", "bekleyentonTotal", "topla");
     CalculateColumn("piyasaton", "piyasatonTotal", "topla");
-    CalculateColumnByCumulative("percent", "tmo", "percentTotal", "ağırlıklı ondalıklı");
+    CalculateColumnByCumulative("percent", "tmo", "percentTotal", "ağırlıklı");
     CalculateColumnByCumulative('toptan0', 'piyasaton', 'toptan0', 'ağırlıklı');
     CalculateColumnByCumulative('toptan1', 'piyasaton', 'toptan1', 'ağırlıklı');
     CalculateColumnByCumulative('toptan2', 'piyasaton', 'toptan2', 'ağırlıklı');
@@ -40,9 +37,9 @@ function LoadProcess() {
     CalculateColumn('dfiyat', 'dfiyatTotal', 'ortalama');
     CalculateColumn('yfiyat', 'yfiyatTotal', 'ortalama');
     CalculateColumn('ofiyat', 'ofiyatTotal', 'ortalama');
-    CalculateColumn('dfiyat2', 'dfiyat2Total', 'ortalama ondalıklı');
-    CalculateColumn('yfiyat2', 'yfiyat2Total', 'ortalama ondalıklı');
-    CalculateColumn('ofiyat2', 'ofiyat2Total', 'ortalama ondalıklı');
+    CalculateColumn('dfiyat2', 'dfiyat2Total', 'ortalama');
+    CalculateColumn('yfiyat2', 'yfiyat2Total', 'ortalama');
+    CalculateColumn('ofiyat2', 'ofiyat2Total', 'ortalama');
     $("input[type=number]").on("focus", function () {
         $(this).on("keydown", function (event) {
             if (event.keyCode === 38 || event.keyCode === 40) {
@@ -60,46 +57,13 @@ function LoadProcess() {
 
     })
 
-    $("table input").each(function () {
-        var element = $(this);
-        if (element[0].value.toString()== "NaN") {
-            element[0].value = 0;
-        }
-    });
-
-    //console.clear()
-}
-function LoadMarketProcess() {
-    
-   
-
-    //$("table input").trigger('keyup')
-    //$("table input").trigger('change')
-    //$("input").focus((e) => {
-
-    //    if (e.target.value == "0")
-    //        e.target.value = null;
-
-    //})
-    setTimeout(() => {
-    $("table td").each(function () {
-        var element = $(this);
-        if (element[0].textContent == "NaN") {
-            element[0].textContent = "";
-        }
-        if (element[0].textContent.indexOf(',') !== -1) {
-            element[0].textContent = parseInt(element[0].textContent);
-        }
-
-    })
-    }, 1000)
 
 
-    //console.clear()
+  
 }
 function CalculateToptan() {
 
-    CalculateColumnByCumulative("percent", "tmo", "percentTotal", "ağırlıklı ondalıklı");
+    CalculateColumnByCumulative("percent", "tmo", "percentTotal", "ağırlıklı");
     CalculateColumnByCumulative('toptan0', 'piyasaton', 'toptan0', 'ağırlıklı');
     CalculateColumnByCumulative('toptan1', 'piyasaton', 'toptan1', 'ağırlıklı');
     CalculateColumnByCumulative('toptan2', 'piyasaton', 'toptan2', 'ağırlıklı');
@@ -134,7 +98,7 @@ function YuzdeHesapla(e) {
             percent = (_amount * value) / 100;
         }
 
-        $("#HasatEdilen_" + rowId).val(percent)
+        $("#HasatEdilen_" + rowId).val(percent.toFixed(0))
         CalculateColumn("tmo", "tmoTotal", "topla");
         CalculateColumn("percent", "percentTotal", "ortalama");
         CalculateColumn("hasatedilen", "hasatedilenTotal", "topla");
@@ -148,12 +112,12 @@ function CalculateColumn(name, totalid, calculateType) {
         var tuiks = $(`input[name=${name}]`)
         var total = 0;
         $.each(tuiks, (i, v) => {
-            if (v.value != "0" & v.value != "") {
-                total += parseInt(v.value.replace(/\./g, ''))
+            if (v.value != "0") {
+                total += Number(v.value.toString().replace(',', '.'))
             }
         })
-      
-        $("#" + totalid).val(total.toString().replace(/\./g, ','))
+
+        $("#" + totalid).val(total.toFixed(0))
     }
 
     if (calculateType == "ortalama") {
@@ -161,35 +125,17 @@ function CalculateColumn(name, totalid, calculateType) {
         var total = 0;
         var _count = 0
         $.each(tuiks, (i, v) => {
-            if (v.value != "0" & v.value != "") {
-                total += parseInt(v.value.replace(/\./g, ''))
+            if (v.value != "0" && v.value != "0.00" && v.value != "0,00") {
+                total += Number(v.value.replace(',','.'))
                 _count++
             }
         })
 
-        $("#" + totalid).val(parseInt(total / _count).toString().replace(/\./g, ','))
-
+        var totalp = (total / _count)
+       
+         $("#" + totalid).val(totalp.toFixed(2))
+       
     }
-    if (calculateType == "ortalama ondalıklı") {
-        var tuiks = $(`input[name=${name}]`)
-        var total = 0;
-        var _count = 0
-        $.each(tuiks, (i, v) => {
-            if (v.value != "0" & v.value != "") {
-                total += parseFloat(v.value.replace(/\./g, ''))
-                _count++
-            }
-        })
-        if ((total / _count).toString().indexOf('.') !== -1) {
-            $("#" + totalid).val((total / _count).toFixed(2).replace(/\./g, ',').toString())
-        }
-        else {
-            $("#" + totalid).val(parseInt(total / _count).toString().replace(/\./g, ','))
-        }
-
-    }
-
-
 }
 function CalculateColumnByCumulative(name, relatedcolumnname, totalid, calculateType) {
 
@@ -199,46 +145,22 @@ function CalculateColumnByCumulative(name, relatedcolumnname, totalid, calculate
         var miktartotal = 0;
         var total = 0;
         $.each(miktars, (i, v) => {
-            if (v.value != "0" & v.value != "") {
-                miktartotal += parseInt(v.value.replace(/\./g, ''))
+            if (Number(v.value.toString().replace(',', '.')) != 0) {
+                miktartotal += Number(v.value.toString().replace(',', '.'))
             }
         })
         $.each(miktars, (a, b) => {
             $.each(tuiks, (i, v) => {
-                if ((v.value != "0" & v.value != "") & (b.value != "0" & b.value != "") & a == i) {
-                    total += parseInt(v.value.replace(/\./g, '')) * parseInt(b.value.replace(/\./g, ''))
+                if (Number(v.value.toString().replace(',', '.')) != 0 & a == i) {
+                    total += Number(v.value.toString().replace(',', '.')) * Number(b.value.toString().replace(',', '.'))
+                   
                 }
+                
             })
         })
-       
-            $("#" + totalid).val((total / miktartotal).toString().replace(/\./g, ','))        }
-        
 
-    
-    if (calculateType == "ağırlıklı ondalıklı") {
-        var tuiks = $(`input[name=${name}]`);
-        var miktars = $(`input[name=${relatedcolumnname}]`);
-        var miktartotal = 0;
-        var total = 0;
-        $.each(miktars, (i, v) => {
-            if (v.value != "0" & v.value != "") {
-                miktartotal += parseFloat(v.value.replace(/\./g, ''))
-            }
-        })
-        $.each(miktars, (a, b) => {
-            $.each(tuiks, (i, v) => {
-                if ((v.value != "0" & v.value != "") & (b.value != "0" & b.value != "") & a == i) {
-                    total += parseFloat(v.value.replace(/\./g, '')) * parseFloat(b.value.replace(/\./g, ''))
-                }
-            })
-        })
-        if ((total / miktartotal).toString().indexOf('.') !== -1) {
-            $("#" + totalid).val((total / miktartotal).toFixed(2).toString().replace(/\./g, ','))
-        }
-        else {
-            $("#" + totalid).val(parseInt(total / miktartotal).toString())
-        }
-
+        if (total > 0)
+            $("#" + totalid).val(Number(total / miktartotal).toFixed(0))
 
     }
 
@@ -246,8 +168,6 @@ function CalculateColumnByCumulative(name, relatedcolumnname, totalid, calculate
 
 
 }
-
-
 function CalculateNaturel(totalid) {
     var rowId = totalid.attributes["id"].value.split("_")[1]
     var index = totalid.dataset.bind;
@@ -269,7 +189,7 @@ function CalculateNaturel(totalid) {
     })
 
     $("#" + totalid).val(total)
-    $("#toplanaturel_" + index).val(columntotal)
+    $("#toplanaturel_" + index).val(columntotal.toFixed(0))
 
     CalculateColumn('piyasaton', 'piyasatonTotal', 'topla')
 
@@ -283,7 +203,7 @@ function Avarage(e) {
         var number1 = Number($("#d_1_" + rowId).val())
         var number2 = Number($("#y_1_" + rowId).val())
         var numberAvarage = (number1 + number2) / 2
-        $("#o_1_" + rowId).val(numberAvarage)
+        $("#o_1_" + rowId).val(numberAvarage.toFixed(0))
         CalculateColumn("dfiyat", "dfiyatTotal", "ortalama")
         CalculateColumn("yfiyat", "yfiyatTotal", "ortalama")
         CalculateColumn("ofiyat", "ofiyatTotal", "ortalama")
@@ -292,7 +212,7 @@ function Avarage(e) {
         var number1 = Number($("#d_2_" + rowId).val())
         var number2 = Number($("#y_2_" + rowId).val())
         var numberAvarage = (number1 + number2) / 2
-        $("#o_2_" + rowId).val(numberAvarage)
+        $("#o_2_" + rowId).val(numberAvarage.toFixed(2))
         CalculateColumn("dfiyat2", "dfiyat2Total", "ortalama")
         CalculateColumn("yfiyat2", "yfiyat2Total", "ortalama")
         CalculateColumn("ofiyat2", "ofiyat2Total", "ortalama")
@@ -300,8 +220,33 @@ function Avarage(e) {
 
 
 }
+
+function setCookie(cname, cvalue, exdays) {
+    var d = new Date();
+    d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+    var expires = "expires=" + d.toUTCString();
+    document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+}
+
+function getCookie(cname) {
+    var name = cname + "=";
+    var ca = document.cookie.split(';');
+    for (var i = 0; i < ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == ' ') {
+            c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+        }
+    }
+    return "";
+}
+
+
 function CityChange() {
     var value = $("#cityId :selected").val()
+    setCookie("cityId",value,1)
     window.location.href = `/DataInput/DataInputRice?cityId=${value}`;
     getLoadPanelInstance().show();
     LoadProcess();
@@ -317,7 +262,7 @@ function Save() {
     var dataInput = [];
     var error = 0;
     var inputs = Number($("input").length) / 22
-
+    
     for (var i = 1; i < inputs; i++) {
         var item = {
 
@@ -352,6 +297,7 @@ function Save() {
 
         var keys = Object.keys(item);
         var input = $(`.datainput${i} input`)
+      
         item.CityId = $("#cityId :selected").val()
         item.EmteaTypeId = $(`.datainput${i}`).attr("emteatype")
         item.EmteaGroupId = $(`.datainput${i}`).attr("emteagroup")
@@ -359,36 +305,37 @@ function Save() {
         $.each(input, (n, v) => {
 
             item[keys[n + 3]] = v.value
-
+            
         })
 
-        if (i != inputs - 1)
+        if (i != inputs - 1) {
             AddInput.push(item)
+        }
+          
     }
-
     $.each(AddInput, (i, v) => {
 
-        if (v.GuessValue > 0) {
-            if (v.HasatOran == null ||
-                v.HasatMiktar == null ||
-                v.UreticiKalanMiktar == null ||
-                v.Natural1 == null ||
-                v.Natural2 == null ||
-                v.Natural3 == null ||
-                v.Natural4 == null ||
-                v.Natural5 == null ||
-                v.NaturalToplam == null ||
-                v.ToptanPiyasa1 == null ||
-                v.ToptanPiyasa2 == null ||
-                v.ToptanPiyasa3 == null ||
-                v.ToptanPiyasa4 == null ||
-                v.ToptanPiyasa5 == null ||
-                v.Perakende1 == null ||
-                v.Perakende2 == null ||
-                v.Perakende3 == null ||
-                v.Perakende4 == null ||
-                v.Perakende5 == null ||
-                v.Perakende6 == null
+        if (Number(v.GuessValue) > 0) {
+            if (v.HasatOran == "" ||
+                v.HasatMiktar == "" ||
+                v.UreticiKalanMiktar == "" ||
+                v.Natural1 == "" ||
+                v.Natural2 == "" ||
+                v.Natural3 == "" ||
+                v.Natural4 == "" ||
+                v.Natural5 == "" ||
+                v.NaturalToplam == "" ||
+                v.ToptanPiyasa1 == "" ||
+                v.ToptanPiyasa2 == "" ||
+                v.ToptanPiyasa3 == "" ||
+                v.ToptanPiyasa4 == "" ||
+                v.ToptanPiyasa5 == "" ||
+                v.Perakende1 == "" ||
+                v.Perakende2 == "" ||
+                v.Perakende3 == "" ||
+                v.Perakende4 == "" ||
+                v.Perakende5 == "" ||
+                v.Perakende6 == ""
                    )
     {
         ++error
@@ -396,27 +343,50 @@ function Save() {
 }
 
 if (error == 0) {
-    if (v.HasatMiktar != "" && v.HasatMiktar != "0") {
+  
+
+    if ((Number(v.HasatMiktar) == 0 || Number(v.HasatMiktar) > 0)
+        && Number(v.Perakende1) > 0
+        && Number(v.Perakende2) > 0
+        && Number(v.Perakende3) > 0
+        && Number(v.Perakende4) > 0
+        && Number(v.Perakende5) > 0
+        && Number(v.Perakende6) > 0) {
+         
         dataInput.push(v)
     }
-
-    if (v.HasatMiktar == "0" && v.Perakende1 > 0 && v.Perakende2 > 0 && v.Perakende3 > 0 && v.Perakende4 > 0 && v.Perakende5 > 0 && v.Perakende6 > 0) {
-        dataInput.push(v)
+    else {
+         
     }
 }
 
-
     })
 
-if (error == 0) {
+    if (error == 0) {
+
+        $.each(dataInput, (i, v) => {
+
+            v.Perakende1 = v.Perakende1.toString().replace('.',',') 
+            v.Perakende2 = v.Perakende2.toString().replace('.', ',') 
+            v.Perakende3 = v.Perakende3.toString().replace('.', ',') 
+            v.Perakende4 = v.Perakende4.toString().replace('.', ',') 
+            v.Perakende5 = v.Perakende5.toString().replace('.', ',') 
+            v.Perakende6 = v.Perakende6.toString().replace('.', ',') 
+           
+        })
+
     $.post("/DataInput/DataInputRice", { dataInputs: dataInput }, (res) => {
 
         var model = JSON.parse(JSON.stringify(res))
         if (model.success) {
+            $('#btnsave').prop("disabled", "true")
+            var value = $("#cityId :selected").val()
+            setCookie("cityId", value, 1)
             SweetAlertMesaj("Hasat Piyasa  Kaydet", model.messages, "success", "Kapat", "btn-success")
             setTimeout(() => {
 
-                window.location.href = "/"
+                value = getCookie("cityId");
+                window.location.href = `/DataInput/DataInputRice?cityId=${value}`;
 
 
             }, 2000)
@@ -447,36 +417,6 @@ function GetTodayDataInput() {
     })
 }
 
-
-
-
-function LoadTable(pathh) {
-
-    Dates = $('#dates').select2('val')
-    Cities = $('#cities').select2('val')
-    $('.rapor').css("border", "none")
-    AllCities = document.getElementById("allcities").checked
-    AllDate = document.getElementById("alldate").checked
-    getLoadPanelInstance().show()
-    $.post("/report/" + pathh, { dates: Dates, cities: Cities, allDate: AllDate, allcities: AllCities }, (res) => {
-        $(".rapor").html(res)
-        LoadProcess()
-        LoadProcess2();
-        getLoadPanelInstance().hide()
-    })
-}
-
-function LoadMarketTable(pathh) {
-
-    Dates = $('#dates').select2('val')
-    Emteatypes = $('#emteatypes').select2('val')
-    $('.rapor').css("border", "none")
-    getLoadPanelInstance().show()
-    $.post("/report/" + pathh, { dates: Dates, emteatypes: Emteatypes }, (res) => {
-        $(".rapor").html(res)
-        getLoadPanelInstance().hide()
-    })
-}
 
 
 function numberWithCommas(x) {

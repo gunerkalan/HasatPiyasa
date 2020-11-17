@@ -345,7 +345,7 @@ function Save() {
 if (error == 0) {
   
 
-    if ((Number(v.HasatMiktar) == 0 || Number(v.HasatMiktar) > 0)
+    if ((Number(v.HasatMiktar) == 0)
         && Number(v.Perakende1) > 0
         && Number(v.Perakende2) > 0
         && Number(v.Perakende3) > 0
@@ -353,6 +353,10 @@ if (error == 0) {
         && Number(v.Perakende5) > 0
         && Number(v.Perakende6) > 0) {
          
+        dataInput.push(v)
+    }
+    else if (Number(v.HasatMiktar) > 0) 
+    {
         dataInput.push(v)
     }
     else {
@@ -379,6 +383,10 @@ if (error == 0) {
 
         var model = JSON.parse(JSON.stringify(res))
         if (model.success) {
+            $('#btnsave').prop("disabled", "true")
+            $('#cityId').prop("disabled", "true")
+            var value = $("#cityId :selected").val()
+            setCookie("cityId", value, 1)
             SweetAlertMesaj("Hasat Piyasa  Kaydet", model.messages, "success", "Kapat", "btn-success")
             setTimeout(() => {
 
@@ -386,7 +394,7 @@ if (error == 0) {
                 window.location.href = `/DataInput/DataInputRice?cityId=${value}`;
 
 
-            }, 2000)
+            },500)
         }
         else {
             SweetAlertMesaj("Hasat Piyasa  Kaydet", model.messages, "error", "Kapat", "btn-danger")
